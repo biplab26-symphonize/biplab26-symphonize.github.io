@@ -1,0 +1,2973 @@
+{
+  "tables": {
+    "list": {
+      "users": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "avatar",
+          "header": "",
+          "sortable": false
+        },
+        {
+          "columnDef": "username",
+          "header": "Username",
+          "sortable": true
+        },
+        {
+          "columnDef": "first_name",
+          "header": "Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "email",
+          "header": "Email",
+          "sortable": true
+        },
+        {
+          "columnDef": "role_name",
+          "header": "Role",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "residents": [
+        {
+          "columnDef": "first_name",
+          "header": "Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "email",
+          "header": "Email",
+          "sortable": true
+        },
+        {
+          "columnDef": "phone",
+          "header": "Phone",
+          "sortable": true
+        },
+        {
+          "columnDef": "address",
+          "header": "Address",
+          "sortable": false
+        }
+      ],
+      "documents": [
+        {
+          "columnDef": "menu_id",
+          "header": "Menu Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "menu_parent_id",
+          "header": "Page Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "docuploads": [
+        {
+          "columnDef": "select",
+          "header": "Select",
+          "sortable": false
+        },
+        {
+          "columnDef": "doc_name",
+          "header": "Document Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "documentscategories",
+          "header": "Category",
+          "sortable": false
+        },
+        {
+          "columnDef": "doc_url",
+          "header": "File Url",
+          "sortable": false
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "rotatingmenus": [
+        {
+          "columnDef": "select",
+          "header": "Select",
+          "sortable": false
+        },
+        {
+          "columnDef": "menu_title",
+          "header": "Menu Name",
+          "sortable": false
+        },
+        {
+          "columnDef": "page_title",
+          "header": "Page Name",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        },
+        {
+          "columnDef": "Pdf_as_per_date",
+          "header": "PDF As Per Date",
+          "sortable": false
+        }
+      ],
+      "activitylog": [
+        {
+          "columnDef": "select",
+          "header": "Select",
+          "sortable": false
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "author",
+          "header": "Author",
+          "sortable": true
+        },
+        {
+          "columnDef": "ip_address",
+          "header": "IP",
+          "sortable": true
+        },
+        {
+          "columnDef": "type",
+          "header": "Type",
+          "sortable": true
+        },
+        {
+          "columnDef": "subtype",
+          "header": "Label",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": true
+        },
+        {
+          "columnDef": "description",
+          "header": "Description",
+          "sortable": true
+        }
+      ],
+      "orderoptions": {
+        "dragdrop": "Drag and Drop",
+        "autosort": "Auto Sort"
+      },
+      "sortingoptions": {
+        "doc_asc": "Document A>Z",
+        "doc_desc": "Document Z>A",
+        "date_asc": "Date Jan>Dec",
+        "date_desc": "Date Dec>Jan"
+      },
+      "staffs": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "avatar",
+          "header": "",
+          "sortable": false
+        },
+        {
+          "columnDef": "first_name",
+          "header": "Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "email",
+          "header": "Email",
+          "sortable": true
+        },
+        {
+          "columnDef": "designation",
+          "header": "Designation",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "staffss": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "avatar",
+          "header": "",
+          "sortable": false
+        },
+        {
+          "columnDef": "first_name",
+          "header": "Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "email",
+          "header": "Email",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "roles": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "Id",
+          "sortable": true
+        },
+        {
+          "columnDef": "role_key",
+          "header": "Role Key",
+          "sortable": true
+        },
+        {
+          "columnDef": "role_name",
+          "header": "Role Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "fields": [
+        {
+          "columnDef": "checkbox",
+          "header": "checkbox",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "field_label",
+          "header": "Label",
+          "sortable": true
+        },
+        {
+          "columnDef": "field_type",
+          "header": "Field Type",
+          "sortable": true
+        },
+        {
+          "columnDef": "field_form_type",
+          "header": "Form Type",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "announcement": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "content_desc",
+          "header": "Content Description",
+          "sortable": true
+        },
+        {
+          "columnDef": "start_datetime",
+          "header": "Start Date Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "end_datetime",
+          "header": "End Date Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Published Date Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "Home_announcement": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "content_title",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "start_datetime",
+          "header": "Start Date Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "end_datetime",
+          "header": "End Date Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Published Date Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "form": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "form_id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "form_type",
+          "header": "Type",
+          "sortable": true
+        },
+        {
+          "columnDef": "form_title",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "designation": [
+        {
+          "columnDef": "checkbox",
+          "header": "checkbox",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "department": [
+        {
+          "columnDef": "checkbox",
+          "header": "checkbox",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Department Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "subcategories",
+          "header": "Sub Department",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "formEntries": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "entry_id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "first_name",
+          "header": "First Name",
+          "sortable": false
+        },
+        {
+          "columnDef": "last_name",
+          "header": "Last Name",
+          "sortable": false
+        },
+        {
+          "columnDef": "email",
+          "header": "Email",
+          "sortable": false
+        },
+        {
+          "columnDef": "form_title",
+          "header": "Title",
+          "sortable": false
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "locations": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "abbreviation",
+          "header": "Abbreviation",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "formapproval": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "first_name",
+          "header": "User Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "categories": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "disp_on_registration",
+          "header": "Display on Registration Page",
+          "sortable": false
+        },
+        {
+          "columnDef": "disp_on_calendar",
+          "header": "Display On Calendar",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "categories_calendar": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "filecategories": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "calendarlist": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "template_id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "template_name",
+          "header": "Template Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "postSmtp": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "subject",
+          "header": "Subject",
+          "sortable": true
+        },
+        {
+          "columnDef": "to",
+          "header": "Sent To",
+          "sortable": false
+        },
+        {
+          "columnDef": "date",
+          "header": "Delivery Time",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "attendees": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "attendee_id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "first_name",
+          "header": "Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Registered",
+          "sortable": true
+        },
+        {
+          "columnDef": "guestcount",
+          "header": "Quantity",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": true
+        },
+        {
+          "columnDef": "notes",
+          "header": "Notes",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "frontattendeelist": [
+        {
+          "columnDef": "avatar",
+          "header": " "
+        },
+        {
+          "columnDef": "name",
+          "header": "Resident Name"
+        },
+        {
+          "columnDef": "guestcount",
+          "header": "Quantity"
+        },
+        {
+          "columnDef": "attendee_type",
+          "header": "Resident / Guest"
+        }
+      ],
+      "events": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "event_title",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "event_start_date",
+          "header": "Start Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "event_start_time",
+          "header": "Start Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "registration_start",
+          "header": "Registration Start",
+          "sortable": true
+        },
+        {
+          "columnDef": "registration_status",
+          "header": "Registration Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "attendee_limit",
+          "header": "Attendees",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "forums": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Forum",
+          "sortable": true
+        },
+        {
+          "columnDef": "topic_count",
+          "header": "Topics",
+          "sortable": true
+        },
+        {
+          "columnDef": "replies",
+          "header": " Replies",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_by",
+          "header": "Creator",
+          "sortable": true
+        },
+        {
+          "columnDef": "created",
+          "header": "Created",
+          "sortable": true
+        },
+        {
+          "columnDef": "last_post_ago",
+          "header": "Last post",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "frontforums": [
+        {
+          "columnDef": "category_name",
+          "header": " Forum",
+          "sortable": false
+        },
+        {
+          "columnDef": "topic_count",
+          "header": " Topics",
+          "sortable": false
+        },
+        {
+          "columnDef": "forum_replies_count",
+          "header": "Replies",
+          "sortable": false
+        }
+      ],
+      "topics": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "content_title",
+          "header": " Topics",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Forum",
+          "sortable": true
+        },
+        {
+          "columnDef": "replies",
+          "header": "Replies",
+          "sortable": true
+        },
+        {
+          "columnDef": "creator_name",
+          "header": "Author",
+          "sortable": true
+        },
+        {
+          "columnDef": "created",
+          "header": "Created",
+          "sortable": true
+        },
+        {
+          "columnDef": "last_post_ago",
+          "header": "Last post",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "replies": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "title",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Forum",
+          "sortable": true
+        },
+        {
+          "columnDef": "content_title",
+          "header": "Topics",
+          "sortable": true
+        },
+        {
+          "columnDef": "author",
+          "header": "Author",
+          "sortable": true
+        },
+        {
+          "columnDef": "created",
+          "header": "Created",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "albums": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "bg_image",
+          "header": "Thumbnail",
+          "sortable": false
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Album Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "parent_id",
+          "header": "Gallery",
+          "sortable": true
+        },
+        {
+          "columnDef": "description",
+          "header": "Description",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Created Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "galleries": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Gallery Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "description",
+          "header": "Description",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Created Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "medialist": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "image",
+          "header": "Image",
+          "sortable": false
+        },
+        {
+          "columnDef": "title",
+          "header": "Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "description",
+          "header": "Description",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Created Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myevent": [
+        {
+          "columnDef": "event_title",
+          "header": "Event Name"
+        },
+        {
+          "columnDef": "event_start_date",
+          "header": "Date"
+        },
+        {
+          "columnDef": "event",
+          "header": "Manage Event"
+        }
+      ],
+      "managemyevents": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "event_title",
+          "header": "Event Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "event_start_date",
+          "header": "Event Start Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "event_start_time",
+          "header": "Event Start Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "guestcount",
+          "header": "Booked Ticket(s)",
+          "sortable": true
+        },
+        {
+          "columnDef": "registrationstatus",
+          "header": "Registration status",
+          "sortable": true
+        },
+        {
+          "columnDef": "availablespace",
+          "header": "Available space",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Category",
+          "sortable": true
+        },
+        {
+          "columnDef": "event",
+          "header": "Common Category",
+          "sortable": true
+        }
+      ],
+      "favouriteevents": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "event_title",
+          "header": "Event Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "event_start_date",
+          "header": "Event Start Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "event_start_time",
+          "header": "Event Start Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myforms": [
+        {
+          "columnDef": "form_title",
+          "header": "Form Name"
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Date"
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status"
+        }
+      ],
+      "mydinings": [
+        {
+          "columnDef": "service_title",
+          "header": "Form Name"
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Date"
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status"
+        }
+      ],
+      "myinvoices": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "booking_id",
+          "header": "Order no",
+          "sortable": true
+        },
+        {
+          "columnDef": "issue_date",
+          "header": "Issue date",
+          "sortable": true
+        },
+        {
+          "columnDef": "due_date",
+          "header": "Due date"
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Created"
+        },
+        {
+          "columnDef": "total",
+          "header": "Total"
+        },
+        
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myhomeappointments": [
+        {
+          "columnDef": "service_title",
+          "header": "Form Name"
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Date"
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status"
+        }
+      ],
+      "myhomeguestroom": [
+        {
+          "columnDef": "date_from",
+          "header": "Reservation Dates"
+        },
+        {
+          "columnDef": "email",
+          "header": "Name"
+        },
+        {
+          "columnDef": "room",
+          "header": "Room"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        }
+      ],
+      "mytablebooking": [
+        {
+          "columnDef": "service_title",
+          "header": "Form Name"
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Date"
+        },
+        {
+          "columnDef": "booking_start_time",
+          "header": "Time"
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status"
+        }
+      ],   
+      "myguestbooking": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "date_from",
+          "header": "Reservation Dates"
+        },
+        {
+          "columnDef": "email",
+          "header": "Name"
+        },
+        {
+          "columnDef": "building",
+          "header": "Building"
+        },
+        {
+          "columnDef": "room",
+          "header": "Room"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mylimit": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "type",
+          "header": "Room",
+          "sortable": true
+        },
+        {
+          "columnDef": "date_from",
+          "header": "Date From",
+          "sortable": true
+        },
+        {
+          "columnDef": "date_to",
+          "header": "Date To"
+        },
+        {
+          "columnDef": "start_on",
+          "header": "Start On"
+        },
+        {
+          "columnDef": "min_nights",
+          "header": "Min Nights"
+        },
+        {
+          "columnDef": "max_nights",
+          "header": "Max Nights"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myguestrooms": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "image",
+          "header": "Picture"
+        },
+        {
+          "columnDef": "building",
+          "header": "Building"
+        },
+        {
+          "columnDef": "type",
+          "header": "Type"
+        },
+        {
+          "columnDef": "adults",
+          "header": "Adults"
+        },
+        {
+          "columnDef": "children",
+          "header": "Children"
+        },
+        {
+          "columnDef": "room_count",
+          "header": "Room Count"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],      
+      "mybooking": [
+        {
+          "columnDef": "id",
+          "header": "OrderID"
+        },
+        {
+          "columnDef": "type",
+          "header": "Method"
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Date"
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status"
+        }
+      ],
+      "mybookings": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "service_title",
+          "header": "Services"
+        },
+        {
+          "columnDef": "name",
+          "header": "Customer Details"
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Booking Start Date"
+        },
+        {
+          "columnDef": "booking_start_time",
+          "header": "Booking Start Time"
+        },
+        {
+          "columnDef": "email",
+          "header": "Email"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mybackendappointments": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "service_title",
+          "header": "Services"
+        },
+        {
+          "columnDef": "name",
+          "header": "Customer Details"
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Booking Start Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "booking_start_time",
+          "header": "Booking Start Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "email",
+          "header": "Email"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mylocations": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "location_name",
+          "header": "Location Name"
+        },
+        {
+          "columnDef": "location_address",
+          "header": "Location Address"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myfooddrinks": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "title",
+          "header": "Title"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "equipments": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "title",
+          "header": "Title"
+        },
+        {
+          "columnDef": "status",
+          "header": "Book Multi Units"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "foodorders": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "name",
+          "header": "Name"
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Date"
+        },
+        {
+          "columnDef": "booking_start_time",
+          "header": "Time"
+        },
+        {
+          "columnDef": "type",
+          "header": "Type"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myextras": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "name",
+          "header": "Extra Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "price",
+          "header": "Price",
+          "sortable": true
+        },
+        {
+          "columnDef": "per_price",
+          "header": "Product Used"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mybuilding": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "Id"
+        },
+        {
+          "columnDef": "name",
+          "header": "Building Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mycategories": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Category Name"
+        },
+        {
+          "columnDef": "product_count",
+          "header": "Products"
+        },
+        {
+          "columnDef": "order_count",
+          "header": "Order"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mysidedishes": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "side_dish_name",
+          "header": "Side Dish Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myproduct": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "image",
+          "header": "Image"
+        },
+        {
+          "columnDef": "product_name",
+          "header": "Name"
+        },
+        {
+          "columnDef": "price",
+          "header": "Price"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "featured_product",
+          "header": "Featured Product"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myservice": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "service_title",
+          "header": "Service Title"
+        },
+        {
+          "columnDef": "length",
+          "header": "Length"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "myrooms": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "image",
+          "header": "Image"
+        },
+        {
+          "columnDef": "title",
+          "header": "Room"
+        },
+        {
+          "columnDef": "capacity",
+          "header": "Capacity"
+        },
+        {
+          "columnDef": "bookings",
+          "header": "Bookings"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mymeetingroombooking": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "rooms",
+          "header": "Room"
+        },
+        {
+          "columnDef": "start_date",
+          "header": "Reservation Date"
+        },
+        {
+          "columnDef": "client_name",
+          "header": "Name"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+        "mymeetingroom": [
+       
+        {
+          "columnDef": "rooms",
+          "header": "Room"
+        },
+        {
+          "columnDef": "start_date",
+          "header": "Reservation Date"
+        },
+        {
+          "columnDef": "client_name",
+          "header": "Name"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        }
+       
+      ],
+      "myguestbookingfront": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "date_from",
+          "header": "Reservation Dates"
+        },
+        {
+          "columnDef": "email",
+          "header": "Name"
+        },
+        {
+          "columnDef": "building",
+          "header": "Building"
+        },
+        {
+          "columnDef": "room",
+          "header": "Room"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        
+        {
+          "columnDef": "view_form",
+          "header": "Booking",
+          "sortable": false
+        },
+        {
+          "columnDef": "cancel_entry",
+          "header": "Cancel Booking",
+          "sortable": false
+        }
+      ],      
+      "mychargeaccount": [
+        {
+          "columnDef": "transactionDateTime",
+          "header": "Date"
+        },
+        {
+          "columnDef": "customerName",
+          "header": "Customer Name"
+        },
+        {
+          "columnDef": "department",
+          "header": "Location"
+        },
+        {
+          "columnDef": "itemDescription",
+          "header": "Description"
+        },
+        {
+          "columnDef": "quantity",
+          "header": "Quantity"
+        },        
+        {
+          "columnDef": "taxedAmount",
+          "header": "Amount"
+        }
+      ],           
+      "myplanaccount": [
+        {
+          "columnDef": "transactionDateTime",
+          "header": "Date"
+        },
+        {
+          "columnDef": "customerName",
+          "header": "Customer Name"
+        },
+        {
+          "columnDef": "department",
+          "header": "Location"
+        },
+        {
+          "columnDef": "itemDescription",
+          "header": "Description"
+        },
+        {
+          "columnDef": "quantity",
+          "header": "Quantity"
+        },        
+        {
+          "columnDef": "taxedAmount",
+          "header": "Amount"
+        }
+      ],
+      "myunavailable": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "date_from",
+          "header": "Date From"
+        },
+        {
+          "columnDef": "date_to",
+          "header": "Date To"
+        },
+        {
+          "columnDef": "roomsrestrictions",
+          "header": "Rooms"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],       
+      "mypackages": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "rooms",
+          "header": "Rooms"
+        },
+        {
+          "columnDef": "date_from",
+          "header": "Date From"
+        },
+        {
+          "columnDef": "date_to",
+          "header": "Date To"
+        },
+        {
+          "columnDef": "start_day",
+          "header": "Start Day"
+        },
+        {
+          "columnDef": "end_day",
+          "header": "End Day"
+        },
+        {
+          "columnDef": "price",
+          "header": "Total Price To"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],     
+      "mymoreprices": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "adults",
+          "header": "Adults"
+        },
+        {
+          "columnDef": "child",
+          "header": "Children"
+        },
+        {
+          "columnDef": "price",
+          "header": "Price"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],   
+      "myfreenight": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "rooms",
+          "header": "Rooms"
+        },
+        {
+          "columnDef": "date_from",
+          "header": "Date From"
+        },
+        {
+          "columnDef": "date_to",
+          "header": "Date To"
+        },
+        {
+          "columnDef": "min_length",
+          "header": "Min Length"
+        },
+        {
+          "columnDef": "max_length",
+          "header": "Max Length"
+        },
+        {
+          "columnDef": "free_nights",
+          "header": "Free Nights"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],  
+      "mypromocode": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "rooms",
+          "header": "Rooms"
+        },
+        {
+          "columnDef": "date_from",
+          "header": "Date From"
+        },
+        {
+          "columnDef": "date_to",
+          "header": "Date To"
+        },
+        {
+          "columnDef": "promo_code",
+          "header": "Promo Code"
+        },
+        {
+          "columnDef": "discount_type",
+          "header": "Type"
+        },
+        {
+          "columnDef": "price",
+          "header": "Discount"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],  
+      "myroomlist": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "rooms",
+          "header": "Room"
+        },
+        {
+          "columnDef": "start_date",
+          "header": "Reservation Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "client_name",
+          "header": "Name"
+        },
+        {
+          "columnDef": "status",
+          "header": "Status"
+        },
+        {
+          "columnDef": "view_form",
+          "header": " View Form",
+          "sortable": false
+        },
+        {
+          "columnDef": "cancel_entry",
+          "header": " Cancel Entry",
+          "sortable": false
+        }
+      ],
+      "myroomlayout": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "image",
+          "header": "Image"
+        },
+        {
+          "columnDef": "title",
+          "header": "Title"
+        },
+        {
+          "columnDef": "roomslayout",
+          "header": "Room Layout"
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "mydining": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "service_title",
+          "header": "Service Name",
+          "sortable": false
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Reservation Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "booking_start_time",
+          "header": "Reservation Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "view_form",
+          "header": " View Form",
+          "sortable": false
+        },
+        {
+          "columnDef": "cancel_entry",
+          "header": " Cancel Entry",
+          "sortable": false
+        }
+      ],
+      "myappointments": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "service_title",
+          "header": "Service Name",
+          "sortable": false
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Reservation Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "booking_start_time",
+          "header": "Reservation Time",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "view_form",
+          "header": " View Form",
+          "sortable": false
+        },
+        {
+          "columnDef": "cancel_entry",
+          "header": " Cancel Entry",
+          "sortable": false
+        }
+      ],
+      "myorder": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "OrderID",
+          "sortable": false
+        },
+        {
+          "columnDef": "type",
+          "header": "Method",
+          "sortable": false
+        },
+        {
+          "columnDef": "booking_start_date",
+          "header": "Order Date",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Submitted Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "view_form",
+          "header": " View Form",
+          "sortable": false
+        },
+        {
+          "columnDef": "cancel_entry",
+          "header": " Cancel Entry",
+          "sortable": false
+        }
+      ],
+      "myservices": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "form_title",
+          "header": "Form Name",
+          "sortable": false
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Date Submitted",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": " Submitted Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "view_form",
+          "header": " View Form",
+          "sortable": false
+        },
+        {
+          "columnDef": "cancel_entry",
+          "header": " Cancel Entry",
+          "sortable": false
+        }
+      ],
+      "notifications": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "name",
+          "header": " Name",
+          "sortable": true
+        },
+        {
+          "columnDef": "subject",
+          "header": "Subject",
+          "sortable": false
+        },
+        {
+          "columnDef": "event",
+          "header": " Event",
+          "sortable": false
+        }
+      ],
+      "pages": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "title",
+          "header": "Title",
+          "sortable": true
+        },
+        {
+          "columnDef": "page_alias",
+          "header": "Page Alias",
+          "sortable": true
+        },
+        {
+          "columnDef": "publicaccess",
+          "header": "Access",
+          "sortable": true
+        },
+        {
+          "columnDef": "author",
+          "header": "Author",
+          "sortable": true
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "order",
+          "header": "Order",
+          "sortable": true
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Created",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "usernotifications": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "notification_type",
+          "header": "Type",
+          "sortable": false
+        },
+        {
+          "columnDef": "message",
+          "header": "Message",
+          "sortable": false
+        },
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "created_at",
+          "header": "Sent On",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "interests": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Ineterest Title",
+          "sortable": true
+        },
+        
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ],
+      "commitees": [
+        {
+          "columnDef": "select",
+          "header": "select",
+          "sortable": false
+        },
+        {
+          "columnDef": "id",
+          "header": "ID",
+          "sortable": true
+        },
+        {
+          "columnDef": "category_name",
+          "header": "Commitee Title",
+          "sortable": true
+        },
+        
+        {
+          "columnDef": "status",
+          "header": "Status",
+          "sortable": false
+        },
+        {
+          "columnDef": "action",
+          "header": "Action",
+          "sortable": false
+        }
+      ]    
+    },
+    "pagination": {
+      "filters": {
+        "page": 0,
+        "limit": 10,
+        "searchKey": "",
+        "column": "",
+        "direction": "desc",
+        "status": "",
+        "trash": ""
+      },
+      "options": {
+        "pageSize": 10,
+        "pageSizeOptions": [
+          30,
+          60,
+          100
+        ]
+      },
+      "directoryoptions": {
+        "pageSize": 30,
+        "pageSizeOptions": [
+          30,
+          60,
+          100
+        ],
+        "tileviewmeta":[
+          "cell_phone",
+          "address"
+        ]
+      }
+    },
+    "status": {
+      "users": {
+        "A": "Active",
+        "I": "Inactive",
+        "": "All"
+      },
+      "eventstatus": {
+        "I": "Closed",
+        "W": "Waitlist",
+        "R": "Recuring",
+        "NR": "Not Recuring",
+        "C": "Cancelled",
+        "RR": "Registration Required",
+        "RN": "Registration Not Required"
+      },
+      "attendeestatus": {
+        "registered": "Registered",
+        "waitlist": "Waitlist",
+        "checkedin": "Checked In",
+        "cancelled": "Cancelled"
+      },
+      "notifications": {
+        "R": "Read",
+        "U": "Unread"
+      },
+      "forums": {
+        "approved": "Approved",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "deptsections":{
+        "DEPT":"Department",
+        "SUBDEPT":"Subdepartment"
+      }
+    },
+    "menustartday": {
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday",
+      "7": "Sunday"
+    },
+    "diningreservation": {
+      "days": {
+        "mon": "Monday",
+        "tues": "Tuesday",
+        "wed": "Wednesday",
+        "thur": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday",
+        "sun": "Sunday"
+      }
+    },
+    "formtype": {
+      "fields": {
+        "U": "User",
+        "E": "Event",
+        "F": "Form",
+        "C": "Content",
+        "M": "Media",
+        "S": "Staff",
+        "RD": "Resident Directory",
+        "EF": "Event Filter"
+      }
+    }    
+  },
+  "homesettings": {
+    "layouts": {
+      "layout-1": "layout-1",
+      "layout-2": "layout-2",
+      "layout-3": "layout-3"
+    },
+    "navlayouts": {
+      "front-navbar-style-1": "Navigation at Top",
+      "front-navbar-style-2": "Navigation at Bottom"
+    },
+    "anclayouts": {
+      "row": "Full Width",
+      "column": "Show in Column"
+    },
+    "featurelayouts": {
+      "default": "Default",
+      "style-1": "Style-1",
+      "style-2": "Style-2",
+      "style-3": "Style-3"
+    },
+    "formatlist": {
+      "short": "Short (6/15/15, 9:03 AM)",
+      "long": "Long (June 15, 2015, 9:03:01 AM)",
+      "medium": "Medium (Jun 15, 2015, 9:03:01 AM)",
+      "full": "Full (Monday, June 15, 2015 at 9:03:01 AM)"
+    },
+    "forecast": {
+      "4": "4 Days",
+      "3": "3 Days",
+      "2": "2 Days",
+      "1": "1 Days",
+      "0": "Don't Show"
+    },
+    "timezone": "Asia/Kolkata"
+  },
+  "fontformat": {
+    "Roboto=Roboto": "Roboto=Roboto",
+    "sans-serif;Andale": "sans-serif;Andale",
+    "Mono=andale mono": "Mono=andale mono",
+    "monospace;Arial=arial": "monospace;Arial=arial",
+    "helvetica": "helvetica",
+    "sans-serif;Arial Black=arial black": "sans-serif;Arial Black=arial black",
+    "sans-serif;Book Antiqua=book antiqua": "sans-serif;Book Antiqua=book antiqua",
+    "palatino": "palatino",
+    "serif;Comic Sans MS=comic sans ms": "serif;Comic Sans MS=comic sans ms",
+    "sans-serif;Courier New=courier new": "sans-serif;Courier New=courier new",
+    "courier": "courier",
+    "monospace;Georgia=georgia": "monospace;Georgia=georgia",
+    "palatino,serif;Helvetica=helvetica": "palatino,serif;Helvetica=helvetica",
+    "arial": "arial",
+    "sans-serif;Impact=impact": "sans-serif;Impact=impact",
+    "sans-serif;sans-serif=sans-serif": "sans-serif;sans-serif=sans-serif",
+    "sans-serif": "sans-serif"
+  },
+  "fonts": {
+    "11px": "11px",
+    "12px": "12px",
+    "14px": "14px",
+    "16px": "16px",
+    "18px": "18px",
+    "24px": "24px",
+    "36px": "36px",
+    "48px": "48px"
+  },
+  "importexportformat": {
+    ".csv": "CSV Format",
+    ".xlsx": "Excel Format"
+  },
+  "fieldtype": {
+    "type": {
+      "text": "Text",
+      "password": "Password",
+      "hidden": "Hidden",
+      "website": "Website",
+      "number": "Number",
+      "html": "Html",
+      "email": "Email",
+      "textarea": "Textarea",
+      "select": "Select",
+      "checkbox": "Checkbox",
+      "radio": "Radio",
+      "date": "Date",
+      "upload": "Upload",
+      "button": "Button",
+      "list": "List",
+      "rating": "Star Rating",
+      "dynamic": "Dynamic",
+      "signature": "Signature",
+      "time": "Time"
+    },
+    "dynamictype": {
+      "checkbox": "Checkbox",
+      "radio": "Radio",
+      "autocomplete": "Autocomplete",
+      "select": "Select"
+    },
+    "notificationEvent": {
+      "approved": "Approved",
+      "submitted": "Submitted",
+      "denied": "Denied",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "columnClass": {
+    "col-fullwidth": "Full width",
+    "col-halfwidth": "Half width",
+    "nowidth": "Auto"
+  },
+  "listFieldTypes": {
+    "text": "TextBox",
+    "number": "Number",
+    "email": "Email",
+    "textarea": "TextArea",
+    "date": "DatePicker",
+    "select": "Select List",
+    "checkbox": "Checkbox",
+    "time": "Time"
+  },
+
+  "maskingPatterns": {
+    "0000000000": "0000000000",
+    "000-000-000": "000-000-000",
+    "(000) 000 0000": "(000) 000 0000",
+    "(000) 000-0000": "(000) 000-0000",
+    "(0000) 000-000": "(0000) 000 000",
+    "000-000-0000": "000-000-0000",
+    "000 000 0000": "000 000 0000",
+    "(000)-000-0000": "(000)-000-0000"
+  },
+  
+  "menus": {
+    "positions": {
+      "": "All",
+      "M": "Navigation Bar",
+      "F": "Footer"
+    },
+    "menutypes": {
+      "M": "Main menu",
+      "S": "Sub Menu"
+    },
+    "targets": {
+      "_blank": "New tab",
+      "_self": "Same tab"
+    },
+    "menusources": {
+      "N": "Normal",
+      "D": "Document",
+      "FRM": "Forum",
+      "ECL": "Event Calendar",
+      "MYE": "My Events",
+      "ERG": "Event Registration",
+      "F": "Forms",
+      "S": "Staff Directory",
+      "RD": "Resident Directory",
+      "P": "Page",
+      "RDM": "Rotating Menu"
+    },
+    "menusourcestypes": {
+      "page": "Archive",
+      "url": "URL"
+    },
+    "status": {
+      "A": "Active",
+      "I": "Inactive",
+      "": "All"
+    },
+    "showtypes": {
+      "item": "Item",
+      "group": "Group",
+      "collapsable": "Collapsable"
+    },
+    "mainshowtypes": {
+      "item": "Item",
+      "group": "Group"
+    },
+    "frontend_formurl": "forms/view/",
+    "frontend_pageurl": "pages/view/",
+    "frontend_staffurl": "staffs/",
+    "frontend_allforums": "forums",
+    "frontend_singleforum": "forum/",
+    "frontend_quickLinkurl": "quicklinks/",
+    "frontend_archiveurl": "archive/",
+    "frontend_residenturl": "resident-directory",
+    "frontend_allcalendar": "calendars",
+    "frontend_calendar": "calendar/",
+    "frontend_allevents": "events",
+    "frontend_calevents": "event/",
+    "frontend_myevents": "my-events",
+    "frontend_mycalevents": "my-event/"
+  },
+  "dynamicfields": {
+    "table": [
+      "users",
+      "category"
+    ],
+    "value": [
+      "id"
+    ],
+    "categorytype": [
+      "Event",
+      "Event Location",
+      "Form",
+      "Content",
+      "Document",
+      "Media",
+      "Department",
+      "Desgination",
+      "Interest",
+      "Clubs"
+    ],
+    "categorykeyvalue": {
+      "C": "Event",
+      "EL": "Event Location",
+      "F": "Form",
+      "FC": "Content",
+      "D": "Document",
+      "M": "Media",
+      "DEPT": "Department",
+      "DESIGNATION": "Desgination",
+      "INTEREST": "Interest",
+      "CLUBS": "Clubs",
+      "COMMITEE": "Commitees"
+    }
+  },
+  "recurring_everyList": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "week_days": {
+    "6": "Sunday",
+    "0": "Monday",
+    "1": "Tuesday",
+    "2": "Wednesday",
+    "3": "Thursday",
+    "4": "Friday",
+    "5": "Saturday"
+  },
+  "dining_week_days": {
+    "SU": "Sunday",
+    "MO": "Monday",
+    "TU": "Tuesday",
+    "WE": "Wednesday",
+    "TH": "Thursday",
+    "FR": "Friday",
+    "SA": "Saturday"
+  },
+  "food_week_days": {
+    "6": "sunday",
+    "0": "monday",
+    "1": "tuesday",
+    "2": "wednesday",
+    "3": "thursday",
+    "4": "friday",
+    "5": "saturday"
+  },
+  "guest_room_extra_price": {
+    "day": "Per Day",
+    "booking": "Per Booking",
+    "person": "Per Person",
+    "day_person": "Per Day / Per Person"
+  },
+  "occurence_limit": 50,
+  "schedule_days": [
+    14,
+    7,
+    3,
+    1
+  ],
+  "mediatype": {
+    "": "All Media Type",
+    "globalmedia": "Images",
+    "audio": "Audio",
+    "video": "Video",
+    "document": "Document"
+  },
+  "months": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  },
+  "permissionaction": {
+    "actions": "Perform Action",
+    "create": "Create",
+    "delete": "Delete",
+    "export": "Export",
+    "import": "Import",
+    "list": "List",
+    "media": "Media",
+    "update": "Update",
+    "view": "View"
+  },
+  "eventcalendar": {},
+  "dateformat": {
+    "shortDate": "M/d/yy",
+    "mediumDate": "MMM d,y",
+    "longDate": "MMMM d,y"
+  },
+  "imageratios": {
+    "profileimageratio": 1,
+    "coverimageratiowidth": 16,
+    "coverimageratioheight": 9
+  },
+  "forumsettings": {
+    "forum_widget_title": "Forum",
+    "forums_title": "Forums",
+    "topics_title": "Topics",
+    "replies_title": "Replies",
+    "forum_title": "Forum",
+    "topic_title": "Topic",
+    "reply_title": "Reply",
+    "add_forum": "Add Forum",
+    "edit_forum": "Edit Forum",
+    "add_topic": "Post New Topic",
+    "edit_topic": "Edit Topic",
+    "add_reply": "Add Reply",
+    "edit_reply": "Edit Reply",
+    "forum_title_required": "Forum title required",
+    "topic_title_required": "Topic title required",
+    "reply_title_required": "Reply title required",
+    "select_forum": "Select Forum",
+    "select_topic": "Select Topic",
+    "select_forum_required": "Forum required",
+    "select_topic_required": "Topic required",
+    "select_parent_forum": "Select Parent forum",
+    "view_forum_list": "View Forums",
+    "view_topics_list": "View Topics",
+    "view_replies_list": "View Replies",
+    "back_to_forum": "Back To Forums",
+    "add_edit_title": "Add/Edit Forum",
+    "add_edit_topic": "Add/Edit Topic",
+    "add_edit_reply": "Add/Edit Reply",
+    "empty_forums": "Oh bother! No forums were found here!",
+    "empty_topics": "Oh bother! No topics were found here!",
+    "empty_replies": "Oh bother! No replies were found here!",
+    "delete_topic": "Topic Deleted Successfully"
+  },
+  "customformats": {
+    "birthdate": "MMM d",
+    "phone": "000-000-0000",
+    "tenhyphone": "000-000-0000",
+    "sevenhyphone": "000-0000"
+  },
+  "pagebuilder": {
+    "layouts": {
+      "wide": "Wide",
+      "boxed": "Boxed"
+    },
+    "bgrepeats": {
+      "repeat": "Repeat",
+      "repeat-x": "Repeat-x",
+      "repeat-y": "Repeat-y",
+      "no-repeat": "No-repeat",
+      "initial": "Initial",
+      "inherit": "Inherit"
+    },
+    "widgets": {
+      "none": "None",
+      "breadcumb": "Breadcumbs",
+      "search": "Search"
+    },
+    "textalign": {
+      "center": "Center",
+      "left": "Left",
+      "right": "Right",
+      "justify": "Justify"
+    },
+    "column_templates": [
+      {
+        "id": "1_1",
+        "name": "tmpl-one-one",
+        "description": "1/1"
+      }
+    ]
+  },
+  "notificationtypes": {
+    "": "All",
+    "guest": "Guest Room",
+    "event": "Events",
+    "forms": "Forms",
+    "fitnessreservation": "Fitness Reservation"
+  },
+  "autosuggestfields":["name","email","phone","address","apartment","cellphone","move-in-date"]
+}

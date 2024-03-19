@@ -1,0 +1,27 @@
+{
+	"url": {
+		"siteUrl": "https://my.rwexeter.org/",
+		"apiUrl": "https://my.rwexeter.org/beta-api/api/",
+		"loginApiUrl": "https://my.rwexeter.org/beta-api/",
+		"signageUrl": "https://my.rwexeter.org/digisign/#/auth/",
+		"mediaUrl": "https://my.rwexeter.org/beta-api/",
+		"documentsUrl": "https://my.rwexeter.org/beta-api/api/download/documents/",
+		"globalmediaUrl": "https://my.rwexeter.org/beta-api/public/globaluploads/",
+		"weatherUrl": "https://openweathermap.org/img/wn/",
+		"defaultAvatar": "assets/images/avatars/profile.jpg",
+		"defaultCover": "assets/images/avatars/cover.jpg",
+		"defaultsiteLogo": "assets/images/logos/default.png",
+		"defaultAlbum": "assets/images/media/default.png",
+		"defaultsiteTitle": "Viibrant",
+		"redirectAfterLogin": "",
+		"chatUrl": "https://my.rwexeter.org/beta-api/api/"
+	},
+	"permissions": {
+		"kiosk": [
+			8
+		],
+		"subscriber": [
+			9
+		]
+	}
+}
