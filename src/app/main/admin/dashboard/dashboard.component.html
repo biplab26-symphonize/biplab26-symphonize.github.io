@@ -1,0 +1,96 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+    <div id="back-dining-dashboard" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <!-- HEADER -->
+        <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxFlex>
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                        dashboard
+                    </mat-icon>
+                    <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Dashboard
+                    </span>
+                </div>
+            </div>
+        </div>
+       
+        <div class="content p-24" fusePerfectScrollbar>
+
+            <div class="center p-24 pb-8" fxLayoutAlign="center">
+                <!-- CONTENT -->
+                <div class="content w-90-p my-auto p-28">
+                    <div class="mb-24">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="border py-32 fuse-white-bg">
+                            <ng-container > <!-- *ngIf="showCount==true;else CountemptyBlock" -->
+                                <div class="border-right" fxLayout="row" fxFlex="20" fxLayoutAlign="center center" *ngIf="dashboard_document"> 
+                                    <div class="font-weight-600 text-center font-size-20">
+                                        <span>Document</span><br><span>{{document2}}</span>
+                                    </div>
+                                </div>
+                            
+                                <div class="border-right" fxFlex="20" fxLayoutAlign="center center" *ngIf="dashboard_event_attendees">                   
+                                    <div class="font-weight-600 text-center font-size-20">
+                                        <span>Event Attendees</span><br><span>{{eventattendees2}}</span>
+                                    </div>
+                                </div>
+                
+                                <div class="border-right" fxFlex="20" fxLayoutAlign="center center" *ngIf="dashboard_forms_entries">                   
+                                    <div class="font-weight-600 text-center font-size-20">
+                                        <span>Form Entries</span><br><span>{{formentries2}}</span>
+                                    </div>
+                                </div>
+                
+                                <div class="border-right" fxFlex="20" fxLayoutAlign="center center" *ngIf="dashboard_today_event">                   
+                                    <div class="font-weight-600 text-center font-size-20">
+                                        <span>Today Event</span><br><span>{{todayevents2}}</span>
+                                    </div>
+                                </div>   
+                
+                                <div fxFlex="20" fxLayoutAlign="center center" *ngIf="dashboard_user_updates"> 
+                                    <div class="font-weight-600 text-center font-size-20">
+                                        <span>User Update</span><br><span>{{userupdate2}}</span>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div *ngIf="dashboard_today_event">
+                        <h2 class="font-size-28 font-weight-600 m-16" *ngIf="0"> TODAY'S EVENT</h2>
+                        <app-todays-event></app-todays-event>                        
+                    </div>                   
+                    <div *ngIf="dashboard_event_attendees">
+                        <h2 class="font-size-28 font-weight-600 m-16" *ngIf="0"> EVENT ATTENDEES</h2>
+                        <app-event-attendees></app-event-attendees>                        
+                    </div>
+                    <div *ngIf="dashboard_forms_entries">
+                        <h2 class="font-size-28 font-weight-600 m-16" *ngIf="0"> FORM ENTRIES</h2>
+                        <app-form-entries></app-form-entries>                        
+                    </div>
+                    <div *ngIf="dashboard_forms">
+                        <h2 class="font-size-28 font-weight-600 m-16" *ngIf="0"> FORMS</h2>
+                        <app-forms-list></app-forms-list>                       
+                    </div>
+                    <div *ngIf="dashboard_document">
+                        <h2 class="font-size-28 font-weight-600 m-16" *ngIf="0"> Document</h2>
+                               <app-documents-list></app-documents-list>      
+                    </div>
+                    <div *ngIf="dashboard_user_updates">
+                        <h2 class="font-size-28 font-weight-600 m-16" *ngIf="0"> User Update</h2>
+                       <app-userupdate></app-userupdate>                  
+                    </div>
+                </div>
+                <!-- EmptyBlock -->
+                <ng-template #CountemptyBlock>
+                    <div fxFlex="100" *ngIf="showCount==false" fxLayoutAlign="center center">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

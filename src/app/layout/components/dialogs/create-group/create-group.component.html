@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>{{dialogTitle}}</h1>
+<form  name="groupForm" [formGroup]="groupForm" (ngSubmit)="onSubmit($event)">
+    <div mat-dialog-content class="mat-dialog-export">
+            <div fxLayout="column">
+                <!-- group_name -->
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="w-100-p mr-4 ml-4">
+                    <mat-label>Group Name</mat-label>
+                    <input [readonly]="data.type=='invite'" matInput placeholder="Enter group name..." formControlName="group_name">
+                </mat-form-field>
+            </div>
+            <div fxLayout="column">
+                <!-- invited_to -->
+                <mat-form-field appearance="outline" class="w-100-p">
+                    <mat-label>Invite to</mat-label>
+                    <input matInput  [matAutocomplete]="auto" name="invite_name" formControlName="invite_name">
+                    <mat-autocomplete   #auto="matAutocomplete" (optionSelected)="setFormfields($event)">
+                        <mat-option  *ngFor="let option of filteredUsers"  [value]="option" >
+                            {{option.first_name+' '+option.last_name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error>Firstname Required</mat-error>
+                </mat-form-field>
+            </div>
+            <!-- invite array -->
+            <div fxLayout="column" *ngIf="inviteArray.length>0" class="w-100-p my-4">
+                <mat-chip-list #chipList aria-label="Invitees">
+                    <mat-chip *ngFor="let invite of inviteArray" [selectable]="selectable" [removable]="removable" (removed)="removeInvite(invite)">
+                      {{invite.email}}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+            <div fxLayout="column">     
+                <!-- invite_text -->
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="w-100-p">
+                    <mat-label>Invite Message</mat-label>
+                    <textarea matInput placeholder="Enter invite text..." formControlName="invite_text"></textarea>
+                </mat-form-field>
+            </div>
+        
+    </div>
+    <div mat-dialog-actions class="pt-24">
+        <button mat-stroked-button [disabled]="groupForm.invalid || isSubmit==true" class="mat-accent mr-16" type="submit">Submit</button>
+        <button type="button" mat-stroked-button (click)="dialogRef.close('')">Cancel</button>
+    </div>
+</form>
+    

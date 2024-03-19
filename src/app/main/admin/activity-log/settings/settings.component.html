@@ -1,0 +1,58 @@
+<div  class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+    <!-- HEADER -->
+	<div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- APP TITLE -->
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<div class="logo" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting</mat-icon> 
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                     Activity Log Settings
+                </span>
+			</div>
+		</div>
+        <!-- / APP TITLE -->
+        
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+			<div class="mt-16 mt-sm-0">
+				<button mat-raised-button class="reference-button" (click)="onClickSave()">
+					<mat-icon class="mr-4">settings_backup_restore</mat-icon> <span>Save</span>
+				</button>
+			</div>
+		</div>
+    </div>
+
+    <div class="content p-24" fusePerfectScrollbar>
+        <form class="product w-100-p" [formGroup]="addActivityLogSetting"  fxLayout="column" fxFlex>
+            <div class="mat-card mat-elevation-z2 p-24 mb-56" fxLayout="column">
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center"  fxLayoutWrap >
+                  
+                    <div fxLayout="row" fxFlex="35">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mb-4 font-weight-600">Log Enable :</div>
+                            <div class="font-size-12 secondary-text">Log Enable.</div>
+                        </div>
+    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-slide-toggle [(ngModel)]="logChecked" formControlName="log_enable" class="mb-12">
+                                <span *ngIf="logChecked">Visible</span>
+                                <span *ngIf="!logChecked">Hidden</span>
+                            </mat-slide-toggle>                      
+                        </div>
+                    </div>  
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="49.5" class="space">
+                        <mat-label>Log Days</mat-label>
+                        <input type="number" matInput min="1" formControlName="log_days">
+                        <mat-error>Length required</mat-error>
+                      </mat-form-field>
+                </div>
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center"  fxLayoutWrap >
+                    <div fxFlex="35" class="mb-4 font-weight-600">Delete Log Activities :</div>  
+                    <div>
+                        <a (click)="resetDatabase()">Reset Database</a><br>
+                        Warning: Clicking this will delete all activities from the database.
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

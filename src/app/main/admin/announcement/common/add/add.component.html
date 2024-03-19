@@ -1,0 +1,160 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="Add-Event-Announcement">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                
+                <button *ngIf="!pathmath"  mat-raised-button
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                        [routerLink]="'/admin/announcement/event'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button>
+                <button 
+                    class="ml-8"
+                    mat-raised-button *ngIf='editeventgAnnouncement'
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                     (click)="deleteItem(editHomeAnnId)" >
+                    <mat-icon>delete</mat-icon>
+                    Move To Trash
+               </button>
+            </div>
+            <div class="mt-16 mt-sm-0">
+                <button  *ngIf="pathmath"   mat-raised-button
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                        [routerLink]="'/admin/announcement/dining'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+              </button>
+              <button 
+              class="ml-8"
+                mat-raised-button *ngIf='editdiningAnnouncement'
+                [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                (click)="deleteItem(editHomeAnnId)" >
+                <mat-icon>delete</mat-icon>
+                Move To Trash
+              </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+    </div>
+    <!-- / HEADER -->
+
+
+    <div class="content" fusePerfectScrollbar>
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto br-ds-0">
+            <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" #f="ngForm" [formGroup]="addCommonForm" novalidate autocomplete="off">
+                <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title}}</div>  
+                
+                <div class="d-block p-28">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Announcement Title</mat-label>
+                                <input matInput formControlName="content_title"  name="content_title" required>
+                                <mat-error>Announcement Title Is Required !</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" class="font-weight-600 font-size-18 green-bg-color fuse-white-fg px-16 py-8 mb-20">
+                        <div>
+                            Annoucement Details
+                        </div>
+                        <editor-gallery fxLayoutAlign="end center" [controlName]="'content_desc'" (onMediaSelect)="setEditorMedia($event)"></editor-gallery>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <div fxFlex="100" class="home-announcement-editor">
+                            <editor [init]="tinyMceSettings"  name="content_desc" [formControl]="addCommonForm.get('content_desc')" ></editor>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">	
+                            <mat-label>Status</mat-label>		  
+                            <mat-select name="status" 
+                                formControlName="status" >
+                                <mat-option value="A">Live</mat-option>
+                                <mat-option value="I">Inactive</mat-option>			    
+                            </mat-select>
+                            <mat-error>Status Is Required!</mat-error>
+                        </mat-form-field>
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" class="pr-4">	
+                            <mat-label>Display Order</mat-label>		  
+                            <mat-select name="order" [formControl]="addCommonForm.get('order')">
+                                <mat-option *ngFor="let order of orderlist" [value]="order">{{order}}</mat-option>    
+                            </mat-select>
+                            <mat-error>Select Display Order</mat-error>
+                    </mat-form-field> -->
+                    </div>
+                    
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <label class="example-margin mr-28 font-weight-600 ml-0">Schedule : </label>				
+                        <mat-radio-group [formControl]="addCommonForm.get('schedule')" name="schedule">
+                            <mat-radio-button class="mr-8 example-margin " (change)="onRadioChange('A')" value="A" >
+                                Always On
+                            </mat-radio-button>
+                            <mat-radio-button  class="example-margin" (change)="onRadioChange('C')" value="C">
+                                Custom
+                            </mat-radio-button>
+                        </mat-radio-group>   
+                    </div>  
+
+                    <div *ngIf="addCommonForm.get('schedule').value =='C'" >
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="50" class="mr-8">
+                            <mat-label> Start Date Time </mat-label>
+                            <input matInput
+                            required
+                          
+                            [min]="min_dt"
+                            [max]="max_dt"
+                           
+                            [formControl]="addCommonForm.get('start_datetime')" 
+                            [owlDateTimeTrigger]="start_datetime" [owlDateTime]="start_datetime">
+                            <owl-date-time (afterPickerClosed)="changeMinDTime()" [pickerType]="'both'"  [hour12Timer]="true" #start_datetime></owl-date-time>
+                            <mat-error *ngIf="addCommonForm.get('start_datetime').invalid || addCommonForm.get('start_datetime').required">Start Date Time Is Required</mat-error>
+                        </mat-form-field>
+                    
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                            <mat-label> End Date Time </mat-label>
+                            <input matInput
+                            required
+                          
+                            [min]="min_dt"
+                       
+                            [formControl]="addCommonForm.get('end_datetime')" 
+                            [owlDateTimeTrigger]="end_datetime" [owlDateTime]="end_datetime">
+                            <owl-date-time (afterPickerClosed)="changeMaxDTime()" [pickerType]="'both'"  [hour12Timer]="true" #end_datetime></owl-date-time>
+                            <mat-error *ngIf="addCommonForm.get('end_datetime').invalid || addCommonForm.get('end_datetime').untouched">End Date Time Is Required</mat-error>
+                        </mat-form-field>	
+                        </div>
+                    </div> 
+
+                    <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto" class="mt-20">
+                        <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="onSaveFieldClick($event)" [disabled]="isSubmit" cdkFocusInitial>Save</button>
+                    </div>
+                </div>
+            </form>
+         </div>
+            <!-- / CONTENT -->
+      </div>
+        <!-- / CENTER -->
+   </div>
+    <!-- / CONTENT -->
+</div>

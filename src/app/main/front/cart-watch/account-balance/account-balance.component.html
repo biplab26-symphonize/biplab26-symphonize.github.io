@@ -1,0 +1,59 @@
+<div id="front-CartWatch-account-balance" class="page-layout simple fullwidth layout-box">
+
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+  
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+  
+            <div class="header-top">
+  
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong> Account Balance </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div> 
+    </div>
+     <!--  / CONTENT WRAP -->
+     <section class="content">
+        <div class="content-wrap fuse-white-bg p-28" fusePerfectScrollbar>
+            <mat-card  fusePerfectScrollbar class="w-100-p p-0 overflow-x-auto box-shadow-none" *ngIf="ShowData == true">
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="AccountData" class="mb-20 font-weight-600 font-size-18 accent fuse-white-fg p-16">
+                    Customer Name : {{AccountData[0].customer.firstName}} {{AccountData[0].customer.lastName}}
+                </div>
+                <table class="white-space-nowrap table table-bordered w-100-p border account-table">
+                    <thead class="border-bottom">
+                        <th class="p-16  font-weight-600 accent" width="80px">Year To Date Payment</th>
+                        <th class="p-16  font-weight-600 accent" width="400px">Plan Type</th>
+                        <th class="p-16  font-weight-600 accent" width="450px">Daily Charge Amount</th>
+                        <th class="p-16  font-weight-600 accent" width="160px">Customer Number</th>
+                        <th class="p-16  font-weight-600 accent" width="160px">Account Balance</th>
+                        <!-- <th class="p-16  font-weight-600" width="160px">Year To Date Purchase</th> -->
+                    </thead> 
+
+                    <tbody *ngIf="AccountData">
+                    <ng-container *ngFor="let record of AccountData[0].records ;let i=index"  >                              
+                        <tr  class="border-bottom" >
+                            <td class="p-12 ">
+                            {{record.yearToDatePayment}}
+                            </td>
+                            <td class="p-12 ">{{record.planType}}</td>
+                            <td class="p-12 ">{{record.dailyChargeAmount}}</td>
+                            <td class="p-12 ">{{record.customerNumber}}</td>
+                            <td class="p-12 ">{{record.accountBalance}}</td>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </mat-card>
+            
+            <div *ngIf="ShowData == false">
+                <h3 class="font-weight-600 text-center"> Please Check The Cartwatch Setting Is Disable</h3>
+            </div>
+        </div> 
+    </section>
+</div>
+ 

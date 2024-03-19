@@ -1,0 +1,89 @@
+<mat-tab-group mat-align-tabs="start">
+    <mat-tab class="p-24" label="Manual Upload">
+        <div class="col-12 rmpm dropzone h-120" imageDragDrop [fileLimit]="fileLimit" [multiple]="allowMultiple"
+            (files)="filesDropped($event)" (invalidFile)="invalidFiles($event)">
+            <div class="text-wrapper">
+                <div class="centered">Drop Your File Here !</div>
+                <div *ngIf="allowMultiple==false" color="warn" class="text-center text-bold">
+                    <mat-icon color="warn">warning</mat-icon> Max upload file limit is 1
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
+            <div class="h4 mb-8 mt-8">Or Upload Manually</div>
+            <p class="h4">Drop or Select Only Image Files</p>
+            <br /><br />
+            <input hidden #inputfile [multiple]="allowMultiple" type="file" (change)="filesUploaded($event)"
+                onclick="this.value=null;" [accept]="inputAccpets" />
+            <div class="btn text-center">
+                <button type="button" mat-stroked-button color="primary"
+                    class="mr-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                    (click)="inputfile.click();">
+                    <mat-icon>add_to_photos</mat-icon> Select
+                </button>
+                <button type="button"
+                    class="mr-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                    *ngIf="files.length>0 && allowMultiple==true" mat-stroked-button (click)="multipleMediaUpload()"
+                    [disabled]="uploadInProgress">
+                    <mat-icon>cloud_upload</mat-icon> Upload
+                </button>
+            </div>
+        </div>
+        <!--droped files list-->
+        <div fxLayout="row" class="mt-24" fxLayoutAlign="center center" fxFlex="1 0 auto" *ngIf="files.length">
+            <hr />
+            <div class="h2 mt-8 mb-8">Selected files</div>
+            <p>edit or remove file information form before upload.</p>
+            <mat-nav-list>
+                <mat-list-item *ngFor="let file of files; let i = index">
+                    <mat-icon mat-list-icon>image</mat-icon>
+                    <h4 class="mat-line" mat-line>{{file.title || file.file.name}}</h4>
+                    <p mat-line *ngIf="file.description"> {{file.description}} </p>
+                    <button mat-icon-button *ngIf="allowMultiple==true" (click)="editUploadedFileInfo(i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="removeImage(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-nav-list>
+        </div>
+    </mat-tab>
+    <mat-tab class="p-24" label="Media Upload">
+        <div fxLayout="column" fxLayoutAlign="center center" fxFlex="1 0 auto" fxLayout.lt-md="column"> 
+            <div fxLayout="column wrap"  fxLayoutAlign="start center" fxLayoutGap="8px grid" ngClass.lt-md="mb-8">
+                <ng-container  *ngFor="let  existingmedia of existingMedialist; let i = index" >
+                    <mat-checkbox class="mx-4  text-capitalize" [formControl]='existingmedia' ngClass.lt-md="mb-8" (change)="OnselectExistingMedia(existingmedia,$event)"
+                        fxFlex.lt-sm="100" [value]='existingmedia'> <img [src]="existingmedia.image" ngClass.lt-md="mb-8" height="200"
+                            width="200" [alt]="existingmedia.image" /></mat-checkbox>
+                </ng-container>
+            </div>
+        </div>
+        <div fxLayout="row" class="mt-24" fxLayoutAlign="center center"  fxFlex="1 0 auto" fxLayout.lt-md="column" *ngIf="Checkeditems.length">
+            <hr />
+            <div class="h2 mt-8 mb-8">Selected files</div>
+            <p>edit or remove file information form before upload.</p>
+            <mat-nav-list>
+                <mat-list-item *ngFor="let file of Checkeditems; let i = index">
+                    <mat-icon mat-list-icon>image</mat-icon>
+                    <h4 class="mat-line" mat-line>{{file.title || file.value.imagename}}</h4>
+                    <p mat-line *ngIf="file.description"> {{file.description}} </p>
+                    <button mat-icon-button (click)="editUploadedMedia(i,file)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="removeExistingMedia(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-nav-list>
+        </div>
+        <div class="btn text-center">
+            <button type="button"
+                class="mr-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                *ngIf="Checkeditems.length >0" mat-stroked-button (click)="MediaUpload()">
+                <mat-icon>cloud_upload</mat-icon> Upload
+            </button>
+        </div>
+    </mat-tab>
+</mat-tab-group>

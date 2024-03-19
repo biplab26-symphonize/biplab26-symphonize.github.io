@@ -1,0 +1,26 @@
+table.recurring-table {
+    border-spacing: 0;
+    width:100%;
+    border-collapse: collapse;
+  }
+  
+  .word-break {word-break: break-word;}
+  tr.recurring-header-row {
+    height: 56px;
+  }
+  
+  tr.recurring-row, tr.recurring-footer-row {
+    height: 48px;
+  }
+  
+  th.recurring-header-cell {
+    text-align: center;
+  }
+  
+  th.recurring-header-cell, td.recurring-cell, td.recurring-footer-cell {
+    padding: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #DDD;
+    text-align: center;
+  }

@@ -1,0 +1,99 @@
+  <div id="front-CartWatch-transaction-details" class="page-layout simple fullwidth layout-box">
+
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+  
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+  
+            <div class="header-top">
+  
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong> Transaction Details </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div> 
+    </div>
+     <!--  / CONTENT WRAP -->
+     <section class="content">
+        <div class="content-wrap fuse-white-bg p-28" fusePerfectScrollbar>
+          <mat-card  fusePerfectScrollbar class="w-100-p p-0 box-shadow-none" *ngIf="ShowData == true">
+              <form name="FormData" [formGroup]="FormData" novalidate autocomplete="off">
+                     <div flex  fxLayout="row" fxLayout.lt-sm="column"  fxLayoutAlign="space-around center">
+                        <mat-form-field appearance="outline"  class="filter-date w-25-p" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-label>From</mat-label>
+                            <input matInput #input_service_start_date  formControlName="from" [matDatepicker]="picker" (dateInput)="StartDate($event)" >
+                            <mat-datepicker-toggle matSuffix [for]="picker" (dateInput)="StartDate($event)"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>   
+                       </mat-form-field>
+                        <mat-form-field appearance="outline"  class="filter-date w-25-p" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                        <mat-label>To</mat-label>
+                        <input matInput #input_service_end_date  formControlName="to"  [matDatepicker]="picker2" (dateInput)="EndDate($event)">
+                            <mat-datepicker-toggle matSuffix [for]="picker2" (dateInput)="EndDate($event)"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="filter-select w-25-p" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-label>Count</mat-label>
+                            <mat-select formControlName="page_size">
+                                <mat-option value="all">All</mat-option>
+                                <mat-option value="30">30</mat-option>
+                                <mat-option value="60">60</mat-option>
+                                <mat-option value="90">90</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button mat-stroked-button [ngClass.lt-sm]="{'w-40-p': 'true'}" color="accent" class="mb-20 w-10-p" aria-label="More"
+                               (click)="submit($event);">Submit
+                        </button>
+                     </div>
+
+                    <div fxLayout="row" class="mb-20 font-weight-600 font-size-18 accent fuse-white-fg p-16" fxLayoutAlign="start center" *ngIf="TransectionDetails.length !==0">
+                        Customer Name : {{firstName}} {{lastName}}
+                    </div>
+               
+                      <table class="border table table-bordered w-100-p transaction-table">
+                            <thead class="border-bottom">
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="400px">Transaction Location</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="400px">Amount</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="450px">Plan Type</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="160px">Transaction Number</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="160px">Transaction Date</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="160px">Transaction Time</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="160px">transaction Type</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="160px">Customer Type</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="160px">Is Spouse</th>
+                                <th class="py-12 px-8 font-weight-600 text-center text-capitalize accent" width="160px">Transaction Location Num </th>
+                                <!-- <th class="p-16  font-weight-600" width="160px">Year To Date Purchase</th> -->
+                            </thead>
+  
+                            <tbody *ngIf="TransectionDetails.length !==0">
+                            <ng-container *ngFor="let record of TransectionDetails ;let i=index"  >                              
+                                <tr  class="border-bottom" >
+                                     <td class="py-12 px-8 text-center">
+                                     {{record.transactionLocation}}
+                                     </td>
+                                      <td class="py-12 px-8 text-center">{{record.amount}}</td>
+                                      <td class="py-12 px-8 text-center">{{record.planType}}</td>
+                                      <td class="py-12 px-8 text-center">{{record.transactionNumber}}</td>
+                                      <td class="py-12 px-8 text-center">{{record.transactionDate | date: defaultDateTimeFormat.date_format}}</td>
+                                      <td class="py-12 px-8 text-center">{{record.transactionTime }}</td>
+                                      <td class="py-12 px-8 text-center">{{record.transactionType}}</td>
+                                      <td class="py-12 px-8 text-center">{{record.customerType}}</td>
+                                      <td class="py-12 px-8 text-center">{{record.isSpouse}}</td>
+                                      <td class="py-12 px-8 text-center">{{record.transactionLocationNum}}</td>
+                                </tr>
+                            </ng-container>
+                            </tbody>
+                            <div  *ngIf="TransectionDetails.length == 0" fxLayout="row" fxLayoutAlign="center center"><h1 class="text-center font-weight-600"> No Records Found</h1></div>
+                        </table>
+                    </form>
+                 </mat-card>
+
+                 <div *ngIf="ShowData == false">
+                    <h3 class="font-weight-600 text-center">Please Check The Cardwatch Setting Is Disable</h3>
+                </div>
+            </div> 
+        </section>
+</div>

@@ -1,0 +1,81 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+            fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-8" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">picture_as_pdf</mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Replace Document Url</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <a  *ngIf="documentInfo && documentInfo.doc_id>0" target="_blank" title="goto link" [href]="ViewDocumentUrl">
+                    <button type="button" mat-raised-button color="default" class="m-4"> 
+                        <mat-icon class="mr-4">remove_red_eye</mat-icon>
+                        View Page
+                    </button>
+                </a>                
+                <button class="p-8 pr-12" mat-raised-button color="default" class="m-4" [routerLink]="'/admin/files/library'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto mx-auto" *ngIf="menuInfo">
+
+                <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="replaceform" [formGroup]="replaceform" (ngSubmit)="onSubmit(replaceform.value)" novalidate autocomplete="off">
+                    <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16" *ngIf="editReplaceForm">
+                        <span class="primary-text" *ngIf="menuInfo.parent!==null">{{menuInfo.parent.menu_title}}</span>
+                        <mat-icon class="primary-text s-16" *ngIf="menuInfo.parent!==null">chevron_right</mat-icon>
+                        <span class="primary-text" *ngIf="menuInfo.menu_title!==null">{{menuInfo.menu_title}}</span>
+                    </div>
+                    <div class="p-24 d-block">
+                       
+                        <p *ngIf="ViewDocumentUrl"> 
+                            <a target="_blank" title="goto link" [href]="ViewDocumentUrl">
+                                {{ViewDocumentUrl}}
+                            </a>
+                        </p>
+                        <br /><br />
+
+                        <div fxLayout="row" fxLayoutAlign="start end" fxFlex="1 0 auto" *ngIf="fileUploaderSettings && fileUploaderSettings.allowfileupload=='Y'">
+                            <!--drag-drop-component-->
+                            <app-drag-drop class="w-100-p" [allowMultiple]="false" [menu]="menuInfo" [fileLimit]="fileUploaderSettings.maxpdfsize || 2" (onfilesUploaded)="updateMenuUrlInfo($event)"></app-drag-drop>
+                        </div>
+                        <div class="content mt-48 p-24"  *ngIf="fileUploaderSettings && fileUploaderSettings.allowfileupload=='N'">
+                            <div class="message-box warning">
+                                File upload is <mark>disabled</mark> in <a [routerLink]="'/admin/files/settings'">Settings</a>.
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+    
+</div>

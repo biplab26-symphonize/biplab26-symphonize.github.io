@@ -1,0 +1,21 @@
+:host {
+
+    .content {
+        
+        .icon-holder {
+            width: 112px;
+            height: 120px;
+
+            .icon-name {
+                font-size: 12px;
+                word-wrap: break-word;
+                width: 100px;
+                text-align: center;
+            }
+            :hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+}

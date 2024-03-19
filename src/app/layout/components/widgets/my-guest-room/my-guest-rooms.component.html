@@ -1,0 +1,54 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content forms" id="My-guest-home">
+
+    <div class="p-16 title">
+        <div class="h1 font-weight-800">MY GUEST ROOM RESERVATIONS</div>
+    </div>
+
+    <div class="px-16 mat-table-p" style="overflow: auto !important;">
+        <mat-table class="simple clickable" #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+            fusePerfectScrollbar>
+            <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                <span *ngIf="column.columnDef">
+                    <mat-header-cell class="dt-paginations" *matHeaderCellDef>
+                        <h3>{{column.header}}</h3>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span
+                            *ngIf="column.columnDef!=='date_from' && column.columnDef!=='status' && column.columnDef!=='room' && column.columnDef!=='email'">
+                            {{element[column.columnDef]}}
+                        </span>
+                        <span *ngIf="column.columnDef =='date_from'">{{element.date_from}} - {{element.date_to}}
+                        </span>
+                        <span *ngIf="column.columnDef =='email'">{{element.name}} - {{element[column.columnDef] |
+                            lowercase}}
+                        </span>
+                        <span *ngIf="column.columnDef=='room'">
+                            <span *ngIf="element.displayroom.length > 0">
+                                <span *ngFor="let room of element.displayroom">
+                                    {{room.roomname}} - {{room.roomnumber}} <br>
+                                </span>
+                            </span>
+                        </span>
+                        <span *ngIf="column.columnDef =='status'"
+                            [style.color]="element.status == 'cancelled' ? 'red' : element.status == 'pending'?  'orange':'green'">
+                            {{element.status}}
+                        </span>
+                    </mat-cell>
+                </span>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+
+    <div *ngIf="length > 0" class="more">
+        <a class="font-weight-600" [routerLink]="[homesettings.guest_see_more_url]">See All Booking <mat-icon
+                class="s-20">arrow_right</mat-icon></a>
+    </div>
+
+    <div class="no-record pt-20 pb-20 mx-16 border-bottom border-left border-right mb-20" *ngIf="length === 0">No
+        Records Found</div>
+
+</div>
+<!-- / CARD CONTENT -->

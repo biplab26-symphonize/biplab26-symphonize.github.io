@@ -1,0 +1,48 @@
+<div id="calendar_settings" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+    <!-- HEADER -->
+	<div class="header accent p-24 h-80" fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- APP TITLE -->
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting</mat-icon> 
+                    <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Calendar Generator Settings
+                    </span>
+			</div>
+		</div>
+        <!-- / APP TITLE -->
+        
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+			<div class="mt-16 mt-sm-0">
+				<button mat-raised-button class="reference-button" (click)="onClickSave()">
+					<mat-icon class="mr-4">settings_backup_restore</mat-icon> <span>Save</span>
+				</button>
+			</div>
+		</div>
+    </div>
+
+    <div class="content p-24" fusePerfectScrollbar>
+        <form class="product w-100-p" [formGroup]="addCalendarGeneratorSetting" #addEventForm="ngForm" fxLayout="column" fxFlex>
+            <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap >
+                    <!-- SHOW CLOSED EVENTS IN LIST -->
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+                        <mat-label>Show Meta Filters</mat-label>
+                        <mat-select name="show_meta_filters" formControlName="show_meta_filters">
+                            <mat-option value="Y">Yes</mat-option>
+                            <mat-option value="N">No</mat-option>
+                        </mat-select>
+                        <mat-hint>Show meta filters on adminstrator events list</mat-hint>
+                    </mat-form-field>
+                    <!-- Meta Fields -->
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+                        <mat-label>Select Meta Fields</mat-label>
+                        <mat-select name="meta_fields" multiple formControlName="meta_fields" [required]="addCalendarGeneratorSetting.get('show_meta_filters').value=='Y'">
+                            <mat-option *ngFor="let metafield of EventMetaFields" [value]="metafield.id">{{metafield.field_label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

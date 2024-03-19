@@ -1,0 +1,37 @@
+<div id="settings" class="page-layout simple tabbed" fxLayout="column">
+
+        <!-- HEADER -->
+        <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">settings
+                    </mat-icon>
+                    <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Settings
+                    </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+    
+    
+        <!-- CONTENT -->
+        <div class="content">
+                <mat-tab-group>
+                    <mat-tab label="General"> 
+                        <app-general></app-general>
+                    </mat-tab>
+                    <!-- <mat-tab label="Import"> 
+                        <app-import></app-import>
+                    </mat-tab>
+                    <mat-tab label="Export"> 
+                        <app-export></app-export>
+                    </mat-tab> -->
+                    <mat-tab label="Resident Directory"> 
+                        <app-directory></app-directory>
+                    </mat-tab>
+                </mat-tab-group>
+        </div>
+</div>    

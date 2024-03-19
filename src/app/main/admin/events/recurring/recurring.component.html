@@ -1,0 +1,216 @@
+<form class="w-100-p Is-this-recurring-event-section" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"  name="recurringform" [formGroup]="recurringform" novalidate autocomplete="off">
+    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap >
+        <div appearance="outline" class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16 mt-20" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <label fxLayout="column" class="font-weight-600 mr-8" fxFlex="50">Is this A Recurring Event ?</label>
+            <mat-radio-group name="is_recurring" formControlName="is_recurring" fxFlex="50" class="radio-btn-white-color">
+               <mat-radio-button (change)="onIsRecurringChange('Y')" value="Y"> Yes </mat-radio-button>
+               <mat-radio-button (change)="onIsRecurringChange('N')" value="N" class="pl-12"> No </mat-radio-button>
+            </mat-radio-group>
+         </div>
+    </div>
+    <div class="fuse-white-bg p-16 pb-0">
+        <ng-container *ngIf="recurringform.get('is_recurring').value=='Y'">
+        <div fxLayout="row row-reverse" fxLayoutAlign="start center" class="mt-8" fxLayoutGap="1em" fxLayoutWrap>
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Create recurring events</mat-label>
+                <mat-select name="recurring_type" placeholder="Recurring Creation" formControlName="recurring_type" (selectionChange)="onRecurringTypeChange($event.value)">
+                    <mat-option [disabled]="isEditRecurring==true" value="A">Automatically</mat-option>
+                    <mat-option [disabled]="isEditRecurring==true" value="M">Manually</mat-option>
+                </mat-select>
+                <mat-error *ngIf="recurringform.get('recurring_type').invalid">Create Recurring Events</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap *ngIf="reqRegister_type=='Y' && register_type=='C' && recurringform.get('is_recurring').value == 'Y'" class="wrap-text">
+            <div appearance="outline" class="pb-20" fxFlex>
+                <label class="pb-12" fxLayout="row" fxLayoutAlign="start center"> <mat-icon class="icon s-16 mr-4">info</mat-icon> Are all events available between the registration dates above ? </label>
+                <mat-radio-group class="pt-16" name="registration_date_formula" [formControl]="recurringform.get('registration_date_formula')">
+                    <mat-radio-button (change)="onIsFormulaChange('N')" value="N" class="pb-8">
+                        No <small class="warn-fg">( Each Event's Registration Start And End Dates Will Be Incremented According To A Formula )</small> 
+                    </mat-radio-button>
+                    <mat-radio-button (change)="onIsFormulaChange('Y')" value="Y" class="pb-8">
+                        Yes <small class="warn-fg">( All Created Events Are Available For Registration Between The Above Registration Dates )</small>
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <!-- RECURRING TYPE IS AUTOMATIC -->
+        <ng-container *ngIf="recurringform.get('recurring_type').value == 'A'">
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap *ngIf="recurringform.get('is_recurring').value == 'Y' && recurringform.get('recurring_type').value == 'A'">
+                <!-- Recurring Repeat Start -->
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex>
+                    <mat-label>Repeats</mat-label>
+                    <mat-select name="recurring_repeat_on" 
+                        formControlName="recurring_repeat_on"
+                        placeholder="Repeat" 
+                        (selectionChange)="onRecurringRepeatChange($event.value)">
+                        <mat-option value="D">Daily</mat-option>
+                        <mat-option value="W">Weekly</mat-option>
+                        <mat-option value="M">Monthly</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('recurring_repeat_on').invalid">Select Repeat Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex>
+                    <mat-label>Every</mat-label>
+                    <mat-select required placeholder="Every" (selectionChange)="isValidForRec()" formControlName="recurring_every">
+                        <mat-option *ngFor="let every of recurring_everyList" [value]="every">{{every}} {{everySuffix}}<span *ngIf="every>1">s</span></mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('recurring_every').invalid">Every</mat-error>
+                </mat-form-field>            
+            </div>
+            <!-- Recurring Repeat Weekly Start -->
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap *ngIf="recurringform.get('is_recurring').value == 'Y' && recurringform.get('recurring_repeat_on').value == 'W' && recurringform.get('recurring_type').value == 'A'">
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex>
+                    <mat-label>Select Day</mat-label>
+                    <mat-select name="week_day" placeholder="Day" 
+                        formControlName="week_day"  (selectionChange)="isValidForRec()" multiple>
+                        <mat-option *ngFor="let day of week_days | keyvalue; let i = index;" [value]="day.key">{{day.value}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('week_day').invalid">Select Day</mat-error>
+                </mat-form-field>
+            </div>
+            <!-- Recurring Repeat Weekly End -->
+    
+            <!-- Recurring Repeat Monthly Start -->
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap *ngIf="recurringform.get('recurring_repeat_on').value == 'M' && recurringform.get('is_recurring').value == 'Y' && recurringform.get('recurring_type').value == 'A'">
+                <div appearance="outline" class="pb-20" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <label fxLayout="column" class="font-weight-600 mr-8" fxFlex="25">Select Day of Month :</label>
+                    <mat-radio-group fxFlex="75" name="monthly_on" formControlName="monthly_on">
+                       <mat-radio-button (change)="onMonthlyOnChange('on_day')" value="on_day"> Day of Month </mat-radio-button>
+                       <mat-radio-button (change)="onMonthlyOnChange('on_the')" value="on_the" class="pl-12"> Day of Week </mat-radio-button>
+                    </mat-radio-group>
+                 </div>             
+            </div>
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex *ngIf="recurringform.get('monthly_on').value == 'on_day'">
+                    <mat-label>Select Recurring On Date Start</mat-label>
+                    <mat-select name="on_monthly_day" 
+                        formControlName="on_monthly_day" 
+                        (selectionChange)="isValidForRec()"
+                        multiple>
+                        <mat-option *ngFor="let dummy of ' '.repeat(31).split(''); let i = index;" value="{{i+1}}">{{i+1}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('on_monthly_day').invalid">Monthly Date Is Required</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex  *ngIf="recurringform.get('monthly_on').value == 'on_the'">
+                    <mat-label>Select Number</mat-label>
+                    <mat-select  name="on_the_num" formControlName="on_the_num" (selectionChange)="isValidForRec()" multiple>
+                        <mat-option value="1">First</mat-option>
+                        <mat-option value="2">Second</mat-option>
+                        <mat-option value="3">Third</mat-option>
+                        <mat-option value="4">Fourth</mat-option>
+                        <mat-option value="-1">Last</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('on_the_num').invalid">Select Number</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex  *ngIf="recurringform.get('monthly_on').value == 'on_the'">
+                    <mat-label>Select Day</mat-label>
+                    <mat-select name="on_the_day" formControlName="on_the_day" (selectionChange)="isValidForRec()">
+                        <mat-option *ngFor="let day of week_days|keyvalue; let i = index;" [value]="day.key">{{day.value}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('on_the_day').invalid">Select Day</mat-error>
+                </mat-form-field>
+            </div>
+            <!-- Recurring Repeat Monthly End -->
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap>
+                <!-- Recurring Until Start -->
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex *ngIf="recurringform.get('recurring_type').value == 'A'">
+                    <mat-label>Ends</mat-label>
+                    <mat-select name="recurring_repeat_end" placeholder="End" formControlName="recurring_repeat_end"
+                            (selectionChange)="onRecurringEndChange($event.value)">
+                        <mat-option value="interval">After</mat-option>
+                        <mat-option value="on_date">On date</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('recurring_repeat_end').invalid">Select End</mat-error>
+                </mat-form-field>
+    
+                <!-- INTERVAL -->
+                <mat-form-field appearance="outline" floatLabel="always"  fxFlex  *ngIf="recurringform.get('recurring_repeat_end').value == 'interval'">
+                    <mat-label>Select Occurrence</mat-label>
+                    <mat-select name="recurring_occurrence" 
+                        formControlName="recurring_occurrence" 
+                        (selectionChange)="isValidForRec()">
+                        <mat-option *ngFor="let occur of Occurrences;" value="{{occur+1}}">{{occur+1}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="recurringform.get('recurring_occurrence').invalid">Occurrence Is Required</mat-error>
+                </mat-form-field>
+
+                <!-- ON DATE -->
+                <mat-form-field appearance="outline"  floatLabel="always" fxFlex *ngIf="recurringform.get('recurring_repeat_end').value == 'on_date'">
+                    <mat-label>Recurrance End</mat-label>
+                    <input matInput 
+                        #input_start_date
+                        [matDatepicker]="recurrance_end_date" 
+                        placeholder="Recurrance end date" 
+                        formControlName="recurrance_end_date"
+                        [min]="eventstartdate"
+                        [formControl]="recurringform.get('recurrance_end_date')"
+                        (focus)="recurrance_end_date.open()"
+                        (dateInput)="isValidForRec()">
+                    <mat-datepicker-toggle matSuffix [for]="recurrance_end_date"></mat-datepicker-toggle>
+                    <mat-datepicker (close)="input_start_date.blur();" #recurrance_end_date></mat-datepicker>
+                        <mat-error *ngIf="recurringform.get('recurrance_end_date').invalid">Start Date is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- RECURRING DATES ARRAY FOR EDIT EVENT -->
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                <ng-container  *ngIf="PrevRecArray?.length">
+                    <p class="font-size-12 word-break mb-8" *ngIf="showRule==true && prevRececRule">{{prevRececRule | titlecase}}</p>
+                    <table class="recurring-table green-bg-header mb-20 border" cellspacing="5">
+                        <thead>
+                            <tr class="recurring-header-row">
+                                <th class="recurring-header-cell"></th>
+                                <th class="recurring-header-cell">Start Date</th>
+                                <th class="recurring-header-cell" *ngIf="isPrevRecEndDates">End Date</th>
+                                <th class="recurring-header-cell" *ngIf="isPrevRegStartDates">Registration Start</th>
+                                <th class="recurring-header-cell" *ngIf="isPrevRegEndDates">Registration End</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="recurring-row" *ngFor="let item of PrevRecArray; let i = index">
+                                <td  class="recurring-cell p-8">{{i+1}}</td>
+                                <td  class="recurring-cell p-8">{{item.event_start_date | date: defaultDateTimeFormat.date_format}}</td>
+                                <td  class="recurring-cell p-8" *ngIf="isPrevRecEndDates">{{item.event_end_date | date: defaultDateTimeFormat.date_format}}</td>
+                                <td  class="recurring-cell p-8" *ngIf="isPrevRegStartDates">{{item.registration_start | date: defaultDateTimeFormat.date_format}}</td>
+                                <td  class="recurring-cell p-8" *ngIf="isPrevRegEndDates">{{item.registration_end | date: defaultDateTimeFormat.date_format}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container> 
+            </div>
+            <!-- RECURRING DATES ARRAY FOR EDIT EVENT -->
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                <ng-container *ngIf="recDates?.length">
+                    <p class="primary-fg"  *ngIf="showRule==true && recText">{{recText | titlecase}}</p>
+                    <p class="warn-fg" *ngIf="showRule==true && recRule">{{recRule | titlecase}}</p>
+                    <table class="recurring-table green-bg-header mb-20 border" cellspacing="5">
+                        <thead>
+                            <tr class="recurring-header-row">
+                                <th class="recurring-header-cell"></th>
+                                <th class="recurring-header-cell">Start Date</th>
+                                <th class="recurring-header-cell" *ngIf="isRecEndDates">End Date</th>
+                                <th class="recurring-header-cell" *ngIf="isRegStartDates">Registration Start</th>
+                                <th class="recurring-header-cell" *ngIf="isRegEndDates">Registration End</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="recurring-row" *ngFor="let item of recDates; let i = index">
+                                <td class="recurring-cell p-8">{{i+1}}</td>
+                                <td  class="recurring-cell p-8">{{item.event_start_date | date: defaultDateTimeFormat.date_format}}</td>
+                                <td  class="recurring-cell p-8" *ngIf="isRecEndDates">{{item.event_end_date | date: defaultDateTimeFormat.date_format}}</td>
+                                <td  class="recurring-cell p-8" *ngIf="isRegStartDates">{{item.registration_start | date: defaultDateTimeFormat.date_format}}</td>
+                                <td  class="recurring-cell p-8" *ngIf="isRegEndDates">{{item.registration_end | date: defaultDateTimeFormat.date_format}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </div>    
+        </ng-container>
+        <!-- RECURRING TYPE IS MANUAL LOAD MANUAL COMPONENT -->
+        <ng-container *ngIf="recurringform.get('recurring_type').value == 'M'">
+            <recurring-manual [recurringInfo]="recurringData" (validateForm)="validateRecurringForm($event)" (manualRecurrences)="setManualRecurrences($event)"></recurring-manual>
+        </ng-container>
+        </ng-container>
+    </div>
+</form>    

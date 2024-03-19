@@ -1,0 +1,6 @@
+<div mat-dialog-content>
+    <p class="mat-headline" [innerHTML]="biographydata  | sanitizeHtml"></p>
+</div>
+<div mat-dialog-actions class="pt-24">
+    <button mat-button (click)="dialogRef.close('')" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mb-20">Close</button>
+</div>

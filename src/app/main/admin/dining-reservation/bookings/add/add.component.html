@@ -1,0 +1,323 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="back-dining-booking-add">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <!-- <button mat-raised-button class="reference-button">
+                    <mat-icon class="mr-4">add</mat-icon>
+                    <span>Add Fields</span>
+                </button> -->
+                <button mat-raised-button
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                        [routerLink]="'/admin/dining-reservation/bookings/list'">
+                    <mat-icon class="mr-8">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+
+                <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"  [formGroup]="addBookingForm" novalidate>
+
+                    <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16">Update Booking</div>
+                    
+                    <div class="p-24 d-block"> 
+
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="pr-8">
+                                <mat-form-field appearance="outline" class="w-100-p">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput   [matAutocomplete]="auto" name="first_name" formControlName="first_name" required>
+                                    <mat-autocomplete   #auto="matAutocomplete" (optionSelected)="setFormfields($event)">
+                                        <mat-option  *ngFor="let option of filteredUsers"  [value]="option" >
+                                            {{option.first_name+' '+option.last_name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-error>Firstname required</mat-error>
+                                </mat-form-field>
+                                <input hidden name="id" formControlName="id">
+                            </div>
+
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Contact Number</mat-label>
+                                <input matInput formControlName="phone"   name="phone" required>
+                                <mat-error>Contact Number required</mat-error>
+                            </mat-form-field>   
+
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Email Address</mat-label>
+                                <input matInput  formControlName="email"  name="email" required>
+                                <mat-error>Email Address required</mat-error>
+                            </mat-form-field>  
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Dining Area</mat-label>
+                            <mat-select name="services" (selectionChange)="getServices($event)" formControlName="services" >
+                                <mat-option *ngFor="let service of services; let i = index;" [value]="service.id">{{service.service_title}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                 
+                
+                    <!-- <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                        <div fxFlex="40" class="mr-20">
+                            <input  hidden type="text"  formControlName="booking_start_date" name="booking_start_date">
+                            <mat-label class="font-weight-600">Select A Date :</mat-label>
+                            <mat-calendar [minDate]="minDate" class="border border-radius-4 mb-20 mt-12" [selected]="selectedDate" (selectedChange)="onSelectDate($event)"></mat-calendar>
+                        </div>
+
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Dining Area</mat-label>
+                                <mat-select name="services" (selectionChange)="getServices($event)" formControlName="services" >
+                                    <mat-option *ngFor="let service of services; let i = index;" [value]="service.id">{{service.service_title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div> -->
+                    
+                    
+                        <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto" class="mb-20">
+                            <div fxFlex="30" class="mr-32">
+                                <input  hidden type="text"  formControlName="booking_start_date" name="booking_start_date">
+                                <mat-label [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-12 w-100-p d-block">Select A Date :</mat-label>
+                                <mat-calendar [minDate]="minDate" class="border back-dining-booking" [selected]="selectedDate" (selectedChange)="onSelectDate($event)"></mat-calendar> 
+                            </div>
+
+                            <div fxLayout="column" fxFlex="70">
+                                <div  class="border h-100-p">
+                                    <mat-label style="display: block;" [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-12 w-100-p d-block">Time Slot :</mat-label>
+                                    <div *ngIf="getTimeSlots.length!=0">
+                                        <div class="p-16">
+                                            <ng-container  *ngFor="let timeSlot of getTimeSlots;let i=index">
+                                                <button [disabled]="timeSlot.class == 'available'?false:true" [ngClass]="{'selectedbooking': timeSlot.time === currentTimeSlot}"  class="{{timeSlot.class}} timeslots-btn p-12 cursor-pointer border" (click)="getPartySizes(timeSlot.time)">{{timeSlot.time}}</button>
+                                            </ng-container>
+                                            <mat-error class="mb-16">
+                                                <div *ngIf="currentTimeSlot==undefined" class="mt-8">Please Select Timeslot</div>           
+                                            </mat-error>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="px-20 mt-20" fxLayout="row" fxLayoutAlign="start center" *ngIf="getTimeSlots.length==0">
+                                        <mat-error class="mb-16">Selected Date Is Set To "Day Off". Use The Date Picker Above To Choose Another Date.</mat-error>
+                                    </div> -->
+                                    <div class="px-20" fxLayout="row" fxLayoutAlign="center center" *ngIf="getTimeSlots.length==0">
+                                        <div *ngIf="dateSelectedCal>serviceStartDate && dateSelectedCal<serviceEndDate;else displayElse">
+                                            <mat-error class="my-16">Selected Date Is Set To "Day Off". Use The Date Picker Above To Choose Another Date.</mat-error>
+                                        </div>
+                                        <ng-template #displayElse> 
+                                             <mat-error class="my-16">Please select service date between {{serviceStartDate | date: defaultDateTimeFormat.date_format}} AND {{serviceEndDate | date: defaultDateTimeFormat.date_format}}</mat-error>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="partySize.length!=0" class="mt-20">
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label >Party Size:</mat-label>
+                                <mat-select name="guestcount" (selectionChange)="getGuests($event)"  formControlName="guestcount" >
+                                    <mat-option *ngFor="let partySizes of partySize; let i = index;" [value]="partySizes">{{partySizes}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="displayServiceFull">
+                            <mat-error class="mb-16">Slot is full</mat-error>
+                        </div>
+
+                        
+
+                        <div  fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <!-- <app-dining-guests [guestcount]="addBookingForm.get('guestcount').value"    (resetCount)="resetGroupLimit($event)" (validateForm)="validateParentForm($event)" (updateguestInfo)="setguestInfoFieldValue($event)"></app-dining-guests> -->
+                            <app-dining-guests class="min-100-p" [user_id]="addBookingForm.get('id').value" [guestcount]="addBookingForm.get('guestcount').value" [groupLimit]="groupLimit"  [guestInfoArray]="addBookingForm.get('guestinfo').value"  (resetCount)="resetGroupLimit($event)"  (validateForm)="validateParentForm($event)" (updateguestInfo)="setguestInfoFieldValue($event)" [guest_required]="guestRequired"></app-dining-guests>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Notes</mat-label>
+                                <textarea matInput type="text" name="notes" formControlName="notes" ></textarea>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1 0 auto">
+                            <div appearance="outline" class="pb-12" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                <label fxLayout="column" class="mr-8 font-weight-600" fxFlex="16">Is Recurring :</label>
+                                <mat-radio-group name="is_recurring" formControlName="is_recurring">
+                                    <mat-radio-button (change)="onIsRecurringChange($event)"  value="Y"> Yes </mat-radio-button>
+                                    <mat-radio-button (change)="onIsRecurringChange($event)"  value="N" class="pl-12"> No </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+ 
+                        <ng-container *ngIf="addBookingForm.get('is_recurring').value=='Y'">
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <div fxFlex="50">
+                                    <div appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" floatLabel="always"  fxFlex class="mr-8">
+                                            <mat-label>Booking Recurring</mat-label>
+                                            <mat-select  (selectionChange)="getPreviewBookings($event)" formControlName="recurringrepeat">
+                                                <mat-option value="DAILY">Daily</mat-option>
+                                                <mat-option value="WEEKLY">Weekly</mat-option>
+                                                <mat-option value="MONTHLY">Monthly</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div fxFlex="50">
+                                    <div appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" floatLabel="always"  fxFlex>
+                                            <mat-label>Every : </mat-label>
+                                            <mat-select required placeholder="Every"  formControlName="interval" (selectionChange)="getPreviewBookings($event)">
+                                                <mat-option *ngFor="let every of recurring_everyList" [value]="every">{{every}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row">
+                                <!--  Weekly Start -->
+                                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap *ngIf="addBookingForm.get('recurringrepeat').value == 'WEEKLY'">
+                                    <mat-form-field appearance="outline" floatLabel="always"  fxFlex>
+                                        <mat-label>Select Day</mat-label>
+                                        <mat-select name="byday" placeholder="Day" 
+                                            formControlName="byday"   multiple  (selectionChange)="getPreviewBookings($event)">
+                                            <mat-option *ngFor="let day of week_days | keyvalue; let i = index;" [value]="day.key">{{day.value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <!-- Weekly End -->
+
+                                <!--  Monthly Start -->
+                                <div fxLayout="row row-reverse" class="w-100-p" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap *ngIf="addBookingForm.get('recurringrepeat').value == 'MONTHLY'">
+                                    <div appearance="outline" class="pb-20" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                        <label fxLayout="column" fxFlex="16" class="font-weight-600 mr-8">Select Day of Month :</label>
+                                        <mat-radio-group name="repeat_by" formControlName="repeat_by">
+                                            <mat-radio-button   (change)="getRepeatByVal($event)" value="day_of_month"> Day of Month </mat-radio-button>
+                                            <mat-radio-button    (change)="getRepeatByVal($event)" value="day_of_week" class="pl-12"> Day of Week </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>             
+                                </div>
+                                <!--  Monthly End -->
+                            </div>
+                            
+
+
+                            <div appearance="outline" fxFlex>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-label class="font-weight-600 mr-8" fxFlex="16">Repeat Until :</mat-label>
+                                    <mat-radio-group name="repeat" formControlName="repeat">
+                                        <mat-radio-button (change)="disableOccurance($event)" value="date" class="mr-8">Date</mat-radio-button>
+                                        <mat-radio-button (change)="disableDate($event)" value="occurance">After Occurrences</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                
+
+                                <div class="mt-12">   
+                                    <mat-form-field appearance="outline" floatLabel="always"  fxFlex="50" class="mr-20">
+                                        <mat-label>Occurrences</mat-label>
+                                        <mat-select  placeholder="Every" name="occurence"  formControlName="occurence" (selectionChange)="getPreviewBookings($event)">
+                                            <mat-option *ngFor="let every of recurring_everyList" [value]="every">{{every}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field> 
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Choose a date</mat-label>
+                                        <input (focus)="picker.open()" matInput  [matDatepicker]="picker" formControlName="end_date" (dateChange)="getPreviewBookings($event)">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </div> 
+                                
+                            </div>
+ 
+                            <div class="mb-20" *ngIf="recurrenceEditDate">
+                                <p class="mb-8 font-weight-600">Preview Bookings : </p>
+                                
+                                <div class="keyindi" fxflex="50%" fxflex.lt-sm="100">
+                                    <span class="Indicates-btn" style="background-color: #d07364; border-color: #d07364;"></span> - closed 
+                                    <span class="Indicates-btn ml-16" style="background-color: #0ab67a; border-color: #0ab67a;"></span> - available 
+                                    <span class="Indicates-btn ml-16" style="background-color: #d6d6d6; border-color: #d6d6d6;"></span> - not available 
+                                </div> 
+                                
+                                <table border="1" class="w-100-p mt-8">
+                                    <thead [ngStyle]="green_bg_header">
+                                        <tr>
+                                            <th class="p-12 w-50-p">Date</th>
+                                            <th class="p-12 w-50-p">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let dates of recurrenceEditDate">
+                                            <td class="{{dates.class}} p-8">{{dates.booking_start_date  | date: defaultDateTimeFormat.date_format}}</td>
+                                            <!-- <td class="{{dates.class}} p-8">{{dates.booking_start_time | | date: defaultDateTimeFormat.time_format}}</td> -->
+                                            <td class="{{dates.class}} p-8">{{(dates.booking_start_date+' '+dates.booking_start_time) | date :defaultDateTimeFormat.time_format}}</td>
+                                        </tr>
+                                    
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                            <div class="mb-20"  fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1 0 auto" *ngIf="recucrrencedate">
+                                <table border="1" fxFlex="100">
+                                    <thead [ngStyle]="green_bg_header">
+                                        <tr>
+                                            <th class="p-12 w-50-p">Date</th>
+                                            <th class="p-12 w-50-p">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let dates of recucrrencedate">
+                                            <td class="{{dates.class}} p-8">{{dates.date  | date: defaultDateTimeFormat.date_format}}</td>
+                                            <td class="{{dates.class}} p-8">{{dates.time }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </ng-container>
+                        
+                    </div>
+                        
+                    <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto" class="update-btn-wrapper mb-24">
+                        <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" *ngIf="!editBookingData"  (click)="onSaveFieldClick()" [disabled]="currentTimeSlot==undefined || disableSubmit==true">{{buttonTitle}}</button>
+                        <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" *ngIf="editBookingData"  (click)="recBookingUpdate(isRecurring)" [disabled]="isSubmit || disableSubmit==true">{{buttonTitle}}</button>
+                 
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT --> 
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+</div>
+

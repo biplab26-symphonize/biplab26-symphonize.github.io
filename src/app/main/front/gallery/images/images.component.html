@@ -1,0 +1,63 @@
+<div id="medias" class="page-layout simple fullwidth">
+    <!-- CENTER -->
+
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+        <!-- / HEADER -->
+    <div class="content center p-4 pb-4" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <!-- CONTENT CARD -->
+        <div class="content-card br-ds-0 content-wrap fuse-white-bg p-28">
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-20">
+                <button color="accent" type="button" mat-stroked-button [routerLink]="['/gallery/albums/',parent_id]" >  <mat-icon class="mr-4">arrow_back</mat-icon>Back</button>
+            </div>
+            <!-- CONTENT -->
+            <div class="content">
+
+                <div class="courses" fxLayout="row wrap" fxLayoutGap="10px grid" [@animateStagger]="{value:'50'}">
+                    <ng-container *ngIf="medias && medias.data && medias.data.length>0;else emptyBlock">
+                        <div class="course" *ngFor="let media of medias.data;let i=index" fxFlex="33" fxFlex.lt-md="100"
+                            [@animate]="{value:'*',params:{y:'100%'}}">
+                            <div class="course-content " fxLayout="column" fxFlex="100">
+                                <div class="fuse-card h-100-p">
+                                    <div class="p-16">
+                                        <div class="text-center cursor-pointer" (click)="openLightBox(i)">
+                                            <img *ngIf="media.thumb!==''" class="w-50-p h-100-p" alt="media.title" [src]="media.thumb" (error)="media.thumb = _defaultAvatar" />
+                                            <mat-icon *ngIf="media.thumb==''" class="icon s-72 logo-icon">photo_media</mat-icon>
+                                            <div class="h1 word-break">{{media.title}}</div>
+                                            <div class="secondary-text" [innerHTML]="media.description  | sanitizeHtml"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Buttons -->
+                                    <div class="p-16 pt-4" fxLayout="row" fxLayoutAlign="start center">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- EmptyBlock -->
+                    <ng-template #emptyBlock>
+                        <div fxFlex="100" *ngIf="showEmptyMsg==false" fxLayoutAlign="center center">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </ng-template>
+                </div>
+                <div class="message-box my-20"
+                    *ngIf="showEmptyMsg==true && medias && medias.data && medias.data.length==0 "> 
+                    <div class="no-record"> No media found </div>
+                </div>
+            </div>
+            <!-- / CONTENT -->
+            <!-- FOOTER -->
+            <div class="list-footer blue-grey-50 mt-20">
+                <div class="pagination" fxLayout="row wrap" fxLayoutAlign="end" [@animateStagger]="{value:'50'}">
+                    <mat-paginator #paginator class="blue-grey-50" [length]="medias.total"
+                        [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                    </mat-paginator>
+                </div>
+            </div>
+            <!-- / FOOTER -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+</div>

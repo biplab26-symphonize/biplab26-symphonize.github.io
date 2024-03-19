@@ -1,0 +1,278 @@
+<div id="settings" class="page-layout simple tabbed" fxLayout="column">
+
+    <!-- CONTENT -->
+    <div class="content">
+            <!-- SETTINGS -->
+            <div id="settings" class="p-24">
+                <!--  Resident Directory Search Settings -->
+                <form class="" name="directoryform" [formGroup]="directoryform" (ngSubmit)="onSubmit(directoryform.value)" novalidate autocomplete="off">
+                    <div class="mat-title"><mat-icon>supervised_user_circle</mat-icon> Resident Directory Settings</div>
+                    <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                        <!--Core Columns to export-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Display Core Fields</mat-label>
+                                    <mat-select name="corefields" formControlName="corefields" multiple>
+                                        <ng-container *ngFor="let core of FieldsArray.coreFieldsArray">
+                                            <mat-option *ngIf="core!==''" [value]="core">
+                                            {{core}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <!--Meta Columns to export-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Display Meta Fields</mat-label>
+                                    <mat-select name="metafields" formControlName="metafields" multiple>
+                                        <ng-container *ngFor="let meta of FieldsArray.metaFieldsArray">
+                                            <mat-option *ngIf="meta.field_form_type=='U'" [value]="meta.id">
+                                            {{meta.field_name}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <!--Core Columns to print-->
+                        <div formGroupName="printoptions">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <mat-label>Print Core Fields</mat-label>
+                                        <mat-select name="showcorefields" formControlName="showcorefields" multiple>
+                                            <ng-container *ngFor="let core of FieldsArray.coreFieldsArray">
+                                                <mat-option *ngIf="core!==''" [value]="core">
+                                                {{core}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>   
+                                </div>
+                            </div>
+                            <!--Meta Columns to print-->
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <mat-label>Print Meta Fields</mat-label>
+                                        <mat-select name="showmetafields" formControlName="showmetafields" multiple>
+                                            <ng-container *ngFor="let meta of FieldsArray.metaFieldsArray">
+                                                <mat-option *ngIf="meta.field_form_type=='U'" [value]="meta.id">
+                                                {{meta.field_name}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>   
+                                </div>
+                            </div> 
+                        </div>
+                         <!--filter Columns to filter resident directory -->
+                         <div formGroupName="filteroptions">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <mat-label>Filter Core Fields</mat-label>
+                                        <mat-select name="filtercorefields" formControlName="filtercorefields" multiple>
+                                            <ng-container *ngFor="let core of FieldsArray.coreFieldsArray">
+                                                <mat-option *ngIf="core!==''" [value]="core">
+                                                {{core}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>   
+                                </div>
+                            </div>
+                            <!--Meta Columns to print-->
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <mat-label>Filter Meta Fields</mat-label>
+                                        <mat-select name="filtermetafields" formControlName="filtermetafields" multiple>
+                                            <ng-container *ngFor="let meta of FieldsArray.metaFieldsArray">
+                                                <mat-option *ngIf="meta.field_form_type=='RD'" [value]="meta.id">
+                                                {{meta.field_name}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>   
+                                </div>
+                            </div> 
+                        </div>
+                         <!--/ filter Columns to filter resident directory -->
+                        <!-- Resident Display Before Days -->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>
+                                            Show Moving Date of How Many Days Back
+                                    </mat-label>
+                                    <input matInput type="number" min="0" formControlName="subtractdays" required>
+                                    <!-- <mat-icon matSuffix class="secondary-text">remove_red_eye</mat-icon> -->
+                                    <mat-error>Moving days input required!</mat-error>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+                                    <mat-label>Users Display Limit</mat-label>
+                                    <mat-select name="user_limit" formControlName="user_limit">
+                                        <mat-option *ngFor="let user of user_list" value="{{user}}">{{user}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Enable / Desable Alphabetic Sorting</mat-label>
+									<mat-select placeholder="Alphabetic Sorting" name="alpha_sorting" formControlName="alpha_sorting">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Letter Sorting</mat-label>
+									<mat-select placeholder="Letter Sorting" name="letter_sorting" formControlName="letter_sorting">
+										<mat-option value="LN">Last Name</mat-option>
+										<mat-option value="FN">First Name</mat-option>
+										<mat-option value="FL">First / Last Name</mat-option>
+									</mat-select>
+								</mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Switch The Resident Directory View </mat-label>
+									<mat-select placeholder="Resident Directory View" name="directory_view" formControlName="directory_view">
+										<mat-option value="traditional_view">Traditional View</mat-option>
+										<mat-option value="tile_view">Tile View</mat-option>
+										<!-- <mat-option value="list_view">List View</mat-option> -->
+									</mat-select>
+								</mat-form-field>
+                            </div>
+                        </div>
+                        <!--Select Roles-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Allow User Profile Edit</mat-label>
+                                    <mat-select formControlName="edit_user_access" multiple="true">
+                                        <mat-option-select-all></mat-option-select-all>
+                                        <mat-option *ngFor="let role of RoleList" [value]="role.id">
+                                        {{role.role_name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>   
+                            </div>
+                        </div>  
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <div appearance="outline" class="pb-4" fxFlex>
+                                    <label  fxLayout="column" class="mb-20">Show logged In User in User's List?</label>
+                                    <mat-radio-group name="is_all_day" formControlName="show_in_list">
+                                        <mat-radio-button value="Y"> Yes </mat-radio-button>
+                                        <mat-radio-button value="N" class="pl-12"> No </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                                  
+                    </div>
+                    <!-- PROFILE FIELDS SETTINGS -->
+                    <div class="mat-title"><mat-icon>supervised_user_circle</mat-icon> User Profile Settings</div>
+                    <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                        <!--Core Columns to export-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Display Core Fields</mat-label>
+                                    <mat-select name="profilecorefields" formControlName="profilecorefields" multiple>
+                                        <ng-container *ngFor="let core of FieldsArray.coreFieldsArray">
+                                            <mat-option *ngIf="core!==''" [value]="core">
+                                            {{core}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <!--Meta Columns to export-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Display Meta Fields</mat-label>
+                                    <mat-select name="profilemetafields" formControlName="profilemetafields" multiple>
+                                        <ng-container *ngFor="let meta of FieldsArray.metaFieldsArray">
+                                            <mat-option *ngIf="meta.field_form_type=='U'" [value]="meta.id">
+                                            {{meta.field_name}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>   
+                            </div>
+                        </div>                          
+                    </div>
+                    <div class="mat-title"><mat-icon>supervised_user_circle</mat-icon>Newest Neighbour Settings</div>
+                    <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show Newest Neighbours On Resident Directory</mat-label>
+									<mat-select placeholder="Newest Neighbours" name="newest_neighbours" formControlName="newest_neighbours">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+                            </div>
+                        </div>
+                        <!--Core Columns to export-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Display Core Fields</mat-label>
+                                    <mat-select name="corefields" formControlName="neighbourcorefields" multiple>
+                                        <ng-container *ngFor="let core of FieldsArray.coreFieldsArray">
+                                            <mat-option *ngIf="core!==''" [value]="core">
+                                            {{core}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <!--Meta Columns to export-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Display Meta Fields</mat-label>
+                                    <mat-select name="metafields" formControlName="neighbourmetafields" multiple>
+                                        <ng-container *ngFor="let meta of FieldsArray.metaFieldsArray">
+                                            <mat-option *ngIf="meta.field_form_type=='U'" [value]="meta.id">
+                                            {{meta.field_name}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="20">
+                                <button mat-raised-button type="submit" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [disabled]="!directoryform.valid" cdkFocusInitial>Save</button>
+                            </div>
+                        </div>  
+                    </div>
+                </form>                
+            </div>        
+    </div>
+    </div>
+    <!-- / CONTENT -->

@@ -1,0 +1,19 @@
+<ng-container *ngIf="elementinfo.buttontext">
+    <div class="mb-20">
+        <div class="column-actions green-bg-color text-center drag-handle">
+            <mat-icon class="s-20 m-8 icon fuse-white-fg" (click)="openEditElementDialog()">brush</mat-icon>
+            <mat-icon class="s-20 m-8 icon fuse-white-fg" (click)="cloneElement()">file_copy</mat-icon>
+            <mat-icon class="s-20 m-8 icon fuse-white-fg" (click)="removeElement()">delete</mat-icon>
+        </div>
+
+        <div id="element-button" class="border p-16 text-center">
+            <button type="button" mat-raised-button id="{{elementinfo.cssid}}" class="button-{{elementinfo.buttonsize}} button-{{elementinfo.buttonshape}} {{elementinfo.cssclass}} {{elementinfo.buttonstyle}}">
+                <i *ngIf="elementinfo.icon && elementinfo.iconposition=='L'" class="icon {{elementinfo.icon}}"></i>
+                <span *ngIf="elementinfo.texttransform=='uppercase'">{{elementinfo.buttontext | uppercase}}</span>
+                <span *ngIf="elementinfo.texttransform=='normal' || elementinfo.texttransform==''">{{elementinfo.buttontext}}</span>
+                <i *ngIf="elementinfo.icon && elementinfo.iconposition=='R'" class="icon {{elementinfo.icon}}"></i>
+            </button>
+        </div>
+        
+    </div>
+</ng-container>

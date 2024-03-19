@@ -1,0 +1,20 @@
+<h1 matDialogTitle>Apply Category</h1>
+<div mat-dialog-content class="mat-dialog-export">
+    <div>
+        <div appearance="outline" class="filter-select display-block mr-4 ml-4">
+            <mat-select 
+                placeholder="Category"
+                [(ngModel)]="category">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let category of Categories" [value]="category.id">
+                {{category.category_name}}
+                </mat-option>
+            </mat-select>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions class="pt-24">
+    <button mat-raised-button class="mat-accent mr-16" (click)="updateDocumentCategories()" type="button">Save</button>
+    <button type="button" mat-button (click)="dialogRef.close('')">Cancel</button>
+</div>
+    

@@ -1,0 +1,103 @@
+<div id="Format-Design-Format" class="h-100-p">
+    <mat-card class="h-100-p">
+        <mat-card-content  fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+            <h2 class="px-16 py-12 green-bg-color fuse-white-fg h2 mb-20"> Format </h2>
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"  name="formatform" [formGroup]="formatform" novalidate autocomplete="off">        
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Paper Size</mat-label>
+                        <mat-select name="papersize" formControlName="papersize" (selectionChange)="isPaperChange($event)">
+                            <mat-option value="A3-L">A3</mat-option>
+                            <mat-option value="letter-L">Letter</mat-option>
+                            <mat-option value="tabloid-L">Tabloid</mat-option>
+                            <mat-option value="legal-L">Legal</mat-option>
+                            <mat-option value="A4-L">A4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field  appearance="outline" fxFlex>
+                        <mat-label>Font</mat-label>
+                        <mat-select name="font" formControlName="font" (selectionChange)="isFontChange($event)">
+                            <mat-option value="">Font</mat-option>
+                            <mat-optgroup label="Sans-Serif">
+                                <mat-option value="opensans"  style="font-family: 'OpenSans-Regular';">Open Sans</mat-option>
+                                <mat-option value="roboto" style="font-family: 'Roboto-Regular';">Roboto</mat-option>
+                                <mat-option value="Lato" style="font-family: 'Lato';">Lato</mat-option>
+                                <mat-option value="Oswald"  style="font-family: 'Oswald';">Oswald</mat-option>
+                                <mat-option value="Roboto Condensed"  style="font-family: 'Roboto Condensed';">Roboto Condensed</mat-option>
+                                <mat-option value="montserrat"  style="font-family: 'Montserrat-Regular';">Montserrat</mat-option>
+                                <mat-option value="sourcesanspro"  style="font-family: 'SourceSansPro-Regular';">Source Sans Pro</mat-option>
+                                <mat-option value="Raleway"  style="font-family: 'Raleway';">Raleway</mat-option>
+                                <mat-option value="ptsans"  style="font-family: 'PT_Sans-Web-Regular';">PT Sans</mat-option>
+                                <mat-option value="ubuntu"  style="font-family: 'Ubuntu-Regular';">Ubuntu</mat-option>
+                                <mat-option value="Arial Narrow" style="font-family: 'Arial Narrow';">Arial Narrow</mat-option>
+                                <mat-option value="Century Gothic" style="font-family: 'Century Gothic';">Century Gothic</mat-option>
+                            </mat-optgroup>
+                            <mat-optgroup label="Serif">
+                                <mat-option value="Times New Roman"  style="font-family: 'Times New Roman';">Times New Roman</mat-option>
+                                <mat-option value="Slabo 27px" style="font-family: 'Slabo 27px';">Slabo 27px</mat-option>
+                                <mat-option value="Lora" style="font-family: 'Lora';">Lora</mat-option>
+                            </mat-optgroup>
+                            <mat-optgroup label="Cursive">
+                                <mat-option value="Poiret One" style="font-family: 'Poiret One';">Poiret One</mat-option>
+                                <mat-option value="Indie Flower"  style="font-family: 'Indie Flower';">Indie Flower</mat-option>
+                            </mat-optgroup>
+                        </mat-select>    
+                    </mat-form-field>
+                </div>    
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Special Events</mat-label>
+                        <mat-select name="special_event_font" formControlName="special_event_font" (selectionChange)="isSpecialEventFontChange($event)">
+                            <mat-option value="font-weight: normal;" style="font-weight: normal;">Regular</mat-option>
+                            <mat-option value="font-weight: bold;" style="font-weight: bold;">Bold</mat-option>
+                            <mat-option value="font-style: italic;" style="font-style: italic;">Italic</mat-option>
+                            <mat-option value="font-style: italic; font-weight: bold;" style="font-style: italic; font-weight: bold;">Bold Italic</mat-option>
+                        </mat-select>
+                        
+                    
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Holidays</mat-label>
+                        <mat-select name="holiday_font" formControlName="holiday_font" (selectionChange)="isHolidayFontChange($event)">
+                            <mat-option value="font-weight: normal;" style="font-weight: normal;">Regular</mat-option>
+                            <mat-option value="font-weight: bold;" style="font-weight: bold;">Bold</mat-option>
+                            <mat-option value="font-style: italic;" style="font-style: italic;">Italic</mat-option>
+                            <mat-option value="font-style: italic; font-weight: bold;" style="font-style: italic; font-weight: bold;">Bold Italic</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="10px">    
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Registration Required Events</mat-label>
+                        <mat-select name="registration_required_font" formControlName="registration_required_font" (selectionChange)="isRegistrationREquiredEventChange($event)">
+                            <mat-option value="font-weight: normal;" style="font-weight: normal;">Regular</mat-option>
+                            <mat-option value="font-weight: bold;" style="font-weight: bold;">Bold</mat-option>
+                            <mat-option value="font-style: italic;" style="font-style: italic;">Italic</mat-option>
+                            <mat-option value="font-style: italic; font-weight: bold;" style="font-style: italic; font-weight: bold;">Bold Italic</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Locations</mat-label>
+                        <mat-select name="location_font" formControlName="location_font" (selectionChange)="isLocationDisplayChange($event)">
+                            <mat-option value="F">Show full location name</mat-option>
+                            <mat-option value="A">Show abbreviated locations</mat-option>
+                            <mat-option value="H" >Hide locations</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>    
+
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="49">
+                        <mat-label>Font Sizing</mat-label>
+                        <mat-select name="font_sizing" formControlName="font_sizing" (selectionChange)="isFontSizeChange($event)">
+                            <mat-option value="auto_size">Auto-size entire calendar to the same font size </mat-option>
+                            <mat-option value="large_size">Use the largest font possible on each day </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+        </form>
+        </mat-card-content>
+    </mat-card>
+</div>

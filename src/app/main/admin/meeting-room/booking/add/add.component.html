@@ -1,0 +1,394 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button type="button" mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                    [routerLink]="'/admin/meeting-room/booking/list'">
+                    <mat-icon class="mr-8">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+
+                <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+                    [formGroup]="addBooking" novalidate>
+
+                    <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title}}</div>
+
+                    <div class="d-block p-28">
+                        <div fxLayout="row">
+                            <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                <mat-label>Name</mat-label>
+                                <input matInput #autoCompleteInput [matAutocomplete]="auto" name="client_name"
+                                    formControlName="client_name" required>
+                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setFormfields($event)">
+                                    <mat-option *ngFor="let option of filteredUsers" [value]="option">
+                                        {{option.first_name+' '+option.last_name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error>Firstname required</mat-error>
+                            </mat-form-field>
+                            <input hidden name="id" formControlName="id">
+                            <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                <mat-label>Email</mat-label>
+                                <input type="email" matInput formControlName="client_email" required>
+                                <mat-error>Client Email Required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="33.33">
+                                <mat-label>Phone</mat-label>
+                                <input matInput formControlName="client_phone" mask="(000) 000-0000" required>
+                                <mat-error>Client Phone Required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">
+                            Date And Room :
+                        </div>
+                        <div fxLayout="column" fxFlex="1 0 auto" class="p-16 border pb-0">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex class="pr-8">
+                                    <mat-label>Date</mat-label>
+                                    <input matInput #input_start_date required [matDatepicker]="picker"
+                                        (focus)="picker.open()" formControlName="start_date">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error>Start date required</mat-error>
+                                    <mat-error *ngIf="addBooking.hasError('notValid')">Not valid start date
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Room</mat-label>
+                                    <mat-select matNativeControl required formControlName="room_id"
+                                        (selectionChange)="getLayout($event)" required>
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option *ngFor="let room of roomslist; let i = index;" [value]="room.id">
+                                            {{room.title}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>Room Required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Layout</mat-label>
+                                    <mat-select matNativeControl required formControlName="layout_id" required>
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option *ngFor="let layout of layoutList; let i = index;"
+                                            [value]="layout.layouts.id">{{layout.layouts.title}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>Layout Required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Dureation</mat-label>
+                                    <mat-select matNativeControl formControlName="book_by" required
+                                        (selectionChange)="getTimeSlotList($event)">
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option *ngIf="editBookingData" [value]="bookByKey">{{bookByValue}}</mat-option>
+                                        <mat-option *ngFor="let data of dureation | keyvalue" [value]="data.key">
+                                            {{data.value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>Dureation Required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Attendees</mat-label>
+                                    <input type="number" matInput min="1" [max]="isCapacity"
+                                        formControlName="attendees" (input)="maxLength($event)">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select matNativeControl required formControlName="status" required>
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option value="cancelled">Cancelled</mat-option>
+                                        <mat-option value="pending">Pending</mat-option>
+                                        <mat-option value="confirmed">Confirmed</mat-option>
+                                    </mat-select>
+                                    <mat-error>Status required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                            <mat-error *ngIf="isTimeSlot">Booking full please try another date.</mat-error>
+                        </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <table class="table table-bordered w-100-p">
+                                    <tbody fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <ng-container>
+                                            <tr *ngFor="let time of timeSlot;let i=index ;">
+                                                <td>
+                                                    <mat-checkbox class="mr-20" [disabled]="Time_status[i].status"
+                                                        [checked]="isChecked(time.type)"
+                                                        (change)="onSelctedTimeSlot($event.checked,time.type,time.value,i)"
+                                                        [value]='time.type'>{{time.value}}
+                                                    </mat-checkbox>
+                                                </td>
+                                            </tr>
+                                            <mat-error></mat-error>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50" class="my-12">
+                                <mat-checkbox class="example-margin mr-8" formControlName="is_recurring"
+                                    (change)="getRecurringOption($event)" value="recurring">Recurring
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16" *ngIf="recurring">
+                            Recurring :
+                        </div>
+                        <div fxLayout="column" fxFlex="1 0 auto" class="p-16 border pb-0 mb-20" *ngIf="recurring">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Booking Recurring</mat-label>
+                                    <mat-select matNativeControl required formControlName="recurringrepeat"
+                                        (selectionChange)="getRecurring($event);getPreviewBookings($event)">
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option value="DAILY">Daily</mat-option>
+                                        <mat-option value="WEEKLY">Weekly</mat-option>
+                                        <mat-option value="MONTHLY">Monthly</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Every</mat-label>
+                                    <mat-select matNativeControl required formControlName="interval"
+                                        (selectionChange)="getPreviewBookings($event)">
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option *ngFor="let number of interval" [value]="number">
+                                            {{number}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div *ngIf="weekly" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-8 w-100-p">
+                                        <mat-label>Repeats On</mat-label>
+                                        <mat-select matNativeControl required formControlName="byday" multiple
+                                            (selectionChange)="getPreviewBookings($event)">
+                                            <mat-option *ngFor="let day of week_days | keyvalue; let i = index;"
+                                                [value]="day.key">{{day.value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div *ngIf="monthly" class="w-100-p mb-20">
+                                    <mat-radio-group aria-label="Select an option" formControlName="repeat_by">
+                                        <mat-radio-button value="day_of_month" class="mr-8"
+                                            (change)="getPreviewBookings($event)">Day of Month
+                                        </mat-radio-button>
+                                        <mat-radio-button value="day_of_week" (change)="getPreviewBookings($event)">Day
+                                            of Week</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Repeat until:</mat-label>
+                                    <mat-select matNativeControl required formControlName="repeat"
+                                        (selectionChange)="getOccurrence($event);getPreviewBookings($event)">
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option value="occurance">After</mat-option>
+                                        <mat-option value="date">On Date</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex *ngIf="onDate">
+                                    <mat-label>On Date</mat-label>
+                                    <input matInput #input_on_date [matDatepicker]="picker2" (focus)="picker2.open()"
+                                        formControlName="on_date" (dateChange)="getPreviewBookings($event)">
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8" *ngIf="occurrence">
+                                    <mat-label>After Occurrences</mat-label>
+                                    <mat-select matNativeControl required formControlName="occurence"
+                                        (selectionChange)="getPreviewBookings($event)">
+                                        <mat-option value="">-Choose-</mat-option>
+                                        <mat-option *ngFor="let occurrence of afterOccurrence" [value]="occurrence">
+                                            {{occurrence}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <div class="mb-20 w-100-p" *ngIf="editRecurrence">
+                                    <p class="mb-8 font-weight-600">Preview Bookings : </p>
+
+                                    <div class="keyindi" fxflex="50%" fxflex.lt-sm="100">
+                                        <span class="Indicates-btn"
+                                            style="background-color: #d07364; border-color: #d07364;"></span> - Closed
+                                        <span class="Indicates-btn ml-16"
+                                            style="background-color: #0ab67a; border-color: #0ab67a;"></span> -
+                                        Available
+                                        <span class="Indicates-btn ml-16"
+                                            style="background-color: #d6d6d6; border-color: #d6d6d6;"></span> - Selected
+                                    </div>
+
+                                    <table border="1" class="border-color w-100-p mt-8">
+                                        <thead class="green-bg-color fuse-white-fg">
+                                            <tr>
+                                                <th class="p-12 w-50-p">Date</th>
+                                                <th class="p-12 w-50-p">Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let dates of recurrenceEditDate">
+                                                <td class="{{dates.class}} p-8">{{dates.start_date}}</td>
+                                                <td class="{{dates.class}} p-8">{{dates.book_by}}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="mb-20 w-100-p" fxLayout="row" fxLayoutAlign="start center"
+                                    fxLayoutGap="1 0 auto" *ngIf="addRecurrence">
+                                    <table border="1" fxFlex="100" class="border-color">
+                                        <thead class="green-bg-color fuse-white-fg">
+                                            <tr>
+                                                <th class="p-12 w-50-p">Date</th>
+                                                <th class="p-12 w-50-p">Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let dates of recucrrencedate">
+                                                <td class="{{dates.class}} p-8">
+                                                    {{dates.date}}</td>
+                                                <td class="{{dates.class}} p-8">{{dates.time}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <mat-error *ngIf="disableSubmit">{{bookingErrorMessage}}</mat-error>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">
+                            Equipment:
+                        </div>
+                        <div fxLayout="column" fxFlex="1 0 auto" class="p-16 border">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <table border="1" class="w-100-p text-capitalize border-color">
+                                    <tr class="green-bg-color fuse-white-fg">
+                                        <th class="text-center p-12 w-15-p font-weight-600"> Title </th>
+                                        <th class="text-center p-12 w-15-p font-weight-600"> Units(s) </th>
+                                        <th class="text-center p-12 w-15-p font-weight-600"> </th>
+                                    </tr>
+                                    <tr *ngFor="let data of equipment; let i = index;">
+                                        <td class="text-center p-12">{{data.title}}</td>
+                                        <td class="text-center p-12">
+                                            <!-- <div *ngIf="data.multi_units == 'Y'" fxLayout="row"
+                                                fxLayoutAlign="center center">
+                                                <mat-form-field appearance="outline" fxFlex="50"
+                                                    class="mat-wrapper-p-0">
+                                                    <input type="number" matInput min="1"
+                                                        (input)="getEquipmentValue($event,data.id)">
+                                                </mat-form-field>
+                                            </div> -->
+                                            <!-- <div *ngIf="data.multi_units == 'N'">1</div> -->
+                                            <div>1</div>
+                                        </td>
+                                        <td class="text-center p-12">
+                                            <mat-checkbox class="example-margin mr-8" value="i+1"
+                                                (change)="getEquipment($event,i,data.id)" [checked]="data.status">
+                                            </mat-checkbox>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">
+                            Food & Drinks:
+                        </div>
+                        <div fxLayout="column" fxFlex="1 0 auto" class="p-16 border">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                <table border="1" class="w-100-p text-capitalize border-color"
+                                    formArrayName="food_drinks">
+                                    <tr class="green-bg-color fuse-white-fg">
+                                        <th class="text-center p-12 w-15-p font-weight-600"> Title </th>
+                                        <th class="text-center p-12 w-15-p font-weight-600"> Quantity </th>
+                                        <th class="text-center p-12 w-15-p font-weight-600"> </th>
+                                    </tr>
+                                    <tr [formGroupName]="i" *ngFor="let data of foodDrinks; let i = index;">
+                                        <td class="text-center p-12">{{data.title}}</td>
+                                        <td class="text-center p-12" fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-form-field appearance="outline" fxFlex="50" class="mat-wrapper-p-0">
+                                                <input type="number" matInput min="1"
+                                                    (input)="getFoodAndDrinks($event,data.id)"
+                                                    formControlName="quantity" value="3">
+                                            </mat-form-field>
+                                        </td>
+                                        <td class="text-center p-12">
+                                            <mat-checkbox class="example-margin mr-8" formControlName="food_drink_id"
+                                                (change)="getFoodDrinks($event,data.id)">
+                                            </mat-checkbox>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100" class="mt-20">
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Notes</mat-label>
+                                <textarea matInput formControlName="notes"></textarea>
+                                <mat-error> Notes Is Required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+
+                        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto" class="mt-28">                           
+
+                            <button mat-raised-button
+                                class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                                *ngIf="!editBookingData" (click)="onSaveFieldClick()"
+                                [disabled]="isSubmit == true">Save</button>
+                            <button mat-raised-button
+                                class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                                *ngIf="editBookingData" (click)="recBookingUpdate(isRecurring)"
+                                [disabled]="isSubmitEdit == true">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+</div>

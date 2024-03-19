@@ -1,0 +1,123 @@
+  <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+    <div id="back-table-reservation-dashboard" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <!-- HEADER -->
+        <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxFlex>
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                        dashboard
+                    </mat-icon>
+                    <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Reservations
+                    </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+            <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+                <div class="mt-16 mt-sm-0">
+                    <button mat-raised-button class="reference-button" (click)="bookingPrint(service_id)">
+                        <mat-icon class="mr-4">print</mat-icon>
+                        Print
+                    </button>&nbsp;
+
+                </div>
+            </div>
+
+
+        </div>
+        <!-- / HEADER -->
+        <!-- <div class="tabs-wrap">
+            <mat-card>
+                Dashboard Notice<br>
+                Below you can see working schedule for all employees. Using the date selector below to refresh the schedule. Click on Print button to print work timesheet.
+            </mat-card>
+        </div> -->
+     
+
+        <div class="content" fusePerfectScrollbar>
+
+            <div class="center p-24 pb-56" fxLayoutAlign="center">
+                <!-- CONTENT -->
+                <div class="content w-90-p my-auto p-28">
+                    <div class="tabs-wrap">
+                        <!-- TABS -->
+                        <div fxLayout="row" fxLayoutAlign="start baseline" fxFlex="1 0 auto" class="mb-20">
+                            <button (click)="SetTodyasDate()" mat-raised-button [ngStyle]="button" class="mr-12 text-uppercase line-height-48 br-ds-0 box-shadow-none">
+                                Today
+                            </button>
+                            <button (click)="Setnextdate()" mat-raised-button [ngStyle]="button" class="mr-12 text-uppercase line-height-48 br-ds-0 box-shadow-none">
+                               Tomorrow
+                            </button>
+                            <mat-form-field class="mat-wrapper-p-0 underline-0 service-datepicker">
+                                <input matInput [matDatepicker]="picker1" [formControl]="date" (dateInput)="getServiceTimeSlot()">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <!-- / TABS -->
+                    </div>
+
+                    <div fxLayout="row wrap" class="services-list mb-20">
+                        <nav mat-tab-nav-bar class="no-br" *ngFor="let data of ShowServices">
+                            <a mat-tab-link (click)="Displayservicesdata(data.id)" [ngClass]="data.id === activeElement ? 'active' : 'none'" class="border">{{data.service_title}}</a>
+                        </nav>
+                    </div>
+
+                    <div *ngIf="serviceNotAvilable == false ;else displayMsg">
+                        <table border="1" class="w-100-p my-12 text-capitalize border-color">
+                            <tr [ngStyle]="green_bg_header">
+                                <th class="text-center p-12 w-20-p font-weight-600"> Time </th>
+                                <th class="text-center p-12 w-20-p font-weight-600"> Resident Name </th>
+                                <th class="text-center p-12 w-20-p font-weight-600"> Table Size </th>
+                                <th class="text-center p-12 w-20-p font-weight-600"> Party Size </th>
+                                <th class="text-center p-12 w-20-p font-weight-600"> Guest Name(s) </th>
+                            </tr>
+                            <tr *ngFor="let time of timeStops">
+                                <td class="text-center p-12">
+                                    {{chartMethod(time)}}
+                                    <div *ngIf="checkBookingEntries(time)"></div>                                  
+                                </td>
+                                <td class="text-center" colSpan="4" *ngIf="checkBooking == 'Yes'">
+                                  
+                                        <table class="w-100-p text-capitalize border-color my-8" border="1">
+                                            <tr *ngFor="let bookingValue of dashboarddata">
+                                                <td class="text-center w-20-p p-12" *ngIf="bookingValue.booking_start_time==time">                                
+                                                    <a [routerLink]="['/admin/restaurant-reservations/view/',bookingValue.id]">{{bookingValue.name}}</a>                                
+                                                </td>
+                                                <td class="text-center w-20-p p-12" *ngIf="bookingValue.booking_start_time==time">                                
+                                                    {{bookingValue. min_table_size}} - {{bookingValue. max_table_size}}
+                                                </td>
+                                                <td class="text-center w-20-p py-12" *ngIf="bookingValue.booking_start_time==time">                                
+                                                    {{bookingValue.guestcount}}
+                                                </td>
+                                              
+                                                <td class="text-center w-20-p p-12" *ngIf="bookingValue.booking_start_time==time">
+                                                    <div *ngIf="bookingValue.guestinfo.length == 0">--</div>
+                                                    <div *ngFor="let guest of bookingValue.guestinfo" class="m-8 p-8">                                    
+                                                        {{guest.guest_name}}                                  
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table> 
+                                    
+                                    
+                                </td>    
+                                <td class="text-center p-12" *ngIf="checkBooking != 'Yes'">--</td>
+                                <td class="text-center p-12" *ngIf="checkBooking != 'Yes'">--</td>
+                                <td class="text-center p-12" *ngIf="checkBooking != 'Yes'">--</td>
+                                <td class="text-center p-12" *ngIf="checkBooking != 'Yes'">--</td>
+                            </tr>
+                        </table>
+                    </div>  
+                    <ng-template #displayMsg>
+                           <h3> Dashboard Notice</h3> <br>
+                           <p class="text-capitalize font-weight-600">  Selected date is set to "day off". Use the date picker above to choose another date. Please, note that you can change working time under Options page. </p>
+                    </ng-template>                               
+                </div>
+            </div>
+        </div>
+    </div>

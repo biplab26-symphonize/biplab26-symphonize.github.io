@@ -1,0 +1,85 @@
+<div id="forms" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxFlex>
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    person_add 
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                 Add  Approval 
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="text-right" fxFlex>
+            <div class="mt-16 mt-sm-0" [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                <button class="mr-8" mat-raised-button [routerLink]="['/admin/form/approvals/',url_id]">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button>
+                <button mat-raised-button class="mr-8" (click)="onClickSave()" cdkFocusInitial>
+                    <mat-icon class="mr-4">save</mat-icon>
+                    Save
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+
+    <div class="content p-24" fusePerfectScrollbar>
+
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+            <!-- CONTENT -->
+              <div class="content w-90-p my-auto">
+        <!-- REACTIVE FORM EXAMPLE -->
+                 <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" #f="ngForm" [formGroup]="approvaldata" novalidate autocomplete="off">
+                      
+                            <!-- <div class="mat-card mat-elevation-z2 p-24" fxLayout="column"> -->
+                                <div fxLayout="column">
+                                    <div fxFlex="100">
+                                        <h2 [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16">Approver Setting</h2>
+                                        
+                                    </div>
+                                 </div> 
+                                 <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto">
+
+                                    <mat-form-field appearance="outline" fxFlex="50">
+                                        <mat-label>Description</mat-label>
+                                        <input matInput formControlName="description" name="description" required>
+                                        <mat-error>Description is required!</mat-error>
+                                    </mat-form-field>
+                                </div>  -->
+                                <div fxLayout="row" class="p-24 pb-0" fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto">
+                                    <mat-form-field appearance="outline" fxFlex="50">
+                                        <mat-label>Approver Role</mat-label>
+                                        <mat-select formControlName="role_id"  (ngModelChange)="selecteroll($event)" name="role_id" required>
+                                            <mat-option *ngFor="let roles of RoleList"  [value]="roles.id" >{{roles.role_name}}</mat-option>
+                                        </mat-select>
+                                        <mat-error>Approver type is required!</mat-error>
+                                    </mat-form-field>
+                         
+                                    <mat-form-field appearance="outline" fxFlex="50">
+                                        <mat-label>Approver User</mat-label>
+                                        <mat-select formControlName="user_id"   (ngModelChange)="selectesuser($event)" name="user_id"   multiple required>
+                                            <mat-option *ngFor="let users of Userlist"  [value]="users.id" >{{users.first_name}} {{users.last_name}}</mat-option>
+                                        </mat-select>
+                                        <mat-error>Approver type is required!</mat-error>
+                                    </mat-form-field>
+                               </div> 
+                               <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto">
+                                    <mat-label>Condition</mat-label>
+                                        <mat-checkbox formControlName="condition" name="condition" value="condition">Enable Condition for this approver</mat-checkbox>
+                               </div>  -->
+                            
+                 </form>
+              </div>
+        </div>
+     </div>
+ </div>

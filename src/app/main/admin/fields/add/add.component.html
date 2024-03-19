@@ -1,0 +1,547 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll">
+	<!-- HEADER -->
+	<div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+		<!-- APP TITLE -->
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<div class="logo" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add</mat-icon> <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                       {{title | titlecase}}
+                    </span>
+			</div>
+		</div>
+		<!-- / APP TITLE -->
+		<!-- BTN's -->
+		<div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+			<div class="mt-16 mt-sm-0">
+				<button mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}" [routerLink]="['/admin/fields/list']">
+					<mat-icon class="mr-4">arrow_back</mat-icon>Back To List
+				</button>
+			</div>
+		</div>
+		<!-- / BTN's -->
+	</div>
+	<!-- / HEADER -->
+	<!-- CONTENT -->
+	<div class="content" fusePerfectScrollbar>
+		<!-- CENTER -->
+		<div class="center p-24 pb-56" fxLayoutAlign="center">
+			<!-- CONTENT -->
+			<div class="content w-90-p my-auto" fxLayout="column">
+				<div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 fuse-white-fg p-16">{{title | titlecase}}</div>
+				<form class="p-28 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" #f="ngForm" [formGroup]="fieldsForm" novalidate autocomplete="off">
+					<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+						<mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+							<mat-label>Form Type</mat-label>
+							<mat-select placeholder="Select form type" formControlName="field_form_type" (selectionChange)="getUserMetaFields($event.value)" >
+								<mat-option *ngFor="let type of FormTypeList | keyvalue" [value]="type.key">{{type.value}}</mat-option>
+							</mat-select>
+							<mat-error>Field Type Is Required</mat-error>
+						</mat-form-field>
+						<mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+							<mat-label>Field Type</mat-label>
+							<mat-select placeholder="Select field type" (selectionChange)="onChangeFieldType($event.value)" formControlName="field_type">
+								<mat-option *ngFor="let type of fieldType | keyvalue" [value]="type.key">{{type.value}}</mat-option>
+							</mat-select>
+							<mat-error>Field Type Is Required</mat-error>
+						</mat-form-field>
+					</div>
+					<!-- field_type == dynamic field type start -->
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <ng-container *ngIf="fieldsForm.get('field_type').value == 'dynamic'">
+                            <ng-container *ngFor="let content of fieldsForm.get('dbsettings')?.controls;let index = index;">
+                                <mat-form-field appearance="outline" fxFlex class="pr-4">
+                                    <mat-label>Dynamic Field Type</mat-label>
+                                    <mat-select placeholder="Select Dynamic field type" (selectionChange)="onChangeFieldType($event.value)" [formControl]="content.get('show_as')">
+                                        <mat-option *ngFor="let type of dynamicFieldType | keyvalue" [value]="type.key">{{type.value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>Field Dynamic Type Is Required</mat-error>
+                                </mat-form-field> 
+                            </ng-container>
+                        </ng-container>
+                        <!-- IF Form Type is RD Then get list of usertype fields -->
+                        <ng-container *ngIf="fieldsForm.get('field_form_type').value == 'RD'">
+                            <ng-container *ngFor="let extra_content of fieldsForm.get('extra_field_content')?.controls;let index = index;">
+                                <mat-form-field appearance="outline" fxFlex class="pl-4">
+                                    <mat-label>Select Meta Field</mat-label>
+                                    <mat-select placeholder="Select Meta Field" [formControl]="extra_content.get('field_meta_id')" [required]="fieldsForm.get('field_form_type').value == 'RD'">
+                                        <mat-option *ngFor="let metafield of userMetaFields" [value]="metafield.id">{{metafield.field_label}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>Meta Field Is Required</mat-error>
+                                </mat-form-field>
+                            </ng-container>
+						</ng-container>
+						<ng-container *ngIf="fieldsForm.get('field_form_type').value == 'EF'">
+                            <ng-container *ngFor="let extra_content of fieldsForm.get('extra_field_content')?.controls;let index = index;">
+                                <mat-form-field appearance="outline" fxFlex class="pl-4">
+                                    <mat-label>Select Meta Field</mat-label>
+                                    <mat-select placeholder="Select Meta Field" [formControl]="extra_content.get('field_meta_id')" [required]="fieldsForm.get('field_form_type').value == 'EF'">
+                                        <mat-option *ngFor="let metafield of eventMetaFields" [value]="metafield.id">{{metafield.field_label}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>Meta Field Is Required</mat-error>
+                                </mat-form-field>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    
+					<!-- field_type == dynamic field type end here -->
+					<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+						<mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+							<mat-label>Field Label</mat-label>
+							<input appCapitalizeFirst matInput type="text" formControlName="field_label" placeholder="Field Label" (keyup)="slugifyMenuAlias()">
+							<mat-error>Field Label Is Required</mat-error>
+						</mat-form-field>
+						<mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+							<mat-label>Field Name</mat-label>
+							<input matInput type="text" formControlName="field_name" placeholder="Field Name">
+							<mat-error>Field Name Is Required</mat-error>
+						</mat-form-field>
+					</div>
+
+
+						<!-- maximum size  -->
+						<div fxLayout="row" fxLayoutAlign="start center">
+							<div fxFlex="49.5%" *ngIf="fieldsForm.get('field_type').value == 'text' || fieldsForm.get('field_type').value == 'textarea' ">
+								<div *ngFor="let extra_content of fieldsForm.get('extra_field_content')?.controls;let index = index;">
+									<div  class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+										<mat-form-field appearance="outline" fxFlex>
+											<mat-label>Maximum Character </mat-label>
+											<input  matInput type="number" name="maximum_size" min="1" [formControl]="extra_content.get('maximum_size')" placeholder="maximum_size">
+										
+										</mat-form-field>
+									</div>
+								</div>
+							</div>
+
+							<div fxFlex="49.5%" class="ml-8" *ngIf="fieldsForm.get('field_type').value == 'text' || fieldsForm.get('field_type').value == 'textarea'">
+								<div *ngFor="let extra_content of fieldsForm.get('extra_field_content')?.controls;let index = index;">
+									<div  class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+										<mat-form-field appearance="outline" fxFlex>
+											<mat-label>Autopopulate Field Name</mat-label>
+											<input  matInput  name="autocomplete"   [formControl]="extra_content.get('autocomplete')" >
+										</mat-form-field>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+
+					<!-- field_type == dynamic -->
+					<div *ngIf="fieldsForm.get('field_type').value == 'dynamic'">
+						<div *ngFor="let content of fieldsForm.get('dbsettings')?.controls;let index = index;">
+							<div class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+								<mat-form-field appearance="outline" fxFlex>
+									<mat-label>Select Table</mat-label>
+									<mat-select name="table" placeholder="Select Table" [formControl]="content.get('table')">
+										<mat-option *ngFor="let table of dynamicField.table" [value]="table">{{table | titlecase}}</mat-option>
+									</mat-select>
+									<mat-error>This Field Is Required</mat-error>
+								</mat-form-field>
+								<mat-form-field appearance="outline" fxFlex>
+									<mat-label>Select Type</mat-label>
+									<mat-select name="table" placeholder="Select Table" [formControl]="content.get('category_type')" multiple>
+										<ng-container *ngIf="content.get('table').value == 'users'">
+											<mat-option *ngFor="let user of user_data" [value]="user.id">{{user.role_key}}</mat-option>
+										</ng-container>
+										<ng-container *ngIf="content.get('table').value == 'category'">
+											<mat-option *ngFor="let table of dynamicField.categorykeyvalue | keyvalue" [value]="table.key">{{table.value}}</mat-option>
+										</ng-container>
+									</mat-select>
+									<mat-error>This Field Is Required</mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+					<!-- end here tyep='dynamic' -->
+					<!-- Extra Content Data  -->
+					<div *ngIf="fieldsForm.get('field_type').value != ''">
+						<div *ngFor="let extra_content of fieldsForm.get('extra_field_content')?.controls;let index = index;">
+							<ng-container *ngIf="fieldsForm.get('field_type').value == 'signature'">
+								<div class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutGap.lt-md="0px">
+									<mat-form-field appearance="outline" fxFlex="33.3">
+										<mat-label>Pen width</mat-label>
+										<input matInput placeholder="Pen Width" type="text" [formControl]="extra_content.get('pen_width')">
+									</mat-form-field>
+									<mat-form-field appearance="outline" fxFlex>
+										<mat-label>Canvas Width</mat-label>
+										<input matInput type="text" placeholder="Canvas Width" [formControl]="extra_content.get('canvas_width')">
+									</mat-form-field>
+									<mat-form-field appearance="outline" fxFlex>
+										<mat-label>Canvas Height</mat-label>
+										<input matInput placeholder="Canvas Height" type="text" [formControl]="extra_content.get('canvas_height')">
+									</mat-form-field>
+								</div>
+							</ng-container>
+                         
+							   <!-- time field -->
+						 <ng-container *ngIf="fieldsForm.get('field_type').value == 'time'">
+                   
+								<div class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px">
+									<mat-form-field appearance="outline" fxFlex="49.5" class="mr-8">
+										<mat-label>Time Format</mat-label>
+										<mat-select  name="  time_format" [formControl]="extra_content.get('time_format')">
+											<mat-option value="twelve">12</mat-option>
+											<mat-option value="twenty-four">24</mat-option>
+										</mat-select>
+									</mat-form-field>
+
+									<mat-form-field appearance="outline" fxFlex="49.5" class="mr-8">
+										<mat-label>AM/PM Format </mat-label>
+										<mat-select  name="time_zone" [formControl]="extra_content.get('time_zone')">
+											<ng-container appearance="outline" class="w-100-p" *ngIf="extra_content.get('time_format').value == 'twelve'">
+											   <mat-option value="radio">Radio</mat-option> 
+											  <mat-option value="select">Select</mat-option>
+											</ng-container>
+										</mat-select>
+									</mat-form-field>
+
+									<mat-form-field appearance="outline" fxFlex="49.5">
+										<mat-label>Select Type </mat-label>
+										<mat-select  name="text_format" [formControl]="extra_content.get('text_format')">
+											<mat-option value="text">Text</mat-option>
+											<mat-option value="dropdown">Dropdown</mat-option>
+										</mat-select>
+									</mat-form-field>
+									
+									<div fxFlex="49.5">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Field Class</mat-label>
+											<mat-select name="pickerType" [formControl]="extra_content.get('time_field_class')">
+												<mat-option value="">Select</mat-option>
+												<mat-option value="from">From</mat-option>
+												<mat-option value="to">To</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+							</ng-container>
+							<!-- time field end here -->
+							<div *ngIf="fieldsForm.get('field_type').value == 'date'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutGap.lt-md="0px">
+								<div fxFlex="49.5">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Picker Type</mat-label>
+										<mat-select name="pickerType" [formControl]="extra_content.get('pickerType')">
+											<mat-option value="both">Both</mat-option>
+											<mat-option value="calendar">Calendar</mat-option>
+											<mat-option value="timer">Timer</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div *ngIf="extra_content.get('pickerType').value !== 'timer' || extra_content.get('pickerType').value !== 'both'" fxFlex>
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Calendar Show </mat-label>
+										<mat-select name="min_date" [formControl]="extra_content.get('min_date')">
+											<mat-option value="both">Both</mat-option>
+											<mat-option value="min">Past Date</mat-option>
+											<mat-option value="max">Future Date</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div fxFlex="49.5">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Field Class</mat-label>
+										<mat-select name="pickerType" [formControl]="extra_content.get('field_class')">
+											<mat-option value="">Select</mat-option>
+											<mat-option value="from">From</mat-option>
+											<mat-option value="to">To</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								  <div *ngIf="extra_content.get('pickerType').value !== 'timer' || extra_content.get('pickerType').value !== 'both'" fxFlex>
+										<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Accept Reservation X days before </mat-label>
+										<input matInput type="number" min='0' name="day_before" [formControl]="extra_content.get('day_before')" />
+										</mat-form-field>
+								  </div>
+							</div>
+							<div *ngIf="fieldsForm.get('field_type').value == 'date'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutGap.lt-md="0px">
+								<div *ngIf="extra_content.get('pickerType').value !== 'timer'" fxFlex>
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Date Format</mat-label>
+										<mat-select name="dateformat" [formControl]="extra_content.get('dateformat')">
+											<mat-option *ngFor="let format of dateformat| keyvalue" [value]="format.key">{{format.value}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+							</div>
+
+						
+							<div class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+								<div fxFlex *ngIf="fieldsForm.get('field_type').value == 'button'">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Button Type</mat-label>
+										<mat-select name="content_type" [formControl]="extra_content.get('type')">
+											<mat-option value="button">Button</mat-option>
+											<mat-option value="submit">Submit</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div fxFlex *ngIf="fieldsForm.get('field_type').value == 'upload'" fxFlex="49.5%">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>File Type</mat-label>
+										<mat-select name="fileType" placeholder="File Type" [formControl]="extra_content.get('fileType')" >
+											<mat-option value="image">Image</mat-option>
+											<mat-option value="video">Video</mat-option>
+											<mat-option value="txt">Text File</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div *ngIf="fieldsForm.get('field_type').value == 'text'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutGap.lt-md="0px">
+									<div fxFlex *ngIf="extra_content.get('autofill')" class="border border-radius-4 px-16 mb-24 mt-4 mr-8"  fxLayout="row" fxLayoutAlign="start center">
+										<mat-label class="mr-8">Auto Fill :</mat-label>
+										<mat-radio-group name="autofill" [formControl]="extra_content.get('autofill')" class="column-radio-group">
+											<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+											<mat-radio-button value="N">No</mat-radio-button>
+										</mat-radio-group>
+									</div>
+								</div>
+								<div fxFlex *ngIf="fieldsForm.get('field_type').value == 'html'" class="mb-28">
+									 <div appearance="outline" class="w-100-p">
+                                            <editor [formControl]="extra_content.get('content')"  [init]="tinyMceSettings" placeholder="Enter the  content .."  name="content" ></editor>
+									 </div>
+								</div>
+							</div>
+
+							<!--  field_type == Select or Radio or checkbox-->
+							<div fxLayout="column">
+								
+								<div *ngIf="fieldsForm.get('field_type').value == 'select' || fieldsForm.get('field_type').value == 'radio' || fieldsForm.get('field_type').value == 'checkbox'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column">
+									<p fxFlex="100" class="font-weight-600 font-size-16 mb-4 px-4"> Choices :</p>
+									<div class="pt-20 px-16 pb-0 fuse-card m-4 br-radius-4 mb-20 min-100-p">
+										<div fxLayoutGap.lt-md="0px" *ngFor="let content of fieldsForm.get('field_content')?.controls;let index = index;"  fxLayout="row" fxLayoutAlign="center baseline" >
+											<div fxFlex="46">
+												<mat-form-field appearance="outline" class="w-100-p">
+													<mat-label>Label</mat-label>
+													<input matInput type="text" name="field_content_key"  [formControl]="content.get('key')">
+													<ng-container *ngIf="content.get('key').invalid && (content.get('key').dirty || content.get('key').touched)" ngProjectAs="mat-error">
+														<mat-error *ngIf="content.get('key').errors.required">This Field Is Required</mat-error>
+													</ng-container>
+												</mat-form-field>
+											</div>
+											<div fxFlex="46" class="ml-8">
+												<mat-form-field appearance="outline" class="w-100-p">
+													<mat-label>Value</mat-label>
+													<input matInput type="text" name="field_content_value"  [formControl]="content.get('value')">
+													<ng-container *ngIf="content.get('value').invalid && (content.get('value').dirty || content.get('value').touched)" ngProjectAs="mat-error">
+														<mat-error *ngIf="content.get('value').errors.required">This Field Is Required</mat-error>
+													</ng-container>
+												</mat-form-field>
+											</div>
+											<div fxFlex="6" class="ml-8" fxLayout="row" fxLayoutAlign="center center">
+												<mat-icon fxLayout="row" fxLayoutAlign="center center" class="border-radius-100 material-icons icon-size curc fuse-white-fg purple-btn-bg font-size-18 mr-8 mat-icon notranslate mat-icon-no-color" (click)="onAddSelectRow()" matTooltip="Add New">add</mat-icon>
+												<mat-icon fxLayout="row" fxLayoutAlign="center center" class="border-radius-100 material-icons icon-size curc fuse-white-fg purple-btn-bg font-size-18 mat-icon notranslate mat-icon-no-color" *ngIf="index > 0" (click)="onRemoveRow(index)" matTooltip="Delete ">delete</mat-icon>
+											</div>
+										</div>
+									</div>	
+								</div>
+							</div>  
+
+							<div fxLayout="column">	
+								<div *ngIf="fieldsForm.get('field_type').value == 'checkbox' || fieldsForm.get('field_type').value == 'radio'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column">
+									<div fxFlex="46" class="ml-8">
+										<mat-label class="mr-8">Show Field Label :</mat-label>
+										<mat-radio-group name="show_label" [formControl]="extra_content.get('show_label')" class="column-radio-group">
+											<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+											<mat-radio-button value="N">No</mat-radio-button>
+										</mat-radio-group>
+									</div>
+									<div fxFlex="46" class="ml-8">
+										<mat-label class="mr-8">Show View Entry Field Label :</mat-label>
+										<mat-radio-group name="viewentry_show_label" [formControl]="extra_content.get('viewentry_show_label')" class="column-radio-group">
+											<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+											<mat-radio-button value="N">No</mat-radio-button>
+										</mat-radio-group>
+									</div>
+									<div fxFlex="46" class="ml-8">
+										<mat-label class="mr-8">Show View Entry Field Content :</mat-label>
+										<mat-radio-group name="viewentry_show_content" [formControl]="extra_content.get('viewentry_show_content')" class="column-radio-group">
+											<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+											<mat-radio-button value="N">No</mat-radio-button>
+										</mat-radio-group>
+								    </div>
+								</div>
+							</div>
+							
+							<div *ngIf="fieldsForm.get('field_type').value == 'rating'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutGap.lt-md="0px">
+								<mat-form-field appearance="outline" fxFlex class="w-100-p">
+									<mat-label>Checked Star Color</mat-label>
+									<input matInput type="text" id="checkedcolor" [(colorPicker)]="extra_content.get('checkedcolor').value" [value]="extra_content.get('checkedcolor').value" [style.background]="extra_content.get('checkedcolor').value" (colorPickerChange)="extra_content.get('checkedcolor').setValue($event)" />
+								</mat-form-field>
+								<mat-form-field appearance="outline" fxFlex class="w-100-p">
+									<mat-label>Unchecked Star Color</mat-label>
+									<input matInput type="text" id="uncheckedcolor" [(colorPicker)]="extra_content.get('uncheckedcolor').value" [value]="extra_content.get('uncheckedcolor').value" [style.background]="extra_content.get('uncheckedcolor').value" (colorPickerChange)="extra_content.get('uncheckedcolor').setValue($event)" />
+								</mat-form-field>
+							</div>
+							<div class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+								<!-- <div fxFlex *ngIf="extra_content.get('readonly')">
+									<mat-label>Field Readonly</mat-label>
+									<mat-radio-group name="field_readonly" [formControl]="extra_content.get('readonly')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div> -->
+								<div fxFlex *ngIf="extra_content.get('inpdf')" fxFlex="49.5" class="border border-radius-4 px-16 mb-20" fxLayout="row" fxLayoutAlign="start center">
+									<mat-label class="mr-8">Include in pdf :</mat-label>
+									<mat-radio-group name="inpdf" [formControl]="extra_content.get('inpdf')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div>
+
+								<div fxFlex *ngIf="extra_content.get('isMail')" fxFlex="49.5" class="border border-radius-4 px-16 mb-20 ml-8" fxLayout="row" fxLayoutAlign="start center">
+									<mat-label class="mr-8">Include In Mail :</mat-label>
+									<mat-radio-group name="isMail" [formControl]="extra_content.get('isMail')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div>
+						
+								<div fxFlex *ngIf="extra_content.get('multiselect')" fxFlex="49.5" class="border border-radius-4 px-16 mb-20" fxLayout="row" fxLayoutAlign="start center">
+									<mat-label class="mr-8">Field Multiselect :</mat-label>
+									<mat-radio-group name="field_multiselect" [formControl]="extra_content.get('multiselect')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div>
+							
+							</div>
+
+							<!--MASKING STARTS-->
+							<div *ngIf="fieldsForm.get('field_type').value == 'number'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutGap.lt-md="0px">
+							  
+								<div fxFlex *ngIf="extra_content.get('autofill')" class="border border-radius-4 px-16 mb-24 mt-4 mr-8"  fxLayout="row" fxLayoutAlign="start center">
+									<mat-label class="mr-8">Auto Fill :</mat-label>
+									<mat-radio-group name="autofill" [formControl]="extra_content.get('autofill')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div>
+								
+								<div fxFlex *ngIf="extra_content.get('ismasking')" class="border border-radius-4 px-16 mb-24 mt-4 mr-4" fxLayout="row" fxLayoutAlign="start center">
+									<mat-label class="mr-8">Field Masking :</mat-label>
+									<mat-radio-group name="ismasking" [formControl]="extra_content.get('ismasking')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div>
+
+						
+								
+								<!--patternoptions-->
+								<div fxFlex *ngIf="extra_content.get('ismasking').value == 'Y'">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Masking Pattern</mat-label>
+										<mat-select placeholder="Masking Pattern" [formControl]="extra_content.get('maskingpattern')" [required]="extra_content.get('ismasking').value == 'Y'">
+											<mat-option *ngFor="let mask of maskingPatterns | keyvalue" [value]="mask.key">{{mask.value}}</mat-option>
+										</mat-select>
+										<mat-error>Masking Pattern Is Required</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<!--MASKING ENDS-->
+							<div *ngIf="fieldsForm.get('field_type').value == 'email'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutGap.lt-md="0px">
+							  
+								<div fxFlex *ngIf="extra_content.get('autofill')" class="border border-radius-4 px-16 mb-24 mt-4 mr-8"  fxLayout="row" fxLayoutAlign="start center">
+									<mat-label class="mr-8">Auto Fill :</mat-label>
+									<mat-radio-group name="autofill" [formControl]="extra_content.get('autofill')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div>
+								<div fxFlex="46" class="ml-8">
+									<mat-label class="mr-8">Send Email :</mat-label>
+									<mat-radio-group name="send_email" [formControl]="extra_content.get('send_email')" class="column-radio-group">
+										<mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+										<mat-radio-button value="N">No</mat-radio-button>
+									</mat-radio-group>
+								</div>
+							</div>
+
+							<div class="input-row wrap"  fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+								<div fxFlex  fxFlex="50" class="pl-4">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Custom CSS Class For Field Label</mat-label>
+										<input matInput type="text"    name="field_label_css_class" [formControl]="extra_content.get('field_label_css_class')">
+									</mat-form-field>
+								</div>
+								<div fxFlex  fxFlex="50" class="pl-4">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Custom CSS Class For Field Content</mat-label>
+										<input matInput type="text"   name="field_content_css_class" [formControl]="extra_content.get('field_content_css_class')">
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="input-row wrap"  fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+								<div fxFlex  fxFlex="50" class="pl-4">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Custom CSS Class For View Entry Field Label</mat-label>
+										<input matInput type="text"    name="view_entry_field_label_css_class" [formControl]="extra_content.get('view_entry_field_label_css_class')">
+									</mat-form-field>
+								</div>
+								<div fxFlex  fxFlex="50" class="pl-4">
+									<mat-form-field appearance="outline" class="w-100-p">
+										<mat-label>Custom CSS Class For View Entry Field Content</mat-label>
+										<input matInput type="text"   name="view_entry_field_content_css_class" [formControl]="extra_content.get('view_entry_field_content_css_class')">
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div></div>
+					<!-- field_type == text -->
+					<div *ngIf="fieldsForm.get('field_type').value == 'text'">
+						<mat-form-field appearance="outline" fxFlex="50">
+							<mat-label>Field Pregmatch</mat-label>
+							<mat-select name="field_pregmatch" placeholder="Field Pregmatch" [formControl]="fieldsForm.get('field_pregmatch')">
+								<mat-option value="">Select Pattern</mat-option>
+								<mat-option value="[a-zA-Z\s]+">Text</mat-option>
+								<mat-option value="[a-zA-Z\s]+">Characters Only</mat-option>
+								<mat-option value="/(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi">URL</mat-option>
+								<mat-option value="[a-zA-Z0-9\s]+">Alphnumeric</mat-option>
+								<mat-option value="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$">Email</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<!-- /field_type == text -->
+
+					<div *ngIf="fieldsForm.get('field_type').value == 'email'">
+						<mat-form-field appearance="outline" fxFlex="50">
+							<mat-label>Field Pregmatch</mat-label>
+							<mat-select name="field_pregmatch" placeholder="Field Pregmatch" [formControl]="fieldsForm.get('field_pregmatch')">
+								<mat-option value="">Select Pattern</mat-option>
+								<mat-option value="[a-zA-Z\s]+">Text</mat-option>
+								<mat-option value="[a-zA-Z\s]+">Characters Only</mat-option>
+								<mat-option value="/(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi">URL</mat-option>
+								<mat-option value="[a-zA-Z0-9\s]+">Alphnumeric</mat-option>
+								<mat-option value="^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$">Email</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<!-- field_type == Email -->
+					<div class="input-row wrap"  fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+						<div class="border border-radius-4 px-16 mb-24 mt-4 mr-4" fxLayout="row" fxFlex="49.5" fxLayoutAlign="start center">
+							<mat-label class="mr-8">Field Required :</mat-label>
+							<mat-radio-group name="field_required" formControlName="field_required" [formControl]="fieldsForm.get('field_required')" class="column-radio-group">
+								<mat-radio-button value="Y" class="mr-16" (change)="is_required_Change($event.value)">Yes</mat-radio-button>
+								<mat-radio-button value="N" (change)="is_required_Change($event.value)">No</mat-radio-button>
+							</mat-radio-group>
+						</div>
+
+						<div fxFlex *ngIf="fieldsForm.get('field_required').value == 'Y'" fxFlex="50" class="pl-4">
+							<mat-form-field appearance="outline" class="w-100-p">
+								<mat-label>Error Message</mat-label>
+								<input matInput type="text" placeholder="Error Message" name="field_error_msg" formControlName="error_msg" [formControl]="fieldsForm.get('error_msg')" [required]="fieldsForm.get('field_required').value == 'Y'">
+								<mat-error *ngIf="fieldsForm.get('error_msg').errors?.required">Error Message Is Required</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
+						<button mat-raised-button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" (click)="onSaveFieldClick($event)">Submit</button>
+					</div>
+				</form>
+			</div>
+			<!-- / CONTENT -->
+		</div>
+		<!-- / CENTER -->
+	</div>
+	<!-- / CONTENT -->
+</div> 

@@ -1,0 +1,159 @@
+@import "src/@fuse/scss/fuse";
+
+    .medias {
+        width: 100%;
+        // max-width: 1080px;
+        margin: 0 auto;
+
+        .no-medias {
+            font-size: 24px;
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .media {
+            &:hover {
+
+                .media-content {
+                    border: none;
+                    @include mat-elevation(12);
+                }
+            }       
+            img{
+                width: 223px;
+                height: 200px;
+                align-content: center;
+                cursor: pointer;
+            }
+            .media-content {
+                min-height: 300px;
+                max-height: 300px;
+                min-width: 300px;
+                max-width: 600px;
+                border-radius: 4px;
+                overflow: hidden;
+                transition: box-shadow 200ms ease-in-out;
+                @include mat-elevation(1);
+
+                .content {
+                    padding: 16px;
+
+                    .h1 {
+                        font-size: 16px;
+                        text-align: center;
+                    }
+                }
+
+                .footer {
+                    padding: 16px;
+                    height: 48px !important;
+                    min-height: 48px !important;
+                    max-height: 48px !important;
+                    box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.12);
+                }
+            }
+        }
+
+        .mat-radio-group {
+            .mat-radio-button {
+                .mat-radio-label-content {
+                    word-break: break-all;
+                    white-space: nowrap;
+                    width: 180px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                
+                }
+            }
+        }
+
+   
+        
+                mat-radio-group {
+                    .media {
+                        position: relative;
+                    }
+        
+                    .mat-radio-container {
+                        position: absolute;
+                        top: 7px;
+                        left: 5px;
+        
+                        .mat-radio-outer-circle ,
+                        .mat-radio-inner-circle,
+                        .mat-radio-ripple.mat-ripple{
+                            width: 230px;
+                            height: 201px;
+                        }
+                        .mat-radio-inner-circle {
+                            background-color: transparent !important;
+                        }
+                    }
+
+                    .mat-radio-label-content {
+                        margin-top: 28px;    
+                    }
+
+
+                    .mat-radio-ripple.mat-ripple {
+                        left: 5%;
+                        top: 5%;
+                    }
+                }
+            
+                .mat-radio-outer-circle {
+                    opacity: 0;
+                }
+                
+                .mat-radio-checked {
+                    .mat-radio-inner-circle {
+                        opacity: 1 !important;
+                    }
+                    
+                    .mat-radio-outer-circle {
+                        border-color:  #A3BB39 !important;
+                        border-width: 4px !important;
+                        border-style: solid;
+                        border-radius: initial;
+                        opacity: 1;
+                    }
+                }
+    
+    }
+
+
+    mat-paginator {
+        background-color: #eceff1!important;       
+        
+        .mat-paginator-page-size-label,
+        .mat-paginator-range-label {
+            font-size: 16px;
+            color: #324a5e;
+        }
+
+        .mat-paginator-icon {
+            background: #324a5e!important;
+            color: #fff;
+        }
+
+        .mat-select-value {
+            font-size: 16px;
+            color: #324a5e;
+        }
+
+        .mat-select-arrow {
+            color: #324a5e!important;
+        }
+
+        .mat-paginator-page-size {
+            margin-right: 0;
+        }
+
+        .mat-paginator-range-label {
+            margin: 0 8px;
+        }
+    } 
+
+
+
+  

@@ -1,0 +1,46 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content forms" id="My-Dining-home">
+    
+    <div class="p-16 title"> 
+        <div class="h1 font-weight-800">MY DINING</div>
+    </div> 
+    
+    <div class="px-16 mat-table-p">
+        <mat-table class="simple clickable" #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+            <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+            <span *ngIf="column.columnDef">
+            
+                <mat-header-cell class="dt-paginations" *matHeaderCellDef>
+                    <h3>{{column.header}}</h3>
+                </mat-header-cell>
+
+                <mat-cell class="text-capitalize" *matCellDef="let element"> 
+                    <span *ngIf="column.columnDef!=='booking_start_date' && column.columnDef!=='status' && column.columnDef!=='service_title'">
+                        {{element[column.columnDef]}} 
+                    </span>
+                     <span *ngIf="column.columnDef=='service_title'">
+                        <span *ngIf="element.service!=null">{{element.service[column.columnDef]}}</span>
+                    </span>
+                    <span *ngIf="column.columnDef=='booking_start_date'">{{element[column.columnDef] | date: defaultDateTimeFormat.date_format}}</span>
+                    <span *ngIf="column.columnDef=='status'" [style.color]="element.status == 'cancelled' ? 'red' : element.status == 'pending'?  'orange':'green'"> 
+                        {{statusLabel[element[column.columnDef]] | titlecase}}   
+                        <!-- <span *ngIf="element[column.columnDef]=='confirmed'" class="green-fg font-size-16 line-height-16 pl-20">Confirmed</span>
+                        <span *ngIf="element[column.columnDef]=='cancelled'" class="red-fg font-size-16 line-height-16 pl-20">Cancelled</span>
+                        <span *ngIf="element[column.columnDef]=='pending'" class="yellow-800-fg font-size-16 line-height-16 pl-20">Pending</span> -->
+                    </span>
+                </mat-cell>
+            </span>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+
+    <div *ngIf="length > 0" class="more">
+        <a class="font-weight-600" [routerLink]="[homesettings.dining_see_more_url]">See All Dinings <mat-icon class="s-20">arrow_right</mat-icon></a>
+    </div>
+
+    <div class="no-record pt-20 pb-20 mx-16 border-bottom border-left border-right mb-20" *ngIf="length === 0">No Records Found</div>
+
+</div>
+<!-- / CARD CONTENT --> 

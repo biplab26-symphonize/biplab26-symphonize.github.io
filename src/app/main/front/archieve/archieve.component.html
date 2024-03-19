@@ -1,0 +1,43 @@
+<div class="page-layout carded fullwidth minwidth" id="Document-Menu">
+    <!-- HEADER -->
+    <breadcumb></breadcumb>   
+    <!-- / HEADER -->
+    <!-- CENTER -->
+    <div class="center p-4 pb-4">
+        <!-- CONTENT CARD -->
+        <div class="content">
+            <!-- CONTENT -->
+            <div class="content-card br-ds-0 content-wrap fuse-white-bg p-28 p-24">
+               <div fxLayout="row wrap">
+                    <ng-container *ngIf="archieveDocument && archieveDocument.length>0;else emptyBlock">
+                        <mat-list *ngFor="let archieve of archieveDocument"  class="border pt-0" fxFlex.lt-sm="100" fxFlex="48" [ngClass.lt-sm]="{'mx-0' : 'true'}">
+                            <h3 class="dt-paginations px-16 py-8 mat-headline">{{archieve.category_name}}</h3>
+                            <ng-container *ngFor="let document of archieve.documents">
+                                <a *ngIf="documentsUrl" mat-list-item [href]="documentsUrl + document.token + '/' + document.doc_name" target="_blank">
+                                    <mat-icon mat-list-icon>note</mat-icon>
+                                    <h4 mat-line>{{document.doc_name}}</h4>
+                                    <p mat-line style="display: none;"> {{document.created_at | date: defaultDateTimeFormat.date_format}} </p>
+                                </a>
+                            </ng-container>
+                        </mat-list>
+                    </ng-container>
+                    <!-- EmptyBlock -->
+                    <ng-template #emptyBlock>
+                        <div fxFlex="100" *ngIf="showEmptyMsg==false" fxLayoutAlign="center center">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </ng-template>
+               </div>
+                <!-- EmptyMessage  -->
+                <div class="message-box no-record mt-20" *ngIf="showEmptyMsg==true && archieveDocument && archieveDocument.length==0">
+                    No documents found!
+                </div>
+                
+            </div>
+            <!-- / CONTENT --> 
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -1,0 +1,118 @@
+@import "src/@fuse/scss/fuse";
+
+.word-break {
+    word-break: break-word;
+}
+.category-toolbar{
+    display: block !important;
+    height: auto !important;
+    max-height: auto !important;
+    border-bottom-color: rgba(0, 0, 0, 0.12) !important;
+    border-bottom: 1px solid !important;
+    .mat-button-toggle-group-appearance-standard{
+        border: none !important;
+    }
+    .mat-button-toggle-appearance-standard .mat-button-toggle-label-content{
+        line-height: 35px !important;
+    }
+}
+.course-content{
+    .fuse-card {
+        max-width: 100% !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .NameHighlights .NameHighlight-shover-block {
+        display: none;
+    }
+    .NameHighlightsHover{ position: relative;}
+    .NameHighlightsHover .NameHighlight-shover-block {
+        display: block;
+        position: absolute;
+        max-width: 350px;
+        top: 0px;
+        left: 0px;
+        z-index: 1000;
+        background-color: #fff;
+        max-height: 300px;
+        overflow: hidden;
+    }
+    .NameHighlightsHover .NameHighlight-shover-block .event_title {
+        margin: 0;
+        font-size: 18px;
+        line-height: 25px;
+        padding: 8px 10px;
+    }
+    .NameHighlightsHover .NameHighlight-shover-block .event_desc {
+        border: 1px solid #3b6c8f;
+        padding: 10px;
+        width: 300px;
+        max-height: 230px;
+        overflow: auto;
+    }
+}
+ 
+
+#events {
+  
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/staff-bg.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }              
+    }   
+
+}
+
+// Responsive 
+@include media-breakpoint('lt-sm') {
+    .content-wrap.p-28 {
+        padding: 20px !important;
+    }   
+}
+

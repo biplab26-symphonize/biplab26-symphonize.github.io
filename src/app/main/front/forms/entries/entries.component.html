@@ -1,0 +1,200 @@
+<div id="my-services" class="page-layout simple fullwidth layout-box">
+
+  <!-- HEADER -->
+  <breadcumb [directoryTitle]="displaySlug" [captialize]="true"></breadcumb>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div  class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+      <!--  CONTENT WRAP -->
+      <section class="content-wrap fuse-white-bg">
+
+          <form class="p-28 pb-0" fxLayout="column" fxLayoutAlign="start" #filter name="filterForm" [formGroup]="filterForm" novalidate autocomplete="off">
+
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start">
+                  <div fxFlex="30" fxFlex.lt-sm="100">
+                      <mat-form-field appearance="outline" floatLabel="always" class="filter-input w-100-p">
+                          <mat-label>Search</mat-label>
+                          <input matInput placeholder="Enter a keyword..."
+                          formControlName="searchKey">
+                      </mat-form-field>
+                  </div>
+                  <div fxFlex="70" fxLayoutAlign="end strech">
+                      <div class="pb-16 all-top-buttons">
+                          <!-- <button type="button" [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" class="mr-8" mat-stroked-button color="accent" [disabled]="(!selection.selected.length) ? true : false" (click)="deleteAll()"><mat-icon class="s-20">delete</mat-icon> Delete</button> -->
+                          <button type="button" [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" class="mr-8" mat-stroked-button color="accent" (click)="getPrint()"><mat-icon class="s-20">print</mat-icon> Print</button>
+                          <button type="button" [ngStyle.lt-md]="{'margin-bottom':'5px', 'padding':'0 8px'}" class="mr-8" mat-stroked-button color="accent" (click)="viewAllEvent()"><mat-icon class="s-20">notes</mat-icon> View all</button>
+                          <button type="button" [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" class="mr-8" mat-stroked-button color="accent" (click)="pastEvents()"><mat-icon class="s-20">event_note</mat-icon> Past {{generalSettings.pastdays}} Days</button>
+                        </div>
+                  </div> 
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start">
+                <div fxFlex="30" fxFlex.lt-sm="100">
+                   <span class="font-weight-800" [ngStyle]="{'font-size':'28px'}">General Services</span>
+                </div>
+            </div> 
+          </form>
+
+          <div class="table-wrap p-28 pb-0">
+              <table class="simple events-details-table" [@animateStagger]="{value:'50'}" mat-table [@animateStagger]="{value:'50'}" #table [dataSource]="dataSource" matSort matSortActive="created_at" matSortDirection="desc" matSortDisableClear>
+                  <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                    <span *ngIf="column.columnDef!=='select'">
+                      <tr>
+                        <th class="table-header fuse-white-fg dt-paginations" mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}" disabled="{{!column.sortable}}" >{{column.header}}</th>
+                      </tr>  
+
+                      <tr class="dt-paginations">
+                        <td mat-cell *matCellDef="let element"> 
+                        <span *ngIf="column.columnDef =='form_title'">
+                          {{element[column.columnDef] }} 
+                        </span>
+                        <span *ngIf="column.columnDef =='created_at'">
+                          {{element[column.columnDef]  | date: defaultDateTimeFormat.date_format}} 
+                        </span>
+                        <span *ngIf="column.columnDef =='status'" [style.color]="element.status == 'cancelled' ||  element.status == 'denied' ? 'red' : element.status == 'pending'?  'orange':'green'">
+
+                          {{ statusName[element[column.columnDef]] | titlecase}}
+                        </span>
+                        <span *ngIf="column.columnDef =='view_form'">
+                          <a [routerLink]="['/forms/view/entries/',element.entry_id]" >Click Here</a>
+                        </span>
+
+                        <span *ngIf="column.columnDef =='cancel_entry'">
+                          <div  *ngIf="element.status=='cancelled'">Cancel Entry</div>
+                          <div  *ngIf="element.status=='denied' || element.status=='completed'">Can't Cancel Entry</div>
+                          <div *ngIf="element.status !='cancelled' && element.status !='denied' && element.status !='completed'">
+                            <button type="button" color="accent" (click)="cancelAll(element.entry_id)" mat-stroked-button color="accent"  >Cancel</button>
+                          </div>
+                        </span>
+                        </td>
+                      </tr>
+                    </span>
+
+                    <span *ngIf="column.columnDef=='select'">
+                      <tr>
+                          <th mat-header-cell *matHeaderCellDef class=" "> 
+                            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                          </th>
+                      </tr>
+
+                      <tr>   
+                        <td mat-cell *matCellDef="let element"> 
+                          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(element.entry_id) : null" [checked]="selection.isSelected(element.entry_id)">
+                          </mat-checkbox>   
+                        </td>
+                      </tr>
+                    </span> 
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="dt-paginations"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+          </div>
+          <!-- / TABLE WRAP -->
+
+
+          
+
+          <div class="border py-20 mx-28" *ngIf="this.dataSource.filteredData.total === 0">
+              <div class="no-record">No Entries Found</div>
+          </div>
+
+          <div class="px-28">
+            <p  class="font-weight-600 my-20">To delete the request, please select the checkbox next to an form you wish to delete and then click the Delete button. You may delete multiple forms at once.
+            </p>
+          </div>
+          <div class="px-28 mt-20" fxLayout="row" fxLayoutAlign="start center">
+            <button type="button" class="mr-4" mat-stroked-button color="accent" [disabled]="(!selection.selected.length) ? true : false" (click)="deleteAll()"><mat-icon class="s-20">delete</mat-icon> Delete</button>
+          </div>
+
+          <div class="py-28 pagination px-28"> 
+              <mat-paginator 
+                  class="dt-paginations pb-12"
+                  #paginator   
+                   [length]="this.dataSource.filteredData.total" 
+                   [pageSize]="PaginationOpt.pageSize"
+                   [pageSizeOptions]="PaginationOpt.pageSizeOptions"
+                   showFirstLastButtons>
+               </mat-paginator>
+          </div>
+
+
+      </section>
+      <!--  / CONTENT WRAP -->
+      <section class="content-wrap fuse-white-bg py-28 worxhub-wrapper" *ngIf="newWorkxhubarray.length >0">
+          <div class="content p-24" fusePerfectScrollbar>
+            <mat-card  fusePerfectScrollbar class="w-100-p p-0 box-shadow-none">
+              <h2 class="font-size-28 font-weight-600 m-16 mx-28" [ngClass.lt-sm]="{'pb-20': true}"> Maintenance and Housekeeping Form</h2>
+                <div class="px-28 worxhub-table-wrapper">
+                  <table class="worxhub-table table table-bordered w-100-p text-capitalize simple">
+                    <thead class="border-bottom">
+                        <th class="p-16 pl-24 text-bold  dt-paginations" >  <mat-checkbox class="example-margin"
+                        [checked]="allComplete"
+                        [indeterminate]="someComplete()"
+                        (change)="setAll($event.checked)"> </mat-checkbox></th>
+                        <th class="p-16 px-8 text-bold dt-paginations">Form Name</th>
+                        <th class="p-16 px-8 text-bold dt-paginations w-120">Requested On</th>
+                        <th class="p-16  px-8 text-bold dt-paginations w-100">WO#</th>
+                        <th class="p-16 px-8 text-bold dt-paginations w-200">Description</th>
+                        <th class="p-16 px-8 text-bold dt-paginations">Location</th>
+                        <th class="p-16 px-8  text-bold dt-paginations w-120">Status</th>
+                        <th class="p-16 px-8 text-bold dt-paginations text-center" align="center">View Form</th>
+                    </thead>
+  
+                    <tbody>
+                      <ng-container *ngFor="let setting of newWorkxhubarray;let i=index"  >
+                          <!-- *ngFor="let emp of e;let i=index" -->
+                        
+                          <tr *ngIf="setting" class="border-bottom">
+                                <!-- <td><mat-slide-toggle  [checked]="showNotification" (change)="statuschange($event,setting.id)"></mat-slide-toggle></td> -->
+                                <td class="py-16 px-8 pl-24 text-center">
+                                  <mat-checkbox [(ngModel)]="setting.check"
+                                  [id]="setting.data.ID"
+                                  (ngModelChange)="updateAllComplete($event,setting.data.ID)">
+                                </mat-checkbox>
+                                </td>
+                                <td class="py-16 px-8 text-center" align="center"> {{setting.data.Department}} </td>
+                                <td class="py-16 px-8 text-center" align="center">
+                                  {{setting.data.RequestDateTime  | date: defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}
+                                </td>
+                                <td class="py-16 px-8 text-center" align="center">{{setting.data.Number}}</td>
+                                <td class="py-16 px-8 text-center" align="center">{{setting.data.Description}}</td>
+                                <td class="py-16 px-8 text-center" align="center">{{setting.data.LocationDescription}}</td>
+                                <td class="py-16 px-8 text-center" align="center" *ngIf="setting.data.LastOutcomeStatus == 'Pending' " [style.color]="setting.data.LastOutcomeStatus == 'Cancelled' ||  setting.data.LastOutcomeStatus == 'Denied' || setting.data.LastOutcomeStatus == 'Rejected' ? 'red' : setting.data.LastOutcomeStatus == 'Pending'?  'green':'green'" >Submitted to WorxHub</td>
+                                <td class="py-16 px-8 text-center" align="center" *ngIf="setting.data.LastOutcomeStatus != 'Pending' " [style.color]="setting.data.LastOutcomeStatus == 'Cancelled' ||  setting.data.LastOutcomeStatus == 'Denied' || setting.data.LastOutcomeStatus == 'Rejected' ? 'red' : setting.data.LastOutcomeStatus == 'Pending'?  'orange':'green'" >{{setting.data.LastOutcomeStatus}}</td>
+                                <td class="py-16 px-8 text-center" align="center"><a [routerLink]="['/forms/view/workxhub/',setting.data.ID]">Click here</a> </td>                                  
+                          </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+            </mat-card>
+                        
+            <div class="px-28 delete-btn">
+              <p class="font-weight-600 my-20">To delete the request, please select the checkbox next to the form you wish to delete and then click the "Delete Worxhub Form" button. You may delete multiple forms at once.</p>
+              
+              <div>
+                <mat-checkbox class="example-margin"
+                  [checked]="allComplete"
+                  [indeterminate]="someComplete()"
+                  (change)="setAll($event.checked)">Check All
+                </mat-checkbox> &nbsp;
+                <button mat-stroked-button color="accent" [disabled]="disableDeleteButton" (click)="DeleteData()" cdkFocusInitial>
+                  <mat-icon>delete</mat-icon> Delete Form 
+                </button>
+              </div>
+            </div>
+                        
+
+          </div> 
+      </section>
+  </div>
+  <!-- / CONTENT -->
+
+</div>
+<!-- / EVENTS -->
+
+
+

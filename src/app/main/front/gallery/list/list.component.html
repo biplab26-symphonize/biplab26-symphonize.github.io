@@ -1,0 +1,68 @@
+<div id="gallery" class="page-layout simple fullwidth">
+    <!-- CENTER -->
+
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+    <div class="content center p-4 pb-4" >
+        <!-- CONTENT CARD -->
+        <div class="content-card br-ds-0 content-wrap fuse-white-bg p-28">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <div class="courses" fxLayout="row wrap" fxLayoutGap="10px grid">
+                    <ng-container *ngIf="galleries && galleries.data && galleries.data.length>0;else emptyBlock">
+                        <div class="course" *ngFor="let gallery of galleries.data " fxFlex="33" fxFlex.lt-md="100"
+                            >
+                            <div class="course-content " fxLayout="column" fxFlex="100">
+                                <div class="fuse-card h-100-p">
+                                    <div class="p-16" >
+                                        <div class="text-center cursor-pointer collection-stack"   [routerLink]="['/gallery/albums/',gallery.id]">
+                                            <div class="collection-view"></div>
+                                            <!-- <div *ngIf="gallery.albummedia.length>0"> -->
+                                                <ng-container *ngFor="let album of gallery.albummedia let i =index">
+                                                    <div   *ngIf="album.url!=='' && i<3 "  class="collection-shadow-{{i}}">
+                                                        <img class="w-100-p h-100-p"  [src]="album.url" (error)="album.url = _defaultAvatar" />
+                                                    <!-- </div> -->
+                                                    </div>
+                                                    <!-- {{gallery.category_name}} -->
+                                                </ng-container>
+                                              
+                                        </div>
+                                        <div class="h2 word-break text-center">{{gallery.category_name}}</div>
+                                    </div>
+                                    <!-- Buttons -->
+                                    <div class="p-16 pt-4" fxLayout="row" fxLayoutAlign="start center">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- EmptyBlock -->
+                    <ng-template #emptyBlock>
+                        <div fxFlex="100" *ngIf="showEmptyMsg==false" fxLayoutAlign="center center">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </ng-template>
+                </div>
+                <div class="message-box my-20"
+                    *ngIf="showEmptyMsg==true && galleries && galleries.data && galleries.data.length==0 ">
+                    <div class="no-record"> No Galleries Found</div>
+                </div>
+            </div>
+            <!-- / CONTENT -->
+            <!-- FOOTER -->
+            <div class="list-footer blue-grey-50 mt-20">
+                <div class="pagination" fxLayout="row wrap" fxLayoutAlign="end">
+                    <mat-paginator #paginator class="blue-grey-50" [length]="galleries.total"
+                        [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                    </mat-paginator>
+                </div>
+            </div>
+            <!-- / FOOTER -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+</div>

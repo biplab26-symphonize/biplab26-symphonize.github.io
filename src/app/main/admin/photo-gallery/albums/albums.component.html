@@ -1,0 +1,254 @@
+<div class="page-layout page-layout-list simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 " fxLayout="column" fxLayoutAlign="start"
+      fxLayout.gt-md="row" fxLayoutAlign.gt-md="space-between center" ngClass.gt-md="h-80" [ngClass.lt-md]="{'hidden-md': selection.selected.length > 0 }" [ngStyle.lt-md]="{'max-height': 'none','min-height': 'auto','height': 'auto'}">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">photo_album
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Albums
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center" fxLayout.lt-md="column">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" class="mr-4 ml-4"  ngClass.lt-md="mb-8" [routerLink]="addAlbum">
+                    <mat-icon class="mr-4">add</mat-icon>
+                    Add New Album
+                </button>
+
+                <!--TRASH Link-->
+                <button *ngIf="!isTrashView" mat-raised-button class="reference-button"  ngClass.lt-md="mb-8" class="mr-4 ml-4" [routerLink]="trashUrl">
+                    <mat-icon class="mr-4">restore_from_trash</mat-icon>
+                    View Trash
+                </button>
+
+                <!--AlbumsList-->
+                <button *ngIf="isTrashView" mat-raised-button class="reference-button"   ngClass.lt-md="mb-8" class="mr-4 ml-4" [routerLink]="viewUrl">
+                    <mat-icon class="mr-4">photo_album</mat-icon>
+                    Albums List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+    </div>
+    <!-- HEADER -->
+    <!-- SELECTED BAR -->
+    <div class="selected-bar accent-600 "  ngClass.gt-md="h-80"  *ngIf="selection.selected.length>0" [@slideInTop]>
+        <div fxFlex fxLayout="row" fxLayoutAlign="start center" class="px-24 py-0 header accent p-24 " ngClass.gt-md="h-80">
+
+            <div class="close-button-wrapper" fxFlex="0 1 auto" fxFlex.gt-sm="220px"  ngClass.lt-md="mb-8" (click)="selection.clear()">
+                <button mat-raised-button ngClass.lt-md="mb-8">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back
+                </button>
+            </div>
+
+            <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+
+                <div class="multi-select-actions">
+                    <span *ngIf="!isTrashView">
+                        <button type="button" mat-raised-button class=" mr-4 ml-4" ngClass.lt-md="mb-8"  (click)="deleteAlbum(0)"
+                            [disabled]="(!selection.selected.length) ? true : false">Delete Album</button>
+                        <button type="button" mat-raised-button class=" mr-4 ml-4" ngClass.lt-md="mb-8" (click)="changeStatus('A')"
+                            [disabled]="(!selection.selected.length) ? true : false">Active</button>
+
+                        <button type="button" mat-raised-button class=" mr-4 ml-4" ngClass.lt-md="mb-8" (click)="changeStatus('I')"
+                            [disabled]="(!selection.selected.length) ? true : false">Inactive</button>
+
+                    </span>
+                    <span *ngIf="isTrashView">
+                        <button type="button" mat-raised-button color="primary" class=" mr-4 ml-4" ngClass.lt-md="mb-8"
+                            (click)="restoreOrDeleteAlbum(0,false)"
+                            [disabled]="(!selection.selected.length) ? true : false">Restore</button>
+
+                        <!--PERMENENT DELETE-->
+                        <button type="button" mat-raised-button color="warn" class="mr-4 ml-4" ngClass.lt-md="mb-8"
+                            (click)="restoreOrDeleteAlbum(0,true)"
+                            [disabled]="(!selection.selected.length) ? true : false">Delete Album</button>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- / SELECTED BAR -->
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+        <!-- CENTER -->
+        <div class="center p-24 pb-56">
+            <!-- FILTER -->
+            <div class="filters fuse-white-bg py-20 px-16 mb-20 pb-0" fxLayout="column" fxLayoutAlign="center center"
+                fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                <form class="w-100-p" #filter name="filterForm" [formGroup]="filterForm" fxLayout="row"
+                    fxLayoutAlign="space-between center">
+
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100-p" fxLayout.lt-md="column">
+                        <mat-form-field appearance="outline" floatLabel="always" ngClass.lt-md="w-100-p" class="filter-search mr-4 ml-4">
+                            <mat-label>Search</mat-label>
+                            <input matInput placeholder="Enter a keyword..." formControlName="searchKey">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="filter-select" ngClass.lt-md="w-100-p">
+                            <mat-label>Gallery Name</mat-label>
+                            <mat-select formControlName="gallery_id" (selectionChange)="selectionChanged($event)">
+                                <mat-option value="">
+                                    All
+                                  </mat-option>
+                                <mat-option *ngFor="let gallery of GalleryList" [value]="gallery.id">
+                                {{gallery.category_name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                        <div ngClass.lt-md="w-100-p">
+
+                            <mat-form-field appearance="outline" class="filter-select mr-4 ml-4" ngClass.lt-md="w-100-p">
+                                <mat-label>Status</mat-label>
+                                <mat-select placeholder="Status" formControlName="status">
+                                    <mat-option *ngFor="let status of StatusList | keyvalue" [value]="status.key">
+                                        {{status.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <!-- / FILTER -->
+
+            <!-- CONTENT -->
+            <div class="content">
+                <div [ngStyle.lt-sm]="{'overflow-x': 'scroll'}">
+                    <table class="users-table users-list-table green-bg-header" mat-table
+                        #table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc"
+                        matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+                        <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                            <!-- OTHER THAN CHECKBOX -->
+                            <span *ngIf="column.columnDef!=='select'">
+                                <th class="p-12" mat-header-cell *matHeaderCellDef
+                                    mat-sort-header="{{column.sortable==true ? column.columnDef : null}}"
+                                    disabled="{{!column.sortable}}"> {{column.header}} </th>
+                                <td class="p-12" mat-cell *matCellDef="let element">
+                                    <!-- OTHER THAN STATUS -->
+                                    <span *ngIf="column.columnDef!=='parent_id' && column.columnDef!=='description' && column.columnDef!=='status' && column.columnDef!=='action' && column.columnDef!=='bg_image'  && column.columnDef!=='created_at' ">{{element[column.columnDef]}}</span>
+                                    <span *ngIf="column.columnDef=='parent_id' "> <span class="primary text-boxed">{{element.gallery_name}}</span></span>
+                                    
+                                    <ng-container *ngIf="column.columnDef=='description'"><div [innerHTML]="element[column.columnDef]  | sanitizeHtml"></div></ng-container>
+
+                                    <span *ngIf="column.columnDef=='created_at'">{{element[column.columnDef] | date :defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</span>
+                                    <!-- [innerHTML]="biographydata  | sanitizeHtml" -->
+                                    <span *ngIf="column.columnDef=='bg_image' ">
+                                        <img *ngIf="element.bg_image!==''" width="50px" class="font-size-12 line-height-12" alt="element.bg_image" [src]="element.bg_image" (error)="element.bg_image = _defaultAlbum" />
+                                        <mat-icon *ngIf="element.bg_image==''" class="icon s-40 logo-icon">photo_album</mat-icon>
+                                    </span>
+                                    <!-- NORMAL VIEW Buttons -->
+                                    <span *ngIf="column.columnDef=='status'">
+                                        <!--status-->
+                                        <button mat-icon-button aria-label="Status" class=" check-status">
+                                            <mat-icon *ngIf="element.status=='Active'" class="active-icon green-600 s-16 check-status">check</mat-icon>
+                                            <mat-icon *ngIf="element.status=='Inactive'" class="active-icon red-500 s-16">close</mat-icon>
+                                        </button>
+                                    </span>
+                                    <span *ngIf="column.columnDef=='action' && !isTrashView">
+                                        <div fxFlex="row" fxLayoutAlign="end center">
+                                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                                (click)="$event.stopPropagation();">
+                                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                                            </button>
+
+                                            <mat-menu #moreMenu="matMenu">
+                                                <button mat-menu-item aria-label="edit"
+                                                    [routerLink]="['/admin/view/album/',element.id]">
+                                                    <mat-icon>pageview</mat-icon>
+                                                    <span>View Images</span>
+                                                </button>
+                                                <button mat-menu-item aria-label="edit"
+                                                    [routerLink]="['/admin/albums/edit/',galleryId,element.id]">
+                                                    <mat-icon>edit</mat-icon>
+                                                    <span>Edit Album</span>
+                                                </button>
+                                                <button mat-menu-item aria-label="status"
+                                                    (click)="changeStatus( element.status=='Active' ? 'I' : 'A' ,element.id)"
+                                                    >
+                                                    <mat-icon *ngIf="element.status=='Inactive'">check</mat-icon>
+                                                    <mat-icon *ngIf="element.status=='Active'">close</mat-icon>
+                                                    <div *ngIf="element.status=='Active';then active else inactive"></div>
+                                                    <ng-template #active>Inactive</ng-template>
+                                                    <ng-template #inactive>Active</ng-template>
+                                                </button>
+                                                <button mat-menu-item aria-label="remove" (click)="deleteAlbum(element.id)">
+                                                    <mat-icon>delete</mat-icon>
+                                                    <span>Remove Album</span>
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                    </span>
+                                    <!-- TRASH VIEW BUTTONS -->
+                                    <span *ngIf="column.columnDef=='action' && isTrashView==true">
+                                        <div fxFlex="row" fxLayoutAlign="end center">
+                                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                                (click)="$event.stopPropagation();">
+                                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                                            </button>
+                                            <mat-menu #moreMenu="matMenu">
+                                                <button mat-menu-item aria-label="restore"
+                                                    (click)="restoreOrDeleteAlbum(element.id,false)">
+                                                    <mat-icon>restore</mat-icon>
+                                                    <span>Restore</span>
+                                                </button>
+                                                <button mat-menu-item aria-label="delete"
+                                                    (click)="restoreOrDeleteAlbum(element.id,true)">
+                                                    <mat-icon>delete</mat-icon>
+                                                    <span>Remove</span>
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                    </span>
+                                </td>
+                            </span>
+                            <!-- CHECKBOX COLUMN -->
+                            <span *ngIf="column.columnDef=='select'">
+                                <th class="p-12" mat-header-cell *matHeaderCellDef>
+                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                        [checked]="selection.hasValue() && isAllSelected()"
+                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                    </mat-checkbox>
+                                </th>
+                                <td class="p-12" mat-cell *matCellDef="let element">
+                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                        (change)="$event ? selection.toggle(element.id) : null"
+                                        [checked]="selection.isSelected(element.id)">
+                                    </mat-checkbox>
+                                </td>
+                            </span>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+                <div  fxLayout="column" fxLayoutAlign=" center" class="message-box mt-20" *ngIf="this.dataSource.filteredData.total === 0">No Records Found</div>
+
+                <mat-paginator class="blue-grey-50" #paginator [length]="this.dataSource.filteredData.total"
+                    [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                </mat-paginator>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+</div>

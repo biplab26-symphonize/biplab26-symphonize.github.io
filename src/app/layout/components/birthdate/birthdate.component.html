@@ -1,0 +1,22 @@
+<!-- DAYS -->
+<mat-form-field appearance="outline" fxFlex="50" *ngIf="daysArray.length>0">
+    <mat-label>Day</mat-label>
+    <mat-select placeholder="Day" [(ngModel)]="birth_day" (selectionChange)="setFieldValue()" [disabled]="restrictFormInfo" [ngClass]="{'disable-pointer':restrictFormInfo==true}">
+        <mat-option value="" *ngIf="type=='directory'"></mat-option>
+        <ng-container *ngFor="let day of daysArray">
+            <mat-option [value]="day">{{day}}</mat-option>
+        </ng-container>    
+    </mat-select>
+</mat-form-field>
+<!-- MONTHS -->
+<mat-form-field appearance="outline" fxFlex="50" class="pl-8" *ngIf="monthsArray.length>0">
+    <mat-label>Month</mat-label>
+    <mat-select placeholder="Month" [(ngModel)]="birth_month" (selectionChange)="setFieldValue()" [disabled]="restrictFormInfo" [ngClass]="{'disable-pointer':restrictFormInfo==true}">
+        <mat-option value="" *ngIf="type=='directory'"></mat-option>
+        <ng-container *ngFor="let month of monthsArray">
+            <mat-option [value]="month">
+            {{month}}
+            </mat-option>
+        </ng-container>    
+    </mat-select>
+</mat-form-field>

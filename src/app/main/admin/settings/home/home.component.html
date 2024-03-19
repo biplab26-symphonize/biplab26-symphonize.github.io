@@ -1,0 +1,1214 @@
+<div id="settings-home" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+	<!-- HEADER -->
+	<div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+		fxLayoutAlign.gt-xs="space-between center">
+
+		<!-- APP TITLE -->
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<div class="logo" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+					perm_data_setting
+				</mat-icon>
+				<span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+					Settings
+				</span>
+			</div>
+		</div>
+		<!-- / APP TITLE -->
+
+		<!-- BTN's -->
+		<div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+			<div class="mt-16 mt-sm-0">
+				<button mat-raised-button class="reference-button" [disabled]="isSubmit"
+					(click)="onSaveFieldClick($event)" cdkFocusInitial>
+					<mat-icon class="mr-4">settings_backup_restore</mat-icon>
+					<span>Update Settings</span>
+				</button>
+			</div>
+		</div>
+		<!-- / BTN's -->
+
+	</div>
+	<!-- / HEADER -->
+
+	<!-- TABS -->
+	<div class="tabs-wrap">
+
+		<!-- TABS -->
+		<nav mat-tab-nav-bar class="px-24">
+			<a mat-tab-link routerLink="/admin/settings/general">General</a>
+			<a mat-tab-link routerLink="/admin/settings/home" active="true">Home</a>
+			<a mat-tab-link routerLink="/admin/settings/export">Export</a>
+			<!-- <a mat-tab-link routerLink="/admin/settings/theme">Theme</a>
+			<a mat-tab-link routerLink="/admin/settings/permissions">Permissions</a> -->
+		</nav>
+		<!-- / TABS -->
+
+	</div>
+	<!-- / TABS -->
+
+	<!-- CONTENT -->
+	<div class="content" fusePerfectScrollbar>
+
+
+		<!-- CENTER -->
+		<div class="center p-24 pb-56">
+
+			<!-- SETTINGS -->
+			<form autocomplete="off" #f="ngForm" [formGroup]="homeSettingForm" novalidate autocomplete="off">
+
+				<div id="settings">
+
+					<div class="mat-title">
+						<mat-icon>settings</mat-icon> Home Settings
+					</div>
+					<div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+						<!--DEFAULT LAYOUT-->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Home Page Default Layout</div>
+								<div class="mat-caption secondary-text">This setting are use to change the home page
+									layout</div>
+							</div>
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-form-field appearance="outline">
+									<mat-select formControlName="default_layout">
+										<ng-container *ngFor="let layout of layoutList | keyvalue">
+											<mat-option *ngIf="layout.key!==''" [value]="layout.key">
+												{{layout.value}}
+											</mat-option>
+										</ng-container>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<!-- NAVBAR LAYOUT -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Navigation Bar Default Layout</div>
+								<div class="mat-caption secondary-text">This setting are use to change the navigation
+									bar and logo position</div>
+							</div>
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-form-field appearance="outline">
+									<mat-select formControlName="navbar_layout">
+										<ng-container *ngFor="let layout of navlayoutList | keyvalue">
+											<mat-option *ngIf="layout.key!==''" [value]="layout.key">
+												{{layout.value}}
+											</mat-option>
+										</ng-container>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<!-- DatetimeSettings -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Date Time Settings</div>
+								<div class="mat-caption secondary-text">show or hide live date time.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="datetimeChecked" formControlName="datetime"
+									class="mb-12">
+									<span *ngIf="datetimeChecked">Visible</span>
+									<span *ngIf="!datetimeChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!--DateTimeFormat-->
+								<mat-form-field appearance="outline" *ngIf="datetimeChecked">
+									<mat-select formControlName="datetimeformat" [required]="datetimeChecked">
+										<ng-container *ngFor="let format of formatList | keyvalue">
+											<mat-option *ngIf="format.key!==''" [value]="format.key">
+												{{format.value}}
+											</mat-option>
+										</ng-container>
+									</mat-select>
+								</mat-form-field>
+								<!-- colwidth -->
+								<mat-form-field appearance="outline" class="w-100-p" *ngIf="datetimeChecked">
+									<mat-label>Column Width</mat-label>
+									<input matInput type="number" min="1" max="100" name="datetime_colwidth"
+										placeholder="Widget Column Width" formControlName="datetime_colwidth">
+								</mat-form-field>
+							</div>
+						</div>
+						<!-- /DatetimeSettings -->
+						<div class="sep"></div>
+						<!-- Home Announcement -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Home Announcement</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the home
+									announcement on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="homeChecked" formControlName="home_ann">
+									<span *ngIf="homeChecked">Visible</span>
+									<span *ngIf="!homeChecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<!-- announcement layout -->
+						<div fxLayout="column" fxLayout.gt-md="row" *ngIf="homeChecked" class="mt-12">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Announcement Layout</div>
+								<div class="mat-caption secondary-text">This setting are use to change the layout
+									announcement widget</div>
+							</div>
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-form-field appearance="outline">
+									<mat-select formControlName="announcement_layout">
+										<ng-container *ngFor="let layout of anclayoutList | keyvalue">
+											<mat-option *ngIf="layout.key!==''" [value]="layout.key">
+												{{layout.value}}
+											</mat-option>
+										</ng-container>
+									</mat-select>
+								</mat-form-field>
+								<!-- colwidth -->
+								<mat-form-field appearance="outline" class="w-100-p"
+									*ngIf="homeSettingForm.get('announcement_layout').value=='column'">
+									<mat-label>Column Width</mat-label>
+									<input matInput type="number" min="1" max="100" name="announcement_colwidth"
+										placeholder="Widget Column Width" formControlName="announcement_colwidth">
+								</mat-form-field>
+							</div>
+						</div>
+						<!-- /Home Announcement -->
+						<div class="sep"></div>
+						<!-- Scroll Announcement -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Scroll Announcement</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the scroll
+									announcement on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="scrollChecked" formControlName="scroll_ann">
+									<span *ngIf="scrollChecked">Visible</span>
+									<span *ngIf="!scrollChecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div>
+						<!-- /Scroll Announcement -->
+						<div class="sep"></div>
+						<!-- dining announcemnet -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Dining Announcement</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the dining
+									announcement on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="diningannChecked" formControlName="dining_ann">
+									<span *ngIf="diningannChecked">Visible</span>
+									<span *ngIf="!diningannChecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div>
+						<!-- /dining announcement -->
+						<div class="sep"></div>
+						<!-- event announcement -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Event Announcement</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the event
+									announcement on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="eventannChecked" formControlName="event_ann">
+									<span *ngIf="eventannChecked">Visible</span>
+									<span *ngIf="!eventannChecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div>
+						<!-- /event announcenet -->
+						<div class="sep"></div>
+						<!-- Featured Image -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Featured Image</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the
+									background image on home page and show the label into the home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="60">
+								<mat-slide-toggle [(ngModel)]="imageChecked" formControlName="featured_image"
+									(change)="is_toggleChange(imageChecked,'featured_image')">
+									<span *ngIf="imageChecked">Visible</span>
+									<span *ngIf="!imageChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- IMAGE -->
+								<div class="mt-20" *ngIf="imageChecked">
+									<div class="logo-preview pb-12" *ngIf="isImg">
+										<img [src]="imgURL" height="150" width="170">
+										<span style="color:red;" *ngIf="message">{{message}}</span>
+									</div>
+									<mat-form-field class="readonly w-100-p" appearance="outline" *ngIf="isImg">
+										<input matInput readonly placeholder="URL Here" value="{{imgURL}}">
+									</mat-form-field>
+									<input hidden type="file" id="featured_image_url"
+										(change)="preview($event, file.files)" [accept]="inputAccpets" #file />
+
+									<div class="btn">
+										<button mat-stroked-button color="primary" (click)="file.click()"
+											class="mr-12">Upload</button>
+										<button mat-stroked-button color="warn"
+											(click)="removeFeaturedLogo()">Remove</button>
+									</div>
+									<ng-container
+										*ngIf="homeSettingForm.get('featured_image_url').invalid && (homeSettingForm.get('featured_image_url').dirty || homeSettingForm.get('featured_image_url').touched)"
+										ngProjectAs="mat-error">
+										<mat-error *ngIf="homeSettingForm.get('featured_image_url').errors.required">
+											Featured Image is Required</mat-error>
+									</ng-container>
+									<br>
+									<label>Front Title :</label>
+									<div class="row">
+										<div fxLayout="row" fxFlex="100">
+											<editor class="w-100-p" [init]="tinyMceSettings" name="front_title"
+												formControlName="front_title"></editor>
+										</div>
+									</div>
+									<!-- LAYOUT -->
+									<mat-form-field appearance="outline">
+										<mat-select formControlName="featured_layout">
+											<ng-container *ngFor="let layout of featuredList | keyvalue">
+												<mat-option *ngIf="layout.key!==''" [value]="layout.key">
+													{{layout.value}}
+												</mat-option>
+											</ng-container>
+										</mat-select>
+									</mat-form-field>
+									<!-- /IMAGE -->
+								</div>
+							</div>
+						</div>
+						<!-- /Featured Image -->
+						<div class="sep"></div>
+						<!-- QuicklinkMenus -->
+						<!--DEFAULT LAYOUT-->
+						<div fxLayout="column" fxLayout.gt-md="row" *ngIf="quickMenus.length>0">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Home Page Quicklinks</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the
+									quicklinks on home page.</div>
+							</div>
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="quicklinkChecked" formControlName="quicklink_set"
+									(change)="quicklinkCheckedData(quicklinkChecked)">
+									<span *ngIf="quicklinkChecked">Visible</span>
+									<span *ngIf="!quicklinkChecked">Hidden</span>
+								</mat-slide-toggle>
+								<div class="mt-20" *ngIf="quicklinkChecked">
+									<mat-form-field appearance="outline">
+										<mat-select formControlName="quicklink_menus" multiple="true">
+											<ng-container *ngFor="let menu of quickMenus">
+												<mat-option [value]="menu.menu_id">
+													{{menu.menu_title}}
+												</mat-option>
+											</ng-container>
+										</mat-select>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<!-- Weather Settings -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Weather Settings</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the weather
+									settings on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="60">
+								<div fxLayout="row" fxLayoutAlign="start center" class="mb-8">
+									<mat-slide-toggle [(ngModel)]="weatherChecked" formControlName="weather_set"
+										(change)="weather_setChange(weatherChecked)">
+										<span *ngIf="weatherChecked">Visible</span>
+										<span *ngIf="!weatherChecked">Hidden</span>
+									</mat-slide-toggle>
+								</div>
+								<!--CITY ID,APP ID ,CITY NAME AND UNIT  -->
+								<ng-container *ngIf="weatherChecked">
+									<div fxLayout="row" fxLayoutAlign="start center">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Weather Title</mat-label>
+											<input matInput type="text" name="title" placeholder="Weather Title"
+												formControlName="title">
+
+											<ng-container
+												*ngIf="homeSettingForm.get('title').invalid && (homeSettingForm.get('title').dirty || homeSettingForm.get('title').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('title').errors.required">city
+													name is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+										<!-- CITY NAME -->
+										<mat-form-field appearance="outline" class="w-100-p ml-4">
+											<mat-label>City Name</mat-label>
+											<input matInput type="text" name="city_name" placeholder="City Name"
+												formControlName="city_name">
+											<ng-container
+												*ngIf="homeSettingForm.get('city_name').invalid && (homeSettingForm.get('city_name').dirty || homeSettingForm.get('city_name').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('city_name').errors.required">city
+													name is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxLayout="row" fxLayoutAlign="start center">
+										<!--CITY ID  -->
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>City ID</mat-label>
+											<input matInput type="text" name="city_id" placeholder="City ID"
+												formControlName="city_id">
+											<ng-container
+												*ngIf="homeSettingForm.get('city_id').invalid && (homeSettingForm.get('city_id').dirty || homeSettingForm.get('city_id').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('city_id').errors.required">city
+													id is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+										<!-- APP ID -->
+										<mat-form-field appearance="outline" class="w-100-p ml-4">
+											<mat-label>App ID</mat-label>
+											<input matInput type="text" name="app_id" placeholder="App ID"
+												formControlName="app_id">
+											<ng-container
+												*ngIf="homeSettingForm.get('app_id').invalid && (homeSettingForm.get('app_id').dirty || homeSettingForm.get('app_id').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('app_id').errors.required">app id
+													is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxLayout="row" fxLayoutAlign="start center">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Size</mat-label>
+											<mat-select formControlName="size">
+												<mat-option value="tall">Tall</mat-option>
+												<mat-option value="wide">Wide</mat-option>
+											</mat-select>
+											<ng-container
+												*ngIf="homeSettingForm.get('size').invalid && (homeSettingForm.get('size').dirty || homeSettingForm.get('size').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('size').errors.required">Size is
+													Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+										<mat-form-field appearance="outline" class="w-100-p ml-4">
+											<mat-label>Forecast</mat-label>
+											<mat-select formControlName="forecast">
+												<mat-option *ngFor="let forecast of forecastList | keyvalue"
+													[value]="forecast.key">
+													{{forecast.value}}
+												</mat-option>
+											</mat-select>
+											<ng-container
+												*ngIf="homeSettingForm.get('forecast').invalid && (homeSettingForm.get('forecast').dirty || homeSettingForm.get('forecast').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('forecast').errors.required">app
+													id is Required
+												</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxLayout="row" fxLayoutAlign="start center" class="mb-12">
+										<div fxFlex="50">
+											<div class="mb-12">
+												<label>Weather Unit</label><br />
+											</div>
+											<mat-radio-group name="unit" formControlName="unit"
+												[formControl]="homeSettingForm.get('unit')">
+												<mat-radio-button value="imperial" class="mr-8"><span>Fahrenheit ( F
+														)</span></mat-radio-button>
+												<mat-radio-button value="metric"><span>Celsius ( C )</span>
+												</mat-radio-button>
+											</mat-radio-group>
+										</div>
+										<div fxFlex="50" class="ml-4">
+											<div class="mb-12 mt-12">
+												<label>Show Weather Icon on Home Page</label><br />
+											</div>
+											<mat-radio-group name="show icon" formControlName="show_icon"
+												[formControl]="homeSettingForm.get('show_icon')">
+												<mat-radio-button value="Y" class="mr-8"><span>Yes</span>
+												</mat-radio-button>
+												<mat-radio-button value="N"><span>No</span></mat-radio-button>
+											</mat-radio-group>
+										</div>
+									</div>
+									<div fxLayout="row" fxLayoutAlign="start center">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Custom Background Color</mat-label>
+											<input matInput formControlName="bg_color" type="color">
+											<mat-error>Background color is required!</mat-error>
+										</mat-form-field>
+
+										<mat-form-field appearance="outline" class="w-100-p ml-4">
+											<mat-label>Text Color</mat-label>
+											<input matInput formControlName="text_color" type="color">
+											<mat-error>Text color is required!</mat-error>
+										</mat-form-field>
+									</div>
+									<div fxLayout="row" fxLayoutAlign="start center">
+										<!-- colwidth -->
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Column Width</mat-label>
+											<input matInput type="number" min="1" max="100" name="weather_colwidth"
+												placeholder="Widget Column Width" formControlName="weather_colwidth">
+										</mat-form-field>
+									</div>
+								</ng-container>
+							</div>
+						</div>
+						<!-- /Weather Settings -->
+						<div class="sep"></div>
+						<!-- My Event -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">My Event</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									event on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="eventChecked" (change)="my_eventsChange(eventChecked)"
+									formControlName="my_events">
+									<span *ngIf="eventChecked">Visible</span>
+									<span *ngIf="!eventChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div class="form-group mt-20" *ngIf="eventChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Event's Limit</mat-label>
+											<input matInput type="number" min="1" name="event_limit"
+												placeholder="Event's Limit" formControlName="event_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('event_limit').invalid && (homeSettingForm.get('event_limit').dirty || homeSettingForm.get('event_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('event_limit').errors.required">
+													Limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Event's URL</mat-label>
+											<input matInput type="text" placeholder="Event's URL"
+												name="event_see_more_url" formControlName="event_see_more_url">
+											<ng-container
+												*ngIf="homeSettingForm.get('event_see_more_url').invalid && (homeSettingForm.get('event_see_more_url').dirty || homeSettingForm.get('event_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('event_see_more_url').errors.required">
+													see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<!-- /My Event -->
+						<div class="sep"></div>
+						<!-- My Fav Event -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Favorite Events</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									event on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50" fxLayout.lt-md="column">
+								<mat-slide-toggle [(ngModel)]="favoriteeventChecked" (change)="my_favorite_eventsChange(eventChecked)"
+									formControlName="my_favorite_events">
+									<span *ngIf="favoriteeventChecked">Visible</span>
+									<span *ngIf="!favoriteeventChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div class="form-group mt-20" *ngIf="favoriteeventChecked" fxLayout.lt-md="column">
+									<div fxFlex="30" fxLayout="column" class="mr-12" fxLayout.lt-md="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Event's Limit</mat-label>
+											<input matInput type="number" min="1" name="favorite_event_limit"
+												placeholder="Event's Limit" formControlName="favorite_event_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('favorite_event_limit').invalid && (homeSettingForm.get('favorite_event_limit').dirty || homeSettingForm.get('favorite_event_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('favorite_event_limit').errors.required">
+													Limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column" fxLayout.lt-md="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Event's URL</mat-label>
+											<input matInput type="text" placeholder="Event's URL"
+												name="favorite_event_see_more_url" formControlName="favorite_event_see_more_url">
+											<ng-container
+												*ngIf="homeSettingForm.get('favorite_event_see_more_url').invalid && (homeSettingForm.get('favorite_event_see_more_url').dirty || homeSettingForm.get('favorite_event_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('favorite_event_see_more_url').errors.required">
+													see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<!-- /My Fav Event -->
+						<div class="sep"></div>
+						<!-- My Forms -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">My Services</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									services on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="formChecked" (change)="my_formsChange(formChecked)"
+									formControlName="my_forms">
+									<span *ngIf="formChecked">Visible</span>
+									<span *ngIf="!formChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div *ngIf="formChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Form's Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Form's Limit"
+												name="form_limit" formControlName="form_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('form_limit').invalid && (homeSettingForm.get('form_limit').dirty || homeSettingForm.get('form_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('form_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Form's URL</mat-label>
+											<input matInput type="text" placeholder="Form's URL"
+												name="form_see_more_url" formControlName="form_see_more_url">
+
+											<ng-container
+												*ngIf="homeSettingForm.get('form_see_more_url').invalid && (homeSettingForm.get('form_see_more_url').dirty || homeSettingForm.get('form_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('form_see_more_url').errors.required">
+													Forms see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<!-- /My Forms -->
+						<div class="sep"></div>
+						<!-- My guest room -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">My Guest Room</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									guest room on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="GuestroomChecked"
+									(change)="my_guestChange(GuestroomChecked)" formControlName="my_guest">
+									<span *ngIf="GuestroomChecked">Visible</span>
+									<span *ngIf="!GuestroomChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div *ngIf="GuestroomChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Guest's Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="guest's Limit"
+												name="guest_limit" formControlName="guest_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('guest_limit').invalid && (homeSettingForm.get('guest_limit').dirty || homeSettingForm.get('guest_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('guest_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Guest's URL</mat-label>
+											<input matInput type="text" placeholder="Guest's URL"
+												name="guest_see_more_url" formControlName="guest_see_more_url">
+
+											<ng-container
+												*ngIf="homeSettingForm.get('guest_see_more_url').invalid && (homeSettingForm.get('guest_see_more_url').dirty || homeSettingForm.get('guest_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('guest_see_more_url').errors.required">
+													Guest see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<div class="sep"></div>
+
+						<!-- My Dinings -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">My Dinings</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									dining on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="diningChecked" (change)="my_diningsChange(diningChecked)"
+									formControlName="my_dining">
+									<span *ngIf="diningChecked">Visible</span>
+									<span *ngIf="!diningChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div *ngIf="diningChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Dinings Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Dinings Limit"
+												name="dining_limit" formControlName="dining_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('dining_limit').invalid && (homeSettingForm.get('dining_limit').dirty || homeSettingForm.get('dining_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('dining_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Dining URL</mat-label>
+											<input matInput type="text" placeholder="Dinings URL"
+												name="dining_see_more_url" formControlName="dining_see_more_url">
+
+											<ng-container
+												*ngIf="homeSettingForm.get('dining_see_more_url').invalid && (homeSettingForm.get('dining_see_more_url').dirty || homeSettingForm.get('dining_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('dining_see_more_url').errors.required">
+													Dining see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<!-- /My Dinings -->
+
+						<div class="sep"></div>
+
+						<!-- My Appointments -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">My Appointments</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									appointments booking on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="appointmentChecked"
+									(change)="my_appointmentsChange(appointmentChecked)"
+									formControlName="my_appointment">
+									<span *ngIf="appointmentChecked">Visible</span>
+									<span *ngIf="!appointmentChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div *ngIf="appointmentChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Appointments Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Appointments Limit"
+												name="appointment_limit" formControlName="appointment_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('appointment_limit').invalid && (homeSettingForm.get('appointment_limit').dirty || homeSettingForm.get('appointment_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('appointment_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Appointments URL</mat-label>
+											<input matInput type="text" placeholder="Appointments URL"
+												name="appointment_see_more_url"
+												formControlName="appointment_see_more_url">
+											<ng-container
+												*ngIf="homeSettingForm.get('appointment_see_more_url').invalid && (homeSettingForm.get('appointment_see_more_url').dirty || homeSettingForm.get('appointment_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('appointment_see_more_url').errors.required">
+													Appointment see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<!-- /My Appointments-->
+						<div class="sep"></div>
+						<!-- meeting rooms -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Meeting Room</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the meeting
+									rooms on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="meetingroomChecked"
+									(change)="my_meetingroomChange(meetingroomChecked)" formControlName="meeting_room">
+									<span *ngIf="meetingroomChecked">Visible</span>
+									<span *ngIf="!meetingroomChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div *ngIf="meetingroomChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Meeting Room Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Meeting Room Limit"
+												name="meetingroom_limit" formControlName="meetingroom_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('meetingroom_limit').invalid && (homeSettingForm.get('meetingroom_limit').dirty || homeSettingForm.get('meetingroom_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('meetingroom_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Meeting Room URL</mat-label>
+											<input matInput type="text" placeholder="Meeting Room URL"
+												name="meetingroom_see_more_url"
+												formControlName="meetingroom_see_more_url">
+											<ng-container
+												*ngIf="homeSettingForm.get('meetingroom_see_more_url').invalid && (homeSettingForm.get('meetingroom_see_more_url').dirty || homeSettingForm.get('meetingroom_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('meetingroom_see_more_url').errors.required">
+													Meeting room see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<div class="sep"></div>
+						<!-- /metting rooms -->
+						<!-- My Table Reservation -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">My Table Reservation</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									table reservation on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="tablereservationChecked"
+									(change)="my_tabereservationChange(tablereservationChecked)"
+									formControlName="my_tablereservation">
+									<span *ngIf="tablereservationChecked">Visible</span>
+									<span *ngIf="!tablereservationChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div *ngIf="tablereservationChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Table Reservation Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Table Reservation  Limit"
+												name="tablereservation_limit" formControlName="tablereservation_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('tablereservation_limit').invalid && (homeSettingForm.get('tablereservation_limit').dirty || homeSettingForm.get('tablereservation_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('tablereservation_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Table Reservation URL</mat-label>
+											<input matInput type="text" placeholder="Table Reservation URL"
+												name="table_see_more_url" formControlName="table_see_more_url">
+											<ng-container
+												*ngIf="homeSettingForm.get('table_see_more_url').invalid && (homeSettingForm.get('table_see_more_url').dirty || homeSettingForm.get('table_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('table_see_more_url').errors.required">
+													Appointment see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<!-- /My Appointments-->
+						<div class="sep"></div>
+						<!-- Food Reservations -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">My Food Reservations</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my food
+									reservation on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="50">
+								<mat-slide-toggle [(ngModel)]="foodreservationChecked"
+									(change)="my_foodreservationChange(foodreservationChecked)"
+									formControlName="my_foodreservation">
+									<span *ngIf="foodreservationChecked">Visible</span>
+									<span *ngIf="!foodreservationChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT AND URL -->
+								<div *ngIf="foodreservationChecked">
+									<div fxFlex="30" fxLayout="column" class="mr-12">
+										<mat-form-field appearance="outline">
+											<mat-label>Food Reservation Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Food Reservation  Limit"
+												name="foodreservation_limit" formControlName="foodreservation_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('foodreservation_limit').invalid && (homeSettingForm.get('foodreservation_limit').dirty || homeSettingForm.get('foodreservation_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('foodreservation_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxFlex="70" fxLayout="column">
+										<mat-form-field appearance="outline">
+											<mat-label>Food Reservation URL</mat-label>
+											<input matInput type="text" placeholder="Food Reservation URL"
+												name="food_see_more_url" formControlName="food_see_more_url">
+											<ng-container
+												*ngIf="homeSettingForm.get('food_see_more_url').invalid && (homeSettingForm.get('food_see_more_url').dirty || homeSettingForm.get('food_see_more_url').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('food_see_more_url').errors.required">
+													Food see more url is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+								</div>
+								<!-- /LIMIT AND URL -->
+							</div>
+						</div>
+						<!-- /  Food Reservations-->
+
+						<div class="sep"></div>
+						<!-- Today Event -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Today Event</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the my
+									event reservation on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="60">
+								<div fxLayout="row" fxLayoutAlign="start center">
+									<mat-slide-toggle [(ngModel)]="todayEventChecked" formControlName="todays_event"
+										(change)="is_toggleChange(todayEventChecked,'todays_event_limit')">
+										<span *ngIf="todayEventChecked">Visible</span>
+										<span *ngIf="!todayEventChecked">Hidden</span>
+									</mat-slide-toggle>
+								</div>
+								<ng-container *ngIf="todayEventChecked">
+									<div fxLayout="row" fxLayoutAlign="start center" class="mt-12">
+										<div fxFlex="50">
+											<mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="50"
+												class="underline-0">
+												<mat-label class="fuse-black-fg font-size-20">Event Time</mat-label>
+												<input matInput placeholder="Input" style="display: none">
+												<mat-radio-group class="mt-8" fxLayout="row wrap"
+													fxLayoutAlign="start center" name="event_datetime"
+													formControlName="event_datetime">
+													<mat-radio-button value="Y" class="mr-8"><span>Yes</span>
+													</mat-radio-button>
+													<mat-radio-button value="N"><span>No</span></mat-radio-button>
+												</mat-radio-group>
+											</mat-form-field>
+										</div>
+										<div fxFlex="50">
+											<mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="50"
+												class="underline-0">
+												<mat-label class="fuse-black-fg font-size-20">Event Title</mat-label>
+												<input matInput placeholder="Input" style="display: none">
+												<mat-radio-group class="mt-8" fxLayout="row wrap"
+													fxLayoutAlign="start center" name="event_decription"
+													formControlName="event_decription">
+													<mat-radio-button value="Y" class="mr-8"><span>Yes</span>
+													</mat-radio-button>
+													<mat-radio-button value="N"><span>No</span></mat-radio-button>
+												</mat-radio-group>
+											</mat-form-field>
+										</div>
+									</div>
+									<div fxLayout="row" fxLayoutAlign="start center">
+										<div fxFlex="50">
+											<mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="50"
+												class="underline-0">
+												<mat-label class="fuse-black-fg font-size-20">Event Location</mat-label>
+												<input matInput placeholder="Input" style="display: none">
+												<mat-radio-group class="mt-8" fxLayout="row wrap"
+													fxLayoutAlign="start center" name="event_location"
+													formControlName="event_location">
+													<mat-radio-button value="Y" class="mr-8"><span>Yes</span>
+													</mat-radio-button>
+													<mat-radio-button value="N"><span>No</span></mat-radio-button>
+												</mat-radio-group>
+											</mat-form-field>
+										</div>
+
+										<mat-form-field fxFlex="50" appearance="outline">
+											<mat-label>Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Limit"
+												name="todays_event_limit" formControlName="todays_event_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('todays_event_limit').invalid && (homeSettingForm.get('todays_event_limit').dirty || homeSettingForm.get('todays_event_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('todays_event_limit').errors.required">
+													limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+									</div>
+									<div fxLayout="row" fxLayoutAlign="start center" class="mt-8">
+										<!-- colwidth -->
+										<mat-form-field fxFlex="50" appearance="outline" class="w-100-p ml-4">
+											<mat-label>Column Width</mat-label>
+											<input matInput type="number" min="1" max="100" name="todays_event_colwidth"
+												placeholder="Widget Column Width"
+												formControlName="todays_event_colwidth">
+										</mat-form-field>
+									</div>
+								</ng-container>
+							</div>
+						</div>
+						<!-- /Today Event -->
+						<div class="sep"></div>
+						<!-- Newest Neighbors-->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Newest Neighbors </div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the newest
+									neighbors on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="neighorsChecked" formControlName="is_newest_neighbors"
+									(change)="is_toggleChange(neighorsChecked)">
+									<span *ngIf="neighorsChecked">Visible</span>
+									<span *ngIf="!neighorsChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT -->
+								<!-- <div *ngIf="neighorsChecked" class="form-group mt-20">
+										<mat-form-field appearance="outline">
+											<mat-label>Limit</mat-label>
+										<input matInput type="number" min="1" placeholder="Limit" name="neighbors_limit" formControlName="neighbors_limit">	
+										
+											<ng-container *ngIf="homeSettingForm.get('neighbors_limit').invalid && (homeSettingForm.get('neighbors_limit').dirty || homeSettingForm.get('neighbors_limit').touched)" ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('neighbors_limit').errors.required">limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>   
+									</div> -->
+								<!-- LIMIT -->
+							</div>
+						</div>
+						<!-- /Newest Neighbors-->
+						<div class="sep"></div>
+						<!-- Newest Staff-->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Newest Staff </div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the newest
+									staff on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="staffChecked" formControlName="is_newest_staff"
+									(change)="is_toggleChanggstaff(staffChecked)">
+									<span *ngIf="staffChecked">Visible</span>
+									<span *ngIf="!staffChecked">Hidden</span>
+								</mat-slide-toggle>
+								<!-- LIMIT -->
+								<!-- <div *ngIf="staffChecked" class="form-group mt-20">
+										<mat-form-field appearance="outline">
+											<mat-label>Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Limit" name="staff_limit" formControlName="staff_limit"> 	 
+												
+											<ng-container *ngIf="homeSettingForm.get('staff_limit').invalid && (homeSettingForm.get('staff_limit').dirty || homeSettingForm.get('staff_limit').touched)" ngProjectAs="mat-error">
+												<mat-error *ngIf="homeSettingForm.get('staff_limit').errors.required">limit is Required</mat-error>
+											</ng-container>
+										</mat-form-field>		    
+									</div> -->
+								<!-- LIMIT -->
+							</div>
+						</div>
+						<!-- /Newest Staff-->
+						<div class="sep"></div>
+						<!-- BULLETIN BOARD-->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Bulletin Board </div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the
+									bulletin board on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="bulletinChecked" formControlName="is_bulletin"
+									(change)="is_toggleChange(bulletinChecked,'bulletin_limit')">
+									<span *ngIf="bulletinChecked">Visible</span>
+									<span *ngIf="!bulletinChecked">Hidden</span>
+								</mat-slide-toggle>
+
+								<div *ngIf="bulletinChecked">
+									<!--Bulletin date -->
+									<div class="row">
+										<div class="mb-12 mt-12">
+											<label> Bulletin Date</label><br />
+										</div>
+										<mat-radio-group name="bulletin Date" formControlName="bulletin_date">
+											<mat-radio-button value="Y" class="mr-8"><span>Yes</span></mat-radio-button>
+											<mat-radio-button value="N"><span>No</span></mat-radio-button>
+										</mat-radio-group>
+									</div>
+									<!--Bulletin replies -->
+									<div class="row">
+										<div class="mb-12 mt-12">
+											<label>Bulletin Replies</label><br />
+										</div>
+										<mat-radio-group name="bulletin Replies" formControlName="bulletin_replies">
+											<mat-radio-button value="Y" class="mr-8"><span>Yes</span></mat-radio-button>
+											<mat-radio-button value="N"><span>No</span></mat-radio-button>
+										</mat-radio-group>
+									</div>
+
+									<!--Bulletin Author -->
+									<div class="row">
+										<div class="mb-12 mt-12">
+											<label>Topic Name</label><br />
+										</div>
+										<mat-radio-group name="bulletin Author" formControlName="bulletin_author">
+											<mat-radio-button value="Y" class="mr-8"><span>Yes</span></mat-radio-button>
+											<mat-radio-button value="N"><span>No</span></mat-radio-button>
+										</mat-radio-group>
+									</div>
+
+									<!-- LIMIT -->
+									<div class="form-group mt-20">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Limit</mat-label>
+											<input matInput type="number" min="1" placeholder="Limit"
+												name="bulletin_limit" formControlName="bulletin_limit">
+											<ng-container
+												*ngIf="homeSettingForm.get('bulletin_limit').invalid && (homeSettingForm.get('bulletin_limit').dirty || homeSettingForm.get('bulletin_limit').touched)"
+												ngProjectAs="mat-error">
+												<mat-error
+													*ngIf="homeSettingForm.get('bulletin_limit').errors.required">limit
+													is Required</mat-error>
+											</ng-container>
+										</mat-form-field>
+										<!-- colwidth -->
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Column Width</mat-label>
+											<input matInput type="number" min="1" max="100" name="bulletin_colwidth"
+												placeholder="Widget Column Width" formControlName="bulletin_colwidth">
+										</mat-form-field>
+									</div>
+									<!-- LIMIT -->
+								</div>
+							</div>
+						</div>
+						<!-- /BULLETIN BOARD-->
+						<div class="sep"></div>
+						<!-- footer -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Footer </div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the footer
+									on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="footerChecked" formControlName="footer_set">
+									<span *ngIf="footerChecked">Visible</span>
+									<span *ngIf="!footerChecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div>
+						<!-- footer -->
+						<div class="sep"></div>
+						<!-- footer -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Show Side Bar </div>
+								<div class="mat-caption secondary-text">This settings are use to show or hide the show
+									side bar on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="Sidebarchecked" formControlName="sidebar_set">
+									<span *ngIf="Sidebarchecked">Visible</span>
+									<span *ngIf="!Sidebarchecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Show Nav Bar </div>
+								<div class="mat-caption secondary-text">This settings are use to show or hide the show
+									nav bar on home page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="start top" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="Navbarchecked" formControlName="navbar_set">
+									<span *ngIf="Navbarchecked">Visible</span>
+									<span *ngIf="!Navbarchecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</form>
+			<!-- / SETTINGS -->
+		</div>
+		<!-- / CENTER -->
+	</div>
+	<!-- / CONTENT -->
+</div>

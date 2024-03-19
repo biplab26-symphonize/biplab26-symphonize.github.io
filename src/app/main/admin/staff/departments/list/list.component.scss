@@ -1,0 +1,21 @@
+.min-w-100 {min-width: 100%;}
+
+.departments-list-table {
+    mat-cell {
+        align-items: flex-start;
+    }
+    mat-header-cell {
+        font-size:15px !important; 
+    }
+
+   
+
+    mat-header-cell:nth-of-type(1),
+    mat-header-cell:nth-of-type(2),
+    mat-cell:nth-of-type(1),
+    mat-cell:nth-of-type(2) {
+        max-width: 16%;
+    }
+
+
+}

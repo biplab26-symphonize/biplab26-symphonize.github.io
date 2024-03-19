@@ -1,0 +1,27 @@
+#back-dining-dashboard {
+    .text-center {
+        text-align: center !important;
+    }
+    
+    .line-height-48 {
+        line-height: 48px !important;
+    }
+
+    .border-top-none {
+        border-top: none;
+    }
+
+    .border-left-none {
+        border-left: none;
+    }
+
+    .border-color {
+        border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .active {
+        background-color: #2e80af;
+        color : #faf5f5;
+        }
+}
+

@@ -1,0 +1,213 @@
+<div class="page-layout page-layout-list simple left-sidebar inner-sidebar inner-scroll">
+        <!-- HEADER -->
+        <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+            fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">dashboard
+                    </mat-icon>
+                    <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            {{title}}
+                    </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+    
+            <!-- BTN's -->
+            <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+                <div class="mt-16 mt-sm-0">
+                        <button  *ngIf="removeButton" mat-raised-button class="reference-button" [routerLink]="'/admin/dining-reservation/bookings/add'">
+                            <mat-icon class="mr-4">add</mat-icon>
+                            Add Booking
+                        </button>&nbsp;
+                        <button *ngIf="!removeButton"
+                                mat-button fxLayout="row" 
+                                fxLayoutAlign="start center"
+                                class="p-8 pl-0"
+                                [routerLink]="'/admin/forms/all'">
+                                <mat-icon class="mr-8">arrow_back</mat-icon>
+                                <span class="text-uppercase">Back</span>
+                        </button>
+                </div>
+            </div>
+            <!-- / BTN's -->
+        </div>
+            <!-- / HEADER -->
+        
+            <!-- SELECTED BAR -->
+       
+        <div class="selected-bar accent-600 h-80" *ngIf="(selection.selected.length) ? true : false" [@slideInTop]>
+            <div fxFlex fxLayout="row" fxLayoutAlign="start center" class="px-24 py-0 header accent p-24 h-80">
+                <div class="close-button-wrapper" fxFlex="0 1 auto" fxFlex.gt-sm="220px">
+                    <button mat-raised-button
+                        (click)="deselectAll()">
+                        <mat-icon class="mr-4">arrow_back</mat-icon>
+                        Back
+                    </button>   
+                </div>
+                <div fxFlex fxLayout="row" fxLayoutAlign="end center" fxLayoutAlign.gt-sm="space-between center">
+                    <div>
+                        <mat-menu #selectMenu="matMenu">
+                            <button mat-menu-item (click)="selectAll()">Select all</button>
+                            <button mat-menu-item (click)="deselectAll()">Deselect all</button>
+                        </mat-menu>
+                    </div>
+                    <div class="multi-select-actions">
+                        <button 
+                            type="button" mat-raised-button  (click)="deleteAll()"
+                            [disabled]="(!selection.selected.length) ? true : false">Delete</button>&nbsp;
+                        <button *ngIf="!removeButton"
+                            type="button" mat-raised-button (click)="restoreAll()"
+                            [disabled]="(!selection.selected.length) ? true : false">Restore</button>&nbsp;
+                    
+                    </div>
+                </div>
+            </div>
+        </div> 
+            <!-- / SELECTED BAR -->  
+        
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+    <div class="center p-24 pb-56" > 
+        <!-- FILTER -->
+        <form  #filter name="filterForm" [formGroup]="filterForm" fxLayout="column">
+            <div class="filters fuse-white-bg py-20 px-16 pb-0" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                <mat-form-field appearance="outline" class="filter-search" fxFlex appearance="outline"  class="filter-search pr-8">
+                    <mat-label>Search</mat-label>
+                    <input matInput formControlName="searchKey">
+                </mat-form-field>
+
+                <mat-form-field fxFlex appearance="outline"  class="filter-select pr-8">
+                    <mat-label>Service</mat-label>
+                    <mat-select name="service_id" formControlName="service_id" >
+                        <mat-option *ngFor="let service of services; let i = index;" [value]="service.id">{{service.service_title}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+           
+                <mat-form-field fxFlex appearance="outline"  class="filter-select pr-8">
+                    <mat-label> Status </mat-label>
+                    <mat-select formControlName="status">
+                        <mat-option *ngFor = "let status of statusLabel | keyvalue" [value]="status.key">{{status.value | titlecase}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field fxFlex appearance="outline"  class="filter-select pr-8">
+                    <mat-label>From Date</mat-label>
+                    <input matInput [matDatepicker]="fromPicker" formControlName="from_date" (dateChange)="fromDateChange($event)">
+                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field fxFlex appearance="outline"  class="filter-select mr-8">
+                    <mat-label>To Date</mat-label>
+                    <input matInput [matDatepicker]="toPicker" formControlName="to_date" (dateChange)="toDateChange($event)"   [min]="start_date_min">
+                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+                <div class="reset-filter-btn mb-28 fuse-white-bg" fxFlex="40" fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-raised-button [ngStyle]="button" class="ml-4 mb-24 reference-button reset-btn text-uppercase line-height-44 br-ds-0 box-shadow-none reset-filter" type="reset">
+                        <mat-icon class="mr-4 font-size-20">refresh</mat-icon>
+                        Reset Filters
+                    </button>
+                </div>  
+        </form>
+        <!-- / FILTER -->
+        <!-- CONTENT -->
+        <div class="content">
+            <table mat-table class="form-table dining-booking-table text-capitalize" [@animateStagger]="{value:'50'}"  #table [dataSource]="dataSource" matSort matSortActive="form_id" matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+                    <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                    <span *ngIf="column.columnDef!=='select'">
+                        <th class="p-12" [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}" 
+                            disabled="{{!column.sortable}}"> {{column.header}} 
+                        </th>
+                        <td class="p-12 cursor-auto" mat-cell *matCellDef="let element"> 
+                            <span *ngIf="column.columnDef!=='status' && column.columnDef!=='email' && column.columnDef!=='booking_start_date' && column.columnDef!='booking_start_time' && column.columnDef!='service_title'">{{element[column.columnDef]}}</span> 
+                              
+                             <span *ngIf="column.columnDef=='service_title'">{{element.service[column.columnDef]}}</span> 
+                            <span *ngIf="column.columnDef=='email'">{{element[column.columnDef]}}</span> 
+                            <span *ngIf="column.columnDef=='booking_start_date'"> 
+                                <span>{{element[column.columnDef]  | date: defaultDateTimeFormat.date_format}}</span>
+                            </span>
+                            <span >
+                                <mat-icon  matTooltip="Restricted" matTooltipPosition="right" *ngIf="column.columnDef=='service_title' && element['editrestriction']!=null" class="mx-4 icon s-18 warn-fg">lock</mat-icon>
+                            </span> 
+                            <span *ngIf="column.columnDef=='booking_start_time'"> 
+                                <!-- <span>{{element[column.columnDef]  | date: defaultDateTimeFormat.date_format}}</span> -->
+                                <span>{{(element.booking_start_date+' '+element.booking_start_time ) | date :defaultDateTimeFormat.time_format}}</span>
+                            </span>
+                            
+                            <span *ngIf="column.columnDef=='status'">
+                                <mat-form-field>
+                                    <mat-select (selectionChange)="statusChange(element,$event)" value="{{element.status}}" >
+                                        <mat-option *ngFor = "let status of selectStatus" [value]="status">{{statusLabel[status]}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </span>
+                            <span  *ngIf="column.columnDef=='action'">
+                                <div fxFlex="row" fxLayoutAlign="right">                
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                            (click)="$event.stopPropagation();">
+                                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                                    </button>
+    
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item 
+                                                aria-label="remove"
+                                                (click)="deleteBooking(element.id)" >
+                                            <mat-icon>delete</mat-icon>
+                                            <span>Remove</span>
+                                        </button>
+                                        <button mat-menu-item 
+                                                aria-label="edit"
+                                                *ngIf="removeButton"
+                                                [routerLink]="['/admin/dining-reservation/bookings/edit/',element.id]">
+                                            <mat-icon>edit</mat-icon>
+                                            <span>Edit</span>
+                                        </button>
+                                       
+                                    </mat-menu>
+                                </div>
+                            </span>
+                        </td>
+                    </span>
+                    
+                    <span *ngIf="column.columnDef=='select'">
+                        <th [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef > 
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <mat-checkbox 
+                                (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(element.id) : null"
+                                [checked]="selection.isSelected(element.id)">
+                            </mat-checkbox>    
+                        </td>
+                    </span>  
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div class="no-record my-20" fxLayout="column" fxLayoutAlign=" center" *ngIf="this.dataSource.filteredData.total === 0">No Records Found</div>
+            <mat-paginator 
+                class="blue-grey-50"
+                #paginator
+                [length]="this.dataSource.filteredData.total"           
+                [pageSize]="PaginationOpt.pageSize"
+                [pageSizeOptions]="PaginationOpt.pageSizeOptions">
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+</div>

@@ -1,0 +1,69 @@
+<div id="create-topics" class="page-layout simple fullwidth">
+    
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+     
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+            <div class="header-top">
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong class="text-capitalize"> Topics </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+
+    <!-- CONTENT -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        
+        <!--  CONTENT WRAP -->
+        <section class="content-wrap fuse-white-bg p-28">
+
+            <div class="mb-20" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                <div class="h2 accent-fg" *ngIf="ForumSettings">{{ForumSettings.add_topic}}</div>
+                <button type="button" color="accent" mat-stroked-button routerLink="/forums/" *ngIf="ForumSettings"><mat-icon class="s-20 mr-4">arrow_back</mat-icon>{{ForumSettings.back_to_forum}}</button>
+            </div>
+
+            <form name="topicform" fxLayout="column" [formGroup]="topicform" novalidate autocomplete="off">
+                <mat-form-field appearance="outline" class="w-100-p">
+                    <mat-label *ngIf="ForumSettings">{{ForumSettings.topic_title}}</mat-label>
+                    <input matInput placeholder="title" formControlName="content_title" required>
+                </mat-form-field>
+
+                <div class="mb-12">
+                    <label>Description</label>
+                </div>
+
+                <div class="add-event-back-editor">                
+                    <editor [init]="tinyMceSettings" name="content_desc" formControlName="content_desc"></editor><br>
+                </div>
+
+                <div *ngIf="createNewTopics == true">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">	
+                        <mat-label>Forums List</mat-label>		  
+                        <mat-select name="forumslist" 
+                            formControlName="forumslist" required>
+                            <mat-option [value]="forum.id"  *ngFor="let forum of  ForumList " >{{forum.category_name}}</mat-option>		    
+                        </mat-select>
+                        <mat-error>Forum is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <button mat-stroked-button color="accent" class="px-32" type="submit" (click)="onSubmit($event)" >Submit</button>
+                </div>
+            </form>
+
+        </section>
+        <!--  / CONTENT WRAP -->
+    </div>
+    <!-- / CONTENT -->
+
+
+</div>

@@ -1,0 +1,35 @@
+.preloader.show{display: block;}
+.preloader.hide{display: none;}
+.preloader{position: absolute;z-index: 0; width: 100%;height: 100%;left: 0;top: 0; background-color: #FFF;background-image: url('/assets/images/logos/loading.gif');background-repeat: no-repeat;background-position: center;}
+
+@import "src/@fuse/scss/fuse";
+    .header-content{
+        width : 1024px !important;
+        margin: 0 auto;
+
+    }
+
+
+    @include media-breakpoint('lt-sm') {
+      .header-content{
+          width : 349px  !important;
+          margin: 0 auto;
+
+      }
+    }
+
+    @media(min-width : 700px){
+        .header-content{
+            width : 1024px  !important;
+            margin: 0 auto;
+  
+        }
+      }
+      @media(min-width : 1400px){
+        .header-content{
+            width : 1024px !important;
+            margin: 0 auto;
+    
+  
+        }
+      }

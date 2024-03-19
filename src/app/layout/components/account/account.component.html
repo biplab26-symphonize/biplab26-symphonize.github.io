@@ -1,0 +1,58 @@
+<div class="side-panel">
+    <div class="header accent-100" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <ng-container>
+
+            <div class="title ml-16" fxLayout="row" fxLayoutAlign="start center">
+                <a [routerLink] = "['profile']" title="profile">
+                    <img class="avatar" [src]="this.loginUserInfo.thumb_file || _defaultNavAvatar" (error)="setDefaultPic()"/>
+                </a>
+            </div>
+
+        </ng-container>
+
+    </div>
+
+    <div class="content">
+
+        <!-- Side Panel -->
+        <div id="side-list" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+
+            <div *ngIf="this.roleId!=9" class="side-list-item">
+                <a [routerLink] = "['admin/dashboard']" class="grey-700-fg" matTooltip="Dashboard" matTooltipPosition="left">
+                    <mat-icon class="s-32 grey-700-fg">dashboard</mat-icon>
+                </a>
+            </div>
+            <div class="side-list-item">
+                <a [routerLink] = "['profile/notifications']" class="grey-700-fg" matTooltip="Notifications" matTooltipPosition="left">
+                    <mat-icon class="s-36 grey-700-fg">notifications</mat-icon>
+                </a>
+                <div class="unread-count warn">{{unreadnotifications}}</div>
+            </div>
+            <div class="side-list-item" style="display: none;">
+                <a [routerLink] = "['profile']" class="grey-700-fg" matTooltip="User Profile" matTooltipPosition="left">
+                    <mat-icon class="s-36 grey-700-fg">account_circle</mat-icon>
+                </a>
+            </div>
+            <div class="side-list-item">
+                <a [routerLink] = "['edit-profile']" class="grey-700-fg" matTooltip="Settings" matTooltipPosition="left">
+                    <mat-icon class="s-36 grey-700-fg">settings</mat-icon>
+                </a>
+            </div>
+            <!-- <div class="side-list-item" *ngIf="_enableChat=='Y'">
+                <a [routerLink] = "['chat']" class="grey-700-fg" matTooltip="My Messages" matTooltipPosition="left">
+                    <mat-icon class="s-36 grey-700-fg">message</mat-icon>
+                </a>
+                <div class="unread-count warn">{{unreadmsgs}}</div>
+            </div> -->
+            <div class="side-list-item">
+                <a href="javascript:void(0)" (click)="onLogout()" class="grey-700-fg" matTooltip="Logout" matTooltipPosition="left">
+                    <mat-icon class="s-36 grey-700-fg">exit_to_app</mat-icon>
+                </a>
+            </div>
+
+        </div>
+        <!-- / Side Panel -->
+
+    </div>
+</div>

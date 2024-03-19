@@ -1,0 +1,126 @@
+@import "src/@fuse/scss/fuse";
+
+#front-Dining-MyTableReservation{
+
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/staff-bg.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.45);
+        } 
+
+        .header-content {
+            .header-top {
+                position: relative;
+                z-index: 2;
+            } 
+        }
+    }
+
+    .content{
+        .content-wrap{
+            padding-bottom: 10px !important;
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }               
+    }
+
+    table {
+        th:nth-of-type(1) {
+            width: 5%;
+        }
+
+        th:nth-of-type(2) {
+            width: 20%;
+        }
+
+        th:nth-of-type(3) {
+            width: 16%;
+        }
+
+        th:nth-of-type(4) {
+            width: 16%;
+        }
+
+        th:nth-of-type(5) {
+            width: 16%;
+        }
+
+        th:nth-of-type(6) {
+            width: 10%;
+        }
+
+        th:nth-of-type(7) {
+            width: 12%;
+        }
+    }
+} 
+
+
+@include media-breakpoint('lt-sm') {
+    .content-wrap.fuse-white-bg.p-28 {
+        padding: 0px !important;
+    }
+
+    form.mb-40 {
+        margin-bottom: 0 !important;
+    }
+    table {
+        // th , 
+        // td {
+        //     white-space: nowrap !important;
+        // }
+
+        th:nth-of-type(2) {
+            min-width: 160px;
+           
+        }
+
+        th:nth-of-type(3),
+        th:nth-of-type(4) {
+            
+            min-width: 162px;
+            
+        }
+
+        
+        th:nth-of-type(5) {
+            min-width: 150px;
+        }
+        th:nth-of-type(6) {
+            min-width: 100px;
+           
+        }
+
+        th:nth-of-type(7) {
+            min-width: 150px;
+           
+        }
+        
+    }
+}

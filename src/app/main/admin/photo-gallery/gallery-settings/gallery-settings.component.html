@@ -1,0 +1,121 @@
+
+<div  class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 " fxLayout="row"  
+    fxLayout.gt-md="row" fxLayoutAlign.gt-md="space-between center" ngClass.gt-md="h-80" [ngStyle.lt-md]="{'max-height': 'none','min-height': 'auto','height': 'auto'}">
+        <!-- APP TITLE -->
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<div class="logo pr-4" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting</mat-icon> 
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Gallery Settings
+                </span>
+			</div>
+		</div>
+        <!-- / APP TITLE -->
+        
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center"  fxLayout.lt-md="column">
+			<div class="mt-16 mt-sm-0">
+				<button mat-raised-button class="reference-button" (click)="SaveSettings()">
+					<mat-icon class="mr-4">settings_backup_restore</mat-icon> <span>Update Settings</span>
+				</button>
+			</div>
+		</div>
+    </div>
+
+
+  <div id="settings" class="page-layout simple tabbed" fxLayout="column">
+
+    <!-- CONTENT -->
+    <div class="content">
+            <!-- SETTINGS -->
+            <div id="settings" class="p-24">
+                <!--  Resident Directory Search Settings -->
+                <form class="" name="gallerySettings" [formGroup]="gallerySettings" novalidate autocomplete="off" >
+                    <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                        <div fxLayout.gt-md="row" fxLayout.lt-md="column">
+                            <label class="font-weight-600" fxFlex="20">Gallery Sort :</label>
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Gallery Sort</mat-label>
+                                    <mat-select formControlName="galley_sort">
+                                        <mat-option value="asc">Ascending </mat-option>
+                                        <mat-option value="desc">Descending</mat-option>  
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout.gt-md="row" fxLayout.lt-md="column">
+                            <label class="font-weight-600" fxFlex="20">Album Sort :</label>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Album Sort</mat-label>
+                                    <mat-select formControlName="album_sort">
+                                            <mat-option value="asc">Ascending </mat-option>
+                                            <mat-option value="desc">Descending</mat-option>  
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="column">
+                            <label class="font-weight-600" fxFlex="20">Album Thumb :</label>
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Hight</mat-label>
+                                    <input matInput type='number' min='0' formControlName="album_thumb_hight" required>
+                                    <mat-error>field required!</mat-error>
+                                </mat-form-field>   
+                            </div>
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Width</mat-label>
+                                    <input matInput  type='number' min='0' formControlName="album_thumb_width" required>
+                                    <mat-error>field required!</mat-error>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="column">
+                            <label class="font-weight-600" fxFlex="20">Gallery Thumb :</label>
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Hight</mat-label>
+                                    <input matInput type='number' min='0' formControlName="gallery_thumb_hight" required>
+                                    <mat-error>field required!</mat-error>
+                                </mat-form-field>   
+                            </div>
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Width</mat-label>
+                                    <input matInput type='number'  min='0' formControlName="gallery_thumb_width" required>
+                                    <mat-error>field required!</mat-error>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="column">
+                            <label class="font-weight-600" fxFlex="20">Image Thumb :</label>
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Higth</mat-label>
+                                    <input matInput type='number' min='0'  formControlName="image_thumb_hight" required>
+                                    <mat-error>field required!</mat-error>
+                                </mat-form-field>   
+                            </div>
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Width</mat-label>
+                                    <input matInput type='number' min='0' formControlName="image_thumb_width" required>
+                                    <mat-error>field required!</mat-error>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+                   
+                    </div>
+                </form>                
+            </div>        
+       </div>
+    </div>
+</div>
+    
+
+    
+

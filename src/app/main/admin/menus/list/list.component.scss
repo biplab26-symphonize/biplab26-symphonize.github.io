@@ -1,0 +1,27 @@
+.content {
+    .drop-above {
+        border-top: 10px solid #dddddd;
+        margin-top: -10px;
+        }
+        
+        .drop-below {
+        border-bottom: 10px solid #dddddd;
+        margin-bottom: -10px;
+        }
+        
+        .drop-center {
+        background-color: #dddddd;
+        }
+        mat-icon:hover{
+            cursor: pointer;
+        }
+        .active-icon {
+            border-radius: 50%;
+        }
+        .fontgreen{
+            color:#43a047 !important
+        }
+        .fontred{
+            color:#f44336 !important;
+        }
+}

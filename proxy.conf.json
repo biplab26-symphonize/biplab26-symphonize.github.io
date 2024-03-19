@@ -1,0 +1,7 @@
+{
+    "/api/*": {
+      "target": "https://dev.viibrant.com/beta-api/api/",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }

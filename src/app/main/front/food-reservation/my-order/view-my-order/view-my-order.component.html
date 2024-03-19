@@ -1,0 +1,217 @@
+<div class="page-layout blank" fusePerfectScrollbar id="front-food-reservation-view-form">
+  <div class="page-layout blank" fusePerfectScrollbar >
+
+        <!-- HEADER -->  
+        <div class="header px-16">
+
+          <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+    
+              <div class="header-top">
+    
+                  <div class="logo text-center">
+                      <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                          <strong> Order Details </strong>
+                      </span>
+                  </div>
+                  <!-- HEADER TEXT -->
+    
+              </div>
+                <!-- / TOOLBAR -->
+            </div>
+      
+        </div>
+        <!-- / HEADER -->
+
+
+     <div>
+    <!-- CENTER -->
+          <div class="content">
+            <!-- CONTENT --> 
+             <div class="content-wrap fuse-white-bg p-28 w-100-p br-ds-0">
+                 <div>
+                   <!-- <span class="mat-display-1">VIEW FORM</span> -->
+                     <div fxLayout="row" fxLayoutAlign="space-between center" class="print-btn">
+                        <button color="accent" type="button"  mat-stroked-button [routerLink]="['/my-order/']">  <mat-icon class="mr-4">arrow_back</mat-icon>Back</button>
+                        <button color="accent" type="button"  mat-stroked-button (click)="getPrint()"> <mat-icon class="mr-4">local_printshop</mat-icon>Print</button>
+                     </div>
+
+                     <div fxLayout="row" fxLayoutAlign="space-between start" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start" class="accent mt-20 fuse-white-200-fg p-16">
+                        <h1 class="m-0 font-size-20" fxFlex="50" [ngStyle.lt-sm]="{'font-size.px': 16}">My Order : Entry#{{url_id}}</h1>  
+                        <h1 class="m-0 font-size-20 text-right" fxFlex="50" [ngStyle.lt-sm]="{'font-size.px': 16}">Submitted Date : {{content.created_at | date: defaultDateTimeFormat.date_format}}</h1>
+                     </div>
+
+                     
+                     
+                     <div class="main-table">
+                          <table class="w-100-p border text-capitalize" fxLayout="column" fxLayoutAlign="start">
+                               <ng-container>
+                                    <tr  class="  w-100-p  m-0" fxLayout="column" fxLayout.lt-sm="column" fxLAyoutAlign="start center"  >
+                                        <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom"> <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Resident Name </span> </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p"> <span>{{content.name}}</span></td>
+                                    </tr>   
+                          
+                                    <tr  class="  w-100-p   m-0" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column"> 
+                                        <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom"> <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Email </span> </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p  text-lowercase"> <span>{{content.email}}</span> </td>
+                                    </tr>
+                                 
+                                    <tr class="  w-100-p   m-0" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                          <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Phone </span>
+                                        </td>
+                                        <td class="w-100-p p-8 border-bottom font-weight-600">
+                                          <span >{{content.phone | mask:CustomFormats.phone}}</span>
+                                        </td>
+                                    </tr>                                     
+                                    
+                                   
+                                    <tr  class="  w-100-p   m-0" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                          <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Order Date </span>
+                                        </td>
+
+                                        <td class="w-100-p p-8 border-bottom font-weight-600">
+                                          <span >{{content.booking_start_date | date: defaultDateTimeFormat.date_format}}</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr  class="  w-100-p   m-0" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.booking_start_time!='' && content.booking_start_time!=null"> 
+                                        <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                          <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Order Time </span>
+                                        </td>
+
+                                        <td *ngIf="content.booking_start_date!=undefined" class="w-100-p p-8 border-bottom font-weight-600">
+                                          <!-- <span class="  w-100-p  ">{{content.booking_start_time}}</span> -->
+                                          <!-- <span *ngIf="content.booking_start_time != 'ASAP'">{{(content.booking_start_date+' '+content.booking_start_time )| date :'shortTime'}}</span> -->
+                                          <span *ngIf="content.booking_start_time != 'ASAP'">{{content.booking_start_time}}</span>
+                                          <span *ngIf="content.booking_start_time == 'ASAP'">{{content.booking_start_time}}</span>
+                                        </td>
+                                    </tr>    
+                                     
+                                    <tr  class="  w-100-p   m-0" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.address!=''"> 
+                                        <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                          <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Address </span>
+                                        </td>
+                                        <td class="w-100-p p-8 border-bottom font-weight-600">
+                                          <span >{{content.address}}</span>
+                                        </td>
+                                    </tr>    
+                                 
+                                    <!-- <tr  class="  w-100-p   m-0" *ngIf="content.notes!=''" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                          <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Notes :</span>
+                                        </td>
+
+                                        <td class="w-100-p p-8 border-bottom font-weight-600">
+                                          <span >{{content.notes}}</span>
+                                        </td>
+                                    </tr>  -->
+                                    
+                                    <tr  class="  w-100-p   m-0" *ngIf="content.type!=''" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                      <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                        <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">Type </span>
+                                      </td>
+
+                                      <td class="w-100-p p-8 border-bottom font-weight-600">
+                                        <span>{{content.type}}</span>
+                                      </td>
+                                    </tr> 
+
+                                    <tr  class="  w-100-p   m-0" *ngIf="content.status!=''" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                      <td class="grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                        <span class=" w-100-p " [ngClass.lt-sm]="{'font-size-16': true}">status </span>
+                                      </td>
+
+                                      <td class="w-100-p p-8 border-bottom font-weight-600">
+                                        <span>{{content.status}}</span>
+                                      </td>
+                                    </tr>  
+                                 
+                                   
+                                      
+                                     <tr  class="  w-100-p m-0" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="fuse-black-fg" *ngIf="orderLength!=0">
+                                          <div class="text-bold  w-100-p  p-8 grey-50 fuse-black-fg" [ngClass.lt-sm]="{'font-size-16': true}">Order Details </div>
+
+                                          <div class="m-16">
+                                            <table class="w-100-p border-color line-height-32 text-transform-none" border="1">
+                                              
+                                              <tr>
+                                                <th class="text-bold accent p-12" width="100px">Product</th>
+                                                <th class="text-bold accent p-12" width="50px">Quantity</th>
+                                                <th class="text-bold accent p-12" width="100px">Side Dish</th>
+                                                <th class="text-bold accent p-12" width="100px">Extra</th>
+                                                <th class="text-bold accent p-12" width="100px">Notes</th>
+                                              </tr>
+                                              <tr *ngFor="let order of orderItems;let i=index;">
+                                                <td class="p-8">
+                                                  <p *ngIf="order.products!=null">{{order.products.product_name}}</p>
+                                                  <div *ngIf="getQuantity(order.quantity)"></div>
+                                                  <div *ngIf="getSideNumber(order.products.side_number)"></div>
+                                                </td> 
+                                                <td class="font-weight-600 p-8" width="50px"> {{order.quantity}}</td>
+                                                <td  class="font-weight-600 p-8" width="100px">
+                                                  <div *ngIf="order.ordersidedish.length!=0">
+                                                    <div *ngFor="let sidedishes of order.ordersidedish">
+                                                      <p>{{sidedishes.sidedish.side_dish_name}}</p>
+                                                    </div>
+                                                  </div>
+                                                  <!-- <div *ngIf="order.ordersidedish.length==0" class="text-center">
+                                                    <div *ngFor="let notes of quantityIndex; let i=index;">
+                                                      <br>
+                                                    </div>
+                                                    --
+                                                  </div> -->
+                                                </td>
+                                                <td  class="font-weight-600 p-8" width="100px">
+                                                  <div *ngIf="order.orderextra.length!=0">
+                                                    <div *ngFor="let extras of order.orderextra">
+                                                      <p>{{extras.extras.extra_name}}</p>
+                                                    </div>
+                                                  </div> 
+                                                  <!-- <div *ngIf="order.orderextra.length==0" class="text-center">
+                                                    <div *ngFor="let notes of quantityIndex; let i=index;">
+                                                      <br>
+                                                    </div>
+                                                    --
+                                                  </div>                                                 -->
+                                                </td>
+                                                <td class="font-weight-600 p-8" width="100px">
+                                                  <div *ngIf="order.ordersidedish.length > 0 || order.orderextra.length > 0">
+                                                  <div *ngIf="quantityIndex">
+                                                    <div *ngFor="let notes of quantityIndex; let i=index;">
+                                                      {{order.ordersidedish.length > 0 ? order.ordersidedish[i].notes : order.orderextra[i].notes}}
+                                                      <div *ngFor="let notes of sideNumberIndex;">
+                                                          <br>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  </div>                                                  
+                                                </td>
+                                              </tr>
+                                            </table>
+                                          </div>
+                                        </td>
+                                        <!-- <td *ngFor="let order of content.orderitems[0];let i=index;"> -->
+                                        <!-- <td *ngFor="let order of orderItems;let i=index;">
+                                          
+                                          <p *ngIf="order.products!=null">{{order.products.product_name}}</p>
+                                          <p>Quantity : {{order.quantity}}</p>
+                                           -->
+                                          <!-- <span> {{i+1}}: {{order.categories.category_name | titlecase}}</span> -->
+                                        <!-- </td> -->
+                                    </tr>    
+                                </ng-container> 
+                          </table>
+                      </div>     
+                    </div>   
+            <!-- /CENTER -->
+             </div>
+           </div>
+       </div>   
+ </div>
+</div>
+
+
+ 
+

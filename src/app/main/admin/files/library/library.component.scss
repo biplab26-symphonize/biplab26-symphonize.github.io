@@ -1,0 +1,24 @@
+.files-library-list {
+    td {
+        vertical-align: baseline;
+        word-break: break-all;
+    }
+
+    th{
+        font-size: 15px !important;
+    }
+
+    th.mat-header-cell:first-of-type,
+    td:first-of-type {
+        padding-left: 24px !important;
+    }
+
+    th:nth-child(1),
+    th:nth-child(2) {
+        width: 30%;
+    }
+
+    th:nth-child(3) {
+        width: 12%;
+    }
+}

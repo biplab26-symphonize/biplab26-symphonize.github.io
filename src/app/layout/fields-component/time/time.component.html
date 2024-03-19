@@ -1,0 +1,143 @@
+<div  [ngClass]="fieldContent.extra_field_content.col_class" *ngIf="type == 'field' || type == 'resident'">
+    <label>{{field.field_label}}: </label>
+        <ng-container [ngClass]="fieldContent.extra_field_content.class" [formGroup]="group" appearance="outline">
+            
+            <div *ngIf="time_zoneformat=='select'">
+                <mat-form-field  class="w-50-p" appearance="outline" fxLayout="column" floatLabel="always">
+                <mat-select  [required]="element.fields.field_required=='Y'" >
+                    <mat-option  (change)="onSelect()" value="A">AM</mat-option>
+                    <mat-option  (change)="onSelect()"  value="P">PM</mat-option>
+                </mat-select> 
+                </mat-form-field>
+            </div> 
+            <div *ngIf="time_zoneformat=='radio'">
+                <mat-form-field class="w-100-p radioformfield" floatLabel="always">
+                    <input matInput  style="display: none" >
+                    <mat-radio-group  [id]="fieldContent.extra_field_content.id"
+                    [formControlName]="field.field_name"
+                      aria-labelledby="common-radio-group-label">
+                    <mat-radio-button (change)="onChange()"  class="common-radio-button" name='timezone' value="A">AM</mat-radio-button>
+                    <mat-radio-button  (change)="onChange()" class="common-radio-button" name='timezone' value="P">PM</mat-radio-button>
+                </mat-radio-group>
+                </mat-form-field>
+            </div>  
+        </ng-container >
+</div>
+<div  *ngIf="type == 'dynForm'" class="all-entry-tag">
+  <!-- 24 hour type select field time picker -->
+    <div *ngIf="field.content.extra_field_content. time_format == 'twenty-four' && field.content.extra_field_content.text_format == 'dropdown'">
+        <mat-form-field class="All-half-full w-100-p"  [ngClass]="field.content.extra_field_content.class" [formGroup]="group" appearance="outline">
+            <mat-label>{{field.description}}: </mat-label>
+            <input matInput
+            [id]="field.content.extra_field_content.id"
+            [formControl]="group.get(field.caption)"
+            [readonly]="field.content.extra_field_content.readonly === 'Y'" 
+            [required]="field.required=='Y'"
+            [owlDateTimeTrigger]="datetimepicker" [owlDateTime]="datetimepicker">
+            <owl-date-time  [pickerType]="'timer'"   #datetimepicker></owl-date-time>
+            <mat-error>
+                {{field.error_msg}}
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="field.content.extra_field_content. time_format == 'twelve' && field.content.extra_field_content.text_format == 'dropdown'">
+        <mat-form-field class="w-100-p" [ngClass]="field.content.extra_field_content.class" [formGroup]="group" appearance="outline">
+            <mat-label>{{field.description}}: </mat-label>
+            <input matInput
+            [id]="field.content.extra_field_content.id"
+            [min]="min"
+            [required]="field.required=='Y'"
+            [readonly]="field.content.extra_field_content.readonly === 'Y'" 
+            [owlDateTimeTrigger]="datetimepicker" [owlDateTime]="datetimepicker"
+            [formControl]="group.get(field.caption)">
+            <owl-date-time  [pickerType]="'timer'" [hour12Timer]="true" #datetimepicker></owl-date-time>
+            <mat-error>
+                {{field.error_msg}}
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <ng-container [ngClass]="field.content.extra_field_content.class" [formGroup]="group" appearance="outline" >
+        <div *ngIf="field.content.extra_field_content.time_format == 'twenty-four' && field.content.extra_field_content.text_format == 'text'" appearance="outline" floatLabel="always" class="w-50-pr-4" >
+            <div *ngFor="let name of twenty_four_Name">
+                <div *ngIf="name.id == field.form_element_id">
+                    <div *ngIf="name.type == 'twenty_four_hours'">
+                        <mat-label>{{field.description}}: </mat-label>
+                        <mat-form-field class="w-50-pr-4" appearance="outline"  floatLabel="always"  >
+                            <mat-label>HH</mat-label>
+                            <input matInput   [readonly]="field.content.extra_field_content.readonly === 'Y'" [required]="field.required=='Y'"
+                            minlength="1" maxlength="2" pattern="^(2[0-4]|1[0-9]|[1-9])$" [(ngModel)]="twentyfourhour"     formControlName="{{name.label}}"  (change)="twentyfourhoursValue($event,field.form_element_id)"  
+                                min="1" max="24"  />
+                            <mat-error *ngIf="name.label.error?.pattern && field.caption.invalid"> {{field.error_msg}}</mat-error>
+                        </mat-form-field>  
+                    </div>    
+                
+                    <div *ngIf="name.type == 'twenty_four_minutes'">
+                        <mat-label>{{field.description}}: </mat-label>
+                        <mat-form-field   class="w-50-pr-4" appearance="outline"  floatLabel="always">
+                            <mat-label>MM</mat-label>
+                            <input matInput  [readonly]="field.content.extra_field_content.readonly === 'Y'" 
+                        (change)="twentyfourminutesValue($event,field.form_element_id)" [required]="field.required=='Y'"
+                            minlength="1" maxlength="2" pattern="[1-5]?[0-9]" [(ngModel)]="twentyfourminutes"      formControlName="{{name.label}}" 	(keyup)="validate($event.target.value)"   min="0" max="60"   />
+                            <mat-error *ngIf="name.label.error?.pattern && group.get(field.caption).dirty"> {{field.error_msg}}</mat-error>
+                        </mat-form-field> 
+                    </div>
+             </div>    
+           </div>        
+        </div>
+        <div *ngIf="field.content.extra_field_content.time_format == 'twelve' && field.content.extra_field_content.text_format == 'text'" appearance="outline" floatLabel="always" class="w-50-pr-4" >
+            <div *ngFor="let name of twelvehoursName">
+                <div *ngIf="name.id == field.form_element_id"> 
+                    <div  *ngIf="name.type == 'hours'">
+                        <div *ngIf="field.content.extra_field_content.time_format=='twelve' && field.content.extra_field_content.text_format == 'text'">
+                            <label>{{field.description}}: </label>
+                            <mat-form-field class="w-100-p" appearance="outline"  floatLabel="always">
+                                    <mat-label>HH</mat-label>
+                                    <input matInput pattern="^([1-9]|1[012])$"  [readonly]="field.content.extra_field_content.readonly === 'Y'"
+                                    minlength="1" maxlength="2" (change)="hoursValue($event,field.form_element_id)"   [required]="field.required=='Y'"
+                                    [(ngModel)]="hour"  formControlName="{{name.label}}"  type="text" />
+                                    <mat-error *ngIf="hour.error?.pattern && name.label.dirty">{{element.error_msg}}</mat-error>
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                    
+                    <div  *ngIf="name.type == 'minutes'">
+                        <div *ngIf="field.content.extra_field_content.time_format =='twelve' && field.content.extra_field_content.text_format == 'text'">
+                            <label>{{field.description}}: </label>
+                            <mat-form-field class="w-100-p" appearance="outline"  floatLabel="always">
+                                <mat-label>MM</mat-label>
+                                <input matInput  [readonly]="field.content.extra_field_content.readonly === 'Y'"  [required]="field.required=='Y'"
+                                    minlength="1" maxlength="2" pattern="[1-5]?[0-9]" 
+                                    [(ngModel)]="minute"   formControlName="{{name.label}}"    (change)="minutesValue($event,field.form_element_id)" type="text" />
+                                    <mat-error *ngIf="minute.error?.pattern">{{element.error_msg}}</mat-error>
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                   
+                    <div  *ngIf="name.type == 'time_zone'">
+                        <div *ngIf="field.content.extra_field_content.time_zone =='select'">
+                            <mat-form-field class="w-50-p" appearance="outline" fxLayout="column" floatLabel="always">
+                                <mat-select    [(ngModel)]="timezonevalue" [required]="field.required=='Y'" formControlName="{{name.label}}"   (selectionChange)="Onselect($event,field.form_element_id)"  >
+                                <mat-option   value="am">AM</mat-option>
+                                <mat-option   value="pm">PM</mat-option>
+                                </mat-select> 
+                            </mat-form-field>
+                           
+                        </div> 
+
+                        <div *ngIf="field.content.extra_field_content.time_zone =='radio'">
+                            <mat-radio-group  #radioGroup="matRadioGroup" [(ngModel)]="timezonevalue" [required]="field.required=='Y'"  formControlName="{{name.label}}" aria-labelledby="common-radio-group-label">
+                                <input matInput style="display: none" >
+                                <mat-radio-button  (change)="OnradioChange($event,field.form_element_id)"  class="common-radio-button"  value="am">AM</mat-radio-button>
+                                <mat-radio-button  (change)="OnradioChange($event,field.form_element_id)"  class="common-radio-button"  value="pm">PM</mat-radio-button>           
+                            </mat-radio-group>    
+                       
+                        </div>
+                    </div>
+
+              </div>
+          </div>
+      </div>
+    </ng-container >        
+</div>

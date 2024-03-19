@@ -1,0 +1,353 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">menu</mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" *ngIf="!editMenuForm">Add Menu</span>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" *ngIf="editMenuForm">Edit Menu</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button [routerLink]="'/admin/menus/list'" mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto" fxLayout="column">
+                <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16" *ngIf="!editMenuForm">Add New Menu</div>
+                    <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16" *ngIf="editMenuForm">Edit Menu</div>
+                <form class="p-24 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="menuform" [formGroup]="menuform" (ngSubmit)="onSubmit(menuform.value)" novalidate autocomplete="off">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_title-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Title</mat-label>
+                            <input matInput formControlName="menu_title" required placeholder="Enter title" (keyup)="slugifyMenuAlias()" />
+                            <mat-icon matSuffix class="secondary-text">info</mat-icon>
+                            <mat-error>Title Is Required !</mat-error>
+                        </mat-form-field>
+                        <!--alias generetae by title-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Menu Alias ( For Links )</mat-label>
+                            <input matInput formControlName="menu_alias" required placeholder="Enter title" />
+                            <mat-icon matSuffix class="secondary-text">info</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_desc-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Description</mat-label>
+                            <input matInput formControlName="menu_desc" placeholder="Enter Description" />
+                            <mat-icon matSuffix class="secondary-text">description</mat-icon>
+                        </mat-form-field>
+                        <!--menu_class-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Menu Class ( For Appearance )</mat-label>
+                            <input matInput formControlName="menu_class" required placeholder="Enter Class" />
+                            <mat-icon matSuffix class="secondary-text">adjust</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_icon-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Menu Icon ( Click Icon To Choose )</mat-label>
+                            <input matInput formControlName="menu_icon" placeholder="Enter Icon Name" />
+                            <mat-icon matSuffix class="secondary-text" (click)="selectMenuIcon()">devices</mat-icon>
+                        </mat-form-field>
+                        <!--menu_url-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Menu Url</mat-label>
+                            <input
+                                matInput
+                                formControlName="menu_url"
+                                [required]="menuform.get('menu_source').value!=='D' && menuform.get('menu_source_type').value=='url' || menuform.get('menu_source').value =='N'"
+                                [readonly]="menuform.get('menu_source').value=='F' || menuform.get('menu_source').value=='S' || menuform.get('menu_source').value=='ECL'"
+                                placeholder="Enter Url"
+                            />
+                            <mat-icon matSuffix class="secondary-text">link</mat-icon>
+                            <mat-error>Url is required!</mat-error>
+                            <mat-hint *ngIf="menuform.get('menu_source').value=='N'">External url format:<em>https://www.website.com</em></mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_role-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Access Role</mat-label>
+                            <mat-select formControlName="menu_role" required multiple (selectionChange)="selecteddata()">
+                                <mat-option-select-all></mat-option-select-all>
+                                <ng-container *ngFor="let role of RoleList">
+                                    <mat-option *ngIf="role.id!==''" [value]="role.id">
+                                        {{role.role_name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--position-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Position</mat-label>
+                            <mat-select formControlName="position" required (selectionChange)="filterSubmenus()">
+                                <ng-container *ngFor="let position of PositionList | keyvalue">
+                                    <mat-option *ngIf="position.key!==''" [value]="position.key">
+                                        {{position.value}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_source-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Menu Source</mat-label>
+                            <mat-select formControlName="menu_source" required (selectionChange)="getFormsList(true)">
+                                <ng-container *ngFor="let source of MenuSourceList | keyvalue">
+                                    <mat-option *ngIf="source.key!==''" [value]="source.key">
+                                        {{source.value}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--menu_source_type-->
+                        <mat-form-field
+                            appearance="outline"
+                            fxFlex="50"
+                            class="pl-4"
+                            *ngIf="menuform.get('menu_source').value!=='' && menuform.get('menu_source').value!=='N' && menuform.get('menu_source').value!=='RD' && menuform.get('menu_source').value!=='RDM'"
+                        >
+                            <mat-label>{{dynamic_source_label}}</mat-label>
+                            <mat-select (selectionChange)="setMenuURL()" formControlName="menu_source_type" [required]="menuform.get('menu_source').value!=='' && menuform.get('menu_source').value!=='N'">
+                                <!--Document Options-->
+                                <span *ngIf="menuform.get('menu_source').value!=='' && menuform.get('menu_source').value=='D'">
+                                    <ng-container *ngFor="let typesource of MenuSourceTypes | keyvalue">
+                                        <mat-option *ngIf="typesource.key!==''" [value]="typesource.key">
+                                            {{typesource.value}}
+                                        </mat-option>
+                                    </ng-container>
+                                </span>
+                                <!--Forms Options-->
+                                <span *ngIf="menuform.get('menu_source').value!=='' && menuform.get('menu_source').value=='F'">
+                                    <ng-container *ngFor="let typesource of DynamicSourceTypes">
+                                        <mat-option [value]="typesource.form_id">
+                                            {{typesource.form_title}}
+                                        </mat-option>
+                                    </ng-container>
+                                </span>
+                                <!--Staff Category Options-->
+                                <span *ngIf="menuform.get('menu_source').value!=='' && ( menuform.get('menu_source').value=='S' ||  menuform.get('menu_source').value=='FRM' ||  calendarArray.includes(menuform.get('menu_source').value))">
+                                    <mat-option value="all">{{dynamicSelectText}}</mat-option>
+                                    <ng-container *ngFor="let typesource of DynamicSourceTypes">
+                                        <mat-option [value]="typesource.id">
+                                            {{typesource.category_name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </span>
+                                <!--Quicklink Options-->
+                                <span *ngIf="menuform.get('menu_source').value!=='' && menuform.get('menu_source').value=='Q'">
+                                    <ng-container *ngFor="let typesource of DynamicSourceTypes| keyvalue">
+                                        <mat-option [value]="typesource.value">
+                                            {{typesource.key}}
+                                        </mat-option>
+                                    </ng-container>
+                                </span>
+                                <!-- pages Option -->
+                                <span *ngIf="menuform.get('menu_source').value!=='' && menuform.get('menu_source').value=='P'">
+                                    <ng-container *ngFor="let typesource of DynamicSourceTypes">
+                                        <mat-option [value]="typesource.id">
+                                            {{typesource.title}}
+                                        </mat-option>
+                                    </ng-container>
+                                </span>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_target-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Link Target</mat-label>
+                            <mat-select formControlName="menu_target" required>
+                                <ng-container *ngFor="let target of MenuTargetList | keyvalue">
+                                    <mat-option *ngIf="target.key!==''" [value]="target.key">
+                                        {{target.value}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--menu_status-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Status</mat-label>
+                            <mat-select formControlName="menu_status" required>
+                                <ng-container *ngFor="let status of StatusList | keyvalue">
+                                    <mat-option *ngIf="status.key!==''" [value]="status.key">
+                                        {{status.value}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_type-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Menu Type</mat-label>
+                            <mat-select formControlName="menu_type" required (selectionChange)="toggleParentMenu()">
+                                <ng-container *ngFor="let menutype of MenuTypeList | keyvalue">
+                                    <ng-container *ngIf="menuform.get('position').value=='F'">
+                                        <mat-option *ngIf="menutype.key=='M'" [value]="menutype.key">
+                                            {{menutype.value}}
+                                        </mat-option>
+                                    </ng-container>
+                                    <ng-container *ngIf="menuform.get('position').value!=='F'">
+                                        <mat-option *ngIf="menutype.key!==''" [value]="menutype.key">
+                                            {{menutype.value}}
+                                        </mat-option>
+                                    </ng-container>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--Parent Menu-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4" *ngIf="menuform.get('menu_type').value=='S'">
+                            <mat-label>Parent Menu</mat-label>
+                            <mat-select formControlName="menu_parent_id" [required]="menuform.get('menu_type').value=='S'">
+                                <ng-container *ngFor="let parentmenu of FilteredMenus">
+                                    <span *ngIf="parentmenu.menu_id!==menuform.get('menu_id').value">
+                                        <!--Parent-->
+                                        <mat-option class="font-weight-900" *ngIf="parentmenu.menu_id" [value]="parentmenu.menu_id">
+                                            {{parentmenu.menu_title}}
+                                        </mat-option>
+                                        <!--Sub-Parent-->
+                                        <span *ngIf="parentmenu.children">
+                                            <ng-container *ngFor="let submenu of parentmenu.children">
+                                                <mat-option [value]="submenu.menu_id">
+                                                    - {{submenu.menu_title}}
+                                                </mat-option>
+                                                <!--Sub-Menu-One-->
+                                                <span *ngIf="submenu.children">
+                                                    <ng-container *ngFor="let levelOne of submenu.children">
+                                                        <mat-option [value]="levelOne.menu_id" class="ml-4">
+                                                            -- {{levelOne.menu_title}}
+                                                        </mat-option>
+                                                        <!--Sub-Menu-Two-->
+                                                        <span *ngIf="levelOne.children">
+                                                            <ng-container *ngFor="let levelTwo of levelOne.children">
+                                                                <mat-option [value]="levelTwo.menu_id" class="ml-8">
+                                                                    --- {{levelTwo.menu_title}}
+                                                                </mat-option>
+                                                                <!--Sub-Menu-Three-->
+                                                                <span *ngIf="levelTwo.children">
+                                                                    <ng-container *ngFor="let levelThree of levelTwo.children">
+                                                                        <mat-option [value]="levelThree.menu_id" class="ml-16">
+                                                                            ---- {{levelThree.menu_title}}
+                                                                        </mat-option>
+                                                                        <!--Sub-Menu-Four-->
+                                                                        <span *ngIf="levelThree.children">
+                                                                            <ng-container *ngFor="let levelFour of levelThree.children">
+                                                                                <mat-option [value]="levelFour.menu_id" class="ml-20">
+                                                                                    ----- {{levelFour.menu_title}}
+                                                                                </mat-option>
+                                                                                <!--Sub-Menu-Five-->
+                                                                                <span *ngIf="levelFour.children">
+                                                                                    <ng-container *ngFor="let levelFive of levelFour.children">
+                                                                                        <mat-option [value]="levelFive.menu_id" class="ml-24">
+                                                                                            ------ {{levelFive.menu_title}}
+                                                                                        </mat-option>
+                                                                                    </ng-container>
+                                                                                </span>
+                                                                            </ng-container>
+                                                                        </span>
+                                                                    </ng-container>
+                                                                </span>
+                                                            </ng-container>
+                                                        </span>
+                                                    </ng-container>
+                                                </span>
+                                            </ng-container>
+                                        </span>
+                                    </span>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--menu_show_type-->
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Menu Show In</mat-label>
+                            <ng-container *ngIf="menuform.get('menu_type').value=='S'">
+                                <mat-select formControlName="menu_show_type" required>
+                                    <ng-container *ngFor="let showtype of showtypeList | keyvalue">
+                                        <mat-option *ngIf="showtype.key!==''" [value]="showtype.key">
+                                            {{showtype.value}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </ng-container>
+                            <ng-container *ngIf="menuform.get('menu_type').value=='M'">
+                                <mat-select formControlName="menu_show_type" required>
+                                    <ng-container *ngFor="let mainshowtypes of showtypeListformain | keyvalue">
+                                        <mat-option *ngIf="mainshowtypes.key!==''" [value]="mainshowtypes.key">
+                                            {{mainshowtypes.value}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </ng-container>
+                        </mat-form-field>
+                        <div fxFlex="50" class="pl-4">
+                            <label class="pr-12">Show Page title</label>
+                            <mat-radio-group name="show_page_title" formControlName="show_page_title">
+                                <mat-radio-button value="Y"> Yes </mat-radio-button>
+                                <mat-radio-button value="N" class="pl-12"> No </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <div fxLayout="row" *ngIf="menuform.get('show_page_title').value=='Y'" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <!--page_title-->
+                        <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                            <mat-label>Page Title</mat-label>
+                            <input matInput formControlName="page_title" [required]="menuform.get('show_page_title').value=='Y'" placeholder="Enter page title">
+                            <mat-icon matSuffix class="secondary-text">info</mat-icon>
+                            <mat-error>Page Title is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+                    
+                    <!--background Image-->
+                    <div fxLayout="row" class="mb-24 pl-4" *ngIf="menuform.get('show_page_title').value=='Y'" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <app-file-upload fxLayout="column" [cropper]="false" [uploadlabel]="'Page title Background Image'" (imageUploaded)="setMediaFieldValue($event)" [uploadInfo]="uploadInfo" ></app-file-upload>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <div fxFlex="50" class="pl-4" *ngIf="menuform.get('menu_type').value=='S'">
+                            <label class="pr-12 font-weight-600">Add To Quick Link</label>
+                            <mat-radio-group name="quicklink" formControlName="quicklink">
+                                <mat-radio-button value="Y"> Yes </mat-radio-button>
+                                <mat-radio-button value="N" class="pl-12"> No </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <br />
+                    <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto" class="mt-20">
+                        <button type="submit" mat-raised-button [ngStyle]="button"  class="mr-8 text-uppercase line-height-44 br-ds-0 box-shadow-none" [disabled]="!menuform.valid || isSubmit==true">Save</button>
+                        <button type="button" mat-raised-button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [routerLink]="'/admin/menus/list'">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+</div>

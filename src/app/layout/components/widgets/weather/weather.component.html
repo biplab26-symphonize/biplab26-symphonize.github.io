@@ -1,0 +1,49 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content">
+    <div class="p-16 title">
+        <div class="h1 font-weight-800">WEATHER</div>
+    </div>
+    <div *ngIf="weatherInfo!==null" [style.background-color]="homeSettingsdata.bg_color" [style.color]="homeSettingsdata.text_color">
+        <div class="text-center pb-8">
+            {{_currentTime | date: defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}
+        </div>
+        <div class="card-divider full-width"></div>
+        <div class="text-center text-uppercase py-8">
+            {{weatherInfo.name}}
+        </div>
+        <div class="card-divider full-width"></div>
+
+        <div class="py-16 px-8 text-center">
+            <img *ngIf="homeSettingsdata.show_icon=='Y' && weatherInfo.weather && weatherInfo.weather[0].icon" [src]="weatherUrl+weatherInfo.weather[0].icon+'@2x.png'"/>
+            <div class="h1">
+                <span class="font-size-56 line-height-68 font-weight-800">{{weatherInfo.main.temp}}</span>
+                <sup class="font-size-38">&deg;</sup>
+
+                <div class="font-size-14">{{weatherInfo.weather[0].description | titlecase}}</div>
+                <div class="font-size-14">Humidity: {{weatherInfo.main.humidity}}%</div>
+                <div class="font-size-14" *ngIf="weatherInfo.wind">
+                    Wind: {{weatherInfo.wind.speed}}
+                    <span *ngIf="homesettings.unit=='metric'">mps ESE</span>
+                    <span *ngIf="homesettings.unit=='imperial'">mph ESE</span>
+                </div>
+                <div class="font-size-14">
+                    <span *ngIf="weatherInfo.main.temp_max">H:{{weatherInfo.main.temp_max}} </span>
+                    <span *ngIf="weatherInfo.main.temp_min"> L:{{weatherInfo.main.temp_min}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-divider full-width"></div>
+
+        <div *ngIf="forecastWeatherInfo!==null && homeSettingsdata.forecast>0" class="py-16 px-4 text-center" fxLayout="row wrap" fxLayoutAlign="center">
+            <ng-container *ngFor="let forecast of forecastWeatherInfo;trackBy: forecast;let i=index">
+                <div class="px-12" *ngIf="i>0 && i<=homeSettingsdata.forecast">
+                    <span class="font-size-15">{{forecast.temp.day || ''}}<sup class="font-size-16">&deg;</sup></span>
+                    <div class="font-size-12 text-uppercase">{{forecast.dt || ''}}</div>
+                </div>
+            </ng-container>
+        </div>
+
+    </div>
+
+</div>
+<!-- / CARD CONTENT -->

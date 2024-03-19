@@ -1,0 +1,43 @@
+<div id="forum" class="page-layout simple fullwidth ">
+    
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER --> 
+
+
+    <!-- CONTENT -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        
+        <!--  CONTENT WRAP -->
+        <section class="content-wrap fuse-white-bg p-28">
+
+            <div class="h2 font-weight-600 mb-20 font-weight-600 title">Start or Join A Discussion :</div>
+
+            <div class="table-wrap" [ngStyle.lt-sm]="{'overflow-x': 'auto'}">
+                <table class="box-shadow simple forum-list-table" mat-table #table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+                    <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                        <!-- COLUMNS -->    
+                        <span>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}"
+                                 disabled="column.sortable==false" class="fuse-white-fg"> {{column.header}} </th>
+                            <td class="p-20 title-des-section-width" mat-cell *matCellDef="let element">
+                                <div class="title-des-section">
+                                    <a class="font-weight-600 font-size-22" [routerLink]="['/forums/topics',element.category_alias]" *ngIf="column.columnDef=='category_name'">{{element[column.columnDef]}}</a>
+                                    <div class="forum-description font-size-16" *ngIf="column.columnDef=='category_name'" [innerHTML]="element['description'] | sanitizeHtml"></div>
+                                </div>
+                                <div> <span *ngIf="column.columnDef=='topic_count'">{{element[column.columnDef] ? element[column.columnDef] : 0}}</span></div>
+                                <div>  <span *ngIf="column.columnDef=='forum_replies_count'">{{element[column.columnDef] ? element[column.columnDef] : 0}}</span></div>
+                            </td>
+                        </span>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="accent"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+        </section>
+        <!--  / CONTENT WRAP -->
+    </div>
+    <!-- / CONTENT -->
+    
+</div>

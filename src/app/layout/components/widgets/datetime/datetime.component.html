@@ -1,0 +1,40 @@
+<!-- Front -->
+<div class="fuse-widget-front fuse-card mb-24">
+
+    <div class="p-16 font-weight-600" fxLayout="row" fxLayoutAlign="space-between center">
+
+       <!--Layout-1-->
+        <div [ngClass]="homesettings.datetimeformat" fxFlex="50">
+            <!--full-->
+            <div *ngIf="homesettings.datetimeformat=='full'" fxLayout="row">
+                <p class="mr-8">{{ _currentTime | date:'EEEE'}}</p>
+
+                <div fxLayout="row" class="mr-8">
+                    <p class="mr-4">{{ _currentTime | date:'MMMM'}}</p>
+                    <p>{{ _currentTime | date:'d'}}</p>
+                </div>
+
+                <p>{{ _currentTime | date:'h:mm a'}}</p>
+            </div>
+            <!--short-->
+            <div *ngIf="homesettings.datetimeformat=='short'">
+                <p>{{ _currentTime | date:'M/d/yy , h:mm a'}}</p>
+            </div>
+            <!--Medium-->
+            <div *ngIf="homesettings.datetimeformat=='medium'">
+                <p>{{ _currentTime | date:'MMM d , y , h:mm:ss a'}}</p>
+            </div>
+            <!--Long-->
+            <div *ngIf="homesettings.datetimeformat=='long'">
+                <p>{{ _currentTime | date:'MMMM d , y , h:mm:ss a'}}</p>
+            </div>
+        </div>
+        <div *ngIf="weatherInfo" fxFlex="50" fxLayout="row" fxLayoutAlign="end center">
+            <div class="main-temp-img" *ngIf="weatherInfo && weatherInfo.weather.length>0">
+                <img [src]="weatherUrl+weatherInfo.weather[0].icon+'@2x.png'"/>
+            </div>
+            <div class="main-temp">{{weatherInfo.main.temp}}</div>
+        </div>
+    </div>
+</div>
+<!-- / Front -->

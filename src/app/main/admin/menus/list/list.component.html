@@ -1,0 +1,216 @@
+<div class="page-layout page-layout-list simple left-sidebar inner-sidebar inner-scroll">
+
+
+        <!-- HEADER --> 
+        <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+             fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+            
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">list
+                    </mat-icon>
+                    <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Menus
+                    </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+    
+            <!-- BTN's -->
+            <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+                <div class="mt-16 mt-sm-0">
+                    <button mat-raised-button class="reference-button" class="mr-4 ml-4" [routerLink]="'/admin/menus/add'">
+                        <mat-icon class="mr-4">add</mat-icon>Add New
+                    </button>
+                    <!--TRASH Link-->
+                    <button *ngIf="!isTrashView" mat-raised-button class="reference-button" class="mr-4 ml-4" [routerLink]="'/admin/menus/trash'">
+                        <mat-icon class="mr-4">restore_from_trash</mat-icon>View Trash
+                    </button>
+                    <!--UsersList-->
+                    <button *ngIf="isTrashView" mat-raised-button class="reference-button" class="mr-4 ml-4" [routerLink]="'/admin/menus/list'">
+                        <mat-icon class="mr-4">list</mat-icon>
+                        Menus List
+                    </button>
+                </div>
+            </div>
+            <!-- / BTN's -->
+    
+        </div>
+        <!-- / HEADER -->
+        <!-- SELECTED BAR -->
+        <div class="selected-bar accent-600 h-80" *ngIf="checklistSelection.selected.length>0" [@slideInTop]>
+            <div fxFlex fxLayout="row" fxLayoutAlign="start center" class="px-24 py-0 header accent p-24 h-80">
+    
+                <div class="close-button-wrapper" fxFlex="0 1 auto" fxFlex.gt-sm="220px" (click)="checklistSelection.clear()">
+                    <button mat-raised-button>
+                        <mat-icon class="mr-4">arrow_back</mat-icon>
+                        Back
+                    </button>
+                </div>
+    
+                <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+
+                    <div class="multi-select-actions">
+                        <span *ngIf="!isTrashView">
+                        <button 
+                            type="button" mat-raised-button  class=" mr-4 ml-4" (click)="deleteMenus(0)"
+                            [disabled]="(!checklistSelection.selected.length) ? true : false">Delete</button>
+                        <button 
+                            type="button" mat-raised-button  class=" mr-4 ml-4" (click)="changeStatus('A')"
+                            [disabled]="(!checklistSelection.selected.length) ? true : false">Active</button>
+                
+                        <button type="button" mat-raised-button  class=" mr-4 ml-4" (click)="changeStatus('I')"
+                            [disabled]="(!checklistSelection.selected.length) ? true : false">Inactive</button>
+                
+                        </span>
+                        <span *ngIf="isTrashView">
+                            <button 
+                            type="button" mat-raised-button  class=" mr-4 ml-4" (click)="restoreOrDeleteMenus(0,false)"
+                            [disabled]="(!checklistSelection.selected.length) ? true : false">Restore</button>
+                            
+                            <!--PERMENENT DELETE-->
+                            <button 
+                            type="button" mat-raised-button class="mr-4 ml-4" (click)="restoreOrDeleteMenus(0,true)"
+                            [disabled]="(!checklistSelection.selected.length) ? true : false">Delete</button> 
+                        </span> 
+                        
+                    </div>
+    
+                </div>
+    
+            </div>
+        </div>
+        <!-- / SELECTED BAR -->
+        <!-- CONTENT -->
+        <div class="content" fusePerfectScrollbar>
+    
+            <!-- CENTER -->
+            <div class="center p-24 pb-56" >
+                <!-- FILTER -->
+                <div class="filters fuse-white-bg py-20 px-16 mb-20 pb-0" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                    <form #filter name="filterForm" [formGroup]="filterForm" class="w-100-p" fxLayout="row" fxLayoutAlign="space-between center">                    
+                    <mat-form-field appearance="outline" class="filter-select mr-4 ml-4">
+                        <mat-label>Positions</mat-label>
+                        <mat-select 
+                        placeholder="Position"
+                        formControlName="position">
+                        <mat-option *ngFor="let position of PositionsList | keyvalue" [value]="position.key">
+                        {{position.value}}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+    
+                    <mat-form-field appearance="outline" class="filter-select mr-4 ml-4">
+                        <mat-label>Status</mat-label>
+                        <mat-select 
+                        placeholder="Status"
+                        formControlName="menu_status">
+                        <mat-option *ngFor="let status of StatusList | keyvalue" [value]="status.key">
+                        {{status.value}}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+    
+                    </form>
+    
+                </div>
+    
+                <!-- / FILTER -->
+    
+                <!-- CONTENT -->
+                <div class="content" [@animateStagger]="{value:'50'}">
+                        
+                        <div class="no-record mt-20" *ngIf="!dataSource.data.push()"> 
+                            No Menus Found 
+                        </div>
+                        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                                <mat-tree-node *matTreeNodeDef="let node"
+                                               matTreeNodeToggle
+                                               matTreeNodePadding>
+                                  <button mat-icon-button disabled></button>
+                                  <mat-checkbox class="checklist-leaf-node"
+                                                [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
+                                                            'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
+                                                            'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node,
+                                                            'fontgreen' : node.menu_status=='A',
+                                                            'fontred' : node.menu_status=='I'}"
+                                                [checked]="checklistSelection.isSelected(node)"
+                                                (change)="checklistSelection.toggle(node);"
+                                                draggable="true"
+                                                (dragstart)="handleDragStart($event, node);"
+                                                (dragover)="handleDragOver($event, node);"
+                                                (drop)="handleDrop($event, node);"
+                                                (dragend)="handleDragEnd($event);">{{node.menu_title}}</mat-checkbox>
+                                <!--soft delete-->
+                                <a (click)="deleteMenus(node.menu_id,false)" *ngIf="!isTrashView">
+                                    <mat-icon  class="ml-8" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">delete_sweep</mat-icon>
+                                </a>
+                                <!--edit-->
+                                <a [routerLink]="['/admin/menus/edit', node.menu_id]" *ngIf="!isTrashView">
+                                    <mat-icon  class="ml-8" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">edit</mat-icon>
+                                </a>
+                                <!--Permenenet delete-->
+                                <a (click)="restoreOrDeleteMenus(node.menu_id,true)" *ngIf="isTrashView">
+                                    <mat-icon  class="ml-8" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">delete</mat-icon>
+                                </a>
+                                <a (click)="restoreOrDeleteMenus(node.menu_id,false)" *ngIf="isTrashView">
+                                    <mat-icon  class="ml-8" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">restore</mat-icon>
+                                </a>
+                                </mat-tree-node>
+                              
+                                
+                              
+                                <mat-tree-node *matTreeNodeDef="let node; when: hasChild"
+                                               matTreeNodePadding>
+                                  <button mat-icon-button matTreeNodeToggle
+                                          [attr.aria-label]="'toggle ' + node.filename">
+                                    <mat-icon class="mat-icon-rtl-mirror">
+                                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                    </mat-icon>
+                                  </button>
+                                  <mat-checkbox [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
+                                                            'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
+                                                            'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node}"
+                                                draggable="true"
+                                                (dragstart)="handleDragStart($event, node);"
+                                                (dragover)="handleDragOver($event, node);"
+                                                (drop)="handleDrop($event, node);"
+                                                (dragend)="handleDragEnd($event);"
+                                                [checked]="descendantsAllSelected(node)"
+                                                [indeterminate]="descendantsPartiallySelected(node)"
+                                                (change)="todoItemSelectionToggle(node)">{{node.menu_title}}</mat-checkbox>
+                                  
+                                
+                                <!--soft delete-->
+                                <a (click)="deleteMenus(node.menu_id,false)" *ngIf="!isTrashView">
+                                    <mat-icon  class="ml-8" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">delete_sweep</mat-icon>
+                                </a>
+                                <!--edit-->
+                                <a [routerLink]="['/admin/menus/edit', node.menu_id]" *ngIf="!isTrashView">
+                                    <mat-icon  class="ml-4" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">edit</mat-icon>
+                                </a>
+                                <!--Permenenet delete-->
+                                <a (click)="restoreOrDeleteUser(node.menu_id,true)" *ngIf="isTrashView">
+                                    <mat-icon  class="ml-4" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">delete</mat-icon>
+                                </a>
+                                <a (click)="restoreOrDeleteMenus(node.menu_id,false)" *ngIf="isTrashView">
+                                    <mat-icon  class="ml-4" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">restore</mat-icon>
+                                </a>
+                                </mat-tree-node>
+                              </mat-tree>
+                              
+                              <span #emptyItem></span>
+                    
+                </div>
+                <!-- / CONTENT -->
+    
+            </div>
+            <!-- / CENTER -->
+    
+        </div>
+        <!-- / CONTENT -->
+    
+    
+    
+    </div>

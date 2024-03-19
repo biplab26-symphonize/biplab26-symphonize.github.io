@@ -1,0 +1,143 @@
+<form id="video-setting-popup" name="videoSettingsForm" [formGroup]="videoSettingsForm" (ngSubmit)="sendVideoSettingsInfo($event)"  novalidate autocomplete="off">
+    <div mat-dialog-content class="pb-dialog-settings">
+        <!-- vieoType -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Video Type</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to type of video url youtube/vimeo.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="videotype" formControlName="videotype">
+                        <mat-radio-button class="mx-4" fxFlex="33" value="youtube">Youtube</mat-radio-button>
+                        <mat-radio-button class="mx-4" fxFlex="33" value="vimeo">Vimeo</mat-radio-button>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- videoID -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Video ID</div>
+                <div class="font-size-14 secondary-text ">For example the Video ID for `https://vimeo.com/video/xxxxx34231` / `https://youtube.com/embed/xxxxx34231` </div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="videoid" formControlName="videoid">
+                    <mat-icon matSuffix class="secondary-text">video</mat-icon>
+                    <mat-error *ngIf="videoSettingsForm.get('videoid').invalid">Video Url invalid</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Video Alignment</div>
+                <div class="font-size-14 secondary-text text-capitalize">Alignment of Video.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="alignment" formControlName="alignment">
+                        <ng-container *ngFor="let align of alignments | keyvalue: disableSort">
+                            <mat-radio-button class="mr-24" fxFlex="20" value="{{align.key}}">{{align.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- visiblity -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Element Visibility</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to show or hide the element on small, medium or large screens.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="visiblity" formControlName="visiblity">
+                        <ng-container *ngFor="let visiblity of visibilityOptions | keyvalue: disableSort">
+                            <mat-radio-button class="mx-4" fxFlex="30"  value="{{visiblity.key}}">{{visiblity.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- playerwidth -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Player Width</div>
+                <div class="font-size-14 secondary-text text-capitalize">Add a width of video player.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input (keypress)="validateNumber($event)" matInput name="playerwidth" formControlName="playerwidth">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- playerheight -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Player Height</div>
+                <div class="font-size-14 secondary-text text-capitalize">Add a Height of video player.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input (keypress)="validateNumber($event)" matInput name="playerheight" formControlName="playerheight">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- autoplay -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Autoplay</div>
+                <div class="font-size-14 secondary-text text-capitalize">play video automatically.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="autoplay" formControlName="autoplay">
+                        <mat-radio-button class="mx-4" fxFlex="33" value="Y">Yes</mat-radio-button>
+                        <mat-radio-button class="mx-4" fxFlex="33" value="N">No</mat-radio-button>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- apiparams -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Additional API Parameter</div>
+                <div class="font-size-14 secondary-text text-capitalize">Use additional API parameter, for example &rel=0 to disable related videos.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="apiparams" formControlName="apiparams">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- cssclass -->
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">CSS Class</div>
+                <div class="font-size-14 secondary-text text-capitalize">Add a class to the wrapping HTML element.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="cssclass" formControlName="cssclass">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="border-top py-20">
+        <button type="submit" mat-stroked-button class="mr-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" [disabled]="videoSettingsForm.invalid">SAVE</button>
+        <button type="button" mat-stroked-button class="ml-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" mat-dialog-close>CANCEL</button>
+    </div>
+</form>

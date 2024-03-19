@@ -1,0 +1,76 @@
+@import "src/@fuse/scss/fuse";
+
+#events-popup-register-btn{
+    // .event-fuse-card {
+    //     max-width: 68% !important;
+    // }
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;  
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/register-event.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        padding: 0 !important;
+
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+            
+        }              
+    }
+
+    .mr-0 {margin-right: 0 !important;}
+  
+}
+
+
+// Responsive 
+@include media-breakpoint('lt-sm') {
+   .event-fuse-card.br-radius-8  {
+        max-width: 100% !important;
+   }
+   form {
+    padding: 0 !important;
+   }
+
+   .content-wrap.fuse-white-bg.p-28 {
+       padding: 20px !important;
+   }
+}

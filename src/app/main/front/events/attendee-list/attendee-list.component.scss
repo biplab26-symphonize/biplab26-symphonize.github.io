@@ -1,0 +1,96 @@
+.attendee-block {
+    padding: 20px !important;
+    background: rgba(0, 138, 148, 0.11);
+    border: 1px solid #ddd;
+}
+
+
+@import "src/@fuse/scss/fuse";
+
+#event-register-attendess {
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;  
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/register-event.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        padding: 0 !important;
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }              
+    }
+
+    .row-th {
+        th {
+            color: rgba(0, 0, 0, 0.54);
+        }
+    }
+
+    th{
+        white-space: nowrap;
+    }
+
+    td {
+        vertical-align:middle;
+        padding: 8px;
+    }
+
+    .attendee-list-table {
+        th:nth-of-type(2),
+        th:nth-of-type(3) {
+            width: 30%;
+        }
+    }
+}
+
+@include media-breakpoint('lt-sm') {
+    .content-wrap.fuse-white-bg.p-28 {
+        padding: 20px !important;
+    }
+    .table-wrap {
+        padding: 16px 0 !important;
+    }
+    
+    th.mat-header-cell:nth-of-type(2),
+    th.mat-header-cell:nth-of-type(3) {
+        min-width: 150px;
+      }
+}

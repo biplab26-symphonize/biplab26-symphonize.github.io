@@ -1,0 +1,418 @@
+
+{
+  "header": {
+    "reportVersion": 2,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20200828.114043.6656.0.001.json",
+    "dumpEventTime": "2020-08-28T11:40:43Z",
+    "dumpEventTimeStamp": "1598595043394",
+    "processId": 6656,
+    "threadId": null,
+    "cwd": "D:\\ng-senior-portal",
+    "commandLine": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\Crescente Developer\\AppData\\Roaming\\npm/node_modules/@angular/cli/bin/ng",
+      "build",
+      "--prod"
+    ],
+    "nodejsVersion": "v12.16.3",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "win32",
+    "componentVersions": {
+      "node": "12.16.3",
+      "v8": "7.8.279.23-node.35",
+      "uv": "1.34.2",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.16.0",
+      "modules": "72",
+      "nghttp2": "1.40.0",
+      "napi": "5",
+      "llhttp": "2.0.4",
+      "http_parser": "2.9.3",
+      "openssl": "1.1.1g",
+      "cldr": "36.0",
+      "icu": "65.1",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.16.3/node-v12.16.3-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.16.3/node-v12.16.3.tar.gz",
+      "libUrl": "https://nodejs.org/download/release/v12.16.3/win-x64/node.lib"
+    },
+    "osName": "Windows_NT",
+    "osRelease": "10.0.18362",
+    "osVersion": "Windows 10 Pro",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i3-6100U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 19137171,
+        "nice": 0,
+        "sys": 5768562,
+        "idle": 54722718,
+        "irq": 801671
+      },
+      {
+        "model": "Intel(R) Core(TM) i3-6100U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 17833390,
+        "nice": 0,
+        "sys": 3787718,
+        "idle": 58007015,
+        "irq": 263109
+      },
+      {
+        "model": "Intel(R) Core(TM) i3-6100U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 20485765,
+        "nice": 0,
+        "sys": 4039656,
+        "idle": 55102703,
+        "irq": 104140
+      },
+      {
+        "model": "Intel(R) Core(TM) i3-6100U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 20049859,
+        "nice": 0,
+        "sys": 3564093,
+        "idle": 56014171,
+        "irq": 99171
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "Wi-Fi",
+        "internal": false,
+        "mac": "f4:06:69:d7:41:fa",
+        "address": "2409:4042:278f:7a4f:d03d:2454:916d:a1f6",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Wi-Fi",
+        "internal": false,
+        "mac": "f4:06:69:d7:41:fa",
+        "address": "2409:4042:278f:7a4f:d8d:453b:48c5:1964",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Wi-Fi",
+        "internal": false,
+        "mac": "f4:06:69:d7:41:fa",
+        "address": "fe80::d03d:2454:916d:a1f6",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 7
+      },
+      {
+        "name": "Wi-Fi",
+        "internal": false,
+        "mac": "f4:06:69:d7:41:fa",
+        "address": "192.168.43.122",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      }
+    ],
+    "host": "DESKTOP-VRV8ITB"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00007ff7573e2449",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+11577"
+    },
+    {
+      "pc": "0x00007ff7573e69a9",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+29337"
+    },
+    {
+      "pc": "0x00007ff7573e5828",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+24856"
+    },
+    {
+      "pc": "0x00007ff75751d8c2",
+      "symbol": "v8::base::CPU::has_sse+68658"
+    },
+    {
+      "pc": "0x00007ff757d39bbe",
+      "symbol": "v8::Isolate::ReportExternalAllocationLimitReached+94"
+    },
+    {
+      "pc": "0x00007ff757d21c91",
+      "symbol": "v8::SharedArrayBuffer::Externalize+833"
+    },
+    {
+      "pc": "0x00007ff757bee1ec",
+      "symbol": "v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1436"
+    },
+    {
+      "pc": "0x00007ff757bf9420",
+      "symbol": "v8::internal::Heap::ProtectUnprotectedMemoryChunks+1312"
+    },
+    {
+      "pc": "0x00007ff757bf5f44",
+      "symbol": "v8::internal::Heap::PageFlagsAreConsistent+3204"
+    },
+    {
+      "pc": "0x00007ff757beb743",
+      "symbol": "v8::internal::Heap::CollectGarbage+1283"
+    },
+    {
+      "pc": "0x00007ff757be9db4",
+      "symbol": "v8::internal::Heap::AddRetainedMap+2452"
+    },
+    {
+      "pc": "0x00007ff757c0afbd",
+      "symbol": "v8::internal::Factory::NewFillerObject+61"
+    },
+    {
+      "pc": "0x00007ff757971871",
+      "symbol": "v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+1665"
+    },
+    {
+      "pc": "0x00007ff758186c4d",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+546637"
+    },
+    {
+      "pc": "0x00007ff758112778",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+70264"
+    },
+    {
+      "pc": "0x00000082d81c7b47",
+      "symbol": ""
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2186489856,
+    "totalCommittedMemory": 2186489856,
+    "usedMemory": 2077332008,
+    "availableMemory": 72737680,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 262144,
+        "capacity": 32808,
+        "used": 32808,
+        "available": 0
+      },
+      "new_space": {
+        "memorySize": 33554432,
+        "committedMemory": 33554432,
+        "capacity": 16759296,
+        "used": 4372688,
+        "available": 12386608
+      },
+      "old_space": {
+        "memorySize": 2041196544,
+        "committedMemory": 2041196544,
+        "capacity": 2036830888,
+        "used": 2004564552,
+        "available": 32266336
+      },
+      "code_space": {
+        "memorySize": 5672960,
+        "committedMemory": 5672960,
+        "capacity": 5141056,
+        "used": 5141056,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 56365056,
+        "committedMemory": 56365056,
+        "capacity": 14077840,
+        "used": 14077840,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 48816128,
+        "committedMemory": 48816128,
+        "capacity": 48598776,
+        "used": 48598776,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 622592,
+        "committedMemory": 622592,
+        "capacity": 544288,
+        "used": 544288,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 16759296,
+        "used": 0,
+        "available": 16759296
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 213.015,
+    "kernelCpuSeconds": 9.828,
+    "cpuConsumptionPercent": 118.534,
+    "maxRss": 2279874560,
+    "pageFaults": {
+      "IORequired": 1097055,
+      "IONotRequired": 0
+    },
+    "fsActivity": {
+      "reads": 9715,
+      "writes": 6
+    }
+  },
+  "libuv": [
+  ],
+  "workers": [
+  ],
+  "environmentVariables": {
+    "=::": "::\\",
+    "ACLOCAL_PATH": "C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\share\\aclocal;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\share\\aclocal",
+    "ALLUSERSPROFILE": "C:\\ProgramData",
+    "APPDATA": "C:\\Users\\Crescente Developer\\AppData\\Roaming",
+    "BROWSERSLIST_IGNORE_OLD_DATA": "1",
+    "COMMONPROGRAMFILES": "C:\\Program Files\\Common Files",
+    "COMPUTERNAME": "DESKTOP-VRV8ITB",
+    "COMSPEC": "C:\\WINDOWS\\system32\\cmd.exe",
+    "CONFIG_SITE": "C:/Users/Crescente Developer/AppData/Local/Programs/Git/mingw64/etc/config.site",
+    "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
+    "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+    "CommonProgramW6432": "C:\\Program Files\\Common Files",
+    "DISPLAY": "needs-to-be-defined",
+    "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
+    "EXEPATH": "C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git",
+    "HOME": "C:\\Users\\Crescente Developer",
+    "HOMEDRIVE": "C:",
+    "HOMEPATH": "\\Users\\Crescente Developer",
+    "HOSTNAME": "DESKTOP-VRV8ITB",
+    "INFOPATH": "C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\local\\info;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\share\\info;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\info;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\share\\info",
+    "LANG": "en_US.UTF-8",
+    "LOCALAPPDATA": "C:\\Users\\Crescente Developer\\AppData\\Local",
+    "LOGONSERVER": "\\\\DESKTOP-VRV8ITB",
+    "MANPATH": "C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\local\\man;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\share\\man;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\local\\man;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\share\\man;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\man;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\share\\man",
+    "MINGW_CHOST": "x86_64-w64-mingw32",
+    "MINGW_PACKAGE_PREFIX": "mingw-w64-x86_64",
+    "MINGW_PREFIX": "C:/Users/Crescente Developer/AppData/Local/Programs/Git/mingw64",
+    "MSYSTEM": "MINGW64",
+    "MSYSTEM_CARCH": "x86_64",
+    "MSYSTEM_CHOST": "x86_64-w64-mingw32",
+    "MSYSTEM_PREFIX": "C:/Users/Crescente Developer/AppData/Local/Programs/Git/mingw64",
+    "NUMBER_OF_PROCESSORS": "4",
+    "ORIGINAL_PATH": "C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\bin;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\bin;C:\\Users\\Crescente Developer\\bin;C:\\Python27;C:\\Python27\\Scripts;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0;C:\\WINDOWS\\System32\\OpenSSH;C:\\ProgramData\\chocolatey\\bin;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\nodejs;C:\\Users\\Crescente Developer\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\xampp\\php;C:\\Users\\Crescente Developer\\AppData\\Local\\ComposerSetup\\bin;C:\\Users\\Crescente Developer\\AppData\\Roaming\\Composer\\vendor\\bin;C:\\Users\\Crescente Developer\\AppData\\Roaming\\npm;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\cmd",
+    "ORIGINAL_TEMP": "C:/Users/CRESCE~1/AppData/Local/Temp",
+    "ORIGINAL_TMP": "C:/Users/CRESCE~1/AppData/Local/Temp",
+    "OS": "Windows_NT",
+    "OneDrive": "C:\\Users\\Crescente Developer\\OneDrive",
+    "PATH": "C:\\Users\\Crescente Developer\\bin;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\bin;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\local\\bin;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\bin;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\bin;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\bin;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\bin;C:\\Users\\Crescente Developer\\bin;C:\\Python27;C:\\Python27\\Scripts;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0;C:\\WINDOWS\\System32\\OpenSSH;C:\\ProgramData\\chocolatey\\bin;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\nodejs;C:\\Users\\Crescente Developer\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\xampp\\php;C:\\Users\\Crescente Developer\\AppData\\Local\\ComposerSetup\\bin;C:\\Users\\Crescente Developer\\AppData\\Roaming\\Composer\\vendor\\bin;C:\\Users\\Crescente Developer\\AppData\\Roaming\\npm;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\cmd;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\bin\\vendor_perl;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\bin\\core_perl",
+    "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC",
+    "PKG_CONFIG_PATH": "C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\lib\\pkgconfig;C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\mingw64\\share\\pkgconfig",
+    "PLINK_PROTOCOL": "ssh",
+    "PROCESSOR_ARCHITECTURE": "AMD64",
+    "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 78 Stepping 3, GenuineIntel",
+    "PROCESSOR_LEVEL": "6",
+    "PROCESSOR_REVISION": "4e03",
+    "PROGRAMFILES": "C:\\Program Files",
+    "PSModulePath": "C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules",
+    "PUBLIC": "C:\\Users\\Public",
+    "PWD": "D:/ng-senior-portal",
+    "ProgramData": "C:\\ProgramData",
+    "ProgramFiles(x86)": "C:\\Program Files (x86)",
+    "ProgramW6432": "C:\\Program Files",
+    "SESSIONNAME": "Console",
+    "SHELL": "C:\\Users\\Crescente Developer\\AppData\\Local\\Programs\\Git\\usr\\bin\\bash.exe",
+    "SHLVL": "2",
+    "SSH_ASKPASS": "C:/Users/Crescente Developer/AppData/Local/Programs/Git/mingw64/libexec/git-core/git-gui--askpass",
+    "SYSTEMDRIVE": "C:",
+    "SYSTEMROOT": "C:\\WINDOWS",
+    "TEMP": "C:\\Users\\CRESCE~1\\AppData\\Local\\Temp",
+    "TERM": "xterm",
+    "TMP": "C:\\Users\\CRESCE~1\\AppData\\Local\\Temp",
+    "TMPDIR": "C:\\Users\\CRESCE~1\\AppData\\Local\\Temp",
+    "USERDOMAIN": "DESKTOP-VRV8ITB",
+    "USERDOMAIN_ROAMINGPROFILE": "DESKTOP-VRV8ITB",
+    "USERNAME": "Crescente Developer",
+    "USERPROFILE": "C:\\Users\\Crescente Developer",
+    "WEBPACK_DEV_SERVER": "true",
+    "WINDIR": "C:\\WINDOWS",
+    "_": "C:/Program Files/nodejs/node"
+  },
+  "sharedObjects": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+    "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+    "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+    "C:\\WINDOWS\\System32\\WS2_32.dll",
+    "C:\\WINDOWS\\System32\\RPCRT4.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dbghelp.dll",
+    "C:\\WINDOWS\\System32\\PSAPI.DLL",
+    "C:\\WINDOWS\\System32\\ucrtbase.dll",
+    "C:\\WINDOWS\\System32\\ADVAPI32.dll",
+    "C:\\WINDOWS\\System32\\msvcrt.dll",
+    "C:\\WINDOWS\\System32\\sechost.dll",
+    "C:\\WINDOWS\\System32\\USER32.dll",
+    "C:\\WINDOWS\\SYSTEM32\\USERENV.dll",
+    "C:\\WINDOWS\\SYSTEM32\\IPHLPAPI.DLL",
+    "C:\\WINDOWS\\System32\\win32u.dll",
+    "C:\\WINDOWS\\System32\\profapi.dll",
+    "C:\\WINDOWS\\System32\\GDI32.dll",
+    "C:\\WINDOWS\\System32\\gdi32full.dll",
+    "C:\\WINDOWS\\System32\\msvcp_win.dll",
+    "C:\\WINDOWS\\System32\\CRYPT32.dll",
+    "C:\\WINDOWS\\System32\\MSASN1.dll",
+    "C:\\WINDOWS\\System32\\bcrypt.dll",
+    "C:\\WINDOWS\\SYSTEM32\\WINMM.dll",
+    "C:\\WINDOWS\\SYSTEM32\\WINMMBASE.dll",
+    "C:\\WINDOWS\\System32\\cfgmgr32.dll",
+    "C:\\WINDOWS\\System32\\bcryptPrimitives.dll",
+    "C:\\WINDOWS\\System32\\IMM32.DLL",
+    "C:\\WINDOWS\\System32\\powrprof.dll",
+    "C:\\WINDOWS\\System32\\UMPDC.dll",
+    "C:\\WINDOWS\\SYSTEM32\\CRYPTBASE.DLL",
+    "C:\\WINDOWS\\system32\\uxtheme.dll",
+    "C:\\WINDOWS\\System32\\combase.dll",
+    "C:\\WINDOWS\\system32\\mswsock.dll",
+    "C:\\WINDOWS\\System32\\kernel.appcore.dll",
+    "C:\\WINDOWS\\System32\\NSI.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dhcpcsvc6.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\dhcpcsvc.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\DNSAPI.dll",
+    "C:\\WINDOWS\\system32\\napinsp.dll",
+    "C:\\WINDOWS\\system32\\pnrpnsp.dll",
+    "C:\\WINDOWS\\System32\\winrnr.dll",
+    "C:\\WINDOWS\\system32\\NLAapi.dll",
+    "C:\\WINDOWS\\system32\\wshbth.dll"
+  ]
+}

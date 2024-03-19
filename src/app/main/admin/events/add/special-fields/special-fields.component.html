@@ -1,0 +1,44 @@
+<div class="my-8">
+    <span class="title">Special fields:</span>
+    <p>Example:Do you need transportation?</p>
+    <p>Also select radio button for which type you want to answer of this question.</p>
+    <p class="font-weight-900">
+        NOTE: If you make any change in special field then previously added special field data will be lost and it will directly affects on registered attendees special field answers.
+    </p>
+    <button mat-raised-button type="button" (click)="addSpecialFields()" class="my-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Add <mat-icon>add</mat-icon></button>
+
+</div>
+<form name="specialForm"  [formGroup]="specialForm" class="w-100-p">
+    <div fxLayout="column"   formArrayName="specialFields" *ngFor="let item of specialForm.get('specialFields')['controls']; let i = index;">
+        <ng-container [formGroupName]="i" > 
+            <div  class="mb-0"  fxLayout="row" ngClass.lt-md="mb-40" fxLayout.lt-md="column">
+                <mat-form-field fxFlex="50" appearance="outline" class="w-100-p" ngClass.lt-md="w-100-p" >
+                <mat-label>Question</mat-label>
+                <input matInput (change)="prepareSpecialArray()" formControlName="question_text">
+                <mat-icon (click)="removeQuestion(i)" matSuffix class="secondary-text">delete</mat-icon>
+                </mat-form-field>
+                <div fxFlex="30" fxLayout="row" fxLayoutAlign="start top" class="mt-20 ml-4">
+                    <mat-radio-group name="field_type_{{i}}" formControlName="field_type">
+                        <mat-radio-button (change)="showRadioOptions('T',i)" value="T"> Text Box </mat-radio-button>
+                        <mat-radio-button (change)="showRadioOptions('R',i)" value="R" class="pl-12"> Radio Button </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div fxFlex="20"  class="mt-8">
+                    <button  *ngIf="item.get('field_type').value=='R'" mat-raised-button type="button" (click)="createOptions(i)" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Add Options</button>
+                </div>
+            </div>
+            <ng-container  *ngIf="item.get('field_type').value=='R'">
+                <div fxFlex="100" formArrayName="options_text" *ngFor="let optionitem of item.get('options_text')['controls']; let j = index;" fxLayout="row" class="mt-10">
+                    <ng-container [formGroupName]="j" >
+                        <mat-form-field fxFlex="80" appearance="outline" class="w-100-p" ngClass.lt-md="w-100-p" >
+                        <mat-label>Option</mat-label>
+                        <input matInput (change)="prepareSpecialArray()" formControlName="option">
+                        <mat-icon (click)="removeOptions(i,j)" matSuffix class="secondary-text">delete</mat-icon>
+                        </mat-form-field>
+                    </ng-container>
+                </div>
+            </ng-container>
+            
+        </ng-container>
+     </div>
+    </form>

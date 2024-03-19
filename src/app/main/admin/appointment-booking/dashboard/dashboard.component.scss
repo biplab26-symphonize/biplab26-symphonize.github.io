@@ -1,0 +1,34 @@
+#back-appoinment-booking-dashboard {
+    .line-height-48 {
+        line-height: 48px !important;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    .active {
+        background-color: #5e809a !important;
+        color : #faf5f5;
+        }
+.mat-tab-link{
+    text-transform: none !important;
+}
+        .border-color {
+            border-color: rgba(0, 0, 0, 0.12);
+        }   
+
+        .w-99-p {
+            width: 99% !important;
+        }
+
+        .services-list {
+            nav {
+                a:hover{
+                    background-color: #e6f1f5 !important;
+                    color: #324a5e;
+                    text-decoration: none;
+                }
+            }
+        }
+}

@@ -1,0 +1,54 @@
+<div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" id="upload-img-media">
+    <div fxLayout="row" fxLayoutAlign="start end" fxFlex="1 0 auto">
+        <mat-tab-group fxFlex="100">
+            <!-- UPLOAD NEW IMAGE -->
+            <mat-tab label="Upload Files">
+                <div fxLayout="column">
+                    <div fxLayout="row" class="pt-28 pb-0 mb-20" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <div fxLayout="column" class="w-50-p">
+                             <h3 class="font-weight-600 mb-4"> Select Category *</h3>
+                             <mat-form-field appearance="outline" fxFlex="50" class="mat-wrapper-p-0 mr-12">
+                                 <mat-label>Select Category</mat-label>
+                                 <mat-select required name="category_id" [(ngModel)]="category_id">
+                                 <mat-option *ngFor="let category of categories" [value]="category.id">
+                                 {{category.category_name}}
+                                 </mat-option>
+                                 </mat-select>
+                             </mat-form-field>
+                        </div>
+     
+                        <div fxLayout="column" class="upload-btn">
+                             <!-- <h3 class="font-weight-600 mb-8">Upload media</h3> -->
+                             <mat-form-field appearance="outline" floatLabel="always" class="mt-32 hideforminput pl-4 mat-wrapper-p-0 " hidden fxFlex="50">
+                                 <input matInput hidden value="">
+                                 <input  hidden #inputfile type="file" (change)="fileChangeEvent($event)"[accept]="inputAccpets"/>
+                                 <button type="button" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mat-button" [disabled]="!category_id" (click)="inputfile.click();" mat-stroked-button>Upload</button>
+                             </mat-form-field>
+                        </div>
+                         
+                     </div>
+                     <div fxLayout="row" class="pb-12 custom-error mt-8" *ngIf="!category_id" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                         <div class="mat-error">Select Category</div>
+                     </div>
+                     <div fxLayout="row" class="py-12" *ngIf="previewImg" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                         <div fxFlex="100">
+                             <img [src]="previewImg" alt="Image Not Found" />
+                         </div>
+                     </div>
+                </div>
+            </mat-tab>
+            
+            <!-- GALLERY IMAGES -->
+            <mat-tab label="Media Library">
+               <media-gallery (selectedUrl)="sendMediaUrl($event)"></media-gallery>
+            </mat-tab>
+        </mat-tab-group>
+    </div>  
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mt-20 pt-20">
+        <div fxFlex="100" class="text-center">
+            <button mat-button (click)="submitMediaValues(true)" [disabled]="enableSubmit==false" class="mr-8 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Submit</button>
+            <button mat-button (click)="submitMediaValues(false)" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Cancel</button>  
+        </div>    
+    </div>
+</div>
+

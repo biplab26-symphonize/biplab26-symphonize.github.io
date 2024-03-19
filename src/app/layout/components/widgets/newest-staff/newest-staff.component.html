@@ -1,0 +1,17 @@
+<div class="text-center pb-40" id="front-Newest-staff" *ngIf="staffList.length !== 0">
+    <h3 class="mt-12 mat-title mb-0 accent-text-color">MEET YOUR</h3>
+    <h1 class="font-size-32 font-weight-700 mt-0 secondary-text-color">NEWEST STAFF</h1>
+    <div class="content overflow-auto" [ngStyle]="staffList.length == 1 ? { 'width.px' :  400 } : '' ">
+        <owl-carousel-o [options]="customOptions" >
+            <ng-container *ngFor="let staff of staffList">
+                <ng-template carouselSlide [id]="staff.id">
+                <img class="mr-12 Neighbours-img" [src]="staff.thumb_file" (error)="staff.thumb_file = _defaultAvatar" [alt]="staff.first_name" 
+                        [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                <p fxLayoutAlign="start start" class="mr-12">{{staff.first_name}}</p>
+                </ng-template>
+            </ng-container>
+        </owl-carousel-o>
+    </div>
+</div>    
+
+ 

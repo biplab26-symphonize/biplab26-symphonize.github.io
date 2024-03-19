@@ -1,0 +1,49 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content" id="home-topics-pagination">
+    <div class="p-16 title pl-0">
+        <div class="h1 font-weight-800">Today's Event</div>
+    </div>
+    <table class="simple font-size-14 border text-capitalize">
+        <thead class="text-center">
+            <tr [ngStyle]="green_bg_header">
+                <th class="text-center fuse-white-fg font-size-16">Title</th>
+                <th class="text-center fuse-white-fg font-size-16">Description</th> 
+                <th class="text-center fuse-white-fg font-size-16">Start Date</th>
+                <th class="text-center fuse-white-fg font-size-16">Start Time</th>
+                <th class="text-center fuse-white-fg font-size-16">Registration Start</th>
+                <!-- <th class="text-right" *ngIf="homesettings.bulletin_author=='Y'">Author</th>  -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of todaysEventsList.data">
+                <td class="text-center first">
+                    <a [routerLink]="['/admin/events/edit/',event.id]">{{event.event_title}}</a>                    
+                </td>
+                <td class="text-center first">
+                    <p [innerHTML]="event.event_description"></p>
+                </td>
+                <td class="text-center third">
+                    {{event.event_start_date |  date: defaultDateTimeFormat.date_format}} 
+                </td>
+                <td class="text-center third">
+                     {{event.event_start_time | date :  defaultDateTimeFormat.time_format}}
+                </td>
+                <td class="text-center third">
+                    <div *ngIf="event.registration_start == null">--</div>
+                    <div *ngIf="event.registration_start != null"> 
+                        {{event.registration_start}}
+                    </div>                   
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="p-0 my-20 d-block">
+        <a [routerLink]="['/admin/events/all/']">See All Events</a>
+        <mat-paginator #paginator class="blue-grey-50 mt-20" [length]="todaysEventsList.total"
+            [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+        </mat-paginator>
+    </div>
+
+</div>
+<!-- / CARD CONTENT -->

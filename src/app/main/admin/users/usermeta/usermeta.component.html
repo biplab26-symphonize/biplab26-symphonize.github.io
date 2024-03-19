@@ -1,0 +1,179 @@
+<ng-container [formGroup]="usermetaForm" *ngIf="MetaUploadInfo.length>0">
+    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" class="usermeta-wrapper">
+        <ng-container *ngFor="let metafield of MetaUploadInfo">        
+            <!-- TextBox -->
+            <ng-container *ngIf="metafield.field_type=='text'">
+                <mat-form-field appearance="outline"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100"> 
+                    <mat-label>{{metafield.field_label}}</mat-label>
+                    <input matInput
+                    [required]="metafield.field_required=='Y'"
+                    [formControlName]="metafield.id" 
+                    [readonly]="restrictFormInfo"
+                    [placeholder]="metafield.field_label">
+                    <mat-error *ngIf="this.usermetaForm.controls[metafield.id].errors?.required && showErrors">{{metafield.extra_field_content.error_msg}}</mat-error>
+                    <mat-error *ngIf="this.usermetaForm.controls[metafield.id].errors?.validUrl && showErrors">
+                        Please enter valid url
+                    </mat-error>
+                </mat-form-field>
+            </ng-container> 
+            <!-- Number -->
+            <ng-container *ngIf="metafield.field_type=='number'">
+                <mat-form-field appearance="outline"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100">
+                    <mat-label>{{metafield.field_label}}</mat-label>
+                    <input matInput
+                    [mask]="metafield.extra_field_content.ismasking=='Y' ? metafield.extra_field_content.maskingpattern : ''"
+                    [required]="metafield.field_required=='Y'"
+                    [formControlName]="metafield.id" 
+                    [readonly]="restrictFormInfo"
+                    [placeholder]="metafield.field_label">
+                    <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                </mat-form-field>
+            </ng-container>
+            <!-- Email -->
+            <ng-container *ngIf="metafield.field_type=='email'">
+                <mat-form-field appearance="outline"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100">
+                    <mat-label>{{metafield.field_label}}</mat-label>
+                    <input matInput
+                    (keyup)="validateEmail(metafield.id)"
+                    [required]="metafield.field_required=='Y'"
+                    [formControlName]="metafield.id" 
+                    [readonly]="restrictFormInfo"
+                    [placeholder]="metafield.field_label">
+                    <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                </mat-form-field>
+            </ng-container>
+            <!-- Editor -->
+            <ng-container *ngIf="metafield.field_type=='textarea'">
+                <mat-form-field appearance="outline" class="hiddenInput editor"  fxFlex="calc(100%-8px)">
+                    <mat-label>{{metafield.field_label}}</mat-label>
+                    <input matInput hidden value="">
+                    <editor 
+                        [init]="tinyMceSettings" 
+                        [required]="metafield.field_required=='Y'"
+                        [formControlName]="metafield.id"
+                        [disabled]="restrictFormInfo"
+                    ></editor>
+                    <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                </mat-form-field>
+            </ng-container> 
+            <!-- DatePicker -->
+            <ng-container *ngIf="metafield.field_type=='date'">
+                <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-sm="100" [ngClass]="{'disable-pointer':restrictFormInfo==true}">
+                    <mat-label>{{metafield.field_label}}</mat-label>
+                    <input matInput
+                    [id]="metafield.id"
+                    [required]="metafield.field_required=='Y'"
+                    [formControlName]="metafield.id" 
+                    [placeholder]="metafield.field_label"
+                    [max]="getMinDate(metafield.extra_field_content.max_date)"
+                    [min]="getMinDate(metafield.extra_field_content.min_date)"
+                    [owlDateTimeTrigger]="datePicker" 
+                    [owlDateTime]="datePicker">
+                    <owl-date-time [pickerType]="metafield.extra_field_content.pickerType || 'calendar'" [hour12Timer]="true" #datePicker></owl-date-time>
+                    <mat-icon [owlDateTimeTrigger]="datePicker"  matSuffix>date_range</mat-icon>
+                    <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                </mat-form-field>
+            </ng-container>
+            <!-- Select -->
+            <ng-container *ngIf="metafield.field_type=='select'">
+                <mat-form-field  appearance="outline"  fxFlex="calc(50%-10px)">
+                    <mat-label>{{metafield.field_label}}</mat-label>
+                    <mat-select 
+                    [disabled]="restrictFormInfo"
+                    [required]="metafield.field_required=='Y'"
+                    [formControlName]="metafield.id" 
+                    [placeholder]="metafield.field_label"
+                    [multiple]="metafield.extra_field_content.multiselect=='Y'">
+                        <ng-container *ngFor="let option of metafield.options">
+                            <mat-option *ngIf="option.key!==''" [value]="option.key">
+                            {{option.value}}
+                            </mat-option>
+                        </ng-container>    
+                    </mat-select>
+                    <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                </mat-form-field>
+            </ng-container>
+            <!-- CheckBox static -->
+            <ng-container *ngIf="metafield.field_type=='checkbox' && metafield.options.length>0">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="calc(48%-15px)"  class=" mat-form-field--no-underline">
+                    <mat-label class="fuse-black-fg font-size-22">{{metafield.field_label}}</mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" class="mt-12">
+                        <ng-container *ngFor="let checks of metafield.options; let i = index" [formArrayName]="metafield.id">
+                            <mat-checkbox class="mx-4" [disabled]="restrictFormInfo" [formControlName]="i" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" (change)="updateCheckboxValues(checks.value, $event.checked, metafield.id)" [value]="checks.value">{{checks.key}}</mat-checkbox>
+                        </ng-container>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" >
+                        <div fxFlex="calc(100%-8px)" class="mat-error custom-error my-4" *ngIf="!this.usermetaForm.controls[metafield.id].valid && showErrors">{{metafield.extra_field_content.error_msg}}</div>
+                    </div>
+                </mat-form-field>
+            </ng-container>
+            <!-- Radio Static -->
+            <ng-container *ngIf="metafield.field_type=='radio'">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="calc(48%-15px)" fxFlex.lt-sm="100" class=" mat-form-field--no-underline">
+                    <mat-label class="fuse-black-fg font-size-22">{{metafield.field_label}}</mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group class="mt-12" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" [name]="metafield.id" [formControlName]="metafield.id"  [disabled]="restrictFormInfo">
+                        <ng-container *ngFor="let checks of metafield.options; let i = index">
+                            <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100"  [value]="checks.value"> {{checks.key}} </mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+                <div class="mat-error custom-error my-4" *ngIf="this.usermetaForm.controls[metafield.id].errors?.required && showErrors">{{metafield.extra_field_content.error_msg}}</div>
+            </ng-container>
+
+
+            <!-- ####DYNAMIC FIELDS STARTS#### -->
+            <!-- dynamic checkbox -->
+            <ng-container *ngIf="metafield.field_type=='dynamic' && metafield.show_as=='checkbox' && metafield.dynamicfields.length>0">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="calc(100%-10px)" class=" mat-form-field--no-underline">
+                    <mat-label class="fuse-black-fg font-size-22">{{metafield.field_label}}</mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <div class="mt-12" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" >
+                        <ng-container *ngFor="let checks of usermetaForm.controls[metafield.id].controls; let i = index" [formArrayName]="metafield.id">
+                            <mat-checkbox [disabled]="restrictFormInfo" class="mx-4" [formControlName]="i" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" (change)="updateCheckboxValues(i, $event.checked, metafield.id)" [value]="metafield.dynamicfields[i].id">{{metafield.dynamicfields[i].category_name}}</mat-checkbox>
+                        </ng-container>
+                    </div>       
+                    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" >
+                        <div fxFlex="calc(100%-8px)" class="mat-error custom-error my-4" *ngIf="!this.usermetaForm.controls[metafield.id].valid && showErrors">{{metafield.extra_field_content.error_msg}}</div>
+                    </div>
+                </mat-form-field>
+            </ng-container>
+            <!-- Dynamic Radio -->
+            <ng-container *ngIf="metafield.field_type=='dynamic' && metafield.show_as=='radio' && metafield.dynamicfields.length>0">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="calc(100%-10px)" class=" mat-form-field--no-underline">
+                    <mat-label class="fuse-black-fg font-size-22">{{metafield.field_label}}</mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group class="mt-12" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" [name]="metafield.id" [formControlName]="metafield.id" [disabled]="restrictFormInfo">
+                        <ng-container *ngFor="let checks of metafield.dynamicfields; let i = index">
+                            <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100"  [value]="checks.id"> {{checks.category_name}} </mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" >
+                        <div fxFlex="calc(100%-8px)" class="mat-error custom-error my-4" *ngIf="this.usermetaForm.controls[metafield.id].errors?.required && showErrors">{{metafield.extra_field_content.error_msg}}</div>
+                    </div>
+                </mat-form-field>
+            </ng-container>
+            <!-- Dynamic select -->
+            <ng-container *ngIf="metafield.field_type=='dynamic' && metafield.show_as=='select' && metafield.dynamicfields.length>0">
+                <mat-form-field  appearance="outline" floatLabel="always" fxFlex="calc(50%-10px)" fxFlex.lt-sm="100">
+                    <mat-label>{{metafield.field_label}}</mat-label>
+                    <mat-select 
+                    [disabled]="restrictFormInfo"
+                    [required]="metafield.field_required=='Y'"
+                    [formControlName]="metafield.id" 
+                    [placeholder]="metafield.field_label"
+                    [multiple]="metafield.extra_field_content.multiselect=='Y'">
+                        <ng-container *ngFor="let option of metafield.dynamicfields">
+                            <mat-option [value]="option.id">
+                            {{option.category_name}}
+                            </mat-option>
+                        </ng-container>    
+                    </mat-select>
+                    <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                </mat-form-field>
+            </ng-container>
+            <!-- ####DYNAMIC FIELDS ENDS#### -->
+        </ng-container>
+    </div>
+</ng-container>

@@ -1,0 +1,21 @@
+<h1 matDialogTitle>Crop Image</h1>
+<div *ngIf="data.type == 'crop_img'">
+    <div mat-dialog-content>
+        <image-cropper
+            [imageBase64]="img_url"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="aspectRatio"
+            [resizeToWidth]="resizeWidth"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()">
+        </image-cropper>
+        <img [src]="croppedImage"/>
+    </div>
+</div>
+<div mat-dialog-actions class="pt-24">
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8" (click)="onSubmitCrop()">Submit</button>
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none " (click)="dialogRef.close(false)">Cancel</button>
+</div>

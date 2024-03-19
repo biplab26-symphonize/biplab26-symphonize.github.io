@@ -1,0 +1,44 @@
+<div class="col-12 rmpm dropzone h-120" appDragDrop [fileLimit]="fileLimit" [multiple]="allowMultiple" (files)="filesDropped($event)" (invalidFile)="invalidFiles($event)">
+    <div class="text-wrapper">
+        <div class="centered">Drop Your File Here !</div>
+        <div *ngIf="allowMultiple==false" color="warn" class="text-center text-bold"> <mat-icon color="warn">warning</mat-icon> Max upload file limit is 1</div>
+    </div>
+</div>
+<hr/>
+<div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">    
+    <div class="h4 mb-8 mt-8">Or Upload Manually</div>
+    <p class="h4">Drop or Select Only pdf Files</p>
+    <br /><br />
+    <input  hidden 
+            #inputfile
+            [multiple]="allowMultiple"
+            type="file"
+            (change)="filesUploaded($event)"
+            onclick="this.value=null;"
+            [accept]="inputAccpets"
+            />
+    <div class="btn text-center">
+        <button type="button" mat-stroked-button color="primary" class="mr-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="inputfile.click();"> <mat-icon>add_to_photos</mat-icon> Select</button>
+        <button type="button" class="mr-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" *ngIf="files.length>0 && allowMultiple==false" mat-stroked-button  (click)="singleDocumentUpload()" [disabled]="uploadInProgress"> <mat-icon>cloud_upload</mat-icon> Upload</button>
+        <button type="button" class="mr-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" *ngIf="files.length>0 && allowMultiple==true" mat-stroked-button  (click)="multipleDocumentUpload()" [disabled]="uploadInProgress"> <mat-icon>cloud_upload</mat-icon> Upload</button>
+    </div>
+</div>
+<!--droped files list-->
+<div fxLayout="row" class="mt-24" fxLayoutAlign="center center" fxFlex="1 0 auto"  *ngIf="files.length">
+    <hr/>
+    <div class="h2 mt-8 mb-8">Selected files</div>
+    <p>edit or remove file information form before upload.</p>
+    <mat-nav-list>    
+        <mat-list-item *ngFor="let file of files; let i = index">
+            <mat-icon mat-list-icon>picture_as_pdf</mat-icon>
+            <h4 class="mat-line" mat-line>{{file.file_name || file.file.name}} <span class="primary text-boxed ml-4" *ngIf="file.category_name"> {{file.category_name}}</span></h4>
+            <p mat-line> {{file.file.lastModifiedDate | date}} </p>
+            <button mat-icon-button *ngIf="allowMultiple==true" (click)="editUploadedFileInfo(i)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeDocument(i)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-list-item>
+    </mat-nav-list>
+</div>

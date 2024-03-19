@@ -1,0 +1,287 @@
+<div id="forms" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxFlex>
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    notifications_active
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Add Notification
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="text-right" fxFlex>
+            <div class="mt-16 mt-sm-0" [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                <button class="mr-8" mat-raised-button [routerLink]="['/admin/form/notification/',url_id]">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button>
+                <button mat-raised-button class="mr-4" (click)="onClickSave()" cdkFocusInitial>
+                    <mat-icon>save</mat-icon> Save
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24" fusePerfectScrollbar>
+
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+                <!-- REACTIVE FORM EXAMPLE -->
+                <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" #f="ngForm"
+                    [formGroup]="notificationSetting" novalidate autocomplete="off">
+
+                    <!-- <div class="mat-card mat-elevation-z2 p-24" fxLayout="column"> -->
+                    <div fxLayout="column">
+                        <div fxFlex="100">
+                            <h2 [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16">Notification
+                                Settings</h2>
+
+                        </div>
+                    </div>
+
+                    <div class="p-24 d-block pb-0">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" fxFlex="1 0 auto">
+
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Name</mat-label>
+                                <input matInput formControlName="name" name="name" required>
+                                <mat-error>Form title is required!</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Event</mat-label>
+                                <mat-select formControlName="event" name="event" required>
+                                    <mat-option *ngFor="let type of notificationEvent | keyvalue" [value]="type.key">
+                                        {{type.value}}</mat-option>
+                                </mat-select>
+                                <mat-error>Event type is required!</mat-error>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto"
+                            class="mb-20">
+                            <mat-label> Send To </mat-label>
+                            <mat-radio-group formControlName="sendto" name="sendto">
+                                <mat-radio-button class="mr-8" value="enter_email">
+                                    Enter Email
+                                </mat-radio-button>
+                                <mat-radio-button value="select_field">
+                                    Select a Field
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto"
+                            *ngIf="notificationSetting.get('sendto').value=='enter_email'">
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Send To Email</mat-label>
+                                <input matInput formControlName="send_to_email" name="send_to_email" required>
+                                <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                <mat-error *ngIf="hasError('send_to_email','required')">Email is required</mat-error>
+                                <mat-error *ngIf="hasError('send_to_email','email')"> Enter the valid mail </mat-error>
+                                <mat-error *ngIf="hasError('send_to_email','pattern')">Email pattern not match
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" fxFlex="1 0 auto"
+                            *ngIf="notificationSetting.get('sendto').value=='select_field'">
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Send to Field</mat-label>
+                                <mat-select formControlName="send_to_field" name="send_to_field" required>
+                                    <mat-option value="email">Email</mat-option>
+                                </mat-select>
+                                <mat-error>Send to Field is required!</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- this field id display according to the  radio button  -->
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>From Name</mat-label>
+                                <input matInput formControlName="from_name" name="from_name" required>
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <mat-error>from Name is required!</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>From Email</mat-label>
+                                <input matInput formControlName="from_email" type="email" name="from_email">
+                                <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                <mat-error *ngIf="hasError('from_email','required')">Email is required</mat-error>
+                                <mat-error *ngIf="hasError('from_email','email')"> Enter the valid mail </mat-error>
+                                <mat-error *ngIf="hasError('from_email','pattern')">Email pattern not match</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Reply To</mat-label>
+                                <input matInput formControlName="replyto" type="email" name="replyto" required>
+                                <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                <mat-error *ngIf="hasError('replyto','required')">Email is required</mat-error>
+                                <mat-error *ngIf="hasError('replyto','email')"> Enter the valid mail </mat-error>
+                                <mat-error *ngIf="hasError('replyto','pattern')">Email pattern not match</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>BCC</mat-label>
+                                <input matInput formControlName="bcc" type="email" name="bcc">
+                                <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                <mat-error *ngIf="hasError('bcc','required')">Email is required</mat-error>
+                                <mat-error *ngIf="hasError('bcc','email')"> Enter the valid mail </mat-error>
+                                <mat-error *ngIf="hasError('bcc','pattern')">Email pattern not match</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>CC</mat-label>
+                                <input matInput formControlName="cc" name="cc">
+                                <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                <mat-error *ngIf="hasError('cc','required')">Email is required</mat-error>
+                                <mat-error *ngIf="hasError('cc','email')"> Enter the valid mail </mat-error>
+                                <mat-error *ngIf="hasError('cc','pattern')">Email pattern not match</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Subject</mat-label>
+                                <input matInput formControlName="subject" name="subject" required>
+                                <mat-error>Subject required!</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" fxFlex="1 0 auto">
+                            <span>
+
+                            </span>
+                            <div [ngStyle]="green_bg_header" fxFlex="100" class="font-weight-600 font-size-18 p-16"> You
+                                can use tokens in the email messages to personalize them.</div>
+                        </div>
+                        <div class="flex">
+                                <div [ngStyle]="{'padding-left': '3px'}" *ngFor="let inputfield of formField.formfields">
+                                    {{bracket1}}{{inputfield.caption}}{{bracket2}} : {{inputfield.description}}
+                                </div>
+                                <div >
+                                    {{form_title}} : form titile
+                                </div>
+                                <div >
+                                    {{form_id}} : form id
+                                </div>
+                                <div >
+                                    {{date}} : submitted date
+                                </div>
+                                <div >
+                                    {{all_fields}} : view form entry
+                                </div>
+                        </div>
+                        <!-- <div class="parent" >
+                            <div [ngStyle]="{'padding-left': '3px'}" *ngFor="let inputfield of formField.formfields">
+                                {{bracket1}} {{inputfield.caption}} {{bracket2}} - {{inputfield.description}}
+                            </div>
+                        </div> -->
+                        <div class="flex">
+                            
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto">
+
+                            <mat-form-field appearance="outline" floatLabel="always" class="hiddenInput editor" hidden
+                                fxFlex="100">
+
+                                <input matInput hidden value="">
+                                <editor [init]="tinyMceSettings" formControlName="message" name="message"></editor>
+                            </mat-form-field>
+                        </div>
+                        <div class="input-column" fxLayout="row">
+                            <!--Enable The Conditional Logic-->
+                            <mat-checkbox class="mx-4 mb-16" formControlName="enable_conditional_logic"
+                                fxFlex.lt-sm="100">Enable The Conditional Logic</mat-checkbox>
+                        </div>
+                        <div class="input-column"
+                            *ngIf="notificationSetting.get('enable_conditional_logic').value == true">
+                            <div class="input-column" fxLayout="row">
+                                <!-- any or all option field -->
+                                <mat-form-field appearance="outline" class="w-100-p py-12">
+                                    <mat-label>All or Any</mat-label>
+                                    <mat-select placeholder="Masking Pattern" formControlName="all_any">
+                                        <mat-option value="all">All</mat-option>
+                                        <mat-option value="any">Any</mat-option>
+                                    </mat-select>
+                                    <mat-error></mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="input-column" formArrayName="AllField" fxLayout="column"
+                                *ngFor="let item of  getControls(); let i=index">
+                                <div [formGroupName]="i" class="w-100-p">
+                                    <!-- display the all field label of the forms -->
+                                    <mat-form-field appearance="outline" class="w-100-p py-12">
+                                        <mat-label>Field Name</mat-label>
+                                        <mat-select formControlName="form_element_id"
+                                            (selectionChange)="OnselectLable($event,i)">
+                                            <mat-option [value]="data.Field.form_element_id"
+                                                *ngFor='let data of DefaultData'>{{data.Field.caption | titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+
+                                        <mat-error></mat-error>
+                                    </mat-form-field>
+                                    <!-- conditions  -->
+                                    <mat-form-field appearance="outline" class="w-100-p py-12">
+                                        <mat-label>Condition</mat-label>
+                                        <mat-select formControlName="condition">
+                                            <mat-option value="is">Is</mat-option>
+                                            <mat-option value="not_is">Is Not</mat-option>
+                                            <mat-option value="grater">Grater Than</mat-option>
+                                            <mat-option value="less">Less Than</mat-option>
+                                            <mat-option value="contains">Contains</mat-option>
+                                            <mat-option value="start_with">Start With</mat-option>
+                                            <mat-option value="end_with">End With</mat-option>
+                                        </mat-select>
+                                        <mat-error></mat-error>
+                                        <!-- show the field value of if checkbox,radio,select -->
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-100-p py-12"
+                                        *ngIf="conditionLogic[i] == 1">
+                                        <mat-label>Field Value</mat-label>
+                                        <mat-select formControlName="field_value">
+                                            <mat-option [value]="option.key" *ngFor='let option of OptionList2[i]'>
+                                                {{option.value}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error></mat-error>
+                                    </mat-form-field>
+                                    <!-- show the text field -->
+                                    <mat-form-field appearance="outline" fxFlex *ngIf="conditionLogic[i] == 0">
+                                        <mat-label>Field Value </mat-label>
+                                        <input matInput formControlName='field_value'>
+                                    </mat-form-field>
+                                    <!-- icons fo   -->
+                                    <div class="ml-16 add-delete-btn mt-20">
+                                        <mat-icon [ngStyle]="button" class="material-icons icon-size border-radius-50"
+                                            fxLayout="row" fxLayoutAlign="center center" (click)="onAddSelectRow()"
+                                            matTooltip="add ">add</mat-icon>
+                                        <mat-icon [ngStyle]="button" class="material-icons icon-size border-radius-50"
+                                            fxLayout="row" fxLayoutAlign="center center" *ngIf='i>0'
+                                            (click)="onRemoveRow(i)" matTooltip="Delete ">delete</mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- CONTENT -->
+</div>

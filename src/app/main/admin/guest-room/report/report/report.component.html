@@ -1,0 +1,727 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="back-guest-room-extras-add">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+
+                <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+                    [formGroup]="generateReport" novalidate>
+                    <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title}}</div>
+                    <div class="p-24 d-block">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="50" [ngStyle]="{'margin-right': '10px'}">
+                                <mat-label>Start Date</mat-label>
+                                <input matInput #input_date_from required [matDatepicker]="picker"
+                                    (focus)="picker.open()" formControlName="date_from" (dateInput)="fromDate($event)"
+                                    readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error>Start date required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>End Date</mat-label>
+                                <input matInput #input_date_to [matDatepicker]="picker2" (focus)="picker2.open()"
+                                    formControlName="date_to" [min]="toDate" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto"
+                            class="update-btn-wrapper mb-24">
+                            <button mat-raised-button
+                                class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8"
+                                (click)="getReport()">{{buttonTitle}}</button>
+                        </div>
+                        <div fxLayout="column" *ngIf="isReport">
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5'}" *ngIf="isReport">
+                                <div fxFlex="25">
+                                    <span>
+                                        <h2>TOTAL</h2>
+                                    </span>
+                                    <span>
+                                        <h3>BOOKINGS RECEIVED</h3>
+                                    </span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr != null">{{reportData.totalbooking.received_arr.bookings}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr == null">0</b>
+                                        BOOKINGS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr != null">{{reportData.totalbooking.received_arr.guests}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr == null">0</b>
+                                        GUESTS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr != null">{{reportData.totalbooking.received_arr.nights}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr == null">0</b>
+                                        NIGHTS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr != null">${{reportData.totalbooking.received_arr.total}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.received_arr == null">0</b>
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="mt-10 per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}" *ngIf="isReport">
+                                <div fxFlex="25">
+                                    <span>
+                                        <h2>TOTAL</h2>
+                                    </span>
+                                    <span>
+                                        <h3>CONFIRMED BOOKINGS</h3>
+                                    </span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr != null">{{reportData.totalbooking.confirmed_arr.bookings}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr == null">0</b>
+                                        BOOKINGS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr != null">{{reportData.totalbooking.confirmed_arr.guests}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr == null">0</b>
+                                        GUESTS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr != null">{{reportData.totalbooking.confirmed_arr.nights}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr == null">0</b>
+                                        NIGHTS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr != null">${{reportData.totalbooking.confirmed_arr.total}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.confirmed_arr == null">0</b>
+                                    </span>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}" *ngIf="isReport">
+                                <div fxFlex="25">
+                                    <span>
+                                        <h2>TOTAL</h2>
+                                    </span>
+                                    <span>
+                                        <h3>CANCELLED BOOKINGS</h3>
+                                    </span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr != null">{{reportData.totalbooking.cancelled_arr.bookings}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr == null">0</b>
+                                        BOOKINGS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr != null">{{reportData.totalbooking.cancelled_arr.guests}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr == null">0</b>
+                                        GUESTS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3','margin-right':'5px'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr != null">{{reportData.totalbooking.cancelled_arr.nights}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr == null">0</b>
+                                        NIGHTS</span>
+                                </div>
+                                <div fxFlex="18.75" [ngStyle]="{'background': '#ffffffb3'}">
+                                    <span>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr != null">${{reportData.totalbooking.cancelled_arr.total}}</b>
+                                        <b [ngStyle]="{'font-size': '25px'}"
+                                            *ngIf="reportData.totalbooking.cancelled_arr == null">0</b>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}" *ngIf="isReport">
+                                <div fxFlex="24">
+                                    <span>
+                                        <h2>Rooms</h2>
+                                    </span>
+                                </div>
+                                <div fxFlex="25" class="rooms" fxLayout="column"
+                                    [ngStyle]="{'background': '#c5c6cb6b','margin-right':'2px'}">
+                                    <div fxLayout="row" class="p-10" fxLayoutAlign="start center">
+                                        <span><b [ngStyle]="{'font-size': '16px'}">BOOKINGS RECEIVED</b></span>
+                                    </div>
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}">
+                                        <div fxFlex="25">BOOKED</div>
+                                        <div fxFlex="25">GUESTS</div>
+                                        <div fxFlex="25">NIGHTS</div>
+                                        <div fxFlex="25">AMOUNT</div>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" class="rooms" fxLayout="column"
+                                    [ngStyle]="{'background': '#c5c6cb6b','margin-right':'2px'}">
+                                    <div fxLayout="row" class="p-10" fxLayoutAlign="start center">
+                                        <span><b [ngStyle]="{'font-size': '16px'}">CONFIRMED BOOKINGS</b></span>
+                                    </div>
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}">
+                                        <div fxFlex="25">BOOKED</div>
+                                        <div fxFlex="25">GUESTS</div>
+                                        <div fxFlex="25">NIGHTS</div>
+                                        <div fxFlex="25">AMOUNT</div>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" class="rooms" fxLayout="column" [ngStyle]="{'background': '#c5c6cb6b'}">
+                                    <div fxLayout="row" class="p-10" fxLayoutAlign="start center">
+                                        <span><b [ngStyle]="{'font-size': '16px'}">CANCELLED BOOKINGS</b></span>
+                                    </div>
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}">
+                                        <div fxFlex="25">BOOKED</div>
+                                        <div fxFlex="25">GUESTS</div>
+                                        <div fxFlex="25">NIGHTS</div>
+                                        <div fxFlex="25">AMOUNT</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" class="rooms" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'3px'}"
+                                *ngFor="let roomData of reportData.roomarr">
+                                <div fxFlex="24">
+                                    <span>
+                                        {{roomData.roominfo.type}}
+                                    </span>
+                                </div>
+                                <div fxFlex="25" fxLayout="column"
+                                    [ngStyle]="{'background': '#c5c6cb6b','margin-right':'2px'}">
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}"
+                                        *ngIf="roomData.recived != null">
+                                        <div fxFlex="25">{{roomData.recived.bookings}}</div>
+                                        <div fxFlex="25">{{roomData.recived.guests}}</div>
+                                        <div fxFlex="25">{{roomData.recived.nights}}</div>
+                                        <div fxFlex="25">{{roomData.recived.total}}</div>
+                                    </div>
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}"
+                                        *ngIf="roomData.recived == null">
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="column"
+                                    [ngStyle]="{'background': '#c5c6cb6b','margin-right':'2px'}">
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}"
+                                        *ngIf="roomData.confirmed != null">
+                                        <div fxFlex="25">{{roomData.confirmed.bookings}}</div>
+                                        <div fxFlex="25">{{roomData.confirmed.guests}}</div>
+                                        <div fxFlex="25">{{roomData.confirmed.nights}}</div>
+                                        <div fxFlex="25">{{roomData.confirmed.total}}</div>
+                                    </div>
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}"
+                                        *ngIf="roomData.confirmed == null">
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="column" [ngStyle]="{'background': '#c5c6cb6b'}">
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}"
+                                        *ngIf="roomData.cancelled != null">
+                                        <div fxFlex="25">{{roomData.cancelled.bookings}}</div>
+                                        <div fxFlex="25">{{roomData.cancelled.guests}}</div>
+                                        <div fxFlex="25">{{roomData.cancelled.nights}}</div>
+                                        <div fxFlex="25">{{roomData.cancelled.total}}</div>
+                                    </div>
+                                    <div fxLayout="row" [ngStyle]="{'font-size': '10px'}"
+                                        *ngIf="roomData.cancelled == null">
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                        <div fxFlex="25">0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span>
+                                        <h2>
+                                            ROOMS PER BOOKING
+                                        </h2>
+                                    </span>
+                                </div>
+                                <div fxFlex="25">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">BOOKINGS</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center'}">%</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>ONE ROOM BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.perroomarr.oneroombooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.perroomarr.oneroombooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.perroomarr.oneroombooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.perroomarr.oneroombooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>TWO ROOM BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.perroomarr.tworoombooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.perroomarr.tworoombooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.perroomarr.tworoombooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.perroomarr.tworoombooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>TWO+ ROOM BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.perroomarr.moreroombooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.perroomarr.moreroombooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.perroomarr.moreroombooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.perroomarr.moreroombooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+
+                            <!-- per nights booking -->
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'15px'}">
+                                <div fxFlex="75">
+                                    <span>
+                                        <h2>
+                                            NIGHTS PER BOOKING
+                                        </h2>
+                                    </span>
+                                </div>
+                                <div fxFlex="25">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">BOOKINGS</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center'}">%</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>1 NIGHT BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.onenightbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.nightperbooking.onenightbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.nightperbooking.onenightbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.onenightbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>2 NIGHTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.twonightbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.nightperbooking.twonightbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.nightperbooking.twonightbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.twonightbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>3 NIGHTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.threenightbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.nightperbooking.threenightbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.nightperbooking.threenightbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.threenightbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>4 NIGHTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.fournightbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.nightperbooking.fournightbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.nightperbooking.fournightbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.fournightbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>5 NIGHTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.fivenightbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.nightperbooking.fivenightbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.nightperbooking.fivenightbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.fivenightbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>5 NIGHTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.sixnightbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.nightperbooking.sixnightbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.nightperbooking.sixnightbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.sixnightbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>MORE THAN 6 NIGHTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.morenightbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.nightperbooking.morenightbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.nightperbooking.morenightbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.nightperbooking.morenightbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+
+
+                            <!-- GUESTS PER BOOKING -->
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'15px'}">
+                                <div fxFlex="75">
+                                    <span>
+                                        <h2>
+                                            GUESTS PER BOOKING
+                                        </h2>
+                                    </span>
+                                </div>
+                                <div fxFlex="25">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">BOOKINGS</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center'}">%</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>1 GUESTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.oneguestbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.guestperbooking.oneguestbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.guestperbooking.oneguestbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.oneguestbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>2 GUESTS  BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.twoguestbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.guestperbooking.twoguestbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.guestperbooking.twoguestbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.twoguestbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>3 GUESTS  BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.threeguestbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.guestperbooking.threeguestbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.guestperbooking.threeguestbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.threeguestbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>4 GUESTS  BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.fourguestbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.guestperbooking.fourguestbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.guestperbooking.fourguestbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.fourguestbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>5 GUESTS  BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.fiveguestbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.guestperbooking.fiveguestbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.guestperbooking.fiveguestbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.fiveguestbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>6 GUESTS  BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.sixguestbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.guestperbooking.sixguestbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.guestperbooking.sixguestbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.sixguestbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>MORE THAN 6 NIGHTS BOOKINGS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.moreguestbooking != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.guestperbooking.moreguestbooking.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.guestperbooking.moreguestbooking.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.guestperbooking.moreguestbooking == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+
+                            <!-- ADULTS VS CHIDREN -->
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'15px'}">
+                                <div fxFlex="75">
+                                    <span>
+                                        <h2>
+                                            ADULTS VS CHILDREN
+                                        </h2>
+                                    </span>
+                                </div>
+                                <div fxFlex="25">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">BOOKINGS</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center'}">%</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>ADULTS GUESTS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.adultchildbooking.adultguest != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.adultchildbooking.adultguest.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.adultchildbooking.adultguest.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.adultchildbooking.adultguest == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'background': '#f5f5f5','margin-top':'10px'}">
+                                <div fxFlex="75">
+                                    <span><b>CHILDREN GUESTS</b></span>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.adultchildbooking.childrenguest != null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">
+                                        {{reportData.adultchildbooking.childrenguest.count}}</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">
+                                        {{reportData.adultchildbooking.childrenguest.percent}}</div>
+                                </div>
+                                <div fxFlex="25" *ngIf="reportData.adultchildbooking.childrenguest == null">
+                                    <div fxFlex="50"></div>
+                                    <div fxFlex="25" [ngStyle]="{'font-size':'10px'}">0</div>
+                                    <div fxFlex="25" [ngStyle]="{'text-align':'center','font-size':'10px'}">0</div>
+                                </div>
+                            </div>
+
+                            <!-- booking report print -->
+                            <div fxLayout="row" class="per-room" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                [ngStyle]="{'margin-top':'15px'}">
+                                <button mat-raised-button type="button"
+                                class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8"
+                                (click)="print()">Print</button>
+                                </div>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+</div>

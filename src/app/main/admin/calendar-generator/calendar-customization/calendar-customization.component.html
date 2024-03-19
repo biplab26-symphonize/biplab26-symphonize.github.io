@@ -1,0 +1,161 @@
+<mat-card >
+    <!-- <mat-card-header>
+      <mat-card-title>Calendar Customization</mat-card-title>
+    </mat-card-header> -->
+ 
+    <mat-card-content>
+        <form name="calendarcustomizationform" [formGroup]="calendarcustomizationform" novalidate autocomplete="off">
+            <h3 class="font-weight-600 mb-8">Blank Cells :</h3>
+            <div fxLayout="row wrap">
+                <div fxLayout="row wrap"   *ngFor="let items of startcountcells; let i = index" class="w-20-p">             
+                    <mat-form-field   appearance="outline" fxFlex="100" class="pr-8 ">
+                        <mat-label>{{items.value}}</mat-label>
+                        <mat-select  formControlName="blank_cells"  name="blank_cells" (ngModelChange)="selectOption(i,$event)" >
+                            <mat-option  value="">select</mat-option>
+                            <mat-option  value="category">Category</mat-option>
+                            <mat-option  value="location">Location</mat-option>
+                            <mat-option  value="custom_text">Custom Text</mat-option>
+                            <mat-option  value="custom_photo">Custom Photo</mat-option>
+                            <mat-option  value="common_category">Common Category</mat-option>
+                        </mat-select>
+                    </mat-form-field>    
+
+                        <div class="min-100-p custom-photo-wrapper d-none">
+                            <!-- <div class=""> -->
+                                <mat-form-field appearance="outline" [id]="'field_countcell_'+i" fxFlex="100" class="pr-4 min-100-p"  style="display:none;">
+                                    <mat-label>Custom Text</mat-label>
+                                    <textarea matInput  formControlName="customtext" (focusout)="onKeydownEvent($event,i)"  name="customtext"  placeholder="Enter Text..." ></textarea>   
+                                </mat-form-field>
+                            <!-- </div> -->
+                            <!-- <div class="custom-photo-wrapper d-none"> -->
+                                <div style="display:none;" [id]="'image_countcell_'+i" class="min-100-p px-8">
+                                    <!-- <h4 class="mb-4">Select Logo</h4> -->
+                                    <input  hidden
+                                        formControlName="customphoto"
+                                        type='file'
+                                        [accept]="inputAccpets"
+                                        (change)="onSelectLogoFile($event,i)"
+                                        #logofile/> 
+                                    <div class="btn">
+                                        <button mat-stroked-button color="accent" class="mr-12" (click)="logofile.click()">Choose From Gallery</button>
+                                    </div>     
+                                
+                                    <div class="mb-28">
+                                        <img height="100" width="100" [id]="'image_disp_'+i" style="margin-top: 5px; height: 100px;" />    
+                                    </div>  
+                                    <input hidden type="text" formControlName="image"/>    
+                                </div>
+                            <!-- </div> -->
+                        </div>
+                </div>
+                                
+                <!-- <div fxLayout="row wrap" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" [id]="'field_countcell_'+i" fxFlex="31.9" class="pr-4" *ngFor="let items of startcountcells; let i = index" style="display:none;">
+                        <mat-label>custom Text</mat-label>
+                        <textarea matInput  formControlName="customtext" (focusout)="onKeydownEvent($event,i)"  name="customtext"  placeholder="Enter Text..." ></textarea>   
+                    </mat-form-field>
+                </div>    -->
+                            
+               
+            </div> 
+                  
+
+                
+                <div fxLayout="column" fxLayoutAlign="start" class="calendar-customization-table">
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <div fxLayout="column">  
+                            <h3 class="font-weight-600 mb-8">Add Custom Holidays :</h3>
+                            <div fxLayout="row" formArrayName="custom_holidays" fxLayoutAlign="start start"  *ngFor="let item of  getControls(); let i=index" >
+                                <div [formGroupName]="i" fxFlex="50">
+                                    <mat-form-field appearance="outline" class="pr-8" fxFlex="100">
+                                        <mat-label> Name </mat-label>
+                                        <input matInput type="text" name="holiday_name" formControlName='holiday_name' >
+                                        <ng-container *ngIf="item.get('holiday_name').invalid && (item.get('holiday_name').dirty || item.get('holiday_name').touched)" ngProjectAs="mat-error">
+                                            <mat-error *ngIf="item.get('holiday_name').errors.required">Holiday Name is required</mat-error>
+                                        </ng-container>
+                                    </mat-form-field>
+                                        
+                                    <mat-form-field appearance="outline" class="pr-4" fxFlex class="custom-calendar-section">
+                                        
+                                        <input matInput [matDatepicker]="datepicker" formControlName='holiday_date' [min]="minDate" [max]="maxDate">
+                                        <mat-datepicker-toggle  [for]="datepicker"   >
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #datepicker 
+                                        [startAt]="selectedDate"  ></mat-datepicker> 
+                                    </mat-form-field>
+                                
+                                <div fxFlex="20" fxLayout="row" fxLayoutAlign="center center" class="ml-8 mb-24 add-delete-btn">
+                                    <mat-icon class="material-icons icon-size fuse-white-fg purple-btn-bg font-size-18 mr-8"  fxLayout="row" fxLayoutAlign="center center" (click)="onAddSelectRow()" matTooltip="Add New">add</mat-icon>
+                                    <mat-icon class="material-icons icon-size fuse-white-fg purple-btn-bg font-size-18"  fxLayout="row" fxLayoutAlign="center center" *ngIf="i > 0" (click)="onRemoveRow(i)" matTooltip="Delete ">delete</mat-icon>
+                                </div>
+                               </div>
+                            </div>
+                        </div>
+                    
+                        <div fxLayout="column" class="w-55-p"> 
+                            <h3 class="card-header text-center mb-12 font-weight-600">{{monthName}} {{year}}</h3>
+                            <div fxLayout="column"  fxFlex="60" class="ml-32">
+                                <div>
+                                    <!-- <h3>{{monthName}}</h3> -->
+                                    <table  fxFlex="100" id="calendar">
+                                        <thead *ngIf="startday == 'sunday'" class="green-bg-color fuse-white-fg">
+                                            <tr>
+                                                <th class="border font-size-16 p-8">Sun</th>
+                                                <th class="border font-size-16 p-8">Mon</th>
+                                                <th class="border font-size-16 p-8">Tue</th>
+                                                <th class="border font-size-16 p-8">Wed</th>
+                                                <th class="border font-size-16 p-8">Thu</th>
+                                                <th class="border font-size-16 p-8">Fri</th>
+                                                <th class="border font-size-16 p-8">Sat</th>
+                                            </tr>
+                                        </thead>
+                                        <thead *ngIf="startday == 'monday'" class="green-bg-color fuse-white-fg">
+                                            <tr>
+                                                <th class="border font-size-16 p-8">Mon</th>
+                                                <th class="border font-size-16 p-8">Tue</th>
+                                                <th class="border font-size-16 p-8">Wed</th>
+                                                <th class="border font-size-16 p-8">Thu</th>
+                                                <th class="border font-size-16 p-8">Fri</th>
+                                                <th class="border font-size-16 p-8">Sat</th>
+                                                <th class="border font-size-16 p-8">Sun</th>
+                                            </tr>
+                                        </thead>
+                            
+                                        <tbody id="calendar-body">
+                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div  fxLayout="column" class="pr-4" fxLayoutAlign="end baseline">
+                                    <div class="mt-20">
+                                        <table class="w-100-p text-capitalize" fxLayout="row wrap" >
+                                            <!-- <thead>
+                                            <tr>
+                                                <th></th>
+                                            </tr>
+                                            </thead> -->
+                                            <tbody *ngFor="let data of displayholidaydata;">
+                                                <tr>
+                                                    <td  fxLayout="row" fxLayoutAlign="start center" class="mr-8 mb-12 min-w-200">
+                                                        <mat-checkbox class="d-block mr-12" (change)="onselelect($event,data.id)" [checked]="data.checked==true" value="data.id"></mat-checkbox>
+                                                        <div> {{data.holiday_name}} : {{data.date | date : 'shortDate'}} </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                
+                
+
+                <div class="pt-40 text-center pb-12" > 
+                    <button type="submit" mat-raised-button class="reference-button text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="Onsaveholiday()">Save Custom Holiday</button>
+                  </div>
+        </form>
+    </mat-card-content>
+</mat-card>

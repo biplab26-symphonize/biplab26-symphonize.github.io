@@ -1,0 +1,67 @@
+@import "src/@fuse/scss/fuse";
+
+#My-Dining-home {
+  
+    .mat-header-cell {
+        justify-content: center !important;
+    }
+
+    .mat-header-row .mat-header-cell:last-child {
+        text-align: center !important;
+    }
+
+
+    // Responsive 
+    @include media-breakpoint('lt-sm') {
+        .no-record {
+            margin: 0 !important;
+        }
+
+        mat-table {
+            overflow-x: auto;
+            display: block;
+
+            mat-header-cell {
+                white-space: nowrap;
+            }
+            
+            mat-header-row,
+            mat-row{
+                min-width:530px;
+            }
+
+            mat-header-cell:nth-of-type(1) {
+                min-width: 170px;
+            }
+
+            mat-header-cell:nth-of-type(2) {
+                min-width: 70px;
+            }
+
+            mat-header-cell:nth-of-type(3) {
+                min-width: 100px;
+            }
+
+            mat-header-cell:nth-of-type(4) {
+                min-width: 140px;
+                white-space: break-spaces;
+            }
+
+            mat-cell:nth-of-type(1) {
+                min-width: 170px;
+            }
+
+            mat-cell:nth-of-type(2) {
+                min-width: 70px;
+            }
+
+            mat-cell:nth-of-type(3) {
+                min-width: 100px;
+            }
+
+            mat-cell:nth-of-type(4) {
+                min-width: 150px;
+            }
+        }
+    }
+}

@@ -1,0 +1,93 @@
+<div class="center p-24 pb-56 w-100-p">
+    <div class="content w-90-p mx-auto fuse-white-bg p-28">
+        <div class="mb-20">
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="border py-32">
+                <div class="border-right" fxLayout="row" fxFlex="33.33" fxLayoutAlign="center center">
+                    <div>
+                        <i class="material-icons font-size-40 mr-8">assignment</i>
+                    </div>
+                    
+                    <div class="text-capitalize font-weight-600">
+                        <span>{{bookingsmadetoday}}</span><br> <span>bookings made today</span>
+                    </div>
+                </div>
+            
+                <div class="border-right" fxFlex="33.33" fxLayoutAlign="center center">
+                    <div>
+                        <i class="material-icons font-size-40 mr-8">assignment</i>
+                    </div>
+                    <div class="text-capitalize font-weight-600">
+                        <span>{{bookingsfortoday}}</span><br> <span>bookings for today</span>
+                    </div>
+                </div>
+            
+                <div fxFlex="33.33" fxLayoutAlign="center center"> 
+                    <div>
+                        <i class="material-icons font-size-40 mr-8">assignment</i>
+                    </div>
+
+                    <div class="text-capitalize font-weight-600">
+                        <span>{{totalbookingsmade}}</span> <br><span>total bookings made</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div fxLayout="content">
+            <div class="border text-capitalize mr-16" fxFlex="32">
+                <div class="font-weight-600 font-size-16 green-bg-color fuse-white-fg p-16"> Latest Bookings </div>
+
+                <div>
+                    <div *ngFor="let data of latestBookingList; let index=i" class="line-height-28 border-bottom p-16">        
+                        <div fxLayout="row">
+                            <div> {{data.rooms.title}}</div>
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">
+                           <div fxFlex="20" class="font-weight-600"> Date : </div> 
+                            <div>{{data.start_date}} </div> 
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">                            
+                           <div> <a>{{data.client_name}}</a> </div>
+                        </div>                       
+                      
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border text-capitalize mr-16" fxFlex="32">
+                <div class="font-weight-600 font-size-16 green-bg-color fuse-white-fg p-16">Reservations</div>
+                
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field fxFlex="58" class="mat-wrapper-p-0 underline-0 service-datepicker border-radius-4 pb-12 px-16 border">
+                        <input matInput [matDatepicker]="picker1" [formControl]="date">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                      <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="bookingPrint()">
+                        <mat-icon class="mr-4">print</mat-icon>
+                        Print
+                    </button>
+                </div>
+            </div>
+            
+            <div class="border text-capitalize mr-16" fxFlex="32">
+                <div class="font-weight-600 font-size-16 green-bg-color fuse-white-fg p-16">Quick Links</div>
+
+                <div class="p-16 line-height-32">
+                   <a [routerLink]="'/admin/meeting-room/booking/add'">+ Add Booking</a><br>
+                   <a [routerLink]="'/admin/meeting-room/rooms/add'">+ Add Room</a><br>
+                   <a [routerLink]="'/admin/meeting-room/booking/list'">View Booking</a><br>
+                   <a [routerLink]="'/admin/meeting-room/rooms/list'">View Rooms</a><br>
+                   <a [routerLink]="'/admin/meeting-room/services/list'">Manage services</a><br>
+                   <!-- <a >Edit Booking Form</a><br>
+                   <a >Language Setting</a><br>
+                   <a >Back Up Your Files</a><br> -->
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>

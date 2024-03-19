@@ -1,0 +1,53 @@
+<div id="forms" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+        <div [ngStyle]="accent" class="p-24" fxLayout="row" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxFlex>
+                <div class="logo">
+                    <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title|titlecase}}
+                </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- BTN's -->
+            <div class="text-right" fxFlex>
+                <div class="mt-16 mt-sm-0" [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                    <button   mat-raised-button class="mr-8"  [routerLink]="['/admin/email-log/list']" >
+                        <mat-icon class="mr-4">arrow_back</mat-icon> Back
+                    </button> 
+                </div>
+            </div>
+            <!-- / BTN's -->
+    </div>
+     <div class="content p-24" fusePerfectScrollbar>
+
+        <div class="center p-24" fxLayoutAlign="center">
+                    <!-- CONTENT -->
+           <div class="content w-100-p my-auto">
+                <!-- REACTIVE FORM EXAMPLE -->
+                <div  fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" >
+                    <div fxLayout="column" fxLayoutAlign="end" fxLayoutGap="1em" fxFlex="1 0 auto">
+                           <div [ngStyle]="{'padding-left': '12px','padding-top':'15px'}">
+                            From : {{From}}
+                           </div>  
+                           <div [ngStyle]="{'padding-left': '12px'}">
+                            To : {{To}}
+                           </div>  
+                           <div [ngStyle]="{'padding-left': '12px'}">
+                            Date : {{Date}}
+                           </div>          
+
+                           <div [ngStyle]="{'padding-left': '12px'}">
+                            Subject : {{Subject}}
+                           </div>  
+                           <div [innerHTML]=" Body | sanitizeHtml "></div>
+                     </div>
+                    </div>
+                 </div>
+            </div>
+        </div>        
+</div>   

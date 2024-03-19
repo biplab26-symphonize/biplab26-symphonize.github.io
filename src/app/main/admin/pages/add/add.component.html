@@ -1,0 +1,600 @@
+<div id="back-pages-addPage" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header py-10 px-20 h-80" fxLayout="row" fxLayoutAlign="start center"> 
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-text h3 s-18 mr-8">pages</mat-icon>
+                <!-- <mat-icon class="secondary-text s-16">chevron_right</mat-icon> -->
+                <span class="logo-text h3">Add New</span>
+            </div>            
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-20 w-90-p mx-auto">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <form class="mr-20 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="pageForm" [formGroup]="pageForm" (ngSubmit)="onSubmit($event)" >
+                <div fxLayout="row" fxLayoutAlign="end center"  fxFlex="1 0 auto" class="mb-20 mt-4">
+                    <button type="button" mat-raised-button [ngStyle]="button"  class="mr-8 text-uppercase line-height-44 br-ds-0 box-shadow-none" (click)="previewPage()">Preview</button>
+
+                    <button type="submit" mat-raised-button [ngStyle]="button"  class="mr-8 text-uppercase line-height-44 br-ds-0 box-shadow-none">Save</button>
+
+                    <button type="button" mat-raised-button  [routerLink]="'/admin/pages/list'" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none">Back to Pages</button>
+                </div>
+                <!-- Page Title -->
+                <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> 
+                    Page Title
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="border p-16 pb-0 mb-20 fuse-white-bg">
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                        <mat-label>Title</mat-label>
+                        <input matInput formControlName="title" placeholder="Enter title here" required>
+                        <!-- <mat-icon matSuffix class="disable-text">subtitles</mat-icon> -->
+                    </mat-form-field>
+                </div>
+
+                <!-- public Access -->
+                <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> 
+                    Content Availability 
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start" class="border p-16 mb-20 fuse-white-bg">
+                    <div fxLayout="column" fxFlex="1 0 auto" class="mt-4 mat-wrapper-p-0 pt-8 px-16 border border-radius-4">
+                        <!-- Access -->
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="50" class="underline-0">
+                            <mat-label class="fuse-black-fg font-size-20">Content Availability :</mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group class="mt-8" fxLayout="row wrap" fxLayoutAlign="start center" name="publicaccess" formControlName="publicaccess" (change)="showRoleSelection($event)">
+                                <mat-radio-button value="Y" class="mr-20">Accessible to Everyone</mat-radio-button>
+                                <mat-radio-button value="N">Accessible to Logged In Users</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+    
+                        <!-- SELECT ROLES -->
+                        <mat-form-field class="w-100-p my-16" appearance="outline" floatLabel="always" fxFlex="0 0 50" *ngIf="showRoleSelect==true">
+                            <mat-label>Role</mat-label>
+                            <mat-select multiple formControlName="access" [required]="showRoleSelect==true">
+                                <mat-option-select-all></mat-option-select-all>
+                                <mat-option *ngFor="let role of RoleList" [value]="role.id">
+                                {{role.role_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+    
+                    
+                    <!-- SELECT STATUS -->
+                    <mat-form-field appearance="outline" fxFlex="40" class="pl-16">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                        <ng-container *ngFor="let status of StatusList | keyvalue">
+                            <mat-option *ngIf="status.key!==''" [value]="status.key">
+                            {{status.value}}
+                            </mat-option>
+                        </ng-container>    
+                    </mat-select>
+                </mat-form-field>
+                   
+                </div>  
+                
+
+                <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16">
+                    Page Editor
+                </div>
+                <!-- EDITOR AREA -->
+                <page-editor class="fuse-white-bg px-32 mb-20" [editEntry]="editEntry" [editpageInfo]="pagecontent" (onPageUpdate)="setPageContent($event)"></page-editor>
+                <!-- EDITOR AREA ENDS -->
+
+
+                <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> 
+                    Page Setting 
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="border px-16 pb-0 fuse-white-bg">
+                    <mat-tab-group fxFlex="100">
+                        <!-- PageSettings -->
+                        <mat-tab label="Page" formGroupName="pagesettings">
+                            <!-- featureimage -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Featured Image</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">Select Featured Image</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <div fxLayout="row">
+                                            <input matInput name="featureimage" formControlName="featureimage" class="mr-16">
+                                            <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'featureimage','group':'pagesettings'})">cloud_upload</mat-icon>
+                                            <mat-icon matSuffix class="secondary-text" *ngIf="pageForm.get('pagesettings').get('featureimage').value" (click)="ResetField({type:'featureimage','group':'pagesettings'})">delete</mat-icon>
+                                        </div>    
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- contentpadding -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Content Padding</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">format: (0 0)</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="contentpadding" formControlName="contentpadding">
+                                        <mat-icon matSuffix class="secondary-text">compare_arrows</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- fullwidthpadding -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Full Width Padding</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">format: (0)</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="fullwidthpadding" formControlName="fullwidthpadding">
+                                        <mat-icon matSuffix class="secondary-text">compare_arrows</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- disablefeatureimg -->
+                            <div fxLayout="column" class="px-16 mb-24" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Disable Featured Image</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border border-radius-4">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 pb-12 underline-0 mat-form-field--no-underline pl-8">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="disablefeatureimg" formControlName="disablefeatureimg">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- pagelayout -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Page layout</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Page Layout</mat-label>
+                                        <mat-select formControlName="pagelayout">
+                                            <ng-container *ngFor="let layout of layoutList | keyvalue">
+                                                <mat-option [value]="layout.key">
+                                                {{layout.value}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- bgcolor -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="100">
+                                    <div class="font-weight-600 mb-0 ">Background Color</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100">
+                                        <mat-label>Background Color</mat-label>
+                                        <input matInput formControlName="bgcolor" type="color" name="bgcolor">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- bgimage -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Background Image</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">Select Background Image</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <div fxLayout="row">
+                                            <input matInput name="bgimage" formControlName="bgimage" class="mr-16">
+                                            <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'bgimage','group':'pagesettings'})">cloud_upload</mat-icon>
+                                            <mat-icon matSuffix class="secondary-text" *ngIf="pageForm.get('pagesettings').get('bgimage').value" (click)="ResetField({type:'bgimage','group':'pagesettings'})">delete</mat-icon>
+                                        </div>    
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <!-- contentbgcolor -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0">Content Background Color</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Content Background Color</mat-label>
+                                        <input matInput formControlName="contentbgcolor" type="color" name="contentbgcolor">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+
+                            <!-- contentbgimage -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Content Background Image</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">Select Content Background Image</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <div fxLayout="row">
+                                            <input matInput class="mr-16" name="contentbgimage" formControlName="contentbgimage">
+                                            <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'contentbgimage','group':'pagesettings'})">cloud_upload</mat-icon>
+                                            <mat-icon matSuffix class="secondary-text" *ngIf="pageForm.get('pagesettings').get('contentbgimage').value" (click)="ResetField({type:'contentbgimage','group':'pagesettings'})">delete</mat-icon>
+                                        </div>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <!-- HeaderSettings -->
+                        <mat-tab label="Header" formGroupName="headersettings">
+                            <!-- displayheader -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Display Header</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="pb-8 border border-radius-4 mat-wrapper-p-0 underline-0 pl-8 pb-12">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="displayheader" formControlName="displayheader">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- fullwidth -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Full Width Header</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="pb-8 border border-radius-4 mat-wrapper-p-0 underline-0 pl-8 pb-12">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="fullwidth" formControlName="fullwidth">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- bgcolor -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Background Color</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4 mat-wrapper-p-0">
+                                        <mat-label>Background Color</mat-label>
+                                        <input matInput formControlName="bgcolor" type="color" name="bgcolor">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- bgimage -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Background Image</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">Select Background Image</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="mat-wrapper-p-0">
+                                        <div fxLayout="row">
+                                            <input matInput name="bgimage" formControlName="bgimage" class="mr-16">
+                                            <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'bgimage','group':'headersettings'})">cloud_upload</mat-icon>
+                                            <mat-icon matSuffix class="secondary-text" *ngIf="pageForm.get('headersettings').get('bgimage').value" (click)="ResetField({type:'bgimage','group':'headersettings'})">delete</mat-icon>
+                                        </div>    
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- fullbgimage -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Full Width Header</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="pb-8 border border-radius-4 mat-wrapper-p-0 underline-0 pl-8 pb-12">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="fullbgimage" formControlName="fullbgimage">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- bgrepeat -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Page layout</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Background Repeat</mat-label>
+                                        <mat-select formControlName="bgrepeat">
+                                            <ng-container *ngFor="let bgrepeat of bgrepeatList | keyvalue">
+                                                <mat-option [value]="bgrepeat.key">
+                                                {{bgrepeat.value}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        
+                        <!-- TitleBarSettings -->
+                        <mat-tab label="Title Bar" formGroupName="titlebarsettings">
+                            <!-- showtitlebar -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Show title bar</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="pb-8 border border-radius-4 mat-wrapper-p-0 underline-0 pl-12 pb-12">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="showtitlebar" formControlName="showtitlebar">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- widget -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Widget</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" class="mat-wrapper-p-0">
+                                        <mat-label>Widgets</mat-label>
+                                        <mat-select formControlName="widget">
+                                            <ng-container *ngFor="let widget of widgetsList | keyvalue">
+                                                <mat-option [value]="widget.key">
+                                                {{widget.value}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- showtext -->
+                            <div fxLayout="column" class="px-16 mt-28" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Show text</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="pb-8 border border-radius-4 mat-wrapper-p-0 underline-0 pl-12 pb-12">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="showtext" formControlName="showtext">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- text -->
+                            <div fxLayout="column" class="px-16 mt-24" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Text</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">title show on bar</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="mat-wrapper-p-0">
+                                        <input matInput name="text" formControlName="text">
+                                        <mat-icon matSuffix class="secondary-text">subtitles</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- textalign -->
+                            <div fxLayout="column" class="px-16 mt-24" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Text Align</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" class="mat-wrapper-p-0">
+                                        <mat-label>Text Align</mat-label>
+                                        <mat-select formControlName="textalign">
+                                            <ng-container *ngFor="let align of alignList | keyvalue">
+                                                <mat-option [value]="align.key">
+                                                {{align.value}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- textsize -->
+                            <div fxLayout="column" class="px-16 mt-24" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Text Font Size</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">font size of main title text</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="textsize" formControlName="textsize">
+                                        <mat-icon matSuffix class="secondary-text">format_size</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- lineheight -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Text Line Height</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">line height of main title text</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="lineheight" formControlName="lineheight">
+                                        <mat-icon matSuffix class="secondary-text">format_size</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>                            
+                            <!-- subtext -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Sub Title Text</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">sub title show on bar</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="subtext" formControlName="subtext">
+                                        <mat-icon matSuffix class="secondary-text">subtitles</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- subtextsize -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Sub Title Text Font Size</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">font size of sub title text</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="subtextsize" formControlName="subtextsize">
+                                        <mat-icon matSuffix class="secondary-text">format_size</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- sublineheight -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Sub Title Text Line Height</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">line height of sub title text</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="sublineheight" formControlName="sublineheight">
+                                        <mat-icon matSuffix class="secondary-text">format_size</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- textcolor -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Color</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Title Color</mat-label>
+                                        <input matInput formControlName="textcolor" type="color" name="textcolor">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- subtextcolor -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Sub Title Color</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Sub Title Color</mat-label>
+                                        <input matInput formControlName="subtextcolor" type="color" name="subtextcolor">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- textfullwidth -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Show Title Full Width</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="pb-8 border border-radius-4 mat-wrapper-p-0 underline-0 pl-8 pb-12">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="textfullwidth" formControlName="textfullwidth">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- subtextfullwidth -->
+                            <div fxLayout="column" class="px-16 mt-24" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Show Sub Title Full Width</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="pb-8 border border-radius-4 mat-wrapper-p-0 underline-0 pl-8 pb-12">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="subtextfullwidth" formControlName="subtextfullwidth">
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                            <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- titlebarheight -->
+                            <div fxLayout="column" class="px-16 mt-24" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Bar Height</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">height of title bar</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="titlebarheight" formControlName="titlebarheight">
+                                        <mat-icon matSuffix class="secondary-text">format_size</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- titlebarbgcolor -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Bar Background Color</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Title Bar Background Color</mat-label>
+                                        <input matInput formControlName="titlebarbgcolor" type="color" name="titlebarbgcolor">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- titlebarbordercolor -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Bar Border Color</div>
+                                </div>    
+                                <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Title Bar Border Color</mat-label>
+                                        <input matInput formControlName="titlebarbordercolor" type="color" name="titlebarbordercolor">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- titlebarbgimg -->
+                            <div fxLayout="column" class="px-16 " fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class="font-weight-600 mb-0 ">Title Bar Background Image</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">Title Bar Background Image.</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <div fxLayout="row">
+                                            <input matInput name="titlebarbgimg" formControlName="titlebarbgimg" class="mr-16">
+                                            <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'titlebarbgimg','group':'titlebarsettings'})">cloud_upload</mat-icon>
+                                            <mat-icon matSuffix class="secondary-text" *ngIf="pageForm.get('titlebarsettings').get('titlebarbgimg').value" (click)="ResetField({type:'titlebarbgimg','group':'titlebarsettings'})">delete</mat-icon>
+                                        </div>    
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+
+
+                <div fxLayout="row" fxLayoutAlign="center center"  fxFlex="1 0 auto" class="mt-28">
+                    <button type="submit" mat-raised-button [ngStyle]="button" class="mr-8 text-uppercase line-height-44 br-ds-0 box-shadow-none">Save</button>
+                    <button type="button" mat-raised-button  [routerLink]="'/admin/pages/list'" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none">Back to Pages</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,146 @@
+<div id="food-Reservation-personal-details" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                        [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>To Go Order</strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+
+            </div>
+            <!-- / TOOLBAR -->`
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <!-- <div class="font-weight-600 blue-grey-50 p-12 mb-20 line-height-28">
+                <p>It can take up to one hour to complete the delivery.</p>
+                <p>Food orders must be submitted by the following times:</p>
+                <p>- Building 'A' and 'B' by 3:00PM</p>
+                <p>- Building 'C', 'D', E and Cottages by 3:30PM.</p>
+                <p>All orders placed after 3:30PM should be made by calling To-Go Orders at 843-689-7005.</p>
+                <p>Orders placed after 3:30PM will be delivered after 6:30PM.</p>
+            </div> -->
+
+            <div fxLayout="row" fxLayout.lt-sm="column">
+                <div fxFlex="60" fxFlex.lt-sm="100" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                    <form class="w-60-p mr-20 media-mr-0" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                        autocomplete="off" [formGroup]="addOrder" novalidate autocomplete="off"
+                        [ngClass.lt-sm]="{'w-100-p': 'true'}" [ngStyle.lt-sm]="{'margin-bottom.px': 20}">
+                        <div class="font-weight-600 font-size-18 accent fuse-white-fg p-12 text-center">
+                            Personal Details
+                        </div>
+                        <div class="p-16 border">
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex="100">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput [matAutocomplete]="auto" formControlName="name" name="name" [readonly]="restrictFormInfo" required>
+                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setFormfields($event)">
+                                        <mat-option *ngFor="let option of filteredUsers" [value]="option">
+                                            {{option.username}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-error>User Name required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex="100">
+                                    <mat-label>Email</mat-label>
+                                    <input type="email" matInput formControlName="email"
+                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [readonly]="restrictFormInfo">
+                                    <ng-container *ngIf="addOrder.get('email').invalid" ngProjectAs="mat-error">
+                                        <mat-error *ngIf="addOrder.get('email').errors.pattern">Email pattern is
+                                            wrong</mat-error>
+                                    </ng-container>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex="100">
+                                    <mat-label>Phone</mat-label>
+                                    <input matInput formControlName="phone" mask="(000) 000-0000" [readonly]="restrictFormInfo" required>
+                                    <mat-error>Phone required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="text-right back-countinue-btn">
+                                <button mat-stroked-button color="accent" cdkFocusInitial
+                                    [routerLink]="'/to-go-order-load-types'">
+                                    BACK
+                                </button>
+                                <button mat-stroked-button color="accent" class="ml-20" cdkFocusInitial
+                                    (click)="onSubmit()">CONTINUE</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div fxFlex="40" class="border" fxFlex.lt-sm="100" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                    <h4 class="font-weight-600 font-size-18 accent fuse-white-fg p-12 text-center"> Your Order </h4>
+                    <div *ngFor="let data of orderDataArr; let k = index;" class="p-16">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-8">
+                            <div class="font-weight-600 text-capitalize"> {{data.product_name}} </div>
+                            <mat-icon (click)="removeOrder(k)" class="border p-12 font-size-20" fxLayout="row"
+                                fxLayoutAlign="center center">clear</mat-icon>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-16">
+                            <div class="font-weight-600 text-capitalize">Quantity: {{data.quantity}} </div>
+                        </div>
+
+                        <div *ngFor="let item of data.numberOfSideAndExtras; let i = index;" class="mb-16">
+                            <div class="font-weight-600 mb-8 font-size-16"
+                                *ngIf="data.sideDishFrontArr[i] || data.extrasFrontArr[i] || data.notes[i]"> Entree {{item}} </div>
+
+                            <div class="border px-8 py-12 border-color border-radius-4 line-height-24"
+                                *ngIf="data.sideDishFrontArr[i] || data.extrasFrontArr[i] || data.notes[i]">
+                                <!-- <div class="font-weight-600">
+                                    {{notesData[item-1]}}
+                                </div> -->
+
+                                <div fxLayout="row" class="mb-12">
+                                    <div class="mr-8 text-capitalize font-weight-600" fxFlex="40"
+                                        *ngIf="data.sideDishFrontArr[i] && data.sideDishFrontArr[i] != ''"> Side Dish :</div>
+
+                                    <div fxFlex="60">
+                                        <div *ngFor="let items of data.sideDishFrontArr[i]">
+                                            {{items}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div fxLayout="row" class="mb-12">
+                                    <div class="mr-8 text-capitalize font-weight-600" fxFlex="40"
+                                        *ngIf="data.extrasFrontArr[i] && data.extrasFrontArr[i] != ''"> Extras :</div>
+
+                                    <div fxFlex="60">
+                                        <div *ngFor="let items of data.extrasFrontArr[i]">
+                                            {{items}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" class="mb-12">
+                                    <div class="mr-8 text-capitalize font-weight-600" fxFlex="40"
+                                        *ngIf="data.notes[item-1]"> Notes : </div>
+                                    <div fxFlex="60">
+                                        <div>{{data.notes[item-1]}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+@import "src/@fuse/scss/fuse";
+
+#front-meeting-room-Room-Setup{
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/maintenance-request.jpg'); 
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }              
+    }   
+
+    
+    mat-button-toggle:hover {
+        position: initial;
+    }
+    .mat-button-toggle-checked{
+        background: #a6b340 !important;
+    }
+
+    @include media-breakpoint('lt-sm') {
+        .content-wrap.p-28 {
+            padding: 20px !important;
+        }
+
+        .mr-28.booking-img {
+            margin-right: 0 !important;
+        }
+
+        .m-8.p-4.layout-toggle {
+            margin: 8px 0px !important;
+        }
+
+        .left-section.mr-28 {
+            margin-right: 0 !important;
+        }
+    }
+}

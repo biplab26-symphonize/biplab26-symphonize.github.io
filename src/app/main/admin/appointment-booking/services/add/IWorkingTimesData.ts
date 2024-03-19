@@ -1,0 +1,30 @@
+export interface IWorkingTimesData {
+    monday_from: string;
+    tuesday_from: string;
+    wednesday_from: string;
+    thursday_from: string;
+    friday_from: string;
+    saturday_from: string;
+    sunday_from: string;
+    monday_to: string;
+    tuesday_to: string;
+    wednesday_to: string;
+    thursday_to: string;
+    friday_to: string;
+    saturday_to: string;
+    sunday_to: string;
+    monday_break_from: string;
+    tuesday_break_from: string;
+    wednesday_break_from: string;
+    thursday_break_from: string;
+    friday_break_from: string;
+    saturday_break_from: string;
+    sunday_break_from: string;
+    monday_break_to: string;
+    tuesday_break_to: string;
+    wednesday_break_to: string;
+    thursday_break_to: string;
+    friday_break_to: string;
+    saturday_break_to: string;
+    sunday_break_to: string;
+}

@@ -1,0 +1,23 @@
+<div *ngIf="eventInfo.event">
+    <div>
+        <div fxLayout="column" class="p-4 event-info">
+            <div         
+            [style.background-color]="backgroundColor"
+            [style.color]="textColor"
+            [style.border-color]="borderColor"
+            class="fc-ng-time" fxFlex>
+                {{eventInfo.event.start | date: 'shortTime'}}
+            </div>
+            <div 
+            [style.background-color]="backgroundColor"
+            [style.color]="textColor"
+            [style.border-color]="borderColor"
+            fxFlex class="calendar-info">{{eventTitle}}<span class="warn-fg font-weight-900" *ngIf="eventInfo.event.extendedProps.status=='C'">-CANCELLED</span>
+            <span class="fc-ng-location" *ngIf="eventInfo.event.extendedProps.eventlocation && eventSettings.calender_settings.show_cell_location=='Y'" fxFlex>
+            ({{eventInfo.event.extendedProps.eventlocation.category_name}})
+            </span>
+            </div>
+        </div>
+    </div>
+    
+</div> 

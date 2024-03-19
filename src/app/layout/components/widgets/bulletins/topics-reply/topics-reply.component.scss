@@ -1,0 +1,121 @@
+@import "src/@fuse/scss/fuse";
+
+#topics  {
+    
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/staff-bg.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+
+            .reply{
+                border-top: 40px solid #324A5E !important;
+                border: solid 1px #DDD;
+                border-radius: 4px;
+                padding: 15px;
+                
+                .creator{
+                    text-align: center;
+                    border-right: solid 1px #DDD;
+                    padding-right: 15px;
+                    img{
+                        border-radius: 50%;
+                        object-fit: contain;
+                        margin-bottom: 10px;
+                        width: 85px;
+                    }
+                    .creator-desc{
+                        p{                            
+                            margin: 0;
+
+                            &:first-child{
+                                padding-bottom: 6px;
+                                margin-bottom: 6px;
+                                border-bottom: solid 1px #DDD;
+                            }
+
+                        }
+                    }
+                }
+
+                .reply-desc{
+                    clear: both;
+                    .reply-tools{
+                        border-top: solid 1px #DDD;
+                        padding-top: 12px;
+                        padding-right: 12px;
+                        .mat-icon{
+                            vertical-align: bottom;
+                        }
+                    }
+                }
+            }
+
+            .forum-submit{color:#FFFFFF !important}
+            .mat-sort-header-arrow {
+                color: #FFF;
+            }
+        }              
+    }
+
+
+}
+
+
+@include media-breakpoint('lt-sm') {
+    .content-wrap.fuse-white-bg.p-28 {
+        padding: 20px !important;
+    }
+
+    .reply .creator{
+        border-bottom: solid 1px #DDD;
+        padding-bottom: 8px;
+        border-right: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .pl-28 {
+        padding-left: 0 !important;
+    }
+ }

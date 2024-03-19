@@ -1,0 +1,89 @@
+<ng-container *ngIf="!item.hidden">
+    <ng-container *ngIf="item.menu_source=='N'">
+        <!-- item.url of route -->
+        <a class="nav-link" [ngClass]="item.classes"
+            *ngIf="item.external==true && item.menu_alias!=='logout'"
+            [href]="item.url" [target]="item.target ? item.target : '_blank'"
+            (click)="sendMenuItemInfo(item)">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </a>
+        <!-- logout menu open mat dialog -->
+        <a class="nav-link" [ngClass]="item.classes"
+            *ngIf="item.menu_alias=='logout'"
+            href="javascript:void(0)"
+            (click)="logout()">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </a>
+        <!-- item.url external -->
+        <a class="nav-link" [ngClass]="item.classes"
+            *ngIf="item.external==false && item.menu_alias!=='logout'"
+            [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
+            [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
+            [attr.menuparentid]="item.menu_parent_id"
+            [target]="item.openInNewTab ? '_blank' : '_self'" [attr.menuparent]="item.menu_parent_id" [attr.menutitle]="item.menu_title"
+            [attr.showpagetitle]="item.show_page_title || 'N'" [attr.pagetitle]="item.page_title || ''"
+            [attr.pagetitleimg]="item.media ? item.media.image : ''"
+            (click)="sendMenuItemInfo(item)">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </a>
+    </ng-container>
+
+    <ng-container *ngIf="item.menu_source!=='N'">
+        <!-- item.url -->
+        <a class="nav-link" [ngClass]="item.classes"
+            *ngIf="item.url && item.menu_source_type!=='url' && item.menu_source!=='RDM' && !item.function"
+            [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
+            [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
+            [target]="item.openInNewTab ? '_blank' : '_self'" [attr.menuparent]="item.menu_parent_id" [attr.menutitle]="item.menu_title"
+            [attr.menuparentid]="item.menu_parent_id"
+            [attr.showpagetitle]="item.show_page_title || 'N'" [attr.pagetitle]="item.page_title || ''"
+            [attr.pagetitleimg]="item.media ? item.media.image : ''" (click)="sendMenuItemInfo(item)">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </a>
+
+        <!-- item.externalUrl -->
+        <a class="nav-link" [ngClass]="item.classes"
+            *ngIf="item.url && item.menu_source_type=='url' && (item.menu_source=='D' || item.menu_source=='RDM') && !item.function"
+            [href]="item.url" [target]="item.target ? item.target : '_blank'">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </a>
+
+        <!-- item.function -->
+        <span class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && item.function" (click)="item.function()">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </span>
+
+        <!-- item.url && item.function -->
+        <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && !item.externalUrl && item.function"
+            (click)="item.function();sendMenuItemInfo(item)" [routerLink]="[item.url]"
+            [routerLinkActive]="['active', 'accent']" [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
+            [target]="item.openInNewTab ? '_blank' : '_self'" [attr.menuparent]="item.menu_parent_id" [attr.menutitle]="item.menu_title"
+            [attr.menuparentid]="item.menu_parent_id"
+            [attr.showpagetitle]="item.show_page_title || 'N'" [attr.pagetitle]="item.page_title || ''"
+            [attr.pagetitleimg]="item.media ? item.media.image : ''">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </a>
+
+        <!-- item.externalUrl && item.function -->
+        <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl && item.function"
+            (click)="item.function();sendMenuItemInfo(item)" [href]="item.url"
+            [target]="item.openInNewTab ? '_blank' : '_self'" [attr.menuparent]="item.menu_parent_id" [attr.menutitle]="item.menu_title"
+            [attr.menuparentid]="item.menu_parent_id"
+            [attr.showpagetitle]="item.show_page_title || 'N'" [attr.pagetitle]="item.page_title || ''"
+            [attr.pagetitleimg]="item.media ? item.media.image : ''">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+        </a>
+    </ng-container>
+
+
+
+    <ng-template #itemContent>
+        <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
+        <span class="nav-link-title" [translate]="item.translate">{{item.title}}</span>
+        <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
+            [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}">
+            {{item.badge.title}}
+        </span>
+    </ng-template>
+
+</ng-container>

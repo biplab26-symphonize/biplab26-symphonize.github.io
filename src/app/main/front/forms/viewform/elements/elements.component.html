@@ -1,0 +1,594 @@
+<div id="element" class="page-layout simple fullwidth layout-box">
+    
+    <!-- HEADER -->
+	<breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+
+    <!-- CONTENT -->
+  	<div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+		<div class="content-wrap fuse-white-bg p-28">
+			<form class="br-radius-8" name="{{forminfo.form_alias}}" novalidate [formGroup]="viewformGroup" (ngSubmit)="onSubmit()" autocomplete="off" >
+				<div fxLayout="row wrap" fxLayout.xs="column">
+					<div *ngFor="let element of formFields; let id = index" [ngClass]="element.fields.field_type != 'list' && element.content.extra_field_content && element.content.extra_field_content.show_field == true ? element.content.extra_field_content.col_class : element.fields.field_type != 'list' && element.content.extra_field_content.show_field == true ? 'col-fullwidth': '' " fxFlex.lt-sm="100">
+						
+						<!--TextBox-->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'text' &&  element.caption !='full_name' && element.caption !='first-name' && element.caption !='last-name' && (element.caption !='Apartment' || element.content.extra_field_content.autofill =='N') && (element.caption !='address' || element.content.extra_field_content.autofill =='N') && (element.caption !='location-or-unit-number' || element.content.extra_field_content.autofill =='N') && (element.caption !='unit' || element.content.extra_field_content.autofill =='N')" class="pr-8 pb-20" >
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}} </mat-label>
+								<input matInput [required]="element.content.extra_field_content.field_required=='Y'"  [maxlength]="element.content.extra_field_content.maximum_size"  value=""   type="text" formControlName="{{element.form_element_id}}" (keyup)="OnValueChange($event,element.form_element_id,element.description)"/>
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field> 
+						</div>
+
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'text' && element.content.extra_field_content.autofill =='Y'  && (element.caption =='apartment' || element.caption =='address' || element.caption =='organisations')" class="pr-8 pb-20" >
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}} </mat-label>
+								<input matInput [required]="element.content.extra_field_content.field_required=='Y'"  (keyup)="OnValueChange($event,element.form_element_id,element.description)" [maxlength]="element.content.extra_field_content.maximum_size"  [matAutocomplete]="auto"  [readonly]="restrictFormInfo" formControlName="{{element.form_element_id }}"    type="text" />
+								<mat-autocomplete (optionSelected)='apartmentchangevalue($event.option.value)' (optionSelected)="OnValueChange($event.option.value,element.form_element_id,element.description)"   #auto="matAutocomplete" >
+									<mat-option  *ngFor="let user of Usermetavalue" [value] = "user.value" >
+										{{user.value}}
+									</mat-option>
+									<mat-option  *ngIf="UserData.length == 0 "  value = "" >
+										No Record Found 
+									 </mat-option>
+								</mat-autocomplete>
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field> 	 
+						</div>
+
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true &&  element.fields.field_type == 'text' && element.caption =='first-name'" class="pr-8 pb-20" >
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}} </mat-label>
+								<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)" [maxlength]="element.content.extra_field_content.maximum_size" [readonly]="restrictFormInfo"  [matAutocomplete]="auto"  formControlName="{{element.form_element_id }}"    type="text" />
+								<mat-autocomplete  (optionSelected)='firstnamechangevalue($event.option.value)'  (optionSelected)="OnValueChange($event.option.value,element.form_element_id,element.description)"  autoActiveFirstOption    #auto="matAutocomplete">
+									<mat-option  *ngFor="let user of UserData" [value] = "user.first_name" >
+										{{user.first_name}}
+									</mat-option>
+									<mat-option  *ngIf="UserData.length == 0 "  value = "" >
+									   No Record Found 
+									</mat-option>
+								</mat-autocomplete>
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field> 
+						</div>
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true &&  element.fields.field_type == 'text' && (element.caption =='location-or-unit-number'||element.caption =='unit')" class="pr-8 pb-20" >
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}} </mat-label>
+								<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)" [maxlength]="element.content.extra_field_content.maximum_size" [readonly]="restrictFormInfo"  [matAutocomplete]="auto"  formControlName="{{element.form_element_id }}"    type="text" />
+								<mat-autocomplete  (optionSelected)='unitchangevalue($event.option.value)'  (optionSelected)="OnValueChange($event.option.value,element.form_element_id,element.description)"  autoActiveFirstOption    #auto="matAutocomplete">
+									<mat-option  *ngFor="let user of AllUnitNumber" [value] = "user.value" >
+										{{user.value}}
+									</mat-option>
+									<mat-option  *ngIf="UserData.length == 0 "  value = "" >
+									   No Record Found 
+									</mat-option>
+								</mat-autocomplete>
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field> 
+						</div>
+
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'text' && element.caption =='last-name'" class="pr-8 pb-20" >
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"   floatLabel="always">
+								<mat-label>{{element.description}} </mat-label>
+								<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)" [maxlength]="element.content.extra_field_content.maximum_size" [readonly]="restrictFormInfo"  [matAutocomplete]="auto" formControlName="{{element.form_element_id}}"     type="text" />
+								<mat-autocomplete   (optionSelected)='lastnamechangevalue($event.option.value)' (optionSelected)="OnValueChange($event.option.value,element.form_element_id,element.description)"   autoActiveFirstOption #auto="matAutocomplete">
+									<mat-option  *ngFor="let users of UserData" [value] = "users.last_name" >
+										{{users.last_name}}
+									</mat-option>
+									<mat-option  *ngIf="UserData.length == 0 "  value = "" >
+										No Record Found 
+									 </mat-option>
+								</mat-autocomplete>
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field> 
+						</div>
+
+						<!--Number/Phone-->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'number' " class="pr-8 pb-20">
+							<div *ngIf="element.content.extra_field_content.autofill !='Y' && element.content.extra_field_content.ismasking=='N'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+									<mat-label class="font-size-14 font-weight-600">{{element.description}}</mat-label>
+									<input matInput  pattern="(?=.*\d).{7,}" (blur)="NumberValidations($event,element.form_element_id)" [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)" [mask]="element.content.extra_field_content.ismasking=='Y' ? element.content.extra_field_content.maskingpattern  : ''" matInput formControlName="{{element.form_element_id}}" />
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field> 
+							</div>
+							<div *ngIf="element.content.extra_field_content.autofill =='Y' && element.content.extra_field_content.ismasking=='N' ">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input  matInput  class="form-control"   pattern="(?=.*\d).{7,}" formControlName="{{element.form_element_id}}"  (keyup)="OnValueChange($event,element.form_element_id,element.description)"   [matAutocomplete]="auto"  (blur)="NumberValidations($event,element.form_element_id)"  [required]="element.content.extra_field_content.field_required=='Y'"  [readonly]="restrictFormInfo" />
+									<mat-autocomplete  class="ng-trim-ignore"  (optionSelected)='phonechangevalue($event.option.value,element.form_element_id)'  (optionSelected)="OnValueChange($event.option.value,element.form_element_id,element.description)"   #auto="matAutocomplete">
+										<mat-option   *ngFor="let users of UserData" [value] = "users.phone" >
+										{{users.phone}}
+										</mat-option>
+										<mat-option  *ngIf="UserData.length == 0"  value = "" >
+										No Record Found 
+										</mat-option>
+									</mat-autocomplete>
+									
+								</mat-form-field> 
+								<mat-error *ngIf="element.form_element_id.error?.invalid">Enter the valid number</mat-error>
+							</div>
+							<div *ngIf="element.content.extra_field_content.autofill =='Y' && element.content.extra_field_content.ismasking=='Y'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input  matInput class="form-control" formControlName="{{element.form_element_id}}"  (keyup)="OnValueChange($event,element.form_element_id,element.description)" (blur)="highlightInput($event)"  [matAutocomplete]="auto"  [required]="element.content.extra_field_content.field_required=='Y'"  [readonly]="restrictFormInfo" />
+									<mat-autocomplete  class="ng-trim-ignore"  (optionSelected)='phonechangevalue($event.option.value,element.form_element_id)'  (optionSelected)="OnValueChange($event.option.value,element.form_element_id,element.description)"   #auto="matAutocomplete">
+										<mat-option   *ngFor="let users of UserData" [value] = "users.phone" >
+										{{users.phone}}
+										</mat-option>
+										<mat-option  *ngIf="UserData.length == 0"  value = "" >
+										No Record Found 
+										</mat-option>
+									</mat-autocomplete>
+									<mat-error >{{element.error_msg}}</mat-error>
+								</mat-form-field>
+							</div> 
+						</div>
+										
+						<!--Textarea-->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'textarea'" class="pr-8 pb-20">
+							<div *ngIf="element.content.extra_field_content.maximum_size !== '' ">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<textarea [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)"   [(ngModel)]="element.content.extra_field_content.field_current_value" [maxlength]="element.content.extra_field_content.maximum_size"  matInput formControlName="{{element.form_element_id}}">TestArea</textarea>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field> 
+								<p *ngIf="element.content.extra_field_content.maximum_size != null && element.content.extra_field_content.field_current_value !=null" class="font-size-14 mt-4">{{element.content.extra_field_content.field_current_value.length}} Of {{element.content.extra_field_content.maximum_size}} Max Characters</p>
+							</div>
+							<div *ngIf=" element.content.extra_field_content.maximum_size == '' ">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<textarea [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)"   [maxlength]="element.content.extra_field_content.maximum_size"  matInput formControlName="{{element.form_element_id}}">TestArea</textarea>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field> 
+						     </div>
+						</div>
+
+						<!--Email-->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'email'  &&  (element.content.extra_field_content.autofill == 'N' || element.caption !='email') " class="pr-8 pb-20">
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}}</mat-label>
+								<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  type="email" formControlName="{{element.form_element_id}}"  />
+								<ng-container *ngIf="element.form_element_id.invalid" ngProjectAs="mat-error">
+									<mat-error *ngIf="element.form_element_id.error?.pattern">Email pattern is wrong</mat-error>	
+								</ng-container> 
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field> 
+						</div>
+
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true &&  element.fields.field_type == 'email' &&  element.caption =='email' && element.content.extra_field_content.autofill == 'Y'" class="pr-8 pb-20">
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}}</mat-label>
+								<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keyup)="OnValueChange($event,element.form_element_id,element.description)" [readonly]="restrictFormInfo"  [matAutocomplete]="auto" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" formControlName="{{element.form_element_id}}"  />
+								<mat-autocomplete  (optionSelected)='emailchangevalue($event.option.value)' (optionSelected)="OnValueChange($event.option.value,element.form_element_id,element.description)"  autoActiveFirstOption  #auto="matAutocomplete" >
+									<mat-option  *ngFor="let user of UserData"   [value] = "user.email" >
+										{{user.email}}
+									</mat-option>
+									<mat-option  *ngIf="UserData.length == 0 "  value = "" >
+										No Record Found 
+									 </mat-option>
+								</mat-autocomplete>
+								<ng-container *ngIf="element.form_element_id.invalid" ngProjectAs="mat-error">
+									<mat-error *ngIf="element.form_element_id.error?.pattern">Email pattern is wrong</mat-error>	
+								</ng-container>
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field> 
+						</div>
+									
+						<!-- select field -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'select'" class="pr-8 pb-20">
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}}</mat-label>
+								<mat-select formControlName="{{element.form_element_id}}"
+									[multiple]="element.content.extra_field_content.multiselect =='Y'"
+									(selectionChange)="OnValueChange($event,element.form_element_id,element.description)"
+									[required]="element.content.extra_field_content.field_required=='Y'">
+									<mat-option *ngIf="element.content.extra_field_content.multiselect =='N'">Select</mat-option>	        
+									<mat-option  *ngFor= "let option of element.content.options"
+												[value]="option.key">{{option.value}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div> 
+						
+					<!--Date-->
+					<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'date' && element.content.extra_field_content.pickerType == 'calendar' " class="pr-8 pb-20">
+						<div *ngIf="element.content.extra_field_content.field_class == 'from'">
+							<div *ngIf="element.content.extra_field_content.min_date == 'min'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'"   (keydown)="setReadonly()"  [max]="element.content.extra_field_content.current_date" [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker">
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field>
+								<span *ngIf="ShowStartErrormsg == true"   style="color: rgb(243, 71, 71) " >Start Date Should Be Less Then The End Date</span>
+							</div>
+							<div *ngIf="element.content.extra_field_content.min_date == 'max'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'"  (keydown)="setReadonly()"   [min]="element.content.extra_field_content.current_date" [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker">
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field>
+								<span *ngIf="ShowStartErrormsg == true"   style="color: rgb(243, 71, 71) " >Start Date Should Be Less Then The End Date</span>
+							</div>
+							<div *ngIf="element.content.extra_field_content.min_date == 'both'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keydown)="setReadonly()"  [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker">
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field>
+								<span *ngIf="ShowStartErrormsg == true"   style="color: rgb(243, 71, 71) " >Start Date Should Be Less Then The End Date</span>
+							</div>
+							
+						</div>
+						<div *ngIf="element.content.extra_field_content.field_class == 'to'">
+							<div *ngIf="element.content.extra_field_content.min_date == 'min'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keydown)="setReadonly()"   [max]="element.content.extra_field_content.current_date" [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertEndDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker" >
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>		
+								</mat-form-field>
+								<span *ngIf="ShowErrormsg == true"  style="color: rgb(243, 71, 71) " >End Date Should Be Greater Then The Start Date</span>
+							</div>
+							<div *ngIf="element.content.extra_field_content.min_date == 'max'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keydown)="setReadonly()"   [min]="element.content.extra_field_content.current_date" [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertEndDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker" >
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>		
+								</mat-form-field>
+								<span *ngIf="ShowErrormsg == true"  style="color: rgb(243, 71, 71) " >End Date Should Be Greater Then The Start Date</span>
+							</div>
+							<div *ngIf="element.content.extra_field_content.min_date == 'both'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'"  (keydown)="setReadonly()"  [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertEndDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker" >
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>		
+								</mat-form-field>
+								<span *ngIf="ShowErrormsg == true"  style="color: rgb(243, 71, 71) " >End Date Should Be Greater Then The Start Date</span>
+							</div>
+							
+						</div>
+						<div *ngIf="element.content.extra_field_content.field_class == '' ||  element.content.extra_field_content.field_class == null ">
+							<div *ngIf="element.content.extra_field_content.min_date == 'min' ">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'"  (keydown)="setReadonly()"   [max]="element.content.extra_field_content.current_date" [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker">
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field>
+							</div>
+							<div *ngIf="element.content.extra_field_content.min_date == 'max' ">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'"  (keydown)="setReadonly()"   [min]="element.content.extra_field_content.current_date" [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker">
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field>
+							</div>
+							<div *ngIf="element.content.extra_field_content.min_date == 'both'">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput [required]="element.content.extra_field_content.field_required=='Y'" (keydown)="setReadonly()"    [matDatepicker]="picker" formControlName="{{element.form_element_id }}" (dateChange)="convertDateFieldFormat(element.form_element_id, $event)">
+									<mat-datepicker-toggle matSuffix [for]="picker">
+									</mat-datepicker-toggle>
+									<mat-icon matDatepickerToggleIcon (click)="clearDate($event,element.form_element_id)">clear</mat-icon>
+									<mat-datepicker #picker></mat-datepicker>
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field>
+							</div>	
+						</div>
+					</div>   
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'date' && element.content.extra_field_content.pickerType == 'timer' " class="pr-8">
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+								<mat-label>{{element.description}}</mat-label>
+								<input matInput  [min]="min" [required]="element.content.extra_field_content.field_required=='Y'" [owlDateTimeTrigger]="datetimepicker" (dateChange)="convertTimeFieldFormat(element.form_element_id, $event)" [owlDateTime]="datetimepicker" formControlName="{{element.form_element_id}}">
+								<owl-date-time [pickerType]="element.content.extra_field_content.pickerType"  [hour12Timer]="true" #datetimepicker></owl-date-time>
+								<mat-error>{{element.error_msg}}</mat-error>
+							</mat-form-field>
+						</div>  
+								
+
+						<!-- Data and time both -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'date' && element.content.extra_field_content.pickerType == 'both' " class="pr-8 pb-20">
+								<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+									<mat-label>{{element.description}}</mat-label>
+									<input matInput  [min]="element.content.extra_field_content.current_date" [required]="element.content.extra_field_content.field_required=='Y'" (ngModelChange)="convertDateTimeFieldFormat(element.form_element_id, $event)" [owlDateTimeTrigger]="datetimepicker" [owlDateTime]="datetimepicker" formControlName="{{element.form_element_id}}">
+									<owl-date-time  [hour12Timer]="true" #datetimepicker></owl-date-time>
+										<mat-icon matSuffix class="trigger" [owlDateTimeTrigger]="datetimepicker"><img src="/assets/images/logos/date-time.jpg"></mat-icon>								
+									<mat-error>{{element.error_msg}}</mat-error>
+								</mat-form-field>
+						</div>
+
+						<!-- check box -->
+
+						<ng-container *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type=='checkbox' && element.content.options.length>0">
+							<mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="calc(48%-15px)" >
+								<mat-label class="fuse-black-fg font-size-22  {{element.content.extra_field_content.field_label_css_class}}"  *ngIf="element.content.extra_field_content.show_label == 'Y'">{{element.description}}</mat-label>
+								<input matInput style="display: none">
+								<div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" class="mt-12 {{element.content.extra_field_content.field_content_css_class}}">
+									<ng-container *ngFor="let checks of element.content.options; let i = index" [formArrayName]="element.form_element_id">
+										<mat-checkbox class="mx-4 w-100-p " (change)="OnValueChange($event,element.form_element_id,element.description)" [formControlName]="i" fxFlex.lt-sm="100" (change)="updateCheckboxValues(checks.value, $event.checked, element.form_element_id)" [value]="checks.value">{{checks.key}}</mat-checkbox>
+									</ng-container>
+								</div>
+								<!-- checkbox array field error-->
+								<div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" *ngIf="viewformGroup.controls[element.form_element_id].errors?.required">
+									<div fxFlex="calc(100%-8px)" class="mat-error custom-error my-4 text-capitalize w-100-p ">{{element.content.extra_field_content.error_msg || element.error_msg || checkboxErrorMsg}}</div>
+								</div>
+							</mat-form-field>
+							
+						</ng-container>
+						
+						<!-- rating -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'rating'" class="pr-8 pb-20">
+								<mat-label>{{element.description}}</mat-label>
+								<input matInput formControlName="{{element.form_element_id}}" [required]="element.content.extra_field_content.field_required=='Y'"  style="display: none" >
+								<star-rating [value]="5" [totalstars]="5" [checkedcolor]="reatingcolorchacked"  [uncheckedcolor]="reatingcoloeunchacked" size="24px" readonly="false" (rate)="onRate(element.form_element_id,$event)"></star-rating>
+							<mat-error *ngIf=" element.content.extra_field_content.field_required=='Y' ? element.form_element_id.invalid: ''" >{{element.error_msg}}</mat-error>
+						</div>
+
+						<!-- signature -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'signature'" class="pr-8 pb-20" fxLayout="row" fxLayoutAlign="start start">
+							<mat-label class="pr-8">{{element.description}} :</mat-label>
+							<input matInput formControlName="{{element.form_element_id}}" [required]="element.content.extra_field_content.field_required=='Y'"  style="display: none" >
+							<signature-pad class="pr-8"  [options]="signaturePadOptions"   #sigPad id='signaturePad'  (onEndEvent)="drawComplete(element.form_element_id,$event)" ></signature-pad>
+							<button  type="button" mat-stroked-button  color="accent" (click)="clear(element.form_element_id)" class="mr-4">Clear</button>
+							<mat-error *ngIf=" element.content.extra_field_content.field_required=='Y' ?element.form_element_id.invalid: ''">{{element.description}} required</mat-error>
+						</div>
+
+						<!-- Hmtl Field -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'html'" class="pr-8 pb-20">
+							<div class="{{element.content.extra_field_content.field_content_css_class}}" [innerHTML]=" element.content.extra_field_content.content| sanitizeHtml   "></div>	
+						</div>
+
+						<!-- website -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'website'" class="pr-8 pb-20">
+							<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+								<mat-label>{{element.description}} </mat-label>
+								<input matInput formControlName="{{element.form_element_id}}"  pattern="https?://.+" placeholder="https://" [required]="element.content.extra_field_content.field_required=='Y'" >	
+								<mat-error *ngIf="element.form_element_id.error?.pattern && element.dirty">{{element.error_msg}}</mat-error>
+							</mat-form-field> 
+						</div>
+
+						<!--time  -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true && element.fields.field_type == 'time'" appearance="outline" floatLabel="always" fxLayout="row"  class="pr-8 pb-20">
+							<ng-container  *ngIf=" element.content.extra_field_content.text_format=='text'">
+								<!-- if time format is 24 Hours --> 
+								<div class="w-100-p" *ngIf="element.content.extra_field_content.time_format == 'twenty-four' && element.content.extra_field_content.text_format=='text'"  appearance="outline" floatLabel="always">
+									<div *ngFor="let name of twenty_four_Name">
+									<div *ngIf="name.id == element.form_element_id">
+										<div *ngIf="name.type == 'twenty_four_hours'">
+											<label>{{element.description}}: </label>
+											<mat-form-field class="mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+												<mat-label>HH</mat-label>
+												<input matInput   [required]="element.content.extra_field_content.field_required=='Y'" 
+												minlength="1" maxlength="2" pattern="^(2[0-4]|1[0-9]|[1-9])$"  formControlName="{{name.label}}"  	(keyup)="isValid($event.target.value)"
+												type="text"  (change)="twentyfourhoursValue($event,element.form_element_id)" />
+												<mat-error *ngIf="element.form_element_id.error?.pattern && element.form_element_id.invalid">{{element.error_msg}}</mat-error>	
+											</mat-form-field> 
+										</div>
+										<div *ngIf="name.type == 'twenty_four_minutes'">
+											<label>{{element.description}}: </label>
+											<mat-form-field class="pr-8 mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+													<mat-label>MM</mat-label>
+													<input matInput   [required]="element.content.extra_field_content.field_required=='Y'" 
+													minlength="1" maxlength="2" pattern="[1-5]?[0-9]" formControlName="{{name.label}}" 	(keyup)="isValid($event.target.value)"
+													type="text"  (change)="twentyfourminutesValue($event,element.form_element_id)"   />
+												<mat-error *ngIf="element.form_element_id.error?.pattern && element.form_element_id.invalid">{{element.error_msg}}</mat-error>		
+											</mat-form-field> 
+										</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- if time is 12 hours  code -->
+						
+								<div *ngIf="element.content.extra_field_content.time_format=='twelve' && element.content.extra_field_content.text_format=='text'" class="pr-8 first" fxFlex="50">
+									<div *ngFor="let name of twelvehoursName">
+										<div *ngIf="name.id == element.form_element_id">
+											<div *ngIf="name.type == 'hours'">
+												<label class="d-block">{{element.description}} </label>
+												<mat-form-field class="pr-8 w-100-p mat-wrapper-p-0" flex appearance="outline"  floatLabel="always">
+												<mat-label>HH</mat-label>
+													<input matInput [required]="element.content.extra_field_content.field_required=='Y'"
+													minlength="1" maxlength="2" pattern="^([1-9]|1[012])$"  formControlName="{{name.label}}"
+														(keyup)="isValid($event)"
+													type="text" (change)="hoursValue($event,element.form_element_id)" />
+														
+													<mat-error  *ngIf="element.form_element_id.error?.pattern && element.form_element_id.invalid">{{element.error_msg}}</mat-error>
+												</mat-form-field> 
+											</div>
+
+											<div *ngIf="name.type == 'minutes'">
+												<label class="d-block">{{element.description}}: </label>
+												<mat-form-field class="pr-8 w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+													<mat-label>MM</mat-label>
+													<input matInput [required]="element.content.extra_field_content.field_required=='Y'" 
+													minlength="1" maxlength="2" pattern="[1-5]?[0-9]" formControlName="{{name.label}}"	(keyup)="isValid($event.target.value)"
+													type="text" (change)="minutesValue($event,element.form_element_id)" />
+													<!-- <span style="color:red;" *ngIf="element.form_element_id.error?.pattern && element.dirty">Invalid</span> -->
+													<mat-error *ngIf="element.form_element_id.error?.pattern && element.form_element_id.invalid">{{element.error_msg}}</mat-error>
+												</mat-form-field> 
+											</div>
+
+											<div *ngIf="name.type == 'time_zone'">
+												<div *ngIf="element.content.extra_field_content.time_zone=='select' && element.content.extra_field_content.time_format=='twelve'" class="pr-8 second">
+													<label>AM/PM </label>
+													<mat-form-field   class="pr-8 mat-wrapper-p-0" appearance="outline" fxLayout="column" floatLabel="always">
+														<mat-select   [required]="element.content.extra_field_content.field_required=='Y'"  formControlName="{{name.label}}" (selectionChange)="Onselect($event,element.form_element_id,name.id)" >
+															<mat-option   value="am">AM</mat-option>
+															<mat-option value="pm">PM</mat-option>
+														</mat-select> 
+														<mat-error>{{element.error_msg}}</mat-error>
+													</mat-form-field>
+												</div> 
+												<div *ngIf="element.content.extra_field_content.time_zone=='radio' && element.content.extra_field_content.time_format=='twelve'" class="pr-8 third">
+														<mat-form-field class="w-100-p mat-wrapper-p-0 radioformfield" floatLabel="always">
+																<input matInput  style="display: none"  formControlName="{{name.label}}"  >
+														<mat-radio-group  [required]="element.content.extra_field_content.field_required=='Y'"  
+														aria-labelledby="common-radio-group-label">
+																<mat-radio-button (change)="onChangeRadio($event,element.form_element_id)" 
+																class="common-radio-button" name='timezone' value="am">AM</mat-radio-button>
+																<mat-radio-button  (change)="onChangeRadio($event,element.form_element_id)" 
+																class="common-radio-button" name='timezone' value="pm">PM</mat-radio-button>
+														</mat-radio-group>
+														<!-- <mat-error>{{element.error_msg}}</mat-error> -->
+														</mat-form-field>
+														
+												</div>
+										
+											</div>
+										
+										</div>
+									</div>
+								</div>
+							
+							</ng-container> 
+							<!-- </div> -->
+
+							<!-- time field and format in dropdown -->					
+							<!-- this is for type select and 12 hours time  -->
+								<div *ngIf="element.content.extra_field_content.time_format =='twelve' && element.content.extra_field_content.text_format=='dropdown'" class="w-100-p">
+									<div *ngIf="element.content.extra_field_content.time_field_class == 'from'">
+										<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+											<mat-label>{{element.description}}</mat-label>
+											<input matInput [required]="element.content.extra_field_content.field_required=='Y'" formControlName="{{element.form_element_id}}"  (ngModelChange)="convertStartTimeFieldFormat(element.form_element_id)" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
+											<owl-date-time  [pickerType]="'timer'" [hour12Timer]="true"  #dt4 ></owl-date-time>
+											<!-- <mat-error *ngIf=" viewformGroup.get(''+element.form_element_id+'').required">required</mat-error>
+											<mat-error *ngIf="viewformGroup.get(''+element.form_element_id+'').invalid">Start Time Should Be Less Then The End Time</mat-error> -->
+										</mat-form-field>
+										<span *ngIf=" ShowStartTimeErrormsg == true"  style="color: rgb(243, 71, 71) " > Start Time Should Be Less Then The End Time</span>
+									
+									</div>
+									<div *ngIf="element.content.extra_field_content.time_field_class == 'to'">
+										<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+											<mat-label>{{element.description}}</mat-label>
+											<input matInput [required]="element.content.extra_field_content.field_required=='Y'" formControlName="{{element.form_element_id}}"  (ngModelChange)="convertEndTimeFieldFormat(element.form_element_id)" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
+											<owl-date-time  [pickerType]="'timer'" [hour12Timer]="true"  #dt4  ></owl-date-time>
+											<!-- <mat-error *ngIf=" viewformGroup.get(''+element.form_element_id+'').required">required</mat-error>
+											<mat-error *ngIf="viewformGroup.get(''+element.form_element_id+'').invalid">End Time Should Be Greater Then The Start Time</mat-error> -->
+										</mat-form-field>
+										<span *ngIf="  ShowEndTimeErrormsg == true"  style="color: rgb(243, 71, 71) " > End Time Should Be Greater Then The Start Time</span>	
+									</div>
+									<div *ngIf="element.content.extra_field_content.time_field_class == null">
+										<mat-form-field class="w-100-p mat-wrapper-p-0" appearance="outline" floatLabel="always">
+											<mat-label>{{element.description}}</mat-label>
+											<input matInput [required]="element.content.extra_field_content.field_required=='Y'" formControlName="{{element.form_element_id}}" (dateChange)="convertTimeFieldFormat(element.form_element_id, $event)" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
+											<owl-date-time  [pickerType]="'timer'" [hour12Timer]="true"  #dt4></owl-date-time>
+											<mat-error>{{element.error_msg}}</mat-error>
+										</mat-form-field>
+									</div>
+								</div>
+
+								<!-- time select for the 24 hours in select fields  -->
+								<div *ngIf="element.content.extra_field_content.time_format == 'twenty-four' && element.content.extra_field_content.text_format=='dropdown'" class="pr-8">
+									<div *ngIf="element.content.extra_field_content.time_field_class == 'from'">
+										<mat-form-field class="w-100-p mat-wrapper-p-0"  appearance="outline" floatLabel="always">
+											<mat-label>{{element.description}}</mat-label>
+											<input matInput id="time" [required]="element.content.extra_field_content.field_required=='Y'"   formControlName="{{element.form_element_id}}"  (ngModelChange)="convertStartTimeFieldFormat(element.form_element_id, $event)" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
+											<owl-date-time  [pickerType]="'timer'" #dt4></owl-date-time>
+											<mat-error  *ngIf="ShowStartTimeErrormsg == true">{{element.error_msg}}</mat-error>
+										</mat-form-field>
+										<span *ngIf="ShowStartTimeErrormsg == true"  style="color: rgb(243, 71, 71) " > Start Time Should Be Less Then The End Time</span>
+								   </div>
+									<div *ngIf="element.content.extra_field_content.time_field_class == 'to'">
+										<mat-form-field class="w-100-p mat-wrapper-p-0"  appearance="outline" floatLabel="always">
+											<mat-label>{{element.description}}</mat-label>
+											<input matInput id="time" [required]="element.content.extra_field_content.field_required=='Y'"   formControlName="{{element.form_element_id}}"  (ngModelChange)="convertEndTimeFieldFormat(element.form_element_id, $event)" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
+											<owl-date-time  [pickerType]="'timer'" #dt4></owl-date-time>
+											<mat-error  *ngIf="ShowEndTimeErrormsg == true">{{element.error_msg}}</mat-error>
+										</mat-form-field>
+										<span *ngIf="ShowEndTimeErrormsg == true"  style="color: rgb(243, 71, 71) " >End Time Should Be Greater Then The Start Time</span>
+									</div>
+									<div *ngIf="element.content.extra_field_content.time_field_class == ''">
+										<mat-form-field class="w-100-p mat-wrapper-p-0"  appearance="outline" floatLabel="always">
+											<mat-label>{{element.description}}</mat-label>
+											<input matInput id="time" [required]="element.content.extra_field_content.field_required=='Y'"   formControlName="{{element.form_element_id}}" (dateChange)="convertTimeFieldFormat(element.form_element_id, $event)" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
+											<owl-date-time  [pickerType]="'timer'" #dt4></owl-date-time>
+											<mat-error>{{element.error_msg}}</mat-error>
+										</mat-form-field>
+									</div>
+								</div>
+						</div>
+									
+						<!--Radio Buttons-->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true &&  element.fields.field_type == 'radio'" class="w-100-p pr-8 pb-20">
+							<mat-form-field class="w-100-p radioformfield mat-wrapper-p-0 text-capitalize line-height-28" floatLabel="always">
+								<mat-label class="font-size-20 font-weight-500 fuse-black-fg white-space-break {{element.content.extra_field_content.field_label_css_class}}" *ngIf=" element.content.extra_field_content.show_label == 'Y'">{{element.description}}</mat-label>
+								<!-- to use radio button in form field -->
+								<input matInput style="display: none" [required]="element.content.extra_field_content.field_required=='Y'">
+								<mat-radio-group fxLayout="row wrap"  formControlName="{{element.form_element_id}}"  aria-labelledby="common-radio-group-label">
+										<mat-radio-button class="mr-8 my-16 {{element.content.extra_field_content.field_content_css_class}}" 
+										*ngFor="let option of element.content.options" (change)="OnValueChange($event,element.form_element_id,element.description)"
+										[value]="option.key">
+										{{option.value}}
+										</mat-radio-button><br>
+										<mat-error *ngIf="viewformGroup.get(''+element.form_element_id+'').invalid && (viewformGroup.get(''+element.form_element_id+'').dirty && viewformGroup.get(''+element.form_element_id+'').touched)">{{element.content.extra_field_content.error_msg || element.error_msg}}</mat-error>
+								</mat-radio-group>
+							</mat-form-field>	
+						</div>
+
+						<!-- Upload field -->
+						<div *ngIf="element.content.extra_field_content && element.content.extra_field_content.show_field == true &&  element.fields.field_type == 'upload'" class="w-100-p pr-8 pb-20"> 
+							<div *ngIf="filetype==true">
+								<img [src]="url" height="100" width="100" />
+							</div>
+							<mat-label class="font-weight-500 mb-8">{{element.description}} :</mat-label>
+							<input  
+							[required]="element.content.extra_field_content.field_required=='Y'"
+							[id]="element.form_element_id" 
+							formControlName="{{element.form_element_id}}"
+							type='file'
+							[accept]="inputAccpets"
+							(change)="onSelectFile(element.form_element_id,$event)"/> 
+						</div> 
+ 
+						<!--list field type -->
+						<div *ngIf="element.fields.field_type == 'list'" class="w-100-p pr-8 pb-20">
+							<list-form-field [formSettings]="forminfo.form_settings || ''" [listName]="element" [Fields]="element.content" [listformvalid]="listformvalid" [userId]="userId" (updatelistInfo)="setlistInfoFieldValue(element.form_element_id,$event)"></list-form-field>
+						</div> 
+						<!-- dynamic field  -->
+						<div *ngIf="element.fields.field_type == 'dynamic'" class="w-100-p pr-8 pb-20"> 
+							<app-dynamic-form-fields [formSettings]="forminfo.form_settings || ''"  [listName]="element" [Fields]="element.content" (updatelistInfo1)="setdynamicFieldValue(element.form_element_id,$event)" ></app-dynamic-form-fields>
+						</div>		
+					</div>
+					<!--SUBMIT BUTTON-->
+					<div fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-sm="row" class="w-100-p">
+						<div *ngIf="submitButtonData.formsettings.confirmation.button_type == 'text'" class="pr-8 submit-btn mb-20 w-100-p text-center">
+							<button [disabled]="isSubmit==true"  type="submit" color="accent" class="px-32" mat-stroked-button   >{{submitButtonData.formsettings.confirmation.button_text}}</button>
+						</div> 
+						<div *ngIf="submitButtonData.formsettings.confirmation.reset_button == 'Y'" class="pr-8 submit-btn mb-20 w-100-p text-center">
+							<button  type="reset" class="px-32" mat-stroked-button  (click)="ResetData()"  >{{submitButtonData.formsettings.confirmation.reset_button_text}}</button>
+						</div>
+					</div> 
+				</div>
+			</form>
+		</div>
+  	</div>     
+</div>

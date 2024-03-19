@@ -1,0 +1,25 @@
+#back-table-reservation-dashboard {
+    .text-center {
+        text-align: center !important;
+    }
+
+    .border-color {
+        border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .active {
+        background-color: #A3BB39;
+        color : #faf5f5;
+    }
+
+    .services-list {
+        nav {
+            a:hover{
+                background-color: #e6f1f5 !important;
+                color: #324a5e;
+                text-decoration: none;
+            }
+        }
+    }
+    
+}

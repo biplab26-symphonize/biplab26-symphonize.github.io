@@ -1,0 +1,26 @@
+<ng-container *ngFor="let container of containerInputJson;let i=index">
+    <div class="container-section my-16" fxLayout="column" id="{{i}}">
+        <div class="container-header-section font-weight-600 font-size-18 green-bg-color fuse-white-fg p-12" fxLayout="row" fxFlexFill>
+            <div class="pageheadertitle mat-title m-0" fxFlex="70" fxFlexAlign="start center">
+                <span *ngIf="i==0">{{container.general.name}}</span>
+                <span *ngIf="i>0">{{container.general.name}}-{{i}}</span>
+            </div>
+            <div class="pageheaderactions text-right " fxFlex="30" fxLayout="row" fxLayoutAlign="end center">
+                <mat-icon class="s-20 mx-4 icon fuse-white-fg" (click)="OpenContainerSettingsDialog(i)">brush</mat-icon>
+                <mat-icon class="s-20 mx-4 icon fuse-white-fg" (click)="cloneContainer(i)">file_copy</mat-icon>
+                <mat-icon class="s-20 mx-4 icon fuse-white-fg" (click)="removeContainer(i)">delete</mat-icon>
+            </div>
+        </div>
+        <!-- CONTENT -->
+        <div class="page-builder-container-content">
+            <div class="text-accent font-size-24 text-center mt-28" *ngIf="container.isrow=='N'">To Add Elements, You Must First Add a Column</div>
+            <ng-container *ngIf="container.isrow=='Y' && container.row.columns">
+                <template-loader #tempLoader [templateinfo]="container" [currentIndex]="i" (onTemplateUpdated)="setColumnInfo($event,i)" (onAddColumn)="copiedColumn($event,i)" (onRemoveColumn)="removeColumnFromContainer($event,i)" (onSortedColumns)="updatesortColumns($event,i)"></template-loader>
+            </ng-container>
+        </div>
+        <div class="page-builder-container-footer-actions text-right" fxFlexAlign="center end" >
+            <button type="button" mat-stroked-button [ngStyle]="button" class="text-capitalize line-height-44 br-ds-0 box-shadow-none mx-8 mat-stroked-button mx-8" (click)="setContainerDefaultInfo()"><mat-icon>add</mat-icon> Container </button>
+            <button type="button" mat-stroked-button [ngStyle]="button" class="text-capitalize line-height-44 br-ds-0 box-shadow-none mx-8 mat-stroked-button mx-8" (click)="OpenTemplatesDialog(i)"><mat-icon>add</mat-icon> Columns </button>
+        </div>
+    </div>
+</ng-container>

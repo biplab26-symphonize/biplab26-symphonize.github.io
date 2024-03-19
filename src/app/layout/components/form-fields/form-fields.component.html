@@ -1,0 +1,895 @@
+<!-- **** PREVIEW ****  -->
+<div *ngIf="data.type == 'show_form'">
+  <div mat-dialog-content>
+    <div class="example-container" *ngIf="fieldConfig != undefined">
+      <dynamic-form [fields]="fieldConfig" (submit)="submit($event)"></dynamic-form>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="onNoClick()">Close</button>
+  </div>
+</div>
+<!-- **** EDIT EVENT RECURRING UPDATE ****  -->
+<div *ngIf="data.type == 'recurringUpdate'">
+  <div mat-dialog-content>
+    <form autocomplete="off" #OptionsForm="ngForm" [formGroup]="optionsForm" novalidate autocomplete="off">
+      <div class="form-group">
+        <mat-label>Which events do you want to make changes to?</mat-label>
+        <br />
+        <mat-radio-group name="recType" [formControl]="optionsForm.get('recType')" class="radio-btn-wrapper">
+          <mat-radio-button value="C" checked="true">Just this Event</mat-radio-button>
+          <br />
+          <mat-radio-button value="F">All Future Events</mat-radio-button>
+          <br />
+          <mat-radio-button value="A">All past and future events</mat-radio-button>
+        </mat-radio-group>
+        <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div>
+      </div>
+      <br />
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button type="submit" [disabled]="!optionsForm.valid" (click)="onSubmitRec(optionsForm.value)" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Set</button>
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="onNoClick()">Close</button>
+  </div>
+</div>
+
+<!-- **** BOOKING UPDATE ****  -->
+<div *ngIf="data.type == 'recurringUpdateBooking'">
+  <div mat-dialog-content>
+    <form autocomplete="off" #OptionsForm="ngForm" [formGroup]="optionsForm" novalidate autocomplete="off">
+      <div class="form-group line-height-32 text-capitalize">
+        <mat-label>Which bookings do you want to make changes to ?</mat-label>
+        <br />
+        <mat-radio-group name="recUpdateBooking" [formControl]="optionsForm.get('recUpdateBooking')" class="radio-btn-wrapper">
+          <mat-radio-button value="C">Just this Booking</mat-radio-button>
+          <br />
+          <mat-radio-button value="F">All Future Booking</mat-radio-button>
+          <br />
+          <mat-radio-button value="A">All past and future bookings</mat-radio-button>
+        </mat-radio-group>
+        <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+      </div>
+      <br />
+    </form>
+  </div>
+  <div mat-dialog-actions class="mb-4">
+    <button type="submit" [disabled]="!optionsForm.valid" (click)="onSubmitRecBooking(optionsForm.value)" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8" mat-raised-button>
+      Set
+    </button>
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="onNoClick()">Close</button>
+  </div>
+</div>
+
+<!-- **** EDIT EVENT EVENTSTATUS UPDATE ****  -->
+<div *ngIf="data.type == 'eventStatusUpdate' || data.type =='eventRestore'">
+  <div mat-dialog-content [innerHTML]="data.body"></div>
+  <div mat-dialog-content>
+    <form autocomplete="off" #OptionsForm="ngForm" [formGroup]="optionsForm" novalidate autocomplete="off">
+      <div class="form-group">
+        <mat-label *ngIf="data.type == 'eventStatusUpdate'">Note : this will not remove it from the calendar. It will display in the calendar as cancelled.</mat-label>
+        <br />
+        <mat-radio-group name="flag" [formControl]="optionsForm.get('flag')" class="radio-btn-wrapper">
+          <mat-radio-button value="C" checked="true">Just this event</mat-radio-button>
+          <br />
+          <mat-radio-button value="F">All future events</mat-radio-button>
+          <br />
+          <mat-radio-button value="A">All past and future events</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <br />
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button type="submit" (click)="onSubmitStatus(optionsForm.value)" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Update</button>
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="onNoClick()">Close</button>
+  </div>
+</div>
+<div *ngIf="data.type == 'eventDelete'">
+  <div mat-dialog-content [innerHTML]="data.body"></div>
+  <div mat-dialog-content>
+    <form autocomplete="off" #OptionsForm="ngForm" [formGroup]="optionsForm" novalidate autocomplete="off">
+      <div class="form-group">
+        <mat-radio-group name="flag" [formControl]="optionsForm.get('flag')" class="radio-btn-wrapper">
+          <mat-radio-button value="N">Delete this Event only</mat-radio-button>
+          <br />
+          <mat-radio-button value="Y">Delete all Events in the series</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <br />
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button type="submit" mat-raised-button color="primary" (click)="onSubmitDeleteEvent(optionsForm.value)">Update</button>
+    <button mat-raised-button color="primary" (click)="onNoClick()">Close</button>
+  </div>
+</div>
+<!-- **** DIALOG BOX **** -->
+<!--FORM FILED OPTIONS AREA START-->
+<div *ngIf="data.type == 'edit_form'" class="content Forms-Forms-Setting">
+  <form autocomplete="off" [formGroup]="optionsForm" fxLayout="column" novalidate autocomplete="off">
+    <div class="h2 mb-8 mat-title">Field Settings</div>
+    <br />
+    <div class="input-column" fxLayout="row">
+      <!--fieldlabel-->
+      <mat-form-field appearance="outline" fxFlex="50" class="px-4 mb-20">
+        <mat-label>Field Label</mat-label>
+        <input appCapitalizeFirst matInput type="text" name="field_label" (keyup)="slugifyMenuAlias()" formControlName="field_label" [formControl]="optionsForm.get('field_label')" />
+      </mat-form-field>
+      <!--fieldname-->
+      <mat-form-field appearance="outline" fxFlex="50" class="px-4 mb-20">
+        <mat-label>Field Name</mat-label>
+        <input matInput type="text" name="field_name" formControlName="field_name" [formControl]="optionsForm.get('field_name')" readonly />
+      </mat-form-field>
+    </div>
+    <div class="input-column" fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+      <div *ngIf="optionsForm.get('field_type').value != ''" class="mb-0">
+        <div *ngFor="let extra_content of optionsForm.get('extra_field_content')?.controls;let index = index;">
+          <!--defaultvalue-->
+          <div>
+            <mat-form-field appearance="outline" class="mb-20 px-4" fxFlex="50">
+              <mat-label>Field Default Value</mat-label>
+              <input matInput type="text" name="content_value" [formControl]="extra_content.get('dafaultValue')" />
+            </mat-form-field>
+
+            <!--columnclass-->
+            <mat-form-field appearance="outline" fxFlex="50" class="mb-20 px-4">
+              <mat-label>Column Class</mat-label>
+              <mat-select name="content_col_class" [formControl]="extra_content.get('col_class')">
+                <mat-option *ngFor="let class of columnClass | keyvalue" [value]="class.key">{{class.value}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!--submitbutton-->
+            <div *ngIf="optionsForm.get('field_type').value == 'button'" fxFlex="50">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Button Type</mat-label>
+                <mat-select name="content_type" [formControl]="extra_content.get('type')">
+                  <mat-option value="button">Button</mat-option>
+                  <mat-option value="submit">Submit</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+            <div class="input-row wrap"  fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+              <div fxFlex  fxFlex="50" class="pl-4">
+                <mat-form-field appearance="outline" class="w-100-p">
+                  <mat-label>Custom CSS Class For Field Label</mat-label>
+                  <input matInput type="text"  name="field_label_css_class"  [formControl]="extra_content.get('field_label_css_class')">
+                </mat-form-field>
+              </div>
+              <div fxFlex  fxFlex="50" class="pl-4">
+                <mat-form-field appearance="outline" class="w-100-p">
+                  <mat-label>Custom CSS Class For Field content</mat-label>
+                  <input matInput type="text"  name="field_content_css_class"  [formControl]="extra_content.get('field_content_css_class')">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="input-row wrap"  fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+              <div fxFlex  fxFlex="50" class="pl-4">
+                <mat-form-field appearance="outline" class="w-100-p">
+                  <mat-label>Custom CSS Class For View Entry Field Label</mat-label>
+                  <input matInput type="text"    name="view_entry_field_label_css_class" [formControl]="extra_content.get('view_entry_field_label_css_class')">
+                </mat-form-field>
+              </div>
+              <div fxFlex  fxFlex="50" class="pl-4">
+                <mat-form-field appearance="outline" class="w-100-p">
+                  <mat-label>Custom CSS Class For View Entry Field Content</mat-label>
+                  <input matInput type="text"   name="view_entry_field_content_css_class" [formControl]="extra_content.get('view_entry_field_content_css_class')">
+                </mat-form-field>
+              </div>
+            </div>
+          
+
+          <div fxLayout="row">
+            <!--RatingField checked-->
+            <div *ngIf="optionsForm.get('field_type').value == 'rating'" fxFlex="50">
+              <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                <mat-label>Checked Star Color</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  id="checkedcolor"
+                  [(colorPicker)]="extra_content.get('checkedcolor').value"
+                  [value]="extra_content.get('checkedcolor').value"
+                  [style.background]="extra_content.get('checkedcolor').value"
+                  (colorPickerChange)="extra_content.get('checkedcolor').setValue($event)"
+                />
+              </mat-form-field>
+            </div>
+            <!--RatingField unchecked-->
+            <div *ngIf="optionsForm.get('field_type').value == 'rating'" fxFlex="50">
+              <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                <mat-label>Unchecked Star Color</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  id="uncheckedcolor"
+                  [(colorPicker)]="extra_content.get('uncheckedcolor').value"
+                  [value]="extra_content.get('uncheckedcolor').value"
+                  [style.background]="extra_content.get('uncheckedcolor').value"
+                  (colorPickerChange)="extra_content.get('uncheckedcolor').setValue($event)"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div>
+            <div fxFlex *ngIf="optionsForm.get('field_type').value == 'html'">
+              <div appearance="outline" class="w-100-p mb-20">
+                <editor [formControl]="extra_content.get('content')" [init]="tinyMceSettings" placeholder="Enter the  content .." name="content"></editor>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <!--fieldid-->
+            <div *ngIf="optionsForm.get('field_type').value == 'button'" fxFlex="50">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Field Id</mat-label>
+                <input matInput type="text" name="content_id" [formControl]="extra_content.get('id')" />
+              </mat-form-field>
+            </div>
+          </div>
+          <!--Datefield-->
+          <div *ngIf="optionsForm.get('field_type').value == 'date'">
+            <mat-form-field appearance="outline" class="w-100-p mb-20 px-4">
+              <mat-label>Picker Type</mat-label>
+              <mat-select name="content_pickerType" [formControl]="extra_content.get('pickerType')">
+                <mat-option value="both">Both</mat-option>
+                <mat-option value="calendar">Calendar</mat-option>
+                <mat-option value="timer">Timer</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100-p mb-20 px-4">
+              <mat-label>Field Class</mat-label>
+              <mat-select name="field_class" [formControl]="extra_content.get('field_class')">
+                <mat-option value="">Select</mat-option>
+                <mat-option value="from">From</mat-option>
+                <mat-option value="to">To</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="optionsForm.get('field_type').value == 'date'">
+            <div *ngIf="extra_content.get('pickerType').value !== 'timer' || extra_content.get('pickerType').value !== 'both'" fxFlex>
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Calendar Show </mat-label>
+                <mat-select name="min_date" [formControl]="extra_content.get('min_date')">
+                  <mat-option value="both">Both</mat-option>
+                  <mat-option value="min">Past Date</mat-option>
+                  <mat-option value="max">Future Date</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div *ngIf="extra_content.get('pickerType').value !== 'timer' || extra_content.get('pickerType').value !== 'both'" fxFlex>
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Accept Reservation X days before </mat-label>
+                <input matInput type="number" min='0' name="day_before" [formControl]="extra_content.get('day_before')" />
+              </mat-form-field>
+            </div>
+        </div>
+
+          <!--fieldclass-->
+          <div *ngIf="optionsForm.get('field_type').value == 'button'">
+            <mat-form-field appearance="outline" class="w-100-p">
+              <mat-label>Field Class</mat-label>
+              <input matInput type="text" name="content_class" [formControl]="extra_content.get('class')" />
+            </mat-form-field>
+          </div>
+
+          <!-- signature field code here  -->
+          <div *ngIf="optionsForm.get('field_type').value == 'signature'">
+            <div class="input-row wrap" fxLayout="row wrap">
+              <mat-form-field appearance="outline" fxFlex class="mb-20 px-4">
+                <mat-label>Pen width</mat-label>
+                <input matInput placeholder="pen width" type="text" [formControl]="extra_content.get('pen_width')" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex class="mb-20 px-4">
+                <mat-label>Canvas Width</mat-label>
+                <input matInput type="text" placeholder="canvas width" [formControl]="extra_content.get('canvas_width')" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex class="mb-20 px-4">
+                <mat-label>Canvas Height</mat-label>
+                <input matInput placeholder="canvas height" type="text" [formControl]="extra_content.get('canvas_height')" />
+              </mat-form-field>
+            </div>
+            <!-- <div class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" >
+                                <mat-form-field appearance="outline" fxFlex class="mb-20 px-4">
+                                    <mat-label>Canvas Height</mat-label>
+                                    <input matInput placeholder="canvas height" type="text" [formControl]="extra_content.get('canvas_height')">
+                                </mat-form-field>
+                            </div> -->
+          </div>
+          <!-- masking pattern for phone number field -->
+
+          <div *ngIf=" optionsForm.get('field_type').value == 'number'">
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <div fxFlex="50" class="py-8 px-16 mb-20" fxLayout="row" fxLayoutAlign="start center">
+                <label class="px-4">Auto Fill :</label>
+                <mat-radio-group aria-labelledby="example-radio-group-label" [formControl]="extra_content.get('autofill')" class="column-radio-group px-4">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center" class="py-8 px-16 mb-20 ml-8">
+                <label class="px-4">Add masking :</label>
+                <mat-radio-group aria-labelledby="example-radio-group-label" [formControl]="extra_content.get('ismasking')" class="column-radio-group px-4">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+            <div *ngIf=" extra_content.get('ismasking').value == 'Y'">
+              <mat-form-field appearance="outline" class="w-100-p px-4 mt-16 mb-20">
+                <mat-label>Masking Pattern</mat-label>
+                <mat-select placeholder="Masking Pattern" [formControl]="extra_content.get('maskingpattern')" [required]="extra_content.get('ismasking').value == 'Y'">
+                  <mat-option *ngFor="let mask of maskingPatterns | keyvalue" [value]="mask.key">{{mask.value}}</mat-option>
+                </mat-select>
+                <mat-error>Masking Pattern is required!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div *ngIf=" optionsForm.get('field_type').value == 'email'">
+              <div fxFlex="50" class="py-8 px-16 mb-20" fxLayout="row" fxLayoutAlign="start center">
+                <label class="px-4">Auto Fill :</label>
+                <mat-radio-group aria-labelledby="example-radio-group-label" [formControl]="extra_content.get('autofill')" class="column-radio-group px-4">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="46" class="ml-8">
+                <mat-label class="mr-8">Send Email :</mat-label>
+                <mat-radio-group name="send_email" [formControl]="extra_content.get('send_email')" class="column-radio-group">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+          </div>
+
+          <div *ngIf=" optionsForm.get('field_type').value == 'checkbox' ||  optionsForm.get('field_type').value == 'radio' ">
+            <div fxFlex="46" class="ml-8">
+            <label class="px-4">Show Field Label :</label>
+            <mat-radio-group aria-labelledby="example-radio-group-label" name="show_label" [formControl]="extra_content.get('show_label')" class="column-radio-group px-4">
+              <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+              <mat-radio-button value="N">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+            <div fxFlex="46" class="ml-8">
+              <mat-label class="mr-8">Show View Entry Field Label :</mat-label>
+              <mat-radio-group name="viewentry_show_label" [formControl]="extra_content.get('viewentry_show_label')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div fxFlex="46" class="ml-8">
+              <mat-label class="mr-8">Show View Entry Field Content :</mat-label>
+              <mat-radio-group name="viewentry_show_content" [formControl]="extra_content.get('viewentry_show_content')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+              </div>
+          </div>
+
+          <!--  code end -->
+          <!-- time field -->
+          <div *ngIf="optionsForm.get('field_type').value == 'time'">
+            <div class="input-row wrap" fxLayout="row">
+              <mat-form-field appearance="outline" fxFlex="50" class="px-4 mb-20">
+                <mat-label>Time Format</mat-label>
+                <mat-select name="  time_format" [formControl]="extra_content.get('time_format')">
+                  <mat-option value="twelve">12</mat-option>
+                  <mat-option value="twenty-four">24</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="50" class="px-4 mb-20">
+                <mat-label>Select Type </mat-label>
+                <mat-select name="text_format" [formControl]="extra_content.get('text_format')">
+                  <mat-option value="text">Text</mat-option>
+                  <mat-option value="dropdown">Dropdown</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="input-row wrap" fxLayout="row">
+              <mat-form-field appearance="outline" fxFlex="50" class="px-4 mb-20">
+                <mat-label>AM/PM Format </mat-label>
+                <mat-select name="time_zone" [formControl]="extra_content.get('time_zone')">
+                  <ng-container appearance="outline" class="w-100-p" *ngIf="extra_content.get('time_format').value == 'twelve' &&  extra_content.get('text_format').value == 'text' ">
+                    <mat-option value="radio">Radio</mat-option>
+                    <mat-option value="select">Select</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="50" class="px-4 mb-20">
+                <mat-label>Field Class</mat-label>
+                <mat-select name="pickerType" [formControl]="extra_content.get('time_field_class')">
+                  <mat-option value="">Select</mat-option>
+                  <mat-option value="from">From</mat-option>
+                  <mat-option value="to">To</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- end -->
+          <!--fielupload-->
+          <div *ngIf="optionsForm.get('field_type').value == 'upload'" class="mb-20">
+            <mat-form-field appearance="outline" class="w-100-p">
+              <mat-label>File extension</mat-label>
+              <mat-select name="fileType" [formControl]="extra_content.get('fileType')">
+                <mat-option value="image">Image</mat-option>
+                <mat-option value="video">Video</mat-option>
+                <mat-option value="txt">Text File</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!--##############RADIO BUTTONS###############-->
+          <div fxLayout="row wrap">
+            <!--showinpdf-->
+            <div *ngIf="extra_content.get('inpdf')" fxFlex="50" fxLayout="row" fxLayoutAlign="start center" class="py-8 px-16 mb-20 mr-8">
+              <label class="mr-8">Show field in PDF : </label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" name="inpdf" [formControl]="extra_content.get('inpdf')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <!--readonly-->
+            <div *ngIf="extra_content.get('readonly')" fxFlex="50" fxLayout="row" fxLayoutAlign="start center">
+              <label class="mr-8">Readonly : </label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" name="readonly" [formControl]="extra_content.get('readonly')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <!--showinmail-->
+            <div *ngIf="extra_content.get('isMail')" fxFlex="48.7%" fxLayout="row" fxLayoutAlign="start center" class="border border-radius-4 py-8 px-16 mb-20">
+              <label class="mr-8">Show field in Mail : </label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" name="isMail" [formControl]="extra_content.get('isMail')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <!--multiselect-->
+            <div *ngIf="extra_content.get('multiselect')" class="border border-radius-4 px-16 py-8 mb-20 mr-8" fxFlex="48.7%" fxLayout="row" fxLayoutAlign="start center">
+              <label class="mr-8" fxFlex="43">Multiselect : </label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" name="multiselect" [formControl]="extra_content.get('multiselect')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--field_type=='select/radio'-->
+
+      <div *ngIf="optionsForm.get('field_type').value == 'select' || optionsForm.get('field_type').value == 'radio' || optionsForm.get('field_type').value =='checkbox'" class="mb-20">
+        <p class="h3 font-weight-600 mb-4 mx-4">Choices :</p>
+        <div class="input-row wrap pt-8 mb-0 border border-radius-4 pt-20 px-16 mx-4">
+          <div fxLayout="row" fxLayoutAlign="start baseline" *ngFor="let content of optionsForm.get('field_content')?.controls;let index = index;">
+            <div fxFlex="46">
+              <mat-form-field appearance="outline" class="w-100-p mb-20 px-4">
+                <mat-label>Label</mat-label>
+                <input matInput type="text" name="field_content_key" [formControl]="content.get('key')" />
+              </mat-form-field>
+            </div>
+            <div fxFlex="46">
+              <mat-form-field appearance="outline" class="w-100-p mb-20 px-4">
+                <mat-label>Value</mat-label>
+                <input matInput type="text" name="field_content_value" [formControl]="content.get('value')" />
+              </mat-form-field>
+            </div>
+            <!--ADD New Row-->
+            <div fxFlex fxLayout="row">
+              <mat-icon
+                matSuffix
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                class="border-radius-100 material-icons icon-size curc fuse-white-fg purple-btn-bg font-size-18 mr-8 mat-icon notranslate mat-icon-no-color"
+                (click)="onAddSelectRow()"
+              >
+                add
+              </mat-icon>
+              <mat-icon
+                matSuffix
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                class="border-radius-100 material-icons icon-size curc fuse-white-fg purple-btn-bg font-size-18 mr-8 mat-icon notranslate mat-icon-no-color"
+                *ngIf="index > 0"
+                (click)="onRemoveRow(index)"
+              >
+                delete
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--field_type=='dynamic field types' -->
+      <div *ngIf="optionsForm.get('field_type').value == 'dynamic'" class="mt-20 mb-20 px-4">
+        <div *ngFor="let content of optionsForm.get('dbsettings')?.controls;let index = index;">
+          <mat-form-field appearance="outline" fxFlex class="">
+            <mat-label>Dynamic Field Type</mat-label>
+            <mat-select placeholder="Select Dynamic field type" (selectionChange)="onChangeFieldType($event.value)" [formControl]="content.get('show_as')">
+              <mat-option *ngFor="let type of dynamicFieldType | keyvalue" [value]="type.key">
+                {{type.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error>Field Dynamic Type is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- End the dynamic filed types -->
+
+      <!-- maximun size  -->
+      <div *ngIf="optionsForm.get('field_type').value == 'text' || optionsForm.get('field_type').value == 'textarea'" class="mb-20">
+        <div *ngFor="let extra_content of optionsForm.get('extra_field_content')?.controls;let index = index;" fxLayout.lt-md="column" fxLayoutGap.lt-md="0px">
+          <mat-form-field appearance="outline" fxFlex class="mx-4 mt-12">
+            <mat-label>Maximum Character</mat-label>
+            <input matInput type="number" min="1" name="maximum_size" [formControl]="extra_content.get('maximum_size')" placeholder="maximum_size" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- auto complete name  -->
+      <div *ngIf="optionsForm.get('field_type').value == 'text' || optionsForm.get('field_type').value == 'textarea'">
+        <div *ngFor="let extra_content of optionsForm.get('extra_field_content')?.controls;let index = index;">
+          
+          <div fxFlex *ngIf="extra_content.get('autofill')" class="border border-radius-4 px-16 mb-24 mt-4 mr-8"  fxLayout="row" fxLayoutAlign="start center">
+            <mat-label class="mr-8">Auto Fill :</mat-label>
+            <mat-radio-group name="autofill" [formControl]="extra_content.get('autofill')" class="column-radio-group">
+              <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+              <mat-radio-button value="N">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div *ngIf="extra_content.get('autofill').value == 'Y'" class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>Autopopulate Field Name</mat-label>
+              <input  matInput  name="autocomplete"   [formControl]="extra_content.get('autocomplete')" >
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!--MASKING PATTERN FOR NUMBER/PHONE ENDS-->
+      <!--field_type=='dynamic'-->
+      <div *ngIf="optionsForm.get('field_type').value == 'dynamic'" class="input-row wrap px-4 mb-12">
+        <div *ngFor="let content of optionsForm.get('dbsettings')?.controls;let index = index;">
+          <div class="input-row wrap" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>Select Table</mat-label>
+              <mat-select name="table" placeholder="Select Table" [formControl]="content.get('table')">
+                <mat-option *ngFor="let table of dynamicField.table" [value]="table">{{table | titlecase}}</mat-option>
+              </mat-select>
+              <mat-error>This field is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>Select Type</mat-label>
+              <mat-select name="table" placeholder="Select Table" [formControl]="content.get('category_type')" multiple>
+                <ng-container *ngIf="content.get('table').value == 'users'"><mat-option *ngFor="let table of user_data" [value]="table.id">{{table.role_key}}</mat-option></ng-container>
+                <ng-container *ngIf="content.get('table').value == 'category'"> <mat-option *ngFor="let table of dynamicField.categorytype" [value]="table">{{table}}</mat-option></ng-container>
+              </mat-select>
+              <mat-error>This field is required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="optionsForm.get('field_type').value == 'list'" class="input-column pt-8 mb-0">
+        <ng-container *ngFor="let content of optionsForm.get('field_content')?.controls;let index = index;" >
+          <div *ngIf="index==0" class="mb-20" fxLayout="row" fxLayoutAlign="start center">
+            
+            <div *ngIf="content.get('allow_multiple').value == 'Y'" class="allow-multiple-fields"  fxFlex="50">
+              <mat-form-field appearance="outline" class="w-100-p pl-8">
+                <mat-label>Maximum Entries On List Field :</mat-label>
+                <input matInput type="number" min="1" placeholder="maximum entries" [formControl]="content.get('max_limit')" [required]="content.get('allow_multiple').value == 'Y'" name="max_limit" />
+                <mat-error class="mt-16">Maximum Entry Is Required !</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="py-8 px-16" fxFlex="50">
+              <label class="mr-8">allow multiple field : </label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" name="allow_multiple" [formControl]="content.get('allow_multiple')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+    
+            
+          </div>
+          <div *ngIf="index==0" class="mb-20" fxLayout="row" fxLayoutAlign="start center">
+            <!-- AUTOFILL -->
+            <div class="py-8 px-8" fxFlex="50">
+              <label class="mr-8">Auto Populate Fields : </label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" name="autofill" [formControl]="content.get('autofill')" class="column-radio-group">
+                <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                <mat-radio-button value="N">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <!-- ADD NEW OPTIONS -->
+            <div class="py-8 px-16" fxFlex="50">
+              <label class="mr-8">Add New Field Using : </label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" name="action_field" [formControl]="content.get('action_field')" class="column-radio-group">
+                <mat-radio-button value="S" class="mr-16">Select</mat-radio-button>
+                <mat-radio-button value="B">Button</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <!-- FIELD REQUIRED BY FORM  -->
+      <!--REQUIRED FLAG-->
+      <div *ngIf="optionsForm.get('field_type').value != 'html'" class="input-column" fxLayout="row" fxLayoutAlign="start center">
+        <div fxFlex="50">
+          <div class="border border-radius-4 py-8 px-16" fxLayout="row" fxLayoutAlign="start center">
+            <label class="mr-8">Required :</label>
+            <mat-radio-group aria-labelledby="example-radio-group-label" name="field_required" formControlName="field_required" [formControl]="optionsForm.get('field_required')" class="column-radio-group">
+              <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+              <mat-radio-button value="N">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+        <!--ERR MSG-->
+        <div *ngIf="optionsForm.get('field_required').value == 'Y'" class="px-4 pl-8" fxFlex="50">
+          <mat-form-field appearance="outline" class="w-100-p">
+            <mat-label>Error Message</mat-label>
+            <input class="text-capitalize" matInput type="text" name="error_msg" formControlName="error_msg" [formControl]="optionsForm.get('error_msg')" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!--field_type=='list'-->
+      <div *ngIf="optionsForm.get('field_type').value == 'list'" class="input-column pt-8" formArrayName="field_content">
+        <div fxLayoutGap="8px" class="mt-12" *ngFor="let content of optionsForm.get('field_content')?.controls;let index = index;" [formGroupName]="index">
+          <!--list field type-->
+          <div class="px-4">
+            <div fxFlex="50" class="mr-12">
+              <mat-form-field *ngIf="listFieldTypes" appearance="outline" class="w-100-p mb-20">
+                <mat-label>Field Type</mat-label>
+                <mat-select matNativeControl name="type" (selectionChange)="onChangeListControl($event.value, index)" [formControl]="content.get('type')">
+                  <mat-option *ngFor="let fieldtype of listFieldTypes | keyvalue" [value]="fieldtype.key">{{fieldtype.value}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!--add new row in list field-->
+            <div fxFlex>
+              <mat-icon matSuffix class="material-icons icon-size" (click)="onAddListRow()">add_circle_outline</mat-icon>
+              <mat-icon matSuffix class="material-icons icon-size" *ngIf="index > 0" (click)="onRemoveRow(index)">delete</mat-icon>
+            </div>
+          </div>
+          <div *ngIf="content.get('type').value != ''">
+            <div fxLayout="row wrap">
+              <div fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                  <mat-label>Name</mat-label>
+                  <input matInput type="text" name="list_content_name" [formControl]="content.get('name')" />
+                </mat-form-field>
+              </div>
+              <!--DatePicker-->
+              <div *ngIf="content.get('type').value == 'date'" fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                  <mat-label>Picker Type</mat-label>
+                  <mat-select name="list_content_pickerType" [formControl]="content.get('pickerType')">
+                    <mat-option value="both">Both</mat-option>
+                    <mat-option value="calendar">Calendar</mat-option>
+                    <mat-option value="timer">Timer</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!-- pastdate Y/N -->
+              <div *ngIf="content.get('type').value == 'date'" fxFlex="50">
+                <label class="px-4">Past Date Selection :</label>
+                <mat-radio-group aria-labelledby="example-radio-group-label" id="{{'pastdate'+index}" [formControl]="content.get('pastdate')" class="column-radio-group px-4">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>              
+              </div>
+
+              <!--LABEL-->
+              <div fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                  <mat-label>Label</mat-label>
+                  <input matInput type="text" name="list_content_label" [formControl]="content.get('label')" />
+                </mat-form-field>
+              </div>
+              <!--COLUMN-->
+              <div fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                  <mat-label>Column Class</mat-label>
+                  <mat-select name="list_content_col_class" [formControl]="content.get('col_class')">
+                    <mat-option *ngFor="let class of columnClass | keyvalue" [value]="class.key">{{class.value}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!--CLASS-->
+              <div fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                  <mat-label>Class</mat-label>
+                  <input matInput type="text" name="list_content_class" [formControl]="content.get('class')" />
+                </mat-form-field>
+              </div>
+
+              <!--ID-->
+              <div fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                  <mat-label>Id</mat-label>
+                  <input matInput type="text" name="list_content_id" [formControl]="content.get('id')" />
+                </mat-form-field>
+              </div>
+
+              <!--DEFAULTVALUE-->
+              <div fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                  <mat-label>Default Value</mat-label>
+                  <input matInput type="text" name="list_content_defaultValue" [formControl]="content.get('defaultValue')" />
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="content.get('type').value == 'select'" fxFlex="48.7%" class="border border-radius-4 px-16 py-8 mb-20 mr-8" fxLayout="row" fxLayoutAlign="start center">
+                <label class="mr-8">Multiselect : </label>
+                <mat-radio-group aria-labelledby="example-radio-group-label" name="list_multiselect" [formControl]="content.get('multiselect')" class="column-radio-group">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="50%" class="pr-4">
+                <div class="border border-radius-4 py-8 px-16 mb-20" fxLayout="row" fxLayoutAlign="start center">
+                  <label class="mr-8">Show field in Mail : </label>
+                  <mat-radio-group aria-labelledby="example-radio-group-label" id="{{ 'isMail' + index}}" [formControl]="content.get('isMail')" formControlName="isMail" class="column-radio-group">
+                    <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                    <mat-radio-button value="N">No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+
+              <div fxFlex="49.3%" class="border border-radius-4 px-16 py-8 mb-20 ml-4" fxLayout="row" fxLayoutAlign="start center">
+                <label class="mr-8">Field Required : </label>
+                <mat-radio-group aria-labelledby="example-radio-group-label"  id="{{ 'field_required' + index}}" [formControl]="content.get('field_required')" formControlName="inpdf"  class="column-radio-group">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="49.3%" class="border border-radius-4 px-16 py-8 mb-20 ml-4" fxLayout="row" fxLayoutAlign="start center">
+                <label class="mr-8">Show field in PDF : </label>
+                <mat-radio-group aria-labelledby="example-radio-group-label"  id="{{ 'inpdf' + index}}" [formControl]="content.get('inpdf')" formControlName="inpdf"  class="column-radio-group">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div *ngIf="content.get('type').value == 'text'  || content.get('type').value == 'textarea'" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex class="mx-4 mt-12">
+                  <mat-label>Maximum Character</mat-label>
+                  <input matInput type="number" min="1" name="list_maximum_size" [formControl]="content.get('maximum_size')" placeholder="maximum_size" />
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="content.get('type').value == 'text' || content.get('type').value == 'number'  || content.get('type').value == 'email'" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex class="mx-4 mt-12">
+                  <mat-label>Autopopulate</mat-label>
+                  <input matInput type="text"  name="autopopulate" [formControl]="content.get('autopopulate')" placeholder="autopopulate user information" />
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="content.get('type').value == 'time'" fxFlex="100" fxLayout="row wrap">
+                <mat-form-field *ngIf="customTime==true" appearance="outline" fxFlex="50" class="px-4 mb-20">
+                  <mat-label>Time Format</mat-label>
+                  <mat-select name="list_time_format" [formControl]="content.get('time_format')">
+                    <mat-option value="twelve">12</mat-option>
+                    <mat-option value="twenty-four">24</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="customTime==true" appearance="outline" fxFlex="50" class="px-4 mb-20">
+                  <mat-label>Select Type </mat-label>
+                  <mat-select name="list_text_format" [formControl]="content.get('text_format')">
+                    <mat-option value="text">Text</mat-option>
+                    <mat-option value="dropdown">Dropdown</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="customTime==true" appearance="outline" fxFlex="50" class="px-4 mb-20">
+                  <mat-label>AM/PM Format </mat-label>
+                  <mat-select name="list_time_zone" [formControl]="content.get('time_zone')">
+                    <ng-container appearance="outline" class="w-100-p" *ngIf="content.get('time_format').value == 'twelve' && content.get('text_format').value == 'text' ">
+                      <mat-option value="radio">Radio</mat-option>
+                      <mat-option value="select">Select</mat-option>
+                    </ng-container>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <!--SELECT/RADIO IN LIST FIELD TYPE-->
+            <div *ngIf="content.get('type').value == 'select' || content.get('type').value == 'radio' || content.get('type').value == 'checkbox' ">
+              <p class="font-weight-600 font-size-16 mb-8 px-4">Choices :</p>
+              <div *ngFor="let option of selectOptions | keyvalue;let selectidex = index;" class="pt-20 px-8 pb-0 fuse-card m-4 br-radius-4 mb-12 min-100-p">
+                <div *ngIf="index == option.key" class="input-row wrap">
+                  <div fxLayout="row" *ngFor="let opt of option.value;let optidx = index;">
+                    <div fxFlex="46">
+                      <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                        <mat-label>Label</mat-label>
+                        <input matInput type="text" name="key" [value]="opt.key" (change)="onChangeKeyValue('key', $event, option.key, optidx)" />
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="46">
+                      <mat-form-field appearance="outline" class="w-100-p px-4 mb-20">
+                        <mat-label>Value</mat-label>
+                        <input matInput type="text" name="value" [value]="opt.value" (change)="onChangeKeyValue('value', $event, option.key, optidx)" />
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex fxLayout="row" fxLayoutAlign="start center" class="mb-20">
+                      <mat-icon
+                        class="border-radius-100 material-icons icon-size curc fuse-white-fg purple-btn-bg font-size-18 mr-8 mat-icon notranslate mat-icon-no-color"
+                        fxLayout="row"
+                        fxLayoutAlign="center center"
+                        (click)="onListSelectAddRow(option.key, optidx)"
+                      >
+                        add
+                      </mat-icon>
+                      <mat-icon
+                        class="border-radius-100 material-icons icon-size fuse-white-fg purple-btn-bg font-size-18 mat-icon notranslate mat-icon-no-color"
+                        fxLayout="row"
+                        fxLayoutAlign="center center"
+                        *ngIf="optidx > 0"
+                        (click)="onListSelectRemoveRow(option.key, optidx)"
+                      >
+                        delete
+                      </mat-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--MASKING PATTERN FOR NUMBER/PHONE-->
+            <div *ngIf="content.get('type').value == 'number'" class="px-4" fxLayout="row" fxLayoutAlign="start center">
+              <div class="border border-radius-4 py-8 px-16 mb-20 mr-8" fxFlex="50" fxLayout="row" fxLayoutAlign="start center">
+                <label class="mr-8">Add masking :</label>
+                <mat-radio-group aria-labelledby="example-radio-group-label" name="list_content_ismasking" [formControl]="content.get('ismasking')" class="column-radio-group">
+                  <mat-radio-button value="Y" class="mr-16">Yes</mat-radio-button>
+                  <mat-radio-button value="N">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div *ngIf="content.get('ismasking').value == 'Y'" fxFlex="50" class="mb-20">
+                <mat-form-field appearance="outline" class="w-100-p py-12">
+                  <mat-label>Masking Pattern</mat-label>
+                  <mat-select placeholder="Masking Pattern" [formControl]="content.get('maskingpattern')" [required]="content.get('ismasking').value == 'Y'">
+                    <mat-option *ngFor="let mask of maskingPatterns | keyvalue" [value]="mask.key">{{mask.value}}</mat-option>
+                  </mat-select>
+                  <mat-error>Masking Pattern is required!</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <!--MASKING PATTERN FOR NUMBER/PHONE ENDS-->
+          </div>
+          <mat-divider class="m-8 primary-fg"></mat-divider>
+        </div>
+      </div>
+      <!--field_type== 'autocomplete'-->
+      <div *ngIf="optionsForm.get('field_type').value == 'autocomplete'"></div>
+
+       <!-- conditional logic Code Here  -->
+       <div *ngIf="optionsForm.get('field_type').value != 'list'">
+        <app-conditional-logic [Fields]="AllField" [fieldData]='fieldData' (FieldInfo)="setFieldValue($event)"></app-conditional-logic>
+      </div>
+       <!-- /conditional logic Code end Here  -->
+
+
+      <div class="input-column text-center">
+        <button mat-raised-button class="mr-8 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="onUpdateFieldClick()">Update</button>
+        <!-- cdkFocusInitial -->
+        <button mat-raised-button (click)="onClickCancel()" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Close</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!--FORM FILED OPTIONS AREA ENDS-->

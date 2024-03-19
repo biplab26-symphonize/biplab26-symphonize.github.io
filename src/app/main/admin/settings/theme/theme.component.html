@@ -1,0 +1,544 @@
+<div id="settings" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- {{navigationBarBkColor}} -->
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Settings
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+    
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" [disabled]="this.ThemeSettingForm.invalid || isSubmit==true" (click)="onSubmit($event)" cdkFocusInitial>
+                    <mat-icon class="mr-4">settings_backup_restore</mat-icon>
+                    <span>Update Settings</span>
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+    
+    </div>
+    <!-- / HEADER -->
+    
+    <!-- TABS -->
+    <div class="tabs-wrap">
+    
+        <!-- TABS -->
+        <nav mat-tab-nav-bar class="px-24">
+            <a mat-tab-link routerLink="/admin/settings/general">General</a>
+            <a mat-tab-link routerLink="/admin/settings/home">Home</a>
+            <a mat-tab-link routerLink="/admin/settings/theme" active="true">Theme</a>
+            <a mat-tab-link routerLink="/admin/settings/permissions">Permissions</a>
+        </nav>
+        <!-- / TABS -->
+    
+    </div>
+    <!-- / TABS -->
+    
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+    
+        <!-- CENTER -->
+        <div class="center p-24 pb-56">
+    
+                <!-- SETTINGS -->
+                <form autocomplete="off" #f="ngForm" [formGroup]="ThemeSettingForm" novalidate autocomplete="off">
+    
+                  <div id="settings">
+                      <div class="mat-title"><mat-icon>settings</mat-icon> Theme Settings</div>
+                         <div  class="mat-card mat-elevation-z2 p-24">
+                           <!-- <div  fxLayout="column" formGroupName="breadcumbsettings"> -->
+                            <div  fxLayout="column">
+                            <!-- Bread Title -->
+                              <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                 <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Breadcumb default title</div>
+                                    <div class="mat-caption secondary-text">default title show on every page if menu title not set.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="breadtitle" required>
+                                        <mat-error class="pt-4">Title Required!</mat-error>
+                                    </mat-form-field>   
+                                </div>
+                            </div> -->
+                            <!--DEFAULT IMAGE FOR BREADCUMB-->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Breadcumb default image</div>
+                                    <div class="mat-caption secondary-text">default image show on every page if menu image not set.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <app-file-upload [cropper]="false" [uploadlabel]="''" (imageUploaded)="setMediaFieldValue($event)" [uploadInfo]="uploadInfo" ></app-file-upload>   
+                                </div>
+                            </div> -->
+                             <!--Primary Color-->
+                             <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Primary background color</div>
+                                    <div class="mat-caption secondary-text">Primary bar background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="primary_color" type="color" name="primary_color" required>
+                                            <mat-error> Primary color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                             <!--Secondary Color-->
+                             <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Secondary background color</div>
+                                    <div class="mat-caption secondary-text">Secondary background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="secondary_color" type="color" name="secondary_color" required>
+                                            <mat-error> Secondary color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                            <!--Background Color For vertical bar icon-->
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Vertical bar icon background color</div>
+                                    <div class="mat-caption secondary-text">Vertical bar icon background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="vertical_bar_icon_background_color" type="color" name="vertical_bar_icon_background_color" required>
+                                            <mat-error> Vertical bar icon background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                             <!--Background Color For vertical bar-->
+                             <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Vertical bar background color</div>
+                                    <div class="mat-caption secondary-text">Vertical bar background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="vertical_bar_background_color" type="color" name="vertical_bar_background_color" required>
+                                            <mat-error> Vertical bar background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                             <!--Font Color For vertical bar-->
+                             <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Vertical bar font color</div>
+                                    <div class="mat-caption secondary-text">Vertical bar font color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="vertical_bar_font_color" type="color" name="vertical_bar_font_color" required>
+                                            <mat-error> Vertical bar font color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                            <!-- side bar activation tab color -->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Side bar activation color</div>
+                                    <div class="mat-caption secondary-text">Side bar activation color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="side_bar_activation_color" type="color" name="side_bar_activation_color" required>
+                                            <mat-error>Side bar activation color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                           
+                            <!--Background Color For navigation bar-->
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Admin Navigation bar background color</div>
+                                    <div class="mat-caption secondary-text">Navigation bar background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="admin_navigation_bar_background_color" type="color" name="navigation_bar_background_color" required>
+                                            <mat-error> Navigation bar background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Admin Navigation bar font color</div>
+                                    <div class="mat-caption secondary-text">Navigation bar font color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="admin_navigation_bar_font_color" type="color" name="admin_navigation_bar_font_color" required>
+                                            <mat-error> Navigation bar font color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                           
+                            <div class="sep"></div>
+                            <!-- front navigation bar background color -->
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Front Navigation bar background color</div>
+                                    <div class="mat-caption secondary-text">Navigation bar background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="front_navigation_bar_background_color" type="color" name="navigation_bar_background_color" required>
+                                            <mat-error> Navigation bar background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                            <!--Background Color For footer-->
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Footer background color</div>
+                                    <div class="mat-caption secondary-text">Footer background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="footer_background_color" type="color" name="footer_background_color" required>
+                                            <mat-error> Footer background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                            <!--Background Color For copy right-->
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Copy right background color</div>
+                                    <div class="mat-caption secondary-text">copy right background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="copy_right_background_color" type="color" name="copy_right_background_color" required>
+                                            <mat-error> Copy right background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="sep"></div>
+                             <!--Font size-->
+                             <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Font size</div>
+                                    <div class="mat-caption secondary-text">font size.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput type="number" formControlName="font_size" required>
+                                        <mat-error class="pt-4">font size Required!</mat-error>
+                                    </mat-form-field>   
+                                </div>
+                            </div> -->
+                            <!--Button Font size-->
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Button font size</div>
+                                    <div class="mat-caption secondary-text">Button font size.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput type="number" formControlName="button_font_size" required>
+                                        <mat-error class="pt-4">Button font size Required!</mat-error>
+                                    </mat-form-field>   
+                                </div>
+                            </div>
+                              <!--Button Font color-->
+                              <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Button font color</div>
+                                    <div class="mat-caption secondary-text">Button font color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="button_font_color" type="color" name="button_font_color" required>
+                                            <mat-error>Button font color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                             <!--button hover color-->
+                             <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Button hover color</div>
+                                    <div class="mat-caption secondary-text">Button hover color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="button_hover_color" type="color" name="button_hover_color" required>
+                                            <mat-error>Button hover is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                             <!--button background color-->
+                             <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Button background color</div>
+                                    <div class="mat-caption secondary-text">Button background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="button_background_color" type="color" name="button_background_color" required>
+                                            <mat-error>Button background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                            
+                            <div class="sep"></div>
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Button Background Color</div>
+                                    <div class="mat-caption secondary-text">Button background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="button_background_color" type="color" name="button_background_color" required>
+                                            <mat-error>Button background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Table header background color</div>
+                                    <div class="mat-caption secondary-text">Table border color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="table_header_background_color" type="color" name="table_header_background_color" required>
+                                            <mat-error>Table border color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Table font color</div>
+                                    <div class="mat-caption secondary-text">Table font color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="table_font_color" type="color" name="table_font_color" required>
+                                            <mat-error>Table font size is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Table font size</div>
+                                    <div class="mat-caption secondary-text">Table font size.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                            <input matInput type="number" formControlName="table_font_size" required>
+                                            <mat-error class="pt-4">Font size Required!</mat-error>
+                                        </mat-form-field>  
+                                    </div>   
+                                </div>
+                            </div>
+                            
+                            <!-- login page background color -->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Login page background color</div>
+                                    <div class="mat-caption secondary-text">Login page background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="login_page_background_color" type="color" name="login_page_background_color" required>
+                                            <mat-error>Login page background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                             <!-- forgot password page background color -->
+                             <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Forgot password page background color</div>
+                                    <div class="mat-caption secondary-text">Forgot password page background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>Color</mat-label>
+                                            <input matInput formControlName="forgotpassword_page_background_color" type="color" name="forgotpassword_page_background_color" required>
+                                            <mat-error>Forgot password page background color is required!</mat-error>
+                                    </mat-form-field>
+                                    </div>   
+                                </div>
+                            </div> -->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Breadcumb default background color</div>
+                                    <div class="mat-caption secondary-text">default background color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <fuse-material-color-picker class="mb-16" formControlName="breadbgcolor"></fuse-material-color-picker>
+                                    </div>   
+                                </div>
+                            </div> -->
+                            
+                            <!--Text Color For Breadcumb-->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Breadcumb default text color</div>
+                                    <div class="mat-caption secondary-text">default text color.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">                                
+                                    <div fxFlex="50" class="pl-4">
+                                        <fuse-material-color-picker class="mb-16" formControlName="breadcolor"></fuse-material-color-picker>
+                                    </div>   
+                                </div>
+                            </div> -->
+                            <!-- Background Size -->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Breadcumb background image size</div>
+                                    <div class="mat-caption secondary-text">Breadcumb background image size.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline">
+                                        <mat-select formControlName="breadbgsize">
+                                            <ng-container *ngFor="let size of backgroundSizes">
+                                                <mat-option [value]="size">
+                                                {{size | titlecase}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>   
+                                </div>
+                            </div> -->
+                            <!-- Background Repeat -->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Breadcumb background image repeat</div>
+                                    <div class="mat-caption secondary-text">Breadcumb background image repeat.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline">
+                                        <mat-select formControlName="breadbgrepeat">
+                                            <ng-container *ngFor="let repeat of backgroundRepeats">
+                                                <mat-option [value]="repeat">
+                                                {{repeat | titlecase}}
+                                                </mat-option>
+                                            </ng-container>    
+                                        </mat-select>
+                                    </mat-form-field>   
+                                </div>
+                            </div> -->
+                            <!-- breadcumb div height -->
+                            <!-- <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Breadcumb height</div>
+                                    <div class="mat-caption secondary-text">Height of breadcumb div (in px).</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="breadbgheight" required>
+                                        <mat-error class="pt-4">Height Required!</mat-error>
+                                    </mat-form-field>   
+                                </div>
+                            </div>
+                          </div>
+                          <div  fxLayout="column" formGroupName="layoutsettings">
+                            <div class="sep"></div>
+                             <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Layout Width</div>
+                                 
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-radio-group  name="Layout_width" formControlName="Layout_width">
+                                        <mat-radio-button value="fullwidth" class="mr-8"><span>Fullwidth</span></mat-radio-button>
+                                        <mat-radio-button value="boxed"><span>Boxed</span></mat-radio-button>
+                                    </mat-radio-group>  
+                                </div>
+                             </div>
+                             <div class="sep"></div>
+                             <div fxLayout="column" fxLayout.gt-md="row" class="pb-16">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4">Colors</div>
+                                 
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="prediefied_theme_skin" placeholder="prediefied_theme_skin" required>
+                                        <mat-error class="pt-4">Color Required!</mat-error>
+                                    </mat-form-field>   
+                                </div>
+                             </div> -->
+                          </div>
+                        </div>
+                     </div>
+                </form>
+                <!-- / SETTINGS -->
+    
+    
+        </div>
+        <!-- / CENTER -->
+    
+    </div>
+    <!-- / CONTENT -->
+    </div>    

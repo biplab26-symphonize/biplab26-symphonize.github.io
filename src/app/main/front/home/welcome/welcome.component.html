@@ -1,0 +1,57 @@
+<form class="p-0" name="welcomeform" [formGroup]="welcomeform" (ngSubmit)="onSubmitPassword()" novalidate autocomplete="off">
+    <div mat-dialog-content class="h-100-p">
+        <div class="logo" [@animate]="{value:'*',params:{scale:'0.2'}}" class="text-center">
+            <img src="assets/images/logos/loading.png" width="100px">
+        </div> 
+        <h1 class="m-0 text-center text-capitalize" *ngIf="userInfo.first_name" matDialogTitle>Hello {{userInfo.first_name + ' ' + userInfo.last_name}}</h1>
+
+        <p class="mb-20">
+            Please confirm your email address. If the email address provided below is incorrect, please correct it at this time. 
+            For security purposes, please also create a new password. You will use this new password to login to the portal hereafter.
+        </p>
+
+        <div>
+            <div fxLayout="column" *ngIf="localSettings && localSettings.welcomenote!==undefined">
+                <p class="text-center">{{localSettings.welcomenote}}</p>
+            </div>
+            <div fxLayout="column" > 
+                <!-- Email -->
+                <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" required [email]="true">
+                    <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                    <mat-error>Invalid email</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column" >
+                <!--Password-->
+                <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" placeholder="Enter your password" [type]="pwdhide ? 'password' : 'text'">
+                    <button type="button" mat-icon-button matSuffix (click)="pwdhide = !pwdhide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="pwdhide">
+                    <mat-icon class="mr-0">{{pwdhide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error>Password Is Required</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" fxlayout.sm="column" fxLayout.xs="column">
+                <a (click)="getTermCondition()" fxlayout.sm="column" fxLayout.xs="column" class="cursor-pointer"> &nbsp;Terms & Conditions.</a>
+            </div>
+            <div fxLayout="row"  fxLayoutAlign="center center" fxlayout.sm="column" fxLayout.xs="column">
+                <mat-checkbox 
+                id="terms"
+                name="terms" 
+                class="word-break-label"
+                style="white-space: normal"
+                formControlName="terms" 
+                value="1"
+                (change)="setFormValidate($event)">   
+                I have accepted all terms and conditions.       
+                </mat-checkbox>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="pt-4 pb-28" fxLayout="row" fxLayoutAlign="center center">
+        <button  mat-stroked-button color="accent" type="submit" [disabled]="welcomeform.invalid || isSubmit==true">Submit</button>
+    </div>
+</form>

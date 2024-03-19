@@ -1,0 +1,72 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll">
+
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">import_export
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                   Import Fields
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+
+                <form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="FieldImportForm" [formGroup]="FieldImportForm" >
+
+	                <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">Import New Fields</div>
+                  
+                    
+	                <div class="p-28 d-block">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="100">
+                            <div class="mb-4 h2">Import File</div>
+                            <div class="h3 text-capitalize">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                        </div>
+
+						<div fxLayout="column" fxLayoutAlign="center" fxFlex="100">
+							<mat-form-field class="readonly" appearance="outline" *ngIf="isSelected">
+								<input matInput readonly placeholder="File Name" value="{{fileName}}">
+							</mat-form-field>
+							<input hidden 
+									type="file"
+                                    id="file"
+                                    formControlName="file"
+                                    [formControl]="FieldImportForm.get('file')"
+                                    (change)="onFileChanged($event)"
+									#file/>
+                        </div>
+
+                        <div class="btn mt-20 text-center">
+                            <button mat-raised-button class="mr-8 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" type="button" [disabled]="isSubmit" (click)="uploadFile($event)">Save</button>
+                            <button mat-raised-button class="mr-8 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="file.click()">Upload</button>
+                            <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" *ngIf="isSelected" (click)="removeFile()">Remove</button>
+                        </div>
+
+                    </div>
+	            </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+</div>

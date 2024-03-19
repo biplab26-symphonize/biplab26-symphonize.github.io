@@ -1,0 +1,41 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content" id="home-topics-pagination">
+    <div class="p-16 title pl-0">
+        <div  class="h1 font-weight-800">Event Attendees</div>
+    </div>
+    <table class="simple border text-capitalize">
+        <thead class="text-center">
+            <tr [ngStyle]="green_bg_header">
+                <th class="text-center fuse-white-fg font-size-16">Name</th>
+                <th class="text-center fuse-white-fg font-size-16">Status</th>
+                <th class="text-center fuse-white-fg font-size-16">Created At</th> 
+                <!-- <th class="text-right" *ngIf="homesettings.attendee_author=='Y'">Author</th>  -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let attendee of attendeesList.data">
+                <td class="text-center first">
+                    {{attendee.first_name}}
+                </td>
+                <td class="text-center second">
+                    {{attendee.status}}
+                </td>
+                <td class="text-center third">
+                    {{attendee.created_at  | date: defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}} 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="p-0 my-20 d-block">
+        <mat-paginator 
+            #paginator
+            class="blue-grey-50"
+            [length]="attendeesList.total"           
+            [pageSize]="PaginationOpt?.pageSize"
+            [pageSizeOptions]="PaginationOpt?.pageSizeOptions"> 
+        </mat-paginator>
+    </div>    
+
+</div>
+<!-- / CARD CONTENT -->

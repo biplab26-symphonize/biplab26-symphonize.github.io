@@ -1,0 +1,22 @@
+<form #upload name="detailsForm" [formGroup]="detailsForm" (ngSubmit)="sendFileInfo()">
+    <h1 matDialogTitle>Edit File Information</h1>
+    <div mat-dialog-content class="mat-dialog-export">
+        <div class="column">
+            <mat-form-field appearance="outline" floatLabel="always" class="filter-search display-block mx-4 w-100-p">
+                <mat-label>Image Title</mat-label>
+                <input matInput formControlName="title">
+                <mat-error>Image Title is required!</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always" class="filter-search display-block mx-4 w-100-p">
+                <mat-label>Image Description</mat-label>
+                <textarea matInput formControlName="description" cols="5" class="w-100-p"></textarea>
+                <mat-error>Description is required!</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="pt-24">
+        <button mat-raised-button class="mat-accent mr-16" type="submit">Save</button>
+        <button mat-button (click)="dialogRef.close('')">Cancel</button>
+    </div>
+</form>

@@ -1,0 +1,94 @@
+<div id="Format-Design-Design" class="mb-20 h-100-p">
+    <mat-card class="h-100-p">
+        <mat-card-content fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 100%">
+            <h2 class="px-16 py-12 green-bg-color fuse-white-fg h2 mb-20"> Design </h2>
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" enctype="multipart/form-data"
+                name="designform" [formGroup]="designform" novalidate autocomplete="off">
+                <div fxLayout="row" fxLayoutAlign="end" fxFlex="1 0 auto" fxLayoutGap="20px">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Color Scheme</mat-label>
+                        <mat-select name="color_scheme" formControlName="color_scheme">
+                            <mat-option value="default">This Community Colors</mat-option>
+                            <mat-option value="other">Other Community Colors</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div>
+                        <label fxLayout="column" class="font-weight-600 mb-8 h4">Color Selection</label>
+                        <mat-radio-group name="color_selection" formControlName="color_selection"
+                            (change)="getColorSelection($event)">
+                            <mat-radio-button value="full_color" class="pr-12"> Full Color
+                            </mat-radio-button>
+                            <mat-radio-button value="black_white"> Black & white
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                    *ngIf="designform.get('color_scheme').value =='other'">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>Border Color</mat-label>
+                        <input matInput formControlName="border_color" type="color" name="border_color"
+                            (change)="getBorderColor($event)">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>Highlight Color</mat-label>
+                        <input matInput formControlName="highlight_color" type="color" name="highlight_color"
+                            (change)="getHighlightColor($event)">
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="column" fxFlex="1 0 auto" class="select-background-img">
+                    <mat-label class="font-weight-600 mb-8 h4">Select Background Image</mat-label>
+                    <div class="btn" fxLayout="row" fxLayoutAlign="start center">
+                        <mat-checkbox [checked]="designform.get('no_background').value=='Y'" fxFlex="40" (change)="displayBackground($event)">
+                            No Background
+                        </mat-checkbox>
+                        <button mat-raised-button class="text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-40 br-ds-0 box-shadow-none choose-from-gallery"
+                            (click)="backgroundfile.click()">Choose From Gallery</button>
+
+                        <div *ngIf="filetype==true && displayImage=='Yes' && url!==''">
+                            <img [src]="url" height="80" width="100"/>
+                        </div>    
+                    </div>
+                  
+                </div>
+               
+
+                <input hidden type="text" formControlName="background_img" />
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <input hidden formControlName="background_url" type='file' [accept]="inputAccpets"
+                        (change)="onSelectFile($event)" #backgroundfile />
+                </div>
+
+                <div fxLayout="row" fxFlex="1 0 auto" fxLayoutAlign="start center" class="select-background-img">
+                    <mat-label class="font-weight-600 h3" fxFlex="40">Select Logo</mat-label>
+                    <input hidden formControlName="logo_url" type='file' [accept]="inputAccpets"
+                        (change)="onSelectLogoFile($event)" #logofile />
+                    <div class="btn">
+                        <button mat-raised-button class="mr-12 choose-from-gallery text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-40 br-ds-0 box-shadow-none" (click)="logofile.click()">Choose
+                            From Gallery</button>
+                    </div>
+                    <div *ngIf="filetype==true && logourl!==''">
+                        <img [src]="logourl" height="100" width="100"/>
+                    </div>
+                    <input hidden type="text" formControlName="logo_img" />
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="8px">
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Text Color</mat-label>
+                        <input matInput formControlName="text_color" type="color" name="text_color"
+                            (change)="getTextColor($event)">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Footer</mat-label>
+                        <input matInput type="text" name="footer" placeholder="Add Footer" formControlName="footer"
+                            (change)="getFooterText($event)" />
+                    </mat-form-field>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

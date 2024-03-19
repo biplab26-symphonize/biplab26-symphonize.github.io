@@ -1,0 +1,176 @@
+<div class="page-layout page-layout-list simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">dashboard
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        All Log 
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+
+        <!-- / BTN's -->
+    </div>
+    <!-- / HEADER -->
+    <div class="content"  fusePerfectScrollbar>
+        <div class="center p-24 pb-56" >
+            <!-- FILTER -->
+            <form  #filter name="filterForm" [formGroup]="filterForm">
+                <div class="filters fuse-white-bg py-20 mb-20">
+                    <div fxLayout="row wrap" fxLayoutAlign="center center">
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="32" class="pr-8">
+                            <mat-label>Search</mat-label>
+                            <input matInput placeholder="Enter A Keyword..."    
+                            formControlName="searchKey">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline"  *ngIf="AllFilterData" fxFlex="32" class="pr-8">
+                            <mat-label>Time</mat-label>
+                            <mat-select formControlName="datefilter">
+                                <mat-option  value="">
+                                    All
+                                </mat-option>
+                            <mat-option *ngFor="let time of AllFilterData.time" [value]="time">
+                                {{time | titlecase}}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  *ngIf="AllFilterData" fxFlex="32">
+                            <mat-label>Role</mat-label>
+                            <mat-select formControlName="role_id">
+                                <mat-option  value="">
+                                    All
+                                </mat-option>
+                            <mat-option *ngFor="let role of AllFilterData.roles" [value]="role.id">
+                                {{role.role_name | titlecase }}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  *ngIf="AllFilterData" fxFlex="32" class="pr-8">
+                            <mat-label>User</mat-label>
+                            <mat-select formControlName="user_id">
+                                <mat-option  value="">
+                                    All
+                                </mat-option>
+                            <mat-option *ngFor="let user of AllFilterData.users" [value]="user.id">
+                                {{user.first_name | titlecase}} {{user.last_name | titlecase}}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline"  *ngIf="AllFilterData" fxFlex="32" class="pr-8">
+                            <mat-label>Module Type</mat-label>
+                            <mat-select formControlName="type">
+                                <mat-option  value="">
+                                    All
+                                </mat-option>
+                            <mat-option *ngFor="let type of Alltype" [value]="type.type">
+                                {{type.value | titlecase}}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  *ngIf="AllFilterData" fxFlex="32">
+                            <mat-label>Action</mat-label>
+                            <mat-select formControlName="action">
+                                <mat-option  value="">
+                                    All
+                                </mat-option>
+                            <mat-option *ngFor="let action of Allaction" [value]="action.type">
+                                {{action.value | titlecase}}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button mat-raised-button [ngStyle]="button" class="mr-4 reset-filter reference-button text-uppercase line-height-44 br-ds-0 box-shadow-none" (click)="restedata()">
+                            <mat-icon class="mr-8 font-size-22">refresh</mat-icon>
+                            Reset Filters
+                        </button>
+                        <button  mat-raised-button [ngStyle]="button" class="mr-4 ml-4 text-uppercase line-height-44 br-ds-0 box-shadow-none" (click)="exportActivityLog()">
+                            <mat-icon class="mr-4">import_export</mat-icon>
+                            Export Activity Log
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- / FILTER -->
+            <!-- CONTENT -->
+    
+        <table class="staff-list-table text-capitalize" mat-table #table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+            
+            <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+             {{column}}
+            <!-- OTHER THAN CHECKBOX -->    
+            <span *ngIf="column.columnDef!=='select'">
+                <th class="p-12" [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}" 
+                    disabled="{{!column.sortable}}"> {{column.header}} 
+                </th>
+                <td class="p-12 cursor-auto" mat-cell *matCellDef="let element"> 
+               
+                    <!-- OTHER THAN STATUS -->
+                    
+                    <span *ngIf="column.columnDef!=='status' && column.columnDef!=='author' && column.columnDef!=='created_at'">{{element[column.columnDef]}}</span>
+                    
+                    <a *ngIf="column.columnDef=='first_name'"  [routerLink]="['/admin/staff/edit/',element.id]">{{element[column.columnDef]}}</a>
+                    
+                    <span *ngIf="column.columnDef=='author' " fxLayout="column" fxLayoutAlign="center start"> 
+                        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="element.usermeta && element.usermeta.first_name ">
+                           
+                                <img class="avatar" *ngIf="element.usermeta.usermedia && element.usermeta.usermedia.length>0 && element.usermeta.usermedia[0].media != null && element.usermeta.usermedia[0].media.type =='avatar'" [src]=" appConfig.url.mediaUrl+element.usermeta.usermedia[0].media.image"/>
+                                <img class="avatar" *ngIf="element.usermeta.usermedia==null || element.usermeta.usermedia.length==0" [src]="_defaultAvatar"/>
+                          
+                           
+                            <div> {{element.usermeta.first_name}} {{element.usermeta.last_name}} </div>
+                        </div>
+                        <div class="my-8" *ngIf="element.roles"> {{element.roles.role_name}}  </div>
+                    </span>
+ 
+                    <span *ngIf="column.columnDef == 'created_at'">
+                        {{element[column.columnDef] | date: defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}
+                    </span>
+                     <span *ngIf="column.columnDef=='status'">
+                        <!--status-->
+                        <button mat-icon-button aria-label="Status" class="cursor-auto">
+                            <mat-icon *ngIf="element.status=='Active'" class="active-icon green-600 s-16 cursor-auto">check</mat-icon>
+                            <mat-icon *ngIf="element.status=='Inactive'" class="active-icon red-500 s-16 cursor-auto">close</mat-icon>
+                        </button>                                 
+                    </span>
+                    <!-- NORMAL VIEW Buttons -->
+                 
+               
+                </td>
+            </span>
+            <!-- CHECKBOX COLUMN -->    
+            <span *ngIf="column.columnDef=='select'">
+                <th [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let element"> 
+                </td>
+            </span>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div class="no-record mt-20" *ngIf="this.dataSource.filteredData.total === 0" class="text-center mt-20">No Record Found.</div>
+        <mat-paginator 
+            class="blue-grey-50"
+            #paginator
+            [length]="this.dataSource.filteredData.total"           
+            [pageSize]="PaginationOpt?.pageSize"
+            [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+        </mat-paginator>
+     </div>
+    <!-- / CONTENT -->
+   </div>
+<!-- / CONTENT -->
+</div>  

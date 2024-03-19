@@ -1,0 +1,70 @@
+<section class="secondary-Ocean footer-above pt-40 pb-40" *ngIf="ShowFooter == true">
+    <div class="py-12 footer-max-width px-12" fxLayout="row wrap" fxFlex="1024px" fxLayoutAlign="space-between">
+        <!-- CONTATCT INFO -->
+        <div *ngIf="generalsettings.is_contact_info == 'Y'" fxLayout="column" fxFlex="100" fxFlex.gt-xs="48" fxFlex.gt-md="30">
+            <div class="p-8 contact-info">
+                <div class="h1 pb-4 mb-20 fuse-white-fg">Contact Info</div> 
+
+                <div class="mb-12" fxLayout="row" fxLayoutAlign="start start" *ngIf="generalsettings.contact_address">
+                    <mat-icon class="s-24 mr-8">location_on</mat-icon>
+                    <span style="white-space: pre-wrap;"> 
+                        <!-- <a href="https://www.google.com/maps/place/103+Lloyd+St,+Carrboro,+NC+27510,+USA/@35.9113579,-79.0720648,17z/data=!3m1!4b1!4m5!3m4!1s0x89acc31ecb8e2f8b:0xa0487f41c151b9cd!8m2!3d35.9113579!4d-79.0698761"> {{generalsettings.contact_address}} </a>  -->
+                        <a href="https://www.google.com/maps/place/{{generalsettings.contact_address}}+USA" class="hover-class" > {{generalsettings.contact_address}} </a>
+                    </span>
+                </div>
+                <div class="mb-12" fxLayout="row" fxLayoutAlign="start start" *ngIf="generalsettings.contact_number">
+                    <mat-icon class="s-24 mr-8">phone_in_talk</mat-icon>
+                    <!-- <span>{{generalsettings.contact_number}}</span> -->
+                    <span> <a href="tel:{{generalsettings.contact_number}}" class="hover-class">
+                        ({{generalsettings.contact_number | slice:0:3}}) {{generalsettings.contact_number | slice:3:6}} {{generalsettings.contact_number | slice:6:10}} </a></span>
+                </div>
+                <div class="mb-12" fxLayout="row" fxLayoutAlign="start start" *ngIf="generalsettings.email">
+                    <mat-icon class="s-24 mr-8">email</mat-icon>
+                    <span><a href="mailto:{{generalsettings.email || ''}}" class="hover-class">{{generalsettings.email || ''}}</a></span>
+                </div>
+            </div>
+        </div>
+        <!-- USEFUL LINKS -->
+        <div fxLayout="column" fxFlex="100" fxFlex.gt-xs="48" fxFlex.gt-md="30">
+            <div class="p-8">
+                <div class="h1 pb-4 mb-20 fuse-white-fg">Useful Links</div>
+                <ul class="social-links">
+                    <li class="mb-4"  *ngFor="let footer of footerMenu" >
+                        <a *ngIf="footer.menu_source=='D' && footer.menu_source_type=='url'" href="{{footer.menu_url}}" [target]="footer.menu_target || '_self'">{{footer.menu_title }}</a>
+                        <a 
+                            *ngIf="footer.menu_source!=='D'" 
+                            routerLink="/{{footer.menu_url}}" 
+                            [target]="footer.menu_target || '_self'"  
+                            [attr.menuparent]="footer.menu_parent_id" [attr.menutitle]="footer.menu_title"
+                            [attr.showpagetitle]="footer.show_page_title || 'N'" [attr.pagetitle]="footer.page_title || ''"
+                            [attr.pagetitleimg]="footer.media ? footer.media.image : ''"
+                            (click)="sendMenuItemInfo(footer)">{{footer.menu_title }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div fxLayout="column" fxFlex="100" fxFlex.gt-xs="48" fxFlex.gt-md="30" *ngIf="generalsettings.is_follow_us == 'Y'">
+            <div class="p-8">
+                <div class="h1 pb-4 mb-20 fuse-white-fg">Follow Us</div>
+                <div class="social-icons " fxLayout="row" fxLayoutAlign="start center">
+                    <a class="mr-12" *ngIf="generalsettings.is_facebook_checked == 'Y'" href="{{generalsettings.content_follow_url_facebook || '#'}}" target="_blank">
+                        <i class="fa fa-facebook font-size-20 fuse-white-fg"></i>
+                    </a>
+                    <a class="mr-12" *ngIf="generalsettings.is_instagram_checked == 'Y'" href="{{generalsettings.content_follow_url_instagram || '#'}}" target="_blank">
+                        <i class="fa fa-instagram font-size-20 fuse-white-fg"></i>
+                    </a>
+                    <a class="mr-12" *ngIf="generalsettings.is_twitter_checked == 'Y'" href="{{generalsettings.content_follow_url_twitter || '#'}}" target="_blank">
+                        <i class="fa fa-youtube-play font-size-20 fuse-white-fg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+</section>
+
+
+<mat-toolbar class="tarms-cond">
+    <div class="footer-below w-space text-center">
+        <p class="m-0" [innerHTML]="plainText"></p>
+    </div>
+</mat-toolbar>

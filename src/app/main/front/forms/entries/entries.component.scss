@@ -1,0 +1,241 @@
+@import "src/@fuse/scss/fuse";
+
+#my-services {
+    .white-space-nowrap {
+        white-space: nowrap;
+    }
+    // .content-wrap{
+    //     padding-bottom: 10px !important;
+    // }
+
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center; 
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/staff-bg.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+
+            .table-wrap{
+
+                // margin-left: -28px;
+                // margin-right: -28px;
+
+                table.events-details-table{
+                    clear: both;
+                    
+                    tr{
+                        clear: both;
+                        th{
+                            white-space: normal;
+                         
+                            .mat-sort-header-container{
+                                clear: both;
+                                .mat-sort-header-button{
+                                    text-align: left;
+                                }
+                            }
+                        }
+
+                        td{
+                            vertical-align: baseline;
+                        }
+                    }
+
+                    th:nth-of-type(1) {
+                        width: 5%;
+                        text-align: center !important;
+                    }
+
+                    th:nth-of-type(2) {
+                        width:15%;
+                        text-align: center !important;
+                    }
+
+                    th:nth-of-type(3),
+                    th:nth-of-type(4),
+                    th:nth-of-type(5) {
+                        width: 15%;
+                        text-align: center !important;
+                    }
+
+                    th:nth-of-type(6) {
+                        width: 10%;
+                        text-align: center  !important;
+                    }
+
+                }
+            }
+        }              
+    }
+
+    .worxhub-table {
+        td {
+            vertical-align: baseline;
+            word-break: break-all;
+        }
+        th:nth-of-type(1) {
+            width: 1%;
+        }
+
+        th:nth-of-type(2) {
+            width: 15%;
+            text-align: center !important;
+        }
+
+        th:nth-of-type(3) {
+            width: 10%;
+            text-align: center !important;
+        }
+
+        th:nth-of-type(4) {
+            width: 20%;   
+            text-align: center !important;
+        }
+
+        th:nth-of-type(5) {
+            width: 10%;
+            text-align: center !important;
+        }
+
+        th:nth-of-type(6) {
+            width: 10%;
+            text-align: center !important;
+        }
+
+        th:nth-of-type(7) {
+            width: 10%;
+            text-align: center !important;
+        }
+    }
+
+
+    // Responsive
+
+    @include media-breakpoint('lt-sm') {
+        table {
+            overflow-x: auto;
+            display: block;
+            // white-space: nowrap;
+        }
+
+        th ,
+        td{
+            white-space: nowrap;
+        }
+
+        th:nth-of-type(4),
+        td:nth-of-type(4) {
+          min-width: 200px;
+          white-space: break-spaces !important;
+        }
+
+        .content-wrap.fuse-white-bg.p-28 {
+            padding: 20px !important;
+    
+            .mb-40 {
+                margin-bottom: 6px !important;
+            }
+    
+            .table-wrap {
+                .px-28.simple {
+                    padding: 0 !important;
+                }
+            }
+        }
+    
+        .mb-28.pagination {
+            margin-bottom: 0 !important;
+        }
+
+        .px-28.delete-btn {
+            padding:0 20px !important;
+        }
+
+        .py-28.worxhub-wrapper {
+            padding-top: 0 !important;
+        }
+
+        mat-paginator {
+            padding-bottom: 0 !important;
+        }
+
+        .all-top-buttons {
+            padding-bottom: 0 !important;
+        }
+
+        form.p-28 {
+            padding:20px 20px 0 20px !important;
+        }
+
+        .font-size-28 {
+            font-size: 20px !important;
+        }
+
+        .border.py-20.mx-28 {
+            margin: 0 0px !important;
+        }
+    
+        .pagination.px-28 {
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+        }
+
+        .table-wrap.p-28.pb-0 ,
+        .px-28.worxhub-table-wrapper{
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+
+        .events-details-table {
+            th {
+                white-space: nowrap !important;
+            }
+        }
+    }
+
+  
+
+}
+
+

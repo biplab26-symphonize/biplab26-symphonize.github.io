@@ -1,0 +1,39 @@
+<div class="nav {{navLayout}}" [ngClass]="{'horizontal':layout === 'horizontal', 'vertical':layout === 'vertical'}" >
+
+    <!-- Vertical Navigation Layout -->
+    <ng-container *ngIf="layout === 'vertical'">
+
+        <ng-container *ngFor="let item of navigation">
+
+            <fuse-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></fuse-nav-vertical-group>
+            <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'"
+                                           [item]="item"></fuse-nav-vertical-collapsable>
+            <fuse-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-vertical-item>
+
+        </ng-container>
+
+    </ng-container>
+    <!-- / Vertical Navigation Layout -->
+
+    <!-- Horizontal Navigation Layout -->
+    <ng-container *ngIf="layout === 'horizontal'">
+        <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" class="mt-19" *ngIf="navLayout == 'front-navbar-style-2'">
+            <!-- <div class="toolbar-separator" fxHide.lt-lg></div> -->
+            <label  class="mt-19" for="fuse-search-bar-input" fxHide.lt-lg>
+                <button fxLayout="row" [routerLink]="['/search']" fxLayoutAlign="center center" mat-icon-button class="fuse-search-bar-expander search-btn" aria-label="Expand Search Bar">
+                    <mat-icon class="s-24 fuse-white-fg">search</mat-icon>
+                </button>
+            </label>
+        </div>
+        <ng-container *ngFor="let item of navigation">
+
+            <fuse-nav-horizontal-collapsable *ngIf="item.type=='group'" [item]="item" [ngClass]="item.classes"></fuse-nav-horizontal-collapsable>
+            <fuse-nav-horizontal-collapsable *ngIf="item.type=='collapsable'" [item]="item" [ngClass]="item.classes"></fuse-nav-horizontal-collapsable>
+            <fuse-nav-horizontal-item *ngIf="item.type=='item'" [item]="item" [ngClass]="item.classes"></fuse-nav-horizontal-item>
+
+        </ng-container>
+
+    </ng-container>
+    <!-- / Horizontal Navigation Layout -->
+
+</div>

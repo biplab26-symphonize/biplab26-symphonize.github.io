@@ -1,0 +1,70 @@
+<form name="guestForm"  [formGroup]="guestForm" class="w-100-p" *ngIf="guestcount>1">
+    <div class="w-100-p border border-radius-4 p-16 pb-0 mb-20">
+        <div formArrayName="guestFields" *ngFor="let item of guestForm.get('guestFields')['controls']; let i = index;" fxLayout.lt-sm="column" class="w-100-p">
+            <!--DYNAMIC FIELDS-->
+            <div fxLayout="row wrap" fxLayoutAlign="start center" class="w-100-p" [formGroupName]="i" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start">
+                <!--Name-->
+                <mat-form-field appearance="outline" floatLabel="always"  class="pr-4 max-width-100" fxFlex="32.6">
+                    <mat-label>Guest Attendees Name*</mat-label>
+                    <input matInput [matAutocomplete]="auto" name="full_name" formControlName="full_name"  (change)="setFirstNameValue(i)" >
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setguestFormfields($event,i)">
+                        <ng-container *ngFor="let option of filteredGuests[i]">
+                            <mat-option *ngIf="!ignoreIds.includes(option.id)" [value]="option" >
+                                {{option.first_name+' '+option.last_name}}
+                            </mat-option>
+                        </ng-container>
+                        <mat-option *ngIf="filteredGuests[i] && filteredGuests[i].length==0" disabled="true">Users Not Found</mat-option>
+                    </mat-autocomplete>
+                    <mat-error >Guest Attendees Name Required</mat-error>
+                </mat-form-field>
+                
+                
+                <!--Email-->
+                <mat-form-field  appearance="outline" floatLabel="always"   class="ml-4 mr-4 max-width-100" fxFlex="32.6">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="text" formControlName="email" name="email" (change)="prepareGuestArray()" [required]="requiredFields.includes('email')">
+                    <mat-error >Email Required</mat-error>
+                </mat-form-field >
+
+                <!--Phone-->
+                <mat-form-field  appearance="outline" floatLabel="always"  class="max-width-100" fxFlex="32.6">
+                    <mat-label>Phone</mat-label>
+                    <input matInput type="text" pattern="(?=.*\d).{7,}" (blur)="NumberValidations($event)" formControlName="phone" name="phone" (change)="prepareGuestArray()" [required]="requiredFields.includes('phone')">
+                    <mat-error >Phone Required</mat-error>                            
+                </mat-form-field >
+                
+                <div class="max-width-100" *ngIf="showActions==true">
+                    <mat-icon matSuffix (click)="removeGuests(item,i)" class="ml-4 secondary-text mb-28  pink-500-fg">remove_circle</mat-icon>            
+                    <mat-icon matSuffix (click)="addGuests()" class="secondary-text mb-28 green-600-fg">add_circle</mat-icon>
+                </div>
+                <!-- special-fields-section -->
+                <div fxFlex="100" fxLayout="column" fxLayoutAlign="start start" fxFlex.lt-sm="100" formArrayName="eventattendeespecialfields"  *ngFor="let special of specialfieldsArray; let k = index;">
+                    <div [formGroupName]="k" class="w-100-p">
+                        <ng-container *ngIf="special.field_type=='T'">
+                            <label class="font-size-16 fuse-black-fg">{{special.question_text}}</label>
+                            <mat-form-field appearance="outline" class="w-100-p"> 
+                                <input matInput
+                                (change)="prepareGuestArray()"
+                                [formControlName]="special.id">
+                            </mat-form-field>
+                        </ng-container>
+                        <!-- radio -->
+                        <ng-container *ngIf="special.field_type=='R' && special.options_text && special.options_text.length>0">
+                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="w-100-p mat-form-field--no-underline">
+                                <mat-label class="fuse-black-fg font-size-16">{{special.question_text}}</mat-label>
+                                <input matInput placeholder="Input" style="display: none" >
+                                <mat-radio-group (change)="prepareGuestArray()" class="mt-12" [name]="special.id+'_'+i" [formControlName]="special.id">
+                                    <ng-container *ngFor="let checks of special.options_text; let j = index">
+                                        <mat-radio-button class="mx-4" [value]="j"> {{checks[j]}} </mat-radio-button>
+                                    </ng-container>
+                                </mat-radio-group>
+                            </mat-form-field>
+                        </ng-container>
+                    </div> 
+                </div>
+                
+            </div>
+
+        </div>
+    </div>    
+</form>

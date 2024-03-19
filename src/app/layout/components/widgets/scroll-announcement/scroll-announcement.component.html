@@ -1,0 +1,12 @@
+<ng-container *ngIf="fuseConfig.layout.scroll==true">
+    <div class="announcements-scroll accent" *ngIf="showannouncement == true">
+        <marquee onmouseover="this.stop();" onmouseout="this.start();" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" behavior="scroll" direction="left">
+            <ul fxLayout="row">
+                <li *ngFor="let item of  _scrollList" class="mr-32">
+                    <!-- {{scrollAnnouncments}} -->
+                    {{item}}
+                </li>
+            </ul>
+        </marquee>
+    </div>
+</ng-container>

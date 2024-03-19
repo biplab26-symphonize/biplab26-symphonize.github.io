@@ -1,0 +1,6 @@
+<div class="custom-snackbar text-capitalize" fxLayout="row" fxLayoutAlign="start center">
+    
+    <mat-icon fxFlex="0 1 auto" fxLayoutAlign="start center"  class="warn-fg">notifications_active</mat-icon>
+    <span *ngIf="notification.message" class="mx-8 w-100-p text-capitalized" fxLayoutAlign="center center" >{{notification.message}}</span>
+    <mat-icon fxFlex="0 1 auto" fxLayoutAlign="end center" class="fuse-white-fg" (click)="snackBarRef.dismiss()">remove_circle_outline</mat-icon>
+</div>

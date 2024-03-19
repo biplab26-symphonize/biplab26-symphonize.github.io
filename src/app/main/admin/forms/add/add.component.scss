@@ -1,0 +1,110 @@
+.d-block {display: block;}
+.mat-title{
+  mat-icon{
+    vertical-align: middle;
+    font-size: 20px;
+  }
+}
+.example-margin {
+    margin: 8px;
+  }
+  
+  .example-list {
+    height: 100%;
+    border: solid 1px #ccc;
+    min-height: 60px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+  }
+  .example-box {
+    padding: 20px 10px;
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    line-height: 20px;
+  }
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  // .example-box:last-child {
+  //   border: none;
+  // }
+  
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  
+  .flex-rows-break {
+      flex-basis: 100%;
+      height: 0;
+      margin: 0;
+      
+  }
+
+  .cdk-overlay-pane.forms-add-setting-popup {
+    min-height: 400px;
+    max-height: 90%;
+    overflow-y: auto;
+  }
+
+  .mat-tab-label {
+    font-size: 18px;
+    opacity: 1 !important;
+  }  
+ 
+  .mat-tab-header {
+    margin-bottom: 28px;
+  } 
+ 
+  .field-section {
+    padding:8px;
+    background:#ac0877;
+    color: white;
+  }
+  .field-section-wrapper {
+    height: auto;
+  }
+
+  .font-size-15 {font-size: 15px !important;}
+
+  .left-section {
+     .example-box.border-radius-4.border:hover {
+    background-color: #eeeeee;
+    transition: 1s all;
+    }
+  }
+ 
+  .field-input {
+    label {
+      font-size: 20px !important;
+      color: black !important;
+      font-weight: 600;
+    }
+  }
+
+  .left-side {
+    position: fixed;
+    right: 63px;
+    bottom: auto;
+    top: 43%;
+  }
+
+.min-height-440 {
+  min-height: 375px;
+}

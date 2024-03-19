@@ -1,0 +1,5 @@
+<div *ngIf="filterFields.length>0"  fxLayout="row wrap" fxLayoutGap="10px grid" fxLayoutAlign="start end">
+    <div appearance="outline" fxFlex="33.3" fxFlex.lt-sm="100%" *ngFor="let field of filterFields;" class="outline">
+        <ng-container dynamicField [field]="field" [group]="fieldformGroup" type="{{'field'}}"></ng-container>
+    </div>
+</div>

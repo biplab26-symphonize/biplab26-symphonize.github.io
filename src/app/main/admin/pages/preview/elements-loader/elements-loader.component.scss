@@ -1,0 +1,82 @@
+@import "src/@fuse/scss/fuse";
+//titlebarsettings
+$borderwidth:  var(--borderwidth);
+$texttransform:  var(--texttransform);
+$buttontextcolor: var(--texttransform);
+$buttontexthover: var(--buttontexthover);
+$gradienttop: var(--gradienttop);
+$gradienttophover: var(--gradienttophover);
+$gradientbottom: var(--gradientbottom);
+$gradientbottomhover: var(--gradientbottomhover);
+
+
+#element-button{
+    button{
+        border:1px solid transparent;
+        text-transform: $texttransform;
+    }
+    .light-green-bg {
+        background:#d1e990;
+        border: 1px solid #9dba60;
+        color: #54770f;
+        background-image: linear-gradient(to top, #aad75d, #d1e990);
+    }        
+
+    .green-bg {
+        background: #d0e0a5;
+        border: 1px solid #9dba60;
+        color: #54770f;    
+        background-image: linear-gradient(to top, #a8c76a, #d0e0a5);
+    }
+
+    .orange-bg {
+        background: #fbdc86;
+        border: 1px solid #c0830b;
+        color: #c0830b;
+        background-image: linear-gradient(to top, #f8bf56, #fbdc86);
+    }
+
+    .blue-bg {
+        background: #b5e0f7;
+        background-image: linear-gradient(to top, #76c7f1, #b5e0f7);
+        border: 1px solid #1172c1;
+        color: #1172c1;
+    }
+
+    .red-bg {background: #fd9c9c;background-image: linear-gradient(to top, #fc7d7d, #fd9c9c);border: 1px solid #9d1111;color: #9d1111;}
+
+    .pink-bg {background: #fda1d5;background-image: linear-gradient(to top, #fc84c8, #fda1d5);border: 1px solid #a31366;color: #a31366;}
+
+    .grey-bg {background: #c0c0c0;background-image: linear-gradient(to top, #9e9e9e, #c0c0c0);border: 1px solid #434c50;color: #434c50;}
+
+    .grey-50-bg {background: #fbfbfb;background-image: linear-gradient(to top, #f0f0f0, #fbfbfb);border: 1px solid #ababab;color: #ababab;}
+
+    /*Custom Button*/
+    button.custom{
+        
+        color:$buttontextcolor;
+        background-image: linear-gradient(to top, $gradienttop, $gradientbottom);
+    }
+    button.custom:hover{
+        color:$buttontexthover;
+        background-image: linear-gradient(to top, $gradienttophover, $gradientbottomhover);
+    }
+    .btn-3D {box-shadow: inset 0 1px 0 #ffffff, 0 4px 0 #ababab, 1px 6px 6px 3px rgba(0, 0, 0, 0.3);}
+    .button-small {padding: 9px 20px;line-height: 14px;font-size: 12px;}
+    .button-medium {padding: 11px 23px;line-height: 16px;font-size: 13px;}
+    .button-large {padding: 13px 29px;line-height: 17px;font-size: 14px;}
+    .button-x-large {padding: 17px 40px;line-height: 21px;font-size: 18px;}
+    .button-square {border-radius: 0;}
+    .button-pill {border-radius: 25px !important;}
+    .button-round {-border-radius: 2px !important;}
+}
+#element-quicklinks{
+    .rotate-0{transform: rotate(0deg);}
+    .rotate-90{transform: rotate(90deg);}
+    .rotate-180{transform: rotate(180deg);}
+    .rotate-270{transform: rotate(270deg);}
+
+    .spin-Y {
+        animation: fa-spin 2s infinite linear;
+    }
+}

@@ -1,0 +1,15 @@
+// .mat-cell,
+// mat-header-cell{
+//     padding: 0px 12px;
+// }
+
+.word-break {word-break: break-word;}
+.all-fiels-table {
+    mat-header-cell {
+        font-size: 15px !important;
+    }
+
+    mat-row {
+        align-items: baseline;
+    }
+}

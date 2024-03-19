@@ -1,0 +1,86 @@
+<div id="front-meeting-room" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+                [formGroup]="addReservation" novalidate autocomplete="off">
+
+                <div class="w-100-p border pt-24" fxLayout="row wrap"
+                    fxLayout.lt-sm="column" fxLayoutAlign="center center"
+                    [ngStyle]="{'background': '#f5f5f5','margin-bottom': '10px','padding-left': '10px'}">
+                    <div fxFlex="10">
+                        <button mat-stroked-button color="accent" [ngStyle]="{'margin-bottom':'22px','height':'58px'}"
+                            (click)="gotoHome()">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+                        </button>
+                    </div>
+                    <div fxFlex="90" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                        <mat-form-field appearance="outline" fxFlex.lt-sm="100" fxFlex="100" class="pr-8">
+                            <mat-label>Step</mat-label>
+                            <mat-select matNativeControl formControlName="step" required>
+                                <mat-option value="step1">Step 1- When and Who</mat-option>
+                                <mat-option value="step2" disabled>Step 2- Rooms</mat-option>
+                                <mat-option value="step2" disabled>Step 3- Extras</mat-option>
+                                <mat-option value="step3" disabled>Step 4- Check Out</mat-option>
+                                <mat-option value="step4" disabled>Step 5- Preview</mat-option>
+                                <mat-option value="step5" disabled>Step 6- Finish</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="font-size-14">
+                    <div fxLayout="row" class="mt-20 mb-36">
+                        <p class="w-100-p" [ngStyle]="{'text-align':'center'}">WHEN WOULD YOU LIKE TO RESERVE A GUEST
+                            ROOM?</p>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-sm="column">
+                        <mat-form-field appearance="outline" fxFlex="20" class="pr-8"
+                            [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-label>Guests</mat-label>
+                            <mat-select matNativeControl formControlName="guest" required>
+                                <mat-option *ngFor="let number of numbers" [value]="number">{{number}}</mat-option>
+                            </mat-select>
+                            <mat-error>Guest required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="22" class="pr-8"
+                            [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-label>Check-In-Date</mat-label>
+                            <input matInput #input_date_from required [matDatepicker]="picker" (focus)="picker.open()"
+                                formControlName="date_from" [min]="todayDate" [max]="startDateValidation" (dateInput)="fromDate($event)" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error>Check-in date required</mat-error>
+                        </mat-form-field> 
+                        <mat-form-field appearance="outline" fxFlex="22" class="pr-8"
+                            [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-label>Check-Out-Date</mat-label>
+                            <input matInput #input_date_to [matDatepicker]="picker2" (focus)="picker2.open()"
+                                formControlName="date_to" [min]="toDate" [max]="reserveDate" required readonly>
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="22" class="pr-8"
+                            [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-label>Building</mat-label>
+                            <mat-select matNativeControl formControlName="building_id" required>
+                                <mat-option value="">-Choose-</mat-option>
+                                <mat-option *ngFor="let data of buildingList" [value]="data.id">{{data.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Building required</mat-error>
+                        </mat-form-field>
+                        <button mat-stroked-button class="mt-5 mb-27"
+                            [ngStyle]="{'margin-top':'6px','margin-bottom':'30px'}" color="accent" cdkFocusInitial
+                            (click)="gotoNextStep()">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

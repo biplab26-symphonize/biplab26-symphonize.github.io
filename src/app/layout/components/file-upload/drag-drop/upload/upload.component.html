@@ -1,0 +1,28 @@
+<form #upload name="uploadForm" [formGroup]="uploadForm" (ngSubmit)="sendFileInfo()">
+<h1 matDialogTitle>Edit File Information</h1>
+<div mat-dialog-content class="mat-dialog-export">
+    <div>
+        <mat-form-field appearance="outline" floatLabel="always" class="filter-search display-block mr-4 ml-4">
+            <mat-label>File Name</mat-label>
+            <input matInput formControlName="file_name">
+            <mat-error>File name is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-select display-block mr-4 ml-4">
+            <mat-label>Category</mat-label>
+            <mat-select 
+                placeholder="Category"
+                formControlName="category">
+                <mat-option *ngFor="let category of Categories" [value]="category.id">
+                {{category.category_name}}
+                </mat-option>
+            </mat-select>
+            <mat-error>Category is required!</mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions class="pt-24">
+    <button mat-raised-button class="mat-accent mr-16" type="submit">Save</button>
+    <button mat-button (click)="dialogRef.close('')">Cancel</button>
+</div>
+</form>

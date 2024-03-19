@@ -1,0 +1,35 @@
+<div class="page-layout simple fullwidth layout-box" id="top-search-announcement-view">
+
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+  
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+  
+            <div class="header-top">
+  
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong> View Announcement </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div> 
+    </div>
+    <!-- / HEADER -->
+
+
+    <div  class="content">
+        <!--  CONTENT WRAP -->
+        <section class="content-wrap fuse-white-bg p-28" *ngIf="AnnouncementData">
+            <div>
+                <button class="mb-20" color="accent" type="button" mat-stroked-button [routerLink]="['/search']">  <mat-icon class="mr-4">arrow_back</mat-icon>Back</button>
+                <div>     
+                    <div class="h2 font-weight-800">{{AnnouncementData.contentinfo.content_title | titlecase}}</div>
+                    <div  [innerHTML]=" AnnouncementData.contentinfo.content_desc | sanitizeHtml   "></div>
+                </div>
+            </div>
+        </section>
+        <!--  / CONTENT WRAP -->
+    </div>

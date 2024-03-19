@@ -1,0 +1,184 @@
+<div id="home" class="page-layout simple fullwidth home-layout-1"
+   *ngIf="homeSettings.default_layout=='layout-1' || homeSettings.default_layout=='layout-2'">
+
+   <!-- ANNOUNCEMENT -->
+   <ng-container *ngIf="ShowScrollAnnouncement == true">
+      <ng-container *ngTemplateOutlet="announcement"></ng-container>
+   </ng-container>
+   <!-- / ANNOUNCEMENT -->
+
+
+   <!-- HEADER -->
+   <featured-banner [homesettings]="homeSettings"></featured-banner>
+   <!-- / HEADER -->
+
+
+   <!-- CONTENT -->
+   <div class="content px-20-It-sm" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+
+
+      <div class="content-card br-ds-0 content-wrap px-20">
+         <div *ngIf="ShowDateTime == true">
+            <widget-datetime [homesettings]="homeSettings"></widget-datetime>
+         </div>
+
+         <div *ngIf="ShowQuicklink == true ">
+            <front-quick-panel [homesettings]="homeSettings"></front-quick-panel>
+         </div>
+         <section class="dining-event-announcement pb-40" fxLayout="row" fxLayoutAlign="center center">
+            <!-- / ANNOUNCEMENT FULL WIDTH -->
+            <div  class="fuse-card" *ngIf="ShowHomeAnnouncement == true && HomeAnnouncementLayout=='column'" fxFlex="100">
+               <widget-home-announcement [homesettings]="homeSettingsdata"></widget-home-announcement>
+               <!-- / ANNOUNCEMENT FULL WIDTH -->
+            </div>
+         </section>
+
+
+         <section class="dining-event-announcement pb-40" fxLayout="row" fxLayoutAlign="center center">
+            <div class="row-wrap" fxLayout="row wrap" fxFlex="1024px" fxLayoutAlign="space-between">
+               <!-- TODAYS EVENTS -->
+               <!-- homeSettings.todays_event_colwidth || '30' -->
+               <div class="fuse-card" [fxFlex]="homeSettings.todays_event_colwidth  || '35'"
+                  *ngIf="ShowTodays_event ==  true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <widgets-todays-events [homesettings]="homeSettings"></widgets-todays-events>
+               </div>
+
+               <!-- WEATHER INFO -->
+               <div class="fuse-card" [fxFlex]="homeSettings.weather_colwidth  || '35'" *ngIf="ShowWeather ==  true"
+                  [ngClass.lt-md]="{'mb-20' : true}">
+                  <widget-weather [homesettings]="homeSettings"></widget-weather>
+               </div>
+               <!-- TODAYS Announcement -->
+               <!-- <div class="fuse-card" [fxFlex]="homeSettings.announcement_colwidth || '30'"
+                  *ngIf="ShowHomeAnnouncement == true && HomeAnnouncementLayout=='column'"
+                  [ngClass.lt-md]="{'mb-20' : true}">
+                  <widget-home-announcement [homesettings]="homeSettings"></widget-home-announcement>
+               </div> -->
+
+            </div>
+         </section>
+
+
+
+         <!-- TOP CARDS -->
+         <section class="events-weather-topics pb-40" fxLayout="row" fxLayoutAlign="center center">
+            <div class="top-cards" fxLayout="row" fxFlex="1024px" fxLayoutGap="16px" fxLayoutAlign="space-around">
+
+               <!-- BULLETIN/FORUMS -->
+               <div class="fuse-card" [fxFlex]="homeSettings.bulletin_colwidth || '35'"
+                  *ngIf="Show_bulletin ==  true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <widget-bulletins [homesettings]="homeSettings"></widget-bulletins>
+               </div>
+            </div>
+         </section>
+
+
+
+         <section class="sep fullwidth py-10"></section>
+
+         <!-- ANNOUNCEMENTS -->
+         <section class="dining-event-announcement pb-40" fxLayout="row" fxLayoutAlign="center center">
+            <div class="row-wrap" fxLayout="row wrap" fxFlex="1024px" fxLayoutAlign="space-between">
+
+               <!-- DINING ANNOUNCEMENTS -->
+               <div class="fuse-card w-496" *ngIf="ShowDining_ann ==  true" [ngClass.lt-md]="{'mb-40' : true}">
+                  <widget-dining-announcement [homesettings]="homeSettings"></widget-dining-announcement>
+               </div>
+
+               <!-- EVENT ANNOUNCEMENTS -->
+               <div class="fuse-card w-496" *ngIf="Showevent_ann ==  true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <widget-event-announcement [homesettings]="homeSettings"></widget-event-announcement>
+               </div>
+
+            </div>
+         </section>
+         <!-- / ANNOUNCEMENTS -->
+
+
+         <section class="sep fullwidth py-10"></section>
+
+
+
+         <section class="sep fullwidth py-10"></section>
+
+
+         <!-- REGISTERED EVENTS AND FORMS ENTRIES -->
+         <section class="forms-events-section pb-40 home-all-table" fxLayout="row" fxLayoutAlign="center center">
+            <div class="row-wrap" fxLayout="row wrap" fxFlex="1024px" fxLayoutAlign="space-between">
+               <!-- MYEVENTS -->
+               <div class="fuse-card w-496" *ngIf="ShowMEvent == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <widget-my-events [homesettings]="homeSettings"></widget-my-events>
+               </div>
+               <div class="fuse-card w-496"  *ngIf="my_favorite_event == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <app-favorite-event [homesettings]="homeSettings"></app-favorite-event>
+               </div>
+               <!-- MYFORMS -->
+               <div class="fuse-card w-496" *ngIf="ShowMyForm == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <widget-my-forms [homesettings]="homeSettings"></widget-my-forms>
+               </div>
+               <!-- MY DINING -->
+               <div class="fuse-card w-496 mt-40" *ngIf="ShowMy_Dining == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <app-my-dining [homesettings]="homeSettings"></app-my-dining>
+               </div>
+
+               <div class="fuse-card w-496 mt-40" *ngIf="foodreservation == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <app-my-booking [homesettings]="homeSettings"></app-my-booking>
+               </div>
+
+               <!-- MY APPOINTMENTS -->
+               <div class="fuse-card w-496 mt-40" *ngIf="ShowMy_Appointment == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <app-my-appointments [homesettings]="homeSettings"></app-my-appointments>
+               </div>
+               <!--  MY TABLE RESERVATION -->
+               <div class="fuse-card w-496 mt-40" *ngIf="Showmy_tablereservation == true"
+                  [ngClass.lt-md]="{'mb-20' : true}">
+                  <app-table-reservation [homesettings]="homeSettings"></app-table-reservation>
+               </div>
+               <!-- MEETING ROOM -->
+               <div class="fuse-card w-496 mt-40" *ngIf="meetingroom == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <app-meeting-room [homesettings]="homeSettings"></app-meeting-room>
+               </div>
+               <div class="fuse-card w-496 mt-40" *ngIf="guestroom == true" [ngClass.lt-md]="{'mb-20' : true}">
+                  <app-my-guest-rooms [homesettings]="homeSettings"></app-my-guest-rooms>
+               </div>
+            </div>
+         </section>
+    
+         <!-- newest neighbors  -->
+         <section class="forms-events-section" fxLayout="row" fxLayoutAlign="center center">
+            <div class="row-wrap" *ngIf="ShowNeighbors == true" fxLayout="row wrap" fxFlex="1024px"
+               fxLayoutAlign="space-between">
+               <widget-newest-neighbors class="w-100-p" [homesettings]="homeSettings"></widget-newest-neighbors>
+            </div>
+         </section>
+         <!-- / newest neighbors-->
+
+         <!-- newest staff  -->
+         <section class="forms-events-section" fxLayout="row" fxLayoutAlign="center center">
+            <div class="row-wrap" *ngIf="ShowStaff == true" fxLayout="row wrap" fxFlex="1024px"
+               fxLayoutAlign="space-between">
+               <widget-newest-staff class="w-100-p" [homesettings]="homeSettings"></widget-newest-staff>
+            </div>
+         </section>
+         <!-- / newest staff -->
+
+
+         <!-- QUICK LINKS  -->
+      </div>
+
+   </div>
+   <!-- CONTENT ENDS -->
+   <!-- SCROLLING ANNOUNCMENT -->
+   <ng-template #announcement>
+      <app-scroll-announcement></app-scroll-announcement>
+   </ng-template>
+   <!-- / SCROLLING ANNOUNCMENT -->
+
+
+</div>
+
+
+<!--layout-2-->
+<!-- <div id="front-home" class="page-layout simple fullwidth home-layout-2" *ngIf="homeSettings.default_layout=='layout-2'">
+   
+</div> -->

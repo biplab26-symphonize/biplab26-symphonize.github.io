@@ -1,0 +1,14 @@
+<div [ngSwitch]="view" class="views">
+
+    <chat-contact-sidenav class="view"
+                          *ngSwitchCase="'contact'"
+                          [@slideInRight]
+                          fusePerfectScrollbar>
+    </chat-contact-sidenav>
+    <chat-group-sidenav class="view"
+                          *ngSwitchCase="'group'"
+                          [@slideInRight]
+                          fusePerfectScrollbar>
+    </chat-group-sidenav>
+
+</div>

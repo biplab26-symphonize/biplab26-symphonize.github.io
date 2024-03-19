@@ -1,0 +1,88 @@
+@import "src/@fuse/scss/fuse";
+
+#front-chat{
+
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/dining.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+    }
+
+    .content{
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+            min-height: 570px;
+        }               
+    }
+
+        .mat-sidenav-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            min-height: 580px;
+
+            > .mat-sidenav-content,
+            > .mat-drawer-content {
+                display: flex;
+                flex: 1 1 auto;
+                min-height: 100%;
+                height: auto;
+            }
+
+            > .mat-drawer-content {
+                max-width: 100%;
+            }
+
+            mat-sidenav {
+                display: flex;
+                flex-direction: column;
+                width: 400px;
+                max-width: 90%;
+                overflow: hidden;
+            }
+        }
+        .top-bg {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 200px;
+        }
+
+}

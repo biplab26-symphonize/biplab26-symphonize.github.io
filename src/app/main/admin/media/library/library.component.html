@@ -1,0 +1,154 @@
+<div id="back-media-Library" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+    <!-- HEADER -->
+    <div class="header accent p-24 " fxLayout="column" fxLayoutAlign="start"
+     fxLayout.gt-md="row" fxLayoutAlign.gt-md="space-between center" ngClass.gt-md="h-80" [ngClass.lt-md]="{'hidden-md': selection.selected.length > 0 }" [ngStyle.lt-md]="{'max-height': 'none','min-height': 'auto','height': 'auto'}">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">image
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                  Media Library
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+         <!-- BTN's -->
+         <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center" >
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" class="mr-4 ml-4"   ngClass.lt-md="mb-8" [routerLink]="'/admin/media/add'">
+                    <mat-icon class="mr-4">add</mat-icon>
+                    Add New
+                </button>
+                <button mat-raised-button class="reference-button" class="mr-4 ml-4"  ngClass.lt-md="mb-8"  (click)="bulkSelect()">
+                    Bulk Select
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+        
+        <!-- SELECTED BAR -->
+        <div class="selected-bar accent-600 " *ngIf="selection.selected.length>0"    ngClass.gt-md="h-80"  [@slideInTop] >
+            <div fxFlex fxLayout="row" fxLayoutAlign="start center" class="px-24 py-0 header accent p-24"  ngClass.gt-md="h-80" >
+    
+                <div class="close-button-wrapper" fxFlex="0 1 auto" fxFlex.gt-sm="220px" (click)="onClickBack()">
+                    <button mat-raised-button ngClass.lt-md="mb-8 mr-4 ml-4">
+                        <mat-icon class="mr-4">arrow_back</mat-icon>
+                        Back
+                    </button>
+                </div>
+    
+                <div fxFlex fxLayout="row" fxLayoutAlign="end center">  
+    
+                    <div class="multi-select-actions">
+                        <button class="mr-8" type="button" mat-raised-button ngClass.lt-md="mb-8 mr-4 ml-4" (click)="onClickBack()">Cancel Selection</button>
+                        <button type="button" mat-raised-button ngClass.lt-md="mb-8 mr-4 ml-4"  (click)="deleteMedia()">Delete Selected</button> 
+                    </div>
+    
+                </div>
+    
+            </div>
+        </div>
+        <!-- / SELECTED BAR -->
+  
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" >
+
+             <!-- FILTER -->
+             <div class="filters fuse-white-bg py-20 px-16 mb-20 pb-0" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                <form #filter validate autocomplete="off" [formGroup]="filterForm" class="w-100-p" fxLayout.lt-md="column" fxLayout="row" fxLayoutAlign="space-between center">
+                    <!-- SEARCH  -->
+                    <mat-form-field appearance="outline" floatLabel="always" class="filter-search mr-4 ml-4">
+                        <mat-label>Search</mat-label>
+                        <input matInput placeholder="Enter a keyword..." formControlName="searchKey">
+                    </mat-form-field>
+
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-md="column" ngClass.lt-md="w-100-p">
+                              <!-- MEDIA TYPE -->
+                            <mat-form-field appearance="outline" class="filter-select mr-4 ml-4" ngClass.lt-md="w-100-p">
+                                <mat-label>Select Media Type</mat-label>
+                                <mat-select name="type" aria-placeholder="Select Media Type" formControlName="type">
+                                    <mat-option *ngFor="let status of mediatype | keyvalue" [value]="status.key">
+                                    {{status.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <!-- DATE WISE FILTER -->
+                            <mat-form-field appearance="outline" class="filter-select mr-4 ml-4" ngClass.lt-md="w-100-p">
+                                <mat-label>Select Month Year</mat-label>
+                                <mat-select name="dates" placeholder="Select Date" formControlName="dates" >
+                                <mat-option value="">All Dates</mat-option>
+                                <mat-option *ngFor="let date of alldates" value="{{date.month}},{{date.year}}">{{ date.month}}/ {{date.year}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+                </form>
+            </div>
+
+            <!-- / FILTER -->
+
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="medias" fxLayout="row wrap" fxLayoutAlign="start" fxLayout.lt-md="column"  [@animateStagger]="{value:'50'}">
+
+                    <div class="media" *ngFor="let media of medialist" fxFlex="20"  [@animate]="{value:'*',params:{y:'100%'}}">
+                        <!-- IMAGES AND VIDEO -->
+                        <div class="media-content" fxLayout="column" fxFlex="1 1 auto">    
+                            <div  class="content" fxLayout="column" fxFlex="1 1 auto">
+                                <div *ngIf="media.type != 'video'">
+                                    <img [src]="media.image" [alt]="media.imagename">
+                                    <div *ngIf="media.type == 'document'">
+                                        <div class="h1">{{media.imagename}}</div>
+                                    </div>
+                                </div>   
+                                <!-- <mat-video class="mat-video" *ngIf="media.type == 'video'" [src]="media.video" [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="true" color="accent"></mat-video>                          -->
+                            </div>
+    
+                            <div class="footer" fxLayout="row" fxLayoutAlign="center center">
+                                <button mat-button color="accent" [routerLink]="['/admin/media/edit',media.media_id]">
+                                    Preview
+                                </button>
+                            </div>
+    
+                        </div>
+                        <!-- /IMAGES AND VIDEO -->
+                        <!-- CHECKBOX -->
+                        <div *ngIf="bulkselect">
+                            <mat-checkbox class="text-truncate"
+                                (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(media.media_id) : null"
+                                [checked]="selection.isSelected(media.media_id)">
+                            </mat-checkbox>  
+                        </div>
+                        <!-- /CHECKBOX -->
+                    </div>
+                    <!-- IF NO MEDIA IS FOUND -->
+                    <div class="message-box no-record my-20" fxFlex="100" *ngIf="medialist.length==0">No Media Found</div>
+                </div>
+                <mat-paginator 
+                    class="blue-grey-50"    
+                    #paginator
+                    [length]="mediaData.total"           
+                    [pageSize]="PaginationOpt.pageSize"
+                    [pageSizeOptions]="PaginationOpt.pageSizeOptions">
+                </mat-paginator>
+           </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

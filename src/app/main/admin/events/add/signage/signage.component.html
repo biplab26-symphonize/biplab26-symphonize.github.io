@@ -1,0 +1,104 @@
+<div class="fuse-white-bg p-16 pb-0">
+    <ng-container [formGroup]="signageForm">
+    <ng-container class="mb-20">
+        <!-- LAYOUT_ID -->
+        <div fxLayout="row" fxLayoutAlign="start center" >
+            <div appearance="outline" class="pb-20" fxFlex>
+                <dl>
+                    <dt class="font-weight-600 font-size-16">Select Layout :</dt>
+                    <dd><small class="font-size-14">By selecting this option, we will create a digital slide for this event using one of our templates. After you save this event, you can edit this design of the slide by clicking the edit slide button that will appear in this section.</small></dd>
+                </dl>    
+                <mat-radio-group formControlName="layout_id" (change)="enableEditPopup()" fxLayout="row">
+                    <mat-radio-button value="template_one">
+                        <img width="150" src="assets/images/event-layouts/template_one.jpg"/>
+                    </mat-radio-button>
+                    <mat-radio-button class="ml-12" value="template_two">
+                        <img width="150" src="assets/images/event-layouts/template_two.png"/>
+                    </mat-radio-button>
+                    <mat-radio-button class="ml-12" value="template_three">
+                        <img width="150" src="assets/images/event-layouts/template_three.png"/>
+                    </mat-radio-button>
+                    <mat-radio-button value="template_four">
+                        <img width="150" src="assets/images/event-layouts/template_four.png"/>
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div> 
+         <!--layout_type  -->
+         <div fxLayout="row" fxLayoutAlign="start center">
+            <div appearance="outline" class="pb-12" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <label  fxLayout="column" class="font-weight-600 font-size-16 mr-8" fxFlex="27">Layout of slide :</label>
+                <mat-radio-group fxFlex="73" name="layout_type" formControlName="layout_type"  (change)="enableEditPopup()">
+                    <mat-radio-button (change)="changePlaylistType('horizontal')" value="horizontal"> Horizontal </mat-radio-button>
+                    <mat-radio-button (change)="changePlaylistType('vertical')" value="vertical" class="pl-12"> Vertical </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <!-- MANUAL/AUTO -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div appearance="outline" class="pb-12" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <label  fxLayout="column" class="font-weight-600 font-size-16 mr-8" fxFlex="27">Schedule this slide :</label>
+                <mat-radio-group fxFlex="73" name="schedule_type" formControlName="schedule_type"  (change)="enableEditPopup()">
+                    <mat-radio-button (change)="changeScheduleType('M')" value="M"> Manual </mat-radio-button>
+                    <mat-radio-button (change)="changeScheduleType('A')" value="A" class="pl-12"> Auto </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <!-- MANUAL FIELDS -->
+        <div fxLayout="row" fxLayoutAlign="start center" *ngIf="signageForm.get('schedule_type').value=='M'">
+            <mat-form-field appearance="outline" fxFlex class="mr-4">
+                <input matInput
+                [required]="signageForm.get('schedule_type').value=='M'"
+                readonly="readonly" 
+                formControlName="start_datetime" 
+                placeholder="Start Date Time"
+                [owlDateTimeTrigger]="start_datetime" 
+                [owlDateTime]="start_datetime"
+                (dateTimeInput)="setMinendDateTime()">
+                <owl-date-time [pickerType]="'both'" [panelClass]="'datepicker'" [pickerMode]="'dialog'" [hour12Timer]="true" #start_datetime></owl-date-time>
+                <mat-icon [owlDateTimeTrigger]="start_datetime" matSuffix>date_range</mat-icon>
+                <mat-error>Start Time is required</mat-error>
+             </mat-form-field>
+             <!-- end_datetime -->
+             <mat-form-field appearance="outline" fxFlex class="ml-4">
+                <input matInput
+                [required]="signageForm.get('schedule_type').value=='M'"
+                readonly="readonly" 
+                formControlName="end_datetime"
+                [min]="min_end_datetime" 
+                placeholder="End Date Time"
+                [owlDateTimeTrigger]="end_datetime" 
+                [owlDateTime]="end_datetime"
+                (dateTimeInput)="enableEditPopup()">
+                <owl-date-time [pickerType]="'both'" [panelClass]="'datepicker'" [pickerMode]="'dialog'" [hour12Timer]="true" #end_datetime></owl-date-time>
+                <mat-icon [owlDateTimeTrigger]="end_datetime" matSuffix>date_range</mat-icon>
+                <mat-error>Start Time is required</mat-error>
+             </mat-form-field>
+        </div>
+        <!-- AUTO FIELDS -->
+        <div fxLayout="row" fxLayoutAlign="start center"  *ngIf="signageForm.get('schedule_type').value=='A'">
+            <dl class="mt-12" fxFlex="100">
+                <!-- <dt class="font-weight-600 font-size-16">Days before the event :</dt>-->
+                <dd><small class="font-size-14">Select the number of days before the event in which the slide will appear (If this is a recurring event, the day range selected will be applied to all events in the series).</small></dd>
+            </dl>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">            
+            <mat-form-field class="mr-4" appearance="outline" floatLabel="always" fxFlex="50"   *ngIf="signageForm.get('schedule_type').value=='A'">
+                <mat-label>Days</mat-label>
+                <mat-select [required]="signageForm.get('schedule_type').value=='A'" name="schedule_days" formControlName="schedule_days" (selectionChange)="enableEditPopup()">
+                   <mat-option *ngFor="let day of scheduleDays" [value]="day">{{day}}</mat-option>
+                </mat-select>
+                <mat-error>Select schedule days</mat-error>
+            </mat-form-field>
+            <!-- PLAYLISTS -->
+            <mat-form-field class="pr-4" appearance="outline" floatLabel="always" fxFlex="50">
+                <mat-label>Select Playlist</mat-label>
+                <mat-select required name="playlist_id" formControlName="playlist_id" multiple (selectionChange)="enableEditPopup()">
+                   <mat-option *ngFor="let playlist of filterplaylists" [value]="playlist.playlist_id"><span class="text-capitalized">{{playlist.name}}</span></mat-option>
+                </mat-select>
+                <mat-error>Select playlist</mat-error>
+            </mat-form-field>
+        </div>
+    </ng-container>  
+    </ng-container>
+</div>

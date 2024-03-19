@@ -1,0 +1,92 @@
+<div id="topics" class="page-layout simple fullwidth">
+        
+    <!-- HEADER -->  
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+
+            <div class="header-top">
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>
+                            <span *ngIf="topicInfo.content_title">
+                                {{topicInfo.content_title}}
+                            </span>
+                        </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div>
+        
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        
+        <!--  CONTENT WRAP -->
+        <section class="content-wrap fuse-white-bg p-28">
+            <div class="mb-20" fxLayout="row" fxLayoutAlign="end center">
+                <button mat-stroked-button type="button" color="accent" routerLink="/forums/"><mat-icon class="s-20 mr-4">arrow_back</mat-icon>{{ForumSettings.back_to_forum}}</button>
+            </div>
+
+            <div *ngIf="topicInfo.content_desc" class="border mb-4">
+                <div class="h1 font-weight-600 p-16 accent" *ngIf="topicInfo.content_title" [ngStyle.lt-sm]="{'font-size.px': 20}">
+                    {{topicInfo.content_title}}
+                </div>
+                <div class="p-16" [innerHTML]="topicInfo.content_desc | sanitizeHtml"></div>
+            </div>
+
+            <section class="reply-wrap">
+                <div class="reply" fxLayout="row" fxLayoutAlign="center" *ngFor="let reply of repliesList" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+                    <div class="creator w-156" *ngIf="reply.creator">
+                        <img *ngIf="reply.creator && reply.creator.media && reply.creator.media.image" width="100" height="100" [src]="this.imgurl+reply.creator.media.image || _defaultAvatar" alt="{{reply.creator.first_name}}"/>
+                        <img *ngIf="!reply.creator.media.image" width="100" height="100" [src]="_defaultAvatar" alt="{{reply.creator.first_name}}"/>
+                        <div class="creator-desc">
+                            <p class="text-center font-weight-600 purple-fg" *ngIf="reply.full_name">{{reply.full_name}}</p> 
+                            <p class="text-center accent-fg" *ngIf="reply.title">{{reply.title || ''}}</p>
+                        </div>
+                    </div>
+                    <div class="reply-desc" fxFlex="1 1 auto">
+                        <div class="pl-28">
+                            <div class="mb-18" *ngIf="reply.message">
+                                <div [innerHTML]="reply.message | sanitizeHtml"></div>
+                            </div>
+                            <div class="reply-tools" fxLayout="row" fxLayoutAlign="start center" *ngIf="reply.user_id==currentUser.id" fxLayoutAlign.lt-sm="center center">
+                                <a class="accent-fg mr-24" (click)="editReply(reply)"  href="javascript:"><mat-icon class="s-20 mr-4 accent-fg">edit</mat-icon>Edit</a>
+                                <a class="accent-fg" (click)="deleteReply(reply.reply_id)" href="javascript:"><mat-icon class="s-20 mr-4 accent-fg">close</mat-icon>Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <br />
+            <form name="replyform" id="replyform" [formGroup]="replyform" novalidate autocomplete="off">
+                <div class="h2 mb-16 font-weight-600" *ngIf="topicInfo.content_title">{{ForumSettings.add_reply}}</div>
+
+                <mat-form-field class="w-100-p" floatLabel="always" appearance="outline">
+                    <mat-label>Title</mat-label>
+                    <input matInput placeholder="Enter title here" formControlName="title" required>
+                    <mat-error>{{ForumSettings.reply_title_required}}</mat-error>
+                </mat-form-field>
+
+                <div class="w-100-p add-event-back-editor">
+                    <editor [init]="tinyMceSettings" name="message" formControlName="message"></editor>
+                </div>
+                <br>
+                <div class="forum-submit submit-btn">
+                    <button mat-raised-button  type="submit" color="accent" (click)="onSubmit($event)" class="forum-submit px-32">Submit</button>
+                </div>
+            </form>
+
+        </section>
+        <!--  / CONTENT WRAP -->
+    </div>
+    <!-- / CONTENT -->
+
+</div>

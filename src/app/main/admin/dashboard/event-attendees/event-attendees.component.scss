@@ -1,0 +1,16 @@
+#back-dashboard-event-attendess {
+    th:nth-of-type(1),
+    th:nth-of-type(2),
+    th:nth-of-type(3) {
+        width: 30%;
+    }
+}
+.simple.border {
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+
+    th:nth-of-type(1),
+    th:nth-of-type(2),
+    th:nth-of-type(3) {
+        width: 30%;
+    }    
+}

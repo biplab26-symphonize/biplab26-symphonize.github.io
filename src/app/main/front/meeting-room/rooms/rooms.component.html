@@ -1,0 +1,74 @@
+<div id="front-meeting-room" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off" [formGroup]="addRoom"
+                novalidate autocomplete="off">
+
+                <div class="w-100-p border pt-24" fxLayout="row wrap" fxLayoutAlign="center center"
+                    [ngStyle]="{'background': '#f5f5f5','margin-bottom': '10px','padding-left': '10px'}">
+                    <mat-form-field appearance="outline" fxFlex.lt-sm="100" fxFlex="40" class="pr-8">
+                        <mat-label>Step</mat-label>
+                        <mat-select matNativeControl formControlName="step" required>
+                            <mat-option value="step1">Step 1- Rooms</mat-option>
+                            <mat-option value="step2" disabled>Step 2- Book Room</mat-option>
+                            <mat-option value="step3" disabled>Step 3- Room Setup</mat-option>
+                            <mat-option value="step4" disabled>Step 4- Amenities</mat-option>
+                            <mat-option value="step5" disabled>Step 5- Checkout</mat-option>
+                            <mat-option value="step6" disabled>Step 6- Confirmation</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="40" fxFlex.lt-sm="100" class="pr-8">
+                        <mat-label>Order by</mat-label>
+                        <mat-select matNativeControl formControlName="order_by" required
+                            (selectionChange)="getRoomsOrder($event)">
+                            <mat-option value="low" selected>Capacity (Low to High)</mat-option>
+                            <mat-option value="high">Capacity (High to Low)</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="font-size-14">
+                    <div *ngFor="let data of roomsData" class="img-size border p-16 mb-28 " fxLayout="row wrap"
+                        fxLayoutAlign.lt-sm="center center" fxLayoutAlign="start start">
+                        <div fxFlex="40" fxFlex.lt-sm="100">
+                            <div class="first" *ngIf="data.image == ''" [ngClass.lt-sm]="{'text-center': 'true'}">
+                                <img [src]="default_img" [ngStyle]="{'height': '182px','width': '70%'}" />
+                                <p class="mt-12 text-bold text-center" [ngClass.lt-sm]="{'mb-12': 'true'}"> Capacity :
+                                    {{data.capacity}} </p>
+                            </div>
+
+                            <div class="first" *ngIf="data.image != ''" [ngClass.lt-sm]="{'text-center': 'true'}">
+                                <img src="{{data.image}}" alt=" no image"
+                                    [ngStyle]="{'height': '182px','width': '70%'}"><br>
+                                <p class="mt-12 text-bold" [ngClass.lt-sm]="{'mb-12': 'true'}"> Capacity :
+                                    {{data.capacity}} </p>
+                            </div>
+                        </div>
+
+                        <div class="second" [ngClass.lt-sm]="{'mt-20': 'true'}"
+                            [ngClass.lt-sm]="{'text-center': 'true'}">
+                            <p class="text-capitalize text-capitalize text-bold font-size-24">{{data.title}}</p>
+                            <p class="font-size-15 mt-10">{{data.description}}</p>
+                            <button mat-stroked-button class="my-20" color="accent" cdkFocusInitial
+                                (click)="getBookRoom(data.id)">
+                                Book This Room
+                            </button>
+                            <div class="text-capitalize"> Cut off reservation request 24 hours before requested
+                                date/time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-0 d-block">
+                    <mat-paginator #paginator class="blue-grey-50 mt-20" [length]="roomsData.length"
+                        [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                    </mat-paginator>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

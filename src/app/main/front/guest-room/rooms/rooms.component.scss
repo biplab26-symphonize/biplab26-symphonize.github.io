@@ -1,0 +1,73 @@
+@import "src/@fuse/scss/fuse";
+
+#front-meeting-room {
+  
+    .header {
+        height: 400px;
+        min-height: 400px; 
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/maintenance-request.jpg'); 
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute; 
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }              
+    }   
+
+
+    .img-size {
+        img {
+            width: 230px;
+            height: 200px;
+        }
+    }
+
+    @include media-breakpoint('lt-sm') {
+        .content-wrap.p-28  {
+            padding: 20px !important;
+        }
+    }
+    .font{
+        font-style: bold;
+    }
+    .text-center {
+        text-align: center !important;
+    }
+}

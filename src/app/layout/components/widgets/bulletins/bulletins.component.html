@@ -1,0 +1,48 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content" id="home-topics-pagination">
+    <div class="p-16 title">
+        <div *ngIf="ForumSettings" class="h1 font-weight-800">{{ForumSettings.forum_widget_title | titlecase}}</div>
+    </div>
+    <table class="simple font-size-14">
+        <thead class="text-center">
+            <tr class="accent">
+                <th class="text-center"  *ngIf=" homesettings.bulletin_author=='Y'" >Topic Name</th>
+                <th class="text-center" *ngIf="homesettings.bulletin_replies=='Y'">Reply</th>
+                <th class="text-center" *ngIf="homesettings.bulletin_date=='Y'">Date</th> 
+                <!-- <th class="text-right" *ngIf="homesettings.bulletin_author=='Y'">Author</th>  -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let bulletin of bulletinsList.data">
+                <td class="text-left first" *ngIf=" homesettings.bulletin_author=='Y'">
+                    <a [routerLink]="['/forum/topic/',bulletin.content_id]" >{{bulletin.content_title | titlecase}}</a>
+                </td>
+                <td class="text-center second" *ngIf="homesettings.bulletin_replies=='Y'">
+                    {{bulletin.replies_count ? (bulletin.replies_count.count == 0 ? '' : '(' + bulletin.replies_count.count + ' reply)') : ''}}
+                </td>
+                <td class="text-center third" *ngIf="homesettings.bulletin_date=='Y'">
+                    {{bulletin.created_at |  date: defaultDateTimeFormat.date_format}} 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="simple-pagination p-0 my-20">
+        <mat-paginator 
+            #paginator
+            class="dt-paginations"
+            [length]="bulletinsList.total"           
+            [pageSize]="PaginationOpt?.pageSize"
+            [pageSizeOptions]="PaginationOpt?.pageSizeOptions"> 
+        </mat-paginator>
+    </div>
+    <div class="mb-20 text-center">
+        <!-- routerLink="/forums/" -->
+        <button mat-stroked-button type="button" color="accent" routerLink="/forums/">View All Forums</button>
+    </div>
+    <div class="mb-20 text-center" routerLink="/forums/create-topic/" >
+        <button mat-stroked-button type="button" color="accent">Post New Forum</button>
+    </div>
+
+</div>
+<!-- / CARD CONTENT -->

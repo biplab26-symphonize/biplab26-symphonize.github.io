@@ -1,0 +1,14 @@
+.info-section {
+    overflow-y:scroll;
+    max-height: 300px;
+}   
+
+.fuse-card.no-br {
+    min-width: 370px;
+    max-height: 625px;
+    overflow-y: scroll;
+
+    .close-btn {
+        color: #3B868D;
+    }
+}

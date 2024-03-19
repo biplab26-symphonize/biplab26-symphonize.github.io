@@ -1,0 +1,169 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    perm_data_setting</mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Guest Room Settings
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" (click)="onClickSave()">
+                    <mat-icon class="mr-4">settings_backup_restore</mat-icon> <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="content" fusePerfectScrollbar>
+        <form class="product w-100-p" [formGroup]="addGuestRoomSetting" fxLayout="column" fxFlex>
+            <div class="mat-card mat-elevation-z2 p-24 m-24 mb-56 " fxLayout="column">
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <!-- SHOW CLOSED EVENTS IN LIST -->
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="41" class="space">
+                        <mat-label>First day of the week</mat-label>
+                        <mat-select formControlName="first_day_week">
+                            <mat-option value="sunday">Sunday</mat-option>
+                            <mat-option value="monday">Monday</mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="41.5" class="space">
+                        <mat-label>Default status for booked</mat-label>
+                        <mat-select formControlName="default_booking_status">
+                            <mat-option value="confirmed">Confirmed</mat-option>
+                            <mat-option value="pending">Pending</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="41.5" class="space">
+                        <mat-label>Reservations and prices will be based on</mat-label>
+                        <mat-select formControlName="reservation_time_price_on">
+                            <mat-option value="day">Day</mat-option>
+                            <mat-option value="night">Night</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="49">
+                        <mat-label>Custom Admin Email</mat-label>
+                        <input matInput type="email" formControlName="custom_admin_email">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="49">
+                        <mat-label>Use Role</mat-label>
+                        <mat-select formControlName="userrole_id" name="userrole_id"   (selectionChange)="selectedRoll($event)" multiple  required>
+                            <mat-option *ngFor="let roles of roleList"  [value]="roles.id" >{{roles.role_name}}</mat-option>
+                        </mat-select>
+                        <mat-error>User role is required!</mat-error>
+                    </mat-form-field>
+            
+                    <mat-form-field appearance="outline" fxFlex="49">
+                        <mat-label>Admin User</mat-label>
+                        <mat-select  (change)="selectedUser($event)" formControlName="admin_user"  name="admin_user"  multiple required>
+                            <mat-option *ngFor="let users of userList"  [value]="users.id" >{{users.first_name}} {{users.last_name}}</mat-option>
+                        </mat-select>
+                        <mat-error>User type is required!</mat-error>
+                    </mat-form-field>
+                </div> 
+                <div fxLayout="column" fxFlex="100" class="select-background-img mb-20">
+                    <mat-label class="font-weight-600 mb-8">Select Image :</mat-label>
+                    <input hidden type='file' [accept]="inputAccpets" (change)="onSelectLogoFile($event)"
+                        #logofile />
+                    <div class="btn border p-16 border-radius-4" fxLayout="row" fxLayoutAlign="start center">
+                        <button type="button" mat-stroked-button color="accent" class="mr-12 choose-from-gallery"
+                            (click)="logofile.click()">Choose From
+                            Gallery
+                        </button>
+                        <div *ngIf="filetype==true" class="select-img">
+                            <img [src]="logourl" height="80" width="100" />
+                        </div>
+                        <input hidden type="text" formControlName="image" />
+                    </div>
+                </div>
+
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex class="space" fxFlex="84">
+                        <mat-label>Room pending reservation time (minutes)</mat-label>
+                        <input matInput type="number" formControlName="room_reservation_pending_time">
+                    </mat-form-field>
+                </div>
+
+
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <mat-label class="h3 mb-12 font-weight-600">Admin Booking Confirmation :</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="84">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject" name="admin_booking_confirm_subject"
+                                formControlName="admin_booking_confirm_subject">
+                        </mat-form-field>
+                        <br>
+                        <editor [init]="tinyMceSettings" name="admin_booking_confirmation_mail_body"
+                            [formControl]="addGuestRoomSetting.get('admin_booking_confirmation_mail_body')"></editor>
+                    </div>
+                </div>
+
+
+                <div class="mt-28" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em"
+                    fxLayoutWrap>
+                    <mat-label class="h3 mb-12">Resident Booking Confirmation</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutWrap>
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="84">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject"
+                                name="resident_booking_confirmation_subject"
+                                formControlName="resident_booking_confirmation_subject">
+                        </mat-form-field>
+                        <br>
+                        <editor [init]="tinyMceSettings" name="resident_booking_confirmation_mail_body"
+                            [formControl]="addGuestRoomSetting.get('resident_booking_confirmation_mail_body')"></editor>
+                    </div>
+                </div>
+                <div class="mt-28" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em"
+                    fxLayoutWrap>
+                    <mat-label class="h3 mb-12 font-weight-600">Admin Booking Cancellation :</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="84">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject" name="admin_booking_cancel_subject"
+                                formControlName="admin_booking_cancel_subject">
+                        </mat-form-field>
+                        <br>
+                        <editor [init]="tinyMceSettings" name="admin_booking_cancel_mail_body"
+                            [formControl]="addGuestRoomSetting.get('admin_booking_cancel_mail_body')"></editor>
+                    </div>
+                </div>
+
+                <div class="mt-28" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em"
+                    fxLayoutWrap>
+                    <mat-label class="h3 mb-12 font-weight-600">Resident Booking Cancellation :</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="84">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject"
+                                name="resident_booking_cancel_subject"
+                                formControlName="resident_booking_cancel_subject">
+                        </mat-form-field>
+                        <br>
+                        <editor [init]="tinyMceSettings" name="resident_booking_cancel_mail_body"
+                            [formControl]="addGuestRoomSetting.get('resident_booking_cancel_mail_body')"></editor>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

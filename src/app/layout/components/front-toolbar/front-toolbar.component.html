@@ -1,0 +1,70 @@
+<mat-toolbar class="p-0" fxHide.gt-sm>
+
+    <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start center">
+
+        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="navbar-toggle-button"
+                    *ngIf="!hiddenNavbar && !rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-sm>
+                <mat-icon>menu</mat-icon>
+            </button>
+            
+            <!-- logo--> 
+            <app-logo></app-logo>
+            <!--/ logo-->
+                  
+        </div>
+
+        <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
+            <!-- <div class="toolbar-separator"></div> -->
+
+            <fuse-search-bar (input)="search($event)"></fuse-search-bar>
+
+            <!-- <div class="toolbar-separator"></div> -->
+
+            <button mat-button [matMenuTriggerFor]="userMenu"
+                    class="user-button">
+                <div fxLayout="row" fxLayoutAlign="center center" *ngIf="this.loginUserInfo">
+                    <img class="avatar mr-0 mr-sm-16" [src]="this.loginUserInfo.avatar_file || _defaultNavAvatar" >
+                    <span class="username mr-12 text-capitalize" fxHide fxShow.gt-sm>{{this.loginUserInfo.first_name+' '+this.loginUserInfo.last_name}}</span>
+                    <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+                </div>
+            </button>
+
+            <mat-menu #userMenu="matMenu" class="navAccountMob" [overlapTrigger]="false">
+
+                <a *ngIf="this.roleId!=9" mat-menu-item [routerLink]="['/admin/dashboard']">
+                    <mat-icon>dashboard</mat-icon>
+                    <span>Dashboard</span>
+                </a>
+                <a mat-menu-item [routerLink]="['profile/notifications']">
+                    <mat-icon>notifications</mat-icon>
+                    <span>Notifications</span>
+                    <span class="unread-count warn">{{unreadnotifications}}</span>
+                </a>
+                <a mat-menu-item [routerLink]="['/profile']">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>User Profile</span>
+                </a>
+                <a mat-menu-item [routerLink]="['/edit-profile']">
+                    <mat-icon>settings</mat-icon>
+                    <span>Settings</span>
+                </a>
+                <!-- <a mat-menu-item [routerLink]="['chat']">
+                    <mat-icon>message</mat-icon>
+                    <span>My Messages</span>
+                    <span class="unread-count warn">{{unreadmsgs}}</span>
+                </a> -->
+                
+                <button mat-menu-item class="" (click)="onLogout()">
+                    <mat-icon>exit_to_app</mat-icon>
+                    <span>Logout</span>
+                </button>
+
+            </mat-menu>
+
+        </div>
+
+    </div>
+
+</mat-toolbar>

@@ -1,0 +1,211 @@
+<div id="front-meeting-room" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off" [formGroup]="addBooking"
+                novalidate autocomplete="off">
+                <div fxLayout="column">
+                    <div class="w-100-p border pt-24" fxLayout="row wrap" fxLayout.lt-sm="column"
+                        fxLayoutAlign="center center" [ngStyle]="{'background': '#f5f5f5','padding-left': '10px'}">
+                        <div fxFlex="10">
+                            <button mat-stroked-button color="accent"
+                                [ngStyle]="{'margin-bottom':'22px','height':'58px'}" (click)="gotoHome()">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+                            </button>
+                        </div>
+                        <div fxFlex="90" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-form-field appearance="outline" fxFlex.lt-sm="100" fxFlex="100" class="pr-8">
+                                <mat-label>Step</mat-label>
+                                <mat-select matNativeControl formControlName="step" required
+                                    (selectionChange)="goBack($event)">
+                                    <mat-option value="step1">Step 1- When and Who</mat-option>
+                                    <mat-option value="step2">Step 2- Rooms</mat-option>
+                                    <mat-option value="step3">Step 3- Extras</mat-option>
+                                    <mat-option value="step4">Step 4- Check Out</mat-option>
+                                    <mat-option value="step5">Step 5- Preview</mat-option>
+                                    <mat-option value="step6" disabled>Step 6- Finish</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="w-100-p border pt-24 pb-20" fxLayout="column wrap"
+                        [ngStyle]="{'margin-bottom': '10px','padding-left': '10px'}">
+                        <div fxLayout="row">
+                            <span>
+                                <h2>Your Booking</h2>
+                            </span>
+                        </div>
+                        <div fxLayout="row">
+                            <div fxLayout="column" fxFlex="50">
+                                <br>
+                                <span>Check-In Date:</span>
+                                <span>Check-Out Date:</span>
+                                <span>For:</span>
+                                <span>Check-In Time:</span>
+                                <span>Check-Out Time:</span>
+                                
+                            </div>
+                            <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                <span><a [routerLink]="['/guest-room']">Change dates</a></span>
+                                <span *ngIf="bookingArr.length > 0">{{bookingArr[0].date_from | date: 'MM/dd/yyyy'}}</span>
+                                <span *ngIf="bookingArr.length > 0">{{bookingArr[0].date_to | date: 'MM/dd/yyyy'}}</span>
+                                <span>{{count}} Rooms, {{nights}} Nights</span>
+                                <!-- CHECKINTIME MAS* -->
+                                <span *ngIf="bookingArr.length > 0">3:00 PM EST</span>
+                                <!-- CHECKOUTTIME MAS* -->
+                                <span *ngIf="bookingArr.length > 0">11:00 AM EST</span>
+
+                              
+                            </div>
+                        </div>
+                        <div fxLayout="column" class="w-100-p mt-20" *ngFor="let data of roomBookArr">
+                            <hr>
+                            <div fxLayout="row">
+                                <div fxLayout="column" fxFlex="50" [ngStyle]="{'font-weight': 'lighter'}">
+                                    <span><b>Building Name: </b> {{this.CurrentSelectdData[0].building_name}}</span>
+                                    {{data[0].rooms.type}}
+                                </div>
+                                <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                    <span><a [routerLink]="['/guest-room/rooms']">Change Rooms</a></span>
+                                </div>
+                            </div>
+                            <div fxLayout="row" *ngFor="let rooms of data" [ngStyle]="{'font-weight': 'bold'}">
+                                <div fxLayout="column" fxFlex="50">
+                                    <span>{{rooms.adults}} Adults, {{rooms.children}} Children</span>
+                                </div>
+                                <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                    <span>${{rooms.price}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="column" class="w-100-p mt-20" *ngIf="CurrentSelectdData[0].extraName.length > 0">
+                            <div fxLayout="row">
+                                <span>Extras:</span>
+                            </div>
+                            <hr>
+                            <div fxLayout="row" *ngFor="let extra of CurrentSelectdData[0].extraName">
+                                <div fxLayout="column" fxFlex="50">
+                                    <span *ngIf="extra.per_price == 'day_person'">{{extra.name}} (Per day /
+                                        Per
+                                        person)</span>
+                                    <span *ngIf="extra.per_price != 'day_person'">{{extra.name}} (Per
+                                        {{extra.per_price}})</span>
+                                </div>
+                                <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end','font-weight': 'bold'}" >
+                                    <span>${{extra.price}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div fxLayout="column" class="w-100-p mt-20">
+                            <div fxLayout="row" [ngStyle]="{'font-weight': 'bold'}">
+                                <div fxLayout="column" fxFlex="50">
+                                    <span>Total</span>
+                                </div>
+                                <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                    <span>${{CurrentSelectdData[0].totalprice}}</span>
+                                </div>
+                            </div>
+                            <div fxLayout="row" [ngStyle]="{'font-weight': 'bold'}">
+                                <div fxLayout="column" fxFlex="50">
+                                    <span>Deposit required</span>
+                                </div>
+                                <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                    <span>$0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" d-block" [ngClass.gt-md]="{'p-24': 'true'}">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <h1>PERSONAL DETAILS</h1>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                            <table border="1" width="100%" class="reservation-check-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="p-16">
+                                            <span>Name*</span>
+                                        </td>
+                                        <td class="p-16">
+                                            <span>
+                                                {{CurrentSelectdData[0].name}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-16">
+                                            <span>Phone*</span>
+                                        </td>
+                                        <td class="p-16">
+                                            <span>
+                                                {{CurrentSelectdData[0].phone}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-16">
+                                            <span>Email*</span>
+                                        </td>
+                                        <td class="p-16">
+                                            <span>
+                                                {{CurrentSelectdData[0].email}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr style="display: none;">
+                                        <td class="p-16">
+                                            <span>Arrival Time*</span>
+                                        </td>
+                                        <td class="p-16">
+                                            <span>
+                                                {{CurrentSelectdData[0].arrival_time | date :'shortTime'}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="CurrentSelectdData[0].description != ''">
+                                        <td class="p-16" *ngIf="CurrentSelectdData[0].description != ''">
+                                            <span>Additional Requirements</span>
+                                        </td>
+                                        <td class="p-16" *ngIf="CurrentSelectdData[0].description != ''">
+                                            <span>
+                                                {{CurrentSelectdData[0].description}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <h1>BILLING ADDRESS</h1>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <table border="1" width="100%" class="reservation-check-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="p-16" [ngStyle]="{'width':'32%'}">
+                                            <span>Address Line 1*</span>
+                                        </td>
+                                        <td class="p-16">
+                                            <span>
+                                                {{CurrentSelectdData[0].address}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div fxLayout="row" class="px-16 pb-16 mt-20" fxLayoutAlign="center center">
+                            <button mat-stroked-button color="accent" class="mr-8" (click)="gotoBack()">Back</button>
+                            <button mat-stroked-button color="accent" [disabled]="disableSubmit == true"
+                                (click)="confirmBooking()">Confirm Booking</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,161 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    perm_data_setting</mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Meeting Room Settings
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" (click)="onClickSave()">
+                    <mat-icon class="mr-4">settings_backup_restore</mat-icon> <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="content" fusePerfectScrollbar>
+        <form class="product w-100-p" [formGroup]="addMeetingRoomSetting" fxLayout="column" fxFlex>
+            <div class="mat-card mat-elevation-z2 p-24 m-24 mb-56 " fxLayout="column">
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <!-- SHOW CLOSED EVENTS IN LIST -->
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="space">
+                        <mat-label>First day of the week</mat-label>
+                        <mat-select formControlName="first_day_week">
+                            <mat-option value="sunday">Sunday</mat-option>
+                            <mat-option value="monday">Monday</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="space">
+                        <mat-label>Number of items per page</mat-label>
+                        <input type="number" matInput min="1" formControlName="number_of_items_per_page">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="space">
+                        <mat-label>Accept Booking Earlier</mat-label>
+                        <input type="number" matInput min="1" formControlName="accept_booking_earlier">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="49" class="space">
+                        <mat-label>New Booking Received Email</mat-label>
+                        <mat-select formControlName="new_booking_received_email">
+                            <mat-option value="no">No</mat-option>
+                            <mat-option value="yes">Yes</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxFlex="100" class="select-background-img mb-20">
+                    <mat-label class="font-weight-600 mb-8">Select Image :</mat-label>
+                    <input hidden type='file' [accept]="inputAccpets" (change)="onSelectLogoFile($event)"
+                        #logofile />
+                    <div class="btn border p-16 border-radius-4" fxLayout="row" fxLayoutAlign="start center">
+                        <button type="button" mat-stroked-button color="accent" class="mr-12 choose-from-gallery"
+                            (click)="logofile.click()">Choose From
+                            Gallery
+                        </button>
+                        <div *ngIf="filetype==true" class="select-img">
+                            <img [src]="logourl" height="80" width="100" />
+                        </div>
+                        <input hidden type="text" formControlName="image" />
+                    </div>
+                </div>
+                <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <mat-label class="h3 mb-12 font-weight-600">Admin Booking Confirmation :</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject" name="admin_booking_confirm_subject" formControlName="admin_booking_confirm_subject">
+                        </mat-form-field>
+                        <br>
+                        <editor class="w-100-p mr-8" [init]="tinyMceSettings"  name="admin_booking_confirmation_mail_body" [formControl]="addMeetingRoomSetting.get('admin_booking_confirmation_mail_body')" ></editor>
+                    </div>
+                </div>
+                <div class="mt-28" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutWrap>
+                    <mat-label class="h3 mb-12 font-weight-600">Resident Booking Confirmation :</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutWrap >
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject" name="resident_booking_confirmation_subject" formControlName="resident_booking_confirmation_subject">
+                        </mat-form-field>
+                        <br>
+                        <editor [init]="tinyMceSettings"  name="resident_booking_confirmation_mail_body"   [formControl]="addMeetingRoomSetting.get('resident_booking_confirmation_mail_body')"></editor>
+                    </div>
+                </div>
+                 <div class="mt-28" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                    <mat-label class="h3 mb-12 font-weight-600">Admin Booking Cancellation :</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap >
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="84">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject" name="admin_booking_cancel_subject" formControlName="admin_booking_cancel_subject">
+                        </mat-form-field>
+                        <br>
+                        <editor [init]="tinyMceSettings"  name="admin_booking_cancel_mail_body"  [formControl]="addMeetingRoomSetting.get('admin_booking_cancel_mail_body')"></editor>
+                    </div>
+                </div>
+
+                <div class="mt-28" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutWrap>
+                    <mat-label class="h3 mb-12 font-weight-600">Resident Booking Cancellation :</mat-label>
+                    <br>
+                    <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutWrap >
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <mat-label>Email Subject</mat-label>
+                            <input matInput type="text" placeholder="Email Subject" name="resident_booking_cancel_subject" formControlName="resident_booking_cancel_subject">
+                        </mat-form-field> 
+                        <br>
+                        <editor [init]="tinyMceSettings"  name="resident_booking_cancel_mail_body"  [formControl]="addMeetingRoomSetting.get('resident_booking_cancel_mail_body')"></editor>
+                    </div>
+                </div>
+                <div class="mb-16" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWap >
+                    <h3>NOTE : "If user wants to change the label of the status for that label settings are use " </h3>
+                </div>
+
+                <div fxLayout="row row-reverse" fxLayoutAlign="start start" fxLayoutGap="1em" fxLayoutWap >
+                    <label class="font-weight-600">Confirm Label :</label>
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Confirmed Text </mat-label>
+                            <input matInput  formControlName="confirmed" required>
+                            <mat-error>field required!</mat-error>
+                        </mat-form-field>   
+                    </div>
+                </div>
+
+                <div fxLayout="row row-reverse" fxLayoutAlign="start start" fxLayoutGap="1em" fxLayoutWap >
+                    <label class="font-weight-600">Pending Label :</label>
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Pending Text </mat-label>
+                            <input matInput  formControlName="pending" required>
+                            <mat-error>field required!</mat-error>
+                        </mat-form-field>   
+                    </div>
+                </div>
+
+                <div fxLayout="row row-reverse" fxLayoutAlign="start start" fxLayoutGap="1em" fxLayoutWap >
+                    <label class="font-weight-600">Cancel Label :</label>
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Cancel Text </mat-label>
+                            <input matInput  formControlName="cancelled" required>
+                            <mat-error>field required!</mat-error>
+                        </mat-form-field>   
+                    </div>
+                </div> 
+                
+            </div>
+        </form>
+    </div>
+</div>

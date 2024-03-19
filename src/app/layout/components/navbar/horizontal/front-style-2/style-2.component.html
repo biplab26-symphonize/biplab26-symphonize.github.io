@@ -1,0 +1,22 @@
+<div class="nav-menu" *ngIf="navigation">
+	<div fxLayout="row" fxLayoutAlign="start center">
+		<div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center" fxFlex="25">
+			<app-logo></app-logo>
+        </div>
+        
+        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="center center" fxFlex="50">
+            <ng-container *ngIf="currentUser && currentUser.first_name">
+                <span class="h1 welcome-msg-user">
+                    Hello, {{currentUser.first_name +' '+ currentUser.last_name}}!
+                </span>
+            </ng-container>
+        </div>
+		<div class="w-100-p pl-8 pr-8 pt-8 pb-8" fxLayout="column" fxLayoutAlign="end center" style="flex: 1 1 25%">
+            <button [routerLink] = "['edit-profile']" mat-stroked-button color="accent" type="button" class=" w-100-p mr-10 my-4 "><mat-icon class="icon s-20 mr-4">edit</mat-icon> Change Password and Email Address</button>
+            <button [routerLink] = "['profile']" mat-stroked-button color="accent" type="button" class=" w-100-p mr-10 my-4"><mat-icon class="icon s-20 mr-4">person</mat-icon> View My Profile</button>
+		</div>
+    </div>
+    <div [ngClass]="fuseConfig.layout.navbar.primaryBackground" fxFlex fxFill fxLayout="row" fxLayoutAlign="center center">
+        <fuse-navigation class="w-100-p" layout="horizontal" [navigation]="navigation"></fuse-navigation>
+    </div>
+</div>

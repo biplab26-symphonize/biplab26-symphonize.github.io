@@ -1,0 +1,24 @@
+<div cdkDropList [cdkDropListData]="columnArray" (cdkDropListDropped)="drop($event)" fxLayout="row wrap" fxLayoutAlign="start start" class="p-16">
+    <ng-container *ngFor="let column of columnArray;let cindex=index;">
+        <div cdkDrag fxFlex="0 0 calc({{column.columnwidth}}% - 8px)" class="template-item m-4">
+            <div class="column-actions green-bg-color" cdkDragHandle>
+                <div class="w-100-p" *ngIf="pageOptionsArray && pageOptionsArray.columnwidths" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="30" class="mr-20">
+                        <mat-select class="px-4 ml-12 select-white-color" name="columnwidth" [(ngModel)]="column.columnwidth" (selectionChange)="updateColumnWidth(cindex)">
+                            <mat-option *ngFor="let width of pageOptionsArray.columnwidths | keyvalue" [value]="width.key">
+                            {{width.value}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+
+                    <div fxFlex="70" fxLayout="row">
+                        <mat-icon class="s-16 my-12 mx-0 icon fuse-white-fg" (click)="OpenColumnSettingsDialog(cindex)">brush</mat-icon>
+                        <mat-icon class="s-16 my-12 mx-0 icon fuse-white-fg" (click)="cloneColumn(cindex)"> file_copy</mat-icon>
+                        <mat-icon class="s-16 my-12 mx-0 icon fuse-white-fg" (click)="removeColumn(cindex)">delete</mat-icon>
+                    </div>
+                </div>
+            </div>
+            <page-tmpl-one [column]="column" [currentIndex]="cindex" (onColumnUpdated)="sendColumnToContainer($event)" (onElementAdded)="setElementToColumn($event,cindex)" (onSortedElements)="updateColumnElements($event,cindex)" (onElementEdit)="updateElementToColumn($event,cindex)" (onElementRemove)="removeElementFromColumn($event,cindex)"></page-tmpl-one>  
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,15 @@
+@import "src/@fuse/scss/fuse";
+
+navbar-front-horizontal-style-2 {
+    .nav-menu{
+        display: block !important;
+    }
+    .welcome-msg-user{
+        font-family: sans-serif;
+        font-weight: 900;
+    }
+}
+
+.mat-button-font{
+font-size: 12px;
+}

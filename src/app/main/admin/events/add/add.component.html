@@ -1,0 +1,277 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="add-event-back">
+   <!-- HEADER -->
+   <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+      fxLayoutAlign.gt-xs="space-between center">
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">event
+            </mat-icon>
+            <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Add Event</span>
+         </div>
+      </div>
+      <!-- / APP TITLE -->
+      <!-- BTN's -->
+      <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+         <div class="mt-16 mt-sm-0">
+            <span *ngIf="editEvent">
+               <button mat-raised-button class="mx-4" *ngIf="eventform.get('status').value !== 'C'"
+                  (click)="onClickCancel()">
+                  <mat-icon>close</mat-icon>
+                  Cancel Event
+               </button>
+               <button mat-raised-button class="mx-4" *ngIf="eventform.get('status').value == 'C'"
+                  (click)="onClickRestore()">
+                  <mat-icon>restore</mat-icon>
+                  Restore Event
+               </button>
+               <button mat-raised-button class="mx-4" (click)="onClickDelete()">
+                  <mat-icon>delete</mat-icon>
+                  Delete
+               </button>
+            </span>
+            <button [routerLink]="allistRoute" mat-raised-button>
+               <mat-icon class="mr-4">arrow_back</mat-icon>
+               Back To List
+            </button>
+         </div>
+      </div>
+      <!-- / BTN's -->
+   </div>
+   <!-- / HEADER -->
+   <!-- CONTENT -->
+   <div class="content" fusePerfectScrollbar>
+      <!-- CENTER -->
+      <div class="center p-24 pb-56" fxLayoutAlign="center">
+         <!-- CONTENT -->
+         <div class="w-90-p my-auto">
+            <form class="p-24 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="eventform"
+               [formGroup]="eventform" novalidate autocomplete="off">
+               <!-- <div fxLayout="column">
+                     <div fxFlex="100">
+                         <h2 class="h2 mb-8 mat-title">{{title}}</h2>
+                        <br />
+                     </div>
+                  </div>  -->
+
+               <h2 class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16"> Event Title And Location :
+               </h2>
+               <div class="p-16 fuse-white-bg pb-0">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <mat-form-field appearance="outline" fxFlex="50" class=" mr-4">
+                        <mat-label>Event Title</mat-label>
+                        <input matInput required type="text" (ngModelChange)="enableEditPopup($event)"
+                           name="event_title" placeholder="Event Title" formControlName="event_title" />
+                        <mat-error *ngIf="eventform.get('event_title').invalid">Event Title is required</mat-error>
+                     </mat-form-field>
+                     <mat-form-field appearance="outline" class="mr-4" fxFlex="50">
+                        <mat-label>Select Calendar</mat-label>
+                        <mat-select name="calendar_id" (ngModelChange)="setvalue()" placeholder="Event Calendar"
+                           formControlName="calendar_id">
+                           <ng-container *ngFor="let Category of Category_Calendar_list; let i = index;" >
+                              <ng-container *ngIf="calendarSlug!=='' && calendarSlug==Category.category_alias">
+                                 <mat-option [value]="Category.id">{{Category.category_name}}</mat-option>
+                              </ng-container>
+                              <ng-container *ngIf="calendarSlug==''">
+                                 <mat-option [value]="Category.id">{{Category.category_name}}</mat-option>
+                              </ng-container>
+                           </ng-container>
+                           
+                        </mat-select>
+                        <mat-error *ngIf="eventform.get('calendar_id').invalid">Calendar is required</mat-error>
+                     </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <!-- EVENT LOCATION -->
+                     <mat-form-field appearance="outline" class="mr-4" fxFlex="50">
+                        <mat-label>Select Location</mat-label>
+                        <mat-select name="event_location" (ngModelChange)="enableEditPopup($event)"
+                           placeholder="Event Location" formControlName="event_location" multiple="true">
+                           <mat-option *ngFor="let location of locations; let i = index;" [value]="location.id">
+                              {{location.abbreviation}} - {{location.category_name}}</mat-option>
+                           <mat-option *ngIf="eventSettings && eventSettings.add_edit_events.add_location=='Y'"
+                              (click)="openLocationModal()">Add new location</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="eventform.get('event_location').invalid">Location is required</mat-error>
+                     </mat-form-field>
+                     <!-- SHOW DESCRIPTION -->
+                     <mat-form-field appearance="outline" class="ml-4" fxFlex="50">
+                        <mat-label>Display Event Description</mat-label>
+                        <mat-select name="display_description" (ngModelChange)="enableEditPopup($event)"
+                           placeholder="Display Event Description" formControlName="display_description">
+                           <mat-option value="Y">Yes</mat-option>
+                           <mat-option value="N">No</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="eventform.get('display_description').invalid"> Display Event Description is
+                           required</mat-error>
+                     </mat-form-field>
+                  </div>
+               </div>
+
+               <!-- EVENT DESCRIPTION -->
+               <div fxLayout="row" fxLayoutAlign="start center">
+
+                  <mat-form-field appearance="outline" floatLabel="always" class="hiddenInput editor" hidden
+                     fxFlex="100">
+                     <div fxLayout="row" class="font-weight-600 font-size-18 green-bg-color fuse-white-fg px-16 py-4">
+                        <h2 class="w-100-p" fxLayoutAlign="start center">Event Description :</h2>
+                        <editor-gallery fxLayoutAlign="end center" [controlName]="'event_description'"
+                           (onMediaSelect)="setEditorMedia($event)"></editor-gallery>
+                     </div>
+
+                     <input matInput hidden value="">
+                     <div class="add-event-back-editor">
+                        <editor [init]="tinyMceSettings" (ngModelChange)="enableEditPopup($event)"
+                           name="event_description" [formControl]="eventform.get('event_description')"></editor>
+                     </div>
+                  </mat-form-field>
+               </div>
+
+
+               <!-- REGISTRATION COMPONENT -->
+               <event-registration-fields [sendRegisterData]="registerData" (registerdata)="setRegisterValue($event)">
+               </event-registration-fields>
+               <!-- RECURRING COMPONENT -->
+               <app-recurring [recurringData]="recurringData" (metaUploaded)="setRecurringValue($event)">
+               </app-recurring>
+               <!-- /RECURRING COMPONENT -->
+
+               <!-- DIGITAL SIGNAGE  -->
+               <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                  <div appearance="outline" class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16 mt-20"
+                     fxFlex fxLayout="row" fxLayoutAlign="start center">
+                     <label fxLayout="column" class="font-weight-600 mr-8" fxFlex="50">Create a Digital Signage Slide
+                        ?</label>
+                     <mat-radio-group class="radio-btn-white-color" fxFlex="50" name="is_signage"
+                        formControlName="is_signage">
+                        <mat-radio-button value="Y" (change)="setSignageRequired('Y')"> Yes </mat-radio-button>
+                        <mat-radio-button value="N" (change)="setSignageRequired('N')" class="pl-12"> No
+                        </mat-radio-button>
+                     </mat-radio-group>
+                  </div>
+               </div>
+               <ng-container *ngIf="eventform.get('is_signage').value=='Y'">
+                  <signage-form [eventInfo]="recurringData" formControlName="schedule"></signage-form>
+               </ng-container>
+               <!-- / DIGITAL SIGNAGE  -->
+
+
+               <h2 class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16 mt-20"> Advanced Settings</h2>
+               <div class="fuse-white-bg p-16 pb-0">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     
+                     <!-- commoncategories -->
+                     <mat-form-field appearance="outline" floatLabel="always" class="ml-4" fxFlex="50">
+                        <mat-label>Select Common Categories</mat-label>
+                        <mat-select name="subcategories" (ngModelChange)="enableEditPopup($event)"
+                           formControlName="subcategories" multiple>
+                           <mat-option-select-all></mat-option-select-all>
+                           <mat-option *ngFor="let category of commonCategories" [value]="category.id">
+                              {{category.category_name}}
+                           </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="eventform.get('subcategories').invalid">Select Category</mat-error>
+                     </mat-form-field>
+                     <!-- calendarwisecategories -->
+                     <mat-form-field appearance="outline" floatLabel="always" class="ml-4" fxFlex="49">
+                        <mat-label>Select Categories</mat-label>
+                        <mat-select name="categories" (ngModelChange)="enableEditPopup($event)"
+                           formControlName="categories" multiple>
+                           <mat-option-select-all></mat-option-select-all>
+                           <mat-option *ngFor="let category of categories" [value]="category.id">
+                              {{category.category_name}}
+                           </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="eventform.get('categories').invalid">Select Category</mat-error>
+                     </mat-form-field>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <mat-form-field appearance="outline" floatLabel="always" class="mr-4" fxFlex="50">
+                        <mat-label>Select Roles</mat-label>
+                        <mat-select required name="roles" (ngModelChange)="enableEditPopup($event)"
+                           formControlName="roles" multiple>
+                           <mat-option-select-all></mat-option-select-all>
+                           <mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="eventform.get('roles').invalid">Select role</mat-error>
+                     </mat-form-field>
+
+                     <mat-form-field appearance="outline" floatLabel="always" class="mr-4" fxFlex="50">
+                        <mat-label>Is this an Active Event</mat-label>
+                        <mat-select name="status" (ngModelChange)="enableEditPopup($event)" formControlName="status">
+                           <mat-option value="A">Yes</mat-option>
+                           <mat-option value="I">No</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="eventform.get('status').invalid">Event Status Is Required</mat-error>
+                     </mat-form-field>
+                  </div>
+
+
+                  <!-- EVENT ORGANIZER NAME AND MAIL -->
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <mat-form-field appearance="outline" class="mr-4" fxFlex="50">
+                        <mat-label>Enter Event Organizer's Name</mat-label>
+                        <input matInput (ngModelChange)="enableEditPopup($event)" placeholder="Event Organizer’s Name:"
+                           formControlName="organizer_name">
+                        <mat-error *ngIf="eventform.get('organizer_name').invalid">Event Organizer Name Is Required
+                        </mat-error>
+                     </mat-form-field>
+                     <mat-form-field appearance="outline" class="mr-4" fxFlex="50">
+                        <mat-label>Enter Event Organizer's Email</mat-label>
+                        <input matInput (ngModelChange)="enableEditPopup($event)"
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="Event Organizer’s Email:"
+                           formControlName="organizer_email" />
+                        <mat-error *ngIf="eventform.controls['organizer_email'].errors?.email">Invalid email</mat-error>
+                        <mat-error *ngIf="eventform.controls['organizer_email'].errors?.required">Event Organizer Email
+                           Is Required</mat-error>
+                     </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="start center" class="mb-16" fxLayout.lt-md="column">
+                     <div appearance="outline" floatLabel="always" fxFlex="50">
+                        <mat-checkbox class="font-weight-600" id="special_event"
+                           (ngModelChange)="enableEditPopup($event)" name="special_event"
+                           formControlName="special_event">Special Event :</mat-checkbox>
+                     </div>
+                  </div>
+                  <div class="mb-20" fxLayout="row" fxLayoutAlign="start center"  fxLayout.lt-md="column">
+                     <mat-form-field fxFlex appearance="outline" class="w-100-p">
+                        <mat-label>Email Address for Notifications (Optional)</mat-label>
+                        <input matInput (ngModelChange)="enableEditPopup($event)" formControlName="mail_notification">
+                        <mat-hint class="h4 fuse-black-900-fg pl-0">Enter Comma Seprated Email To Send Notifications To
+                           Multiple Emails ( , )</mat-hint>
+                     </mat-form-field>
+                  </div>
+                  <!-- special fields for attendeeInfo -->
+                  <ng-container>
+                     <special-fields [eventInfo]="recurringData"  (updateSpecialInfo)="setSpecialInfoFields($event)"></special-fields>
+                  </ng-container>
+                  <!-- /special fields ends -->
+               </div>
+
+               <!--EVENT META FIELDS-->
+               <app-eventmeta [eventMetaData]="eventMetaData" (eventMetaUploaded)="setMetaFieldValue($event)"
+                  [MetaUploadInfo]="MetaUploadInfo?.event"></app-eventmeta>
+
+               <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1em" fxFlex="1 0 auto" class="mt-20">
+                  <button mat-raised-button type="submit" *ngIf="!editEvent" [disabled]="disableSubmit"
+                     (click)="onSubmit()"
+                     class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Save</button>
+                  <button mat-raised-button type="submit" *ngIf="editEvent" (click)="recEventUpdateType(recUpdateType)"
+                     [disabled]="isSubmit || disableSubmit"
+                     class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Update</button>
+                  <button mat-raised-button type="button" [routerLink]="allistRoute"
+                     class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Cancel</button>
+               </div>
+            </form>
+         </div>
+
+
+
+         <!-- / CONTENT -->
+      </div>
+      <!-- / CENTER -->
+   </div>
+   <!-- / CONTENT -->
+</div>

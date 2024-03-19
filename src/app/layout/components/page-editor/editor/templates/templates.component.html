@@ -1,0 +1,186 @@
+<div class="content sp-builder-modal-settings-container" fxLayout="row wrap" fxLayoutGap="10px grid" fxLayout.xs="column" fusePerfectScrollbar>
+    <div class="sp-builder-column-layouts" fxLayout="row wrap" fxFlex="100">
+        <ng-container *ngFor="let template of pageOptions.columns">
+            <div *ngIf="dialogData.blank==true && template.template==false" class="grid-template" fxLayout="row" fxFlex="18" (click)="selectTemplate(template)">
+                <div class="sp_builder_layout_column_blank"> </div>
+            </div>
+            <ng-container *ngIf="template.template==true">
+                <div class="grid-template" fxLayout="row" fxFlex="18" *ngIf="template.column_id=='1_1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column"> 1/1 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18" *ngIf="template.column_id=='1_2' && template.columns!=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4"> 1/2 </div>
+                    <div class="sp_builder_layout_column"> 1/2 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_3' && template.columns!=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4"> 1/3 </div>
+                    <div class="sp_builder_layout_column mr-4"> 1/3 </div>
+                    <div class="sp_builder_layout_column"> 1/3 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18" *ngIf="template.column_id=='1_4' && template.columns!=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4"> 1/4 </div>
+                    <div class="sp_builder_layout_column mr-4"> 1/4 </div>
+                    <div class="sp_builder_layout_column mr-4"> 1/4 </div>
+                    <div class="sp_builder_layout_column"> 1/4 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18" *ngIf="template.column_id=='2_3_1_3'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="70"> 2/3 </div>
+                    <div class="sp_builder_layout_column" fxFlex="30"> 1/3 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_3_2_3'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="30"> 1/3 </div>
+                    <div class="sp_builder_layout_column" fxFlex="70"> 2/3 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_4_3_4'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/4 </div>
+                    <div class="sp_builder_layout_column" fxFlex="80"> 3/4 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='3_4_1_4'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="80"> 3/4 </div>
+                    <div class="sp_builder_layout_column" fxFlex="20"> 1/4 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_2_1_4_1_4'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="60"> 1/2 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/4 </div>
+                    <div class="sp_builder_layout_column" fxFlex="20"> 1/4 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_4_1_4_1_2'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/4 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/4 </div>
+                    <div class="sp_builder_layout_column" fxFlex="60"> 1/2 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_4_1_2_1_4'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/4 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="60"> 1/2 </div>
+                    <div class="sp_builder_layout_column" fxFlex="20"> 1/4 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_5_4_5'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/5 </div>
+                    <div class="sp_builder_layout_column" fxFlex="80"> 4/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='4_5_1_5'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="80"> 4/5 </div>
+                    <div class="sp_builder_layout_column" fxFlex="20"> 1/5 </div>
+                </div>
+    
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='3_5_2_5'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="60"> 3/5 </div>
+                    <div class="sp_builder_layout_column" fxFlex="40"> 2/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='2_5_3_5'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="40"> 2/5 </div>
+                    <div class="sp_builder_layout_column" fxFlex="60"> 3/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_5_1_5_3_5'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/5 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/5 </div>
+                    <div class="sp_builder_layout_column" fxFlex="60"> 3/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_5_3_5_1_5'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/5 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="60"> 3/5 </div>
+                    <div class="sp_builder_layout_column" fxFlex="20"> 1/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_2_1_2_1_2_1_6'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="49"> 1/2 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column" fxFlex="17"> 1/6 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_6_1_6_1_6_1_2'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column" fxFlex="49"> 1/2 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_6_2_3_1_6'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="60"> 2/3 </div>
+                    <div class="sp_builder_layout_column" fxFlex="20"> 1/6 </div>
+                </div>
+    
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_5_2_5_1_5_1_5_1_5'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/5 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 2/5 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/5 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/5 </div>
+                    <div class="sp_builder_layout_column" fxFlex="20"> 1/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_6_1_6_1_6_1_6_1_6_1_6'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column mr-4" fxFlex="17"> 1/6 </div>
+                    <div class="sp_builder_layout_column" fxFlex="17"> 1/6 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='5_6' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="70"> 5/6 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='4_5' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="80"> 4/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='3_4' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="80"> 3/4 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='2_3' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="70"> 2/3 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='3_5' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="60"> 3/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_2' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="50"> 1/2 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='2_5' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="40"> 2/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_3' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="30"> 1/3 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_4' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="20"> 1/4 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_5' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="16"> 1/5 </div>
+                </div>
+    
+                <div class="grid-template" fxLayout="row" fxFlex="18"  *ngIf="template.column_id=='1_6' && template.columns=='1'" (click)="selectTemplate(template)">
+                    <div class="sp_builder_layout_column mr-4" fxFlex="15"> 1/6 </div>
+                </div>
+            </ng-container>
+            
+        </ng-container>
+    </div>
+</div>

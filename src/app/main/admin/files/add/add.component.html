@@ -1,0 +1,275 @@
+<div class="page-layout page-layout-list simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+            fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center" class="w-40-p">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">add</mat-icon>
+                <span *ngIf="!isTrashView" class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Click “Replace” or “Add” to update your Page <span class="fuse-white-fg font-900">{{menuInfo.menu_title}}</span> with a new PDF.
+                </span>
+                <span *ngIf="isTrashView" class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Restore or Permenently Delete Documents.
+            </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="end center" class="w-60-p">
+            <div class="mt-16 mt-sm-0"> 
+                <a [href]="_appConfig.url.siteUrl+menuInfo.menu_url" target="_blank">
+                <button type="button" mat-raised-button color="default" class="m-4" *ngIf="!isTrashView" > <mat-icon>remove_red_eye</mat-icon> View Page</button>
+                </a>
+                <button type="button" mat-raised-button color="default" class="m-4" *ngIf="!isTrashView"  [routerLink]="'/admin/files/trash/'+menuInfo.menu_id"> <mat-icon>delete</mat-icon> View Trash</button>
+                <button type="button" mat-raised-button color="default" class="m-4" *ngIf="isTrashView"  [routerLink]="'/admin/files/add/'+menuInfo.menu_id"> <mat-icon>list</mat-icon> Documents List</button>
+                <button type="button" mat-raised-button color="default" class="m-4"  *ngIf="!isTrashView" [disabled]="!sortingForm.valid || isSubmit==true" (click)="saveSortCriteria()" > <mat-icon>save</mat-icon> Save Page</button>
+                <button type="button" mat-raised-button color="default" class="m-4"  *ngIf="!isTrashView"  [routerLink]="'/admin/files/library'"> <mat-icon>arrow_back</mat-icon>Back To List</button>
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- SELECTED BAR -->
+    <div class="selected-bar accent-600 h-80" *ngIf="selection.selected.length>0" [@slideInTop]>
+        <div fxFlex fxLayout="row" fxLayoutAlign="start center" class="px-24 py-0 header accent p-24 h-80">
+
+            <div class="close-button-wrapper" fxFlex="0 1 auto" fxFlex.gt-sm="220px" (click)="selection.clear()">
+                <button  mat-raised-button>
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back
+                </button>
+            </div>
+
+            <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                <div class="multi-select-actions" *ngIf="!isTrashView">
+                    <button type="button" mat-raised-button class="m-4" (click)="applyCategory()" >  Apply Category</button>
+                    <button type="button" mat-raised-button  class="m-4" (click)="deleteDocument(0)" > Delete</button>
+                </div>
+                <!--TRASH VIEW-->
+                <span *ngIf="isTrashView">
+                    <button 
+                    type="button" mat-raised-button color="primary" class=" mr-4 ml-4" (click)="restoreOrDeleteDocument(0,false)"
+                    [disabled]="(!selection.selected.length) ? true : false">Restore</button>
+                    
+                    <!--PERMENENT DELETE-->
+                    <button 
+                    type="button" mat-raised-button  class="mr-4 ml-4" (click)="restoreOrDeleteDocument(0,true)"
+                    [disabled]="(!selection.selected.length) ? true : false">Delete</button> 
+                </span>
+            </div>
+
+        </div> 
+    </div>
+    <!-- / SELECTED BAR -->
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" >    
+            <!-- FILTER -->
+            <div fxLayout="row" fxLayoutAlign="space-between center"  class="fuse-white-bg py-20 px-16 mb-20  w-100-p">
+            
+                <div *ngIf="!isTrashView" class="filters w-100-p" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                    <form #sorting name="sortingForm" [formGroup]="sortingForm" class="w-100-p">
+                        <div fxLayout="row" class="w-100-p" fxLayoutAlign="space-between start">
+
+                            <div fxLayout="column" class="w-33-p text-capitalize">
+                                    <!--Order by select-->
+                                <mat-form-field appearance="outline" fxFlex="20"  class="mat-wrapper-p-0 filter-select mr-8">
+                                    <mat-label>Order By</mat-label>
+                                    <mat-select 
+                                    placeholder="Order by"
+                                    formControlName="order_type"
+                                    [required]="sortingForm.get('order_type').value=='autosort'">
+                                        <mat-option *ngFor="let order of orderOptions | keyvalue" [value]="order.key">
+                                        {{order.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        
+                            <div fxLayout="column" class="w-33-p">
+                                <!--drag drop category-->     
+                                                       
+                                <mat-form-field *ngIf="sortingForm.get('order_type').value=='autosort'" appearance="outline" fxFlex="40">
+                                    <mat-label> Category Order :</mat-label>
+                                    <mat-chip-list cdkDropList class="example-list mat-chip-list-stacked" (cdkDropListDropped)="drop($event)" aria-label="Categories">
+                                        <mat-chip *ngFor="let category of Categories" cdkDrag class="w-97-p">
+                                            <mat-icon>add</mat-icon>{{category.category_name}}
+                                        </mat-chip>
+                                        <input hidden />
+                                    </mat-chip-list> 
+                                </mat-form-field>
+                            </div>
+
+                            
+                            <div fxLayout="column" class="w-33-p ml-8">
+                                <mat-form-field *ngIf="sortingForm.get('order_type').value=='autosort'" appearance="outline" class="filter-select mat-wrapper-p-0">
+                                    <mat-label>Sort Documents</mat-label>
+                                    <mat-select 
+                                    placeholder="Sort documents with in each Category by"
+                                    formControlName="order_dir"
+                                    [required]="sortingForm.get('order_type').value=='autosort'">
+                                        <mat-option>Select One</mat-option>
+                                        <mat-option *ngFor="let sort of sortingOptions | keyvalue" [value]="sort.key">
+                                        {{sort.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>                 
+                        </div>
+
+                        <div  fxLayout="row" fxLayoutAlign="end baseline">
+                            <div class="text-center mr-12" fxFlex="49">
+                                <button type="button" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" *ngIf="sortingForm.get('order_type').value=='autosort' && sortingForm.valid" mat-raised-button (click)="previewDocumentsList()" > <mat-icon>search</mat-icon> Re-preview</button>
+                            </div>
+
+                            <div class="filters" fxLayout="column" fxLayoutAlign="start start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                                <form #sorting name="filterForm" [formGroup]="filterForm">
+                                    <div fxLayout="row">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100"  class="filter-search ml-8 mr-0 mat-wrapper-p-0">
+                                            <mat-label>Search</mat-label>
+                                            <input matInput placeholder="Enter a keyword..." formControlName="searchKey">
+                                        </mat-form-field>                            
+                                    </div>                       
+                                </form>
+                            </div>
+                        </div>
+                    </form>  
+                </div>
+            </div>        
+            <!-- / FILTER -->
+
+            <!-- CONTENT -->
+            <div class="content">
+                <table        
+                cdkDropList
+                [cdkDropListData]="dataSource.data" 
+                (cdkDropListDropped)="dropTable($event)" 
+                class="menus-table back-files-list-table" 
+                mat-table 
+                #table 
+                [dataSource]="dataSource.data" 
+                matSort 
+                matSortActive="order" 
+                matSortDirection="asc" 
+                matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+                    <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                    <!-- OTHER THAN CHECKBOX -->    
+                        <span *ngIf="column.columnDef!=='select'">
+                            <th [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}" disabled="{{!column.sortable}}"> {{column.header}} </th>
+                            <td mat-cell *matCellDef="let element" class="p-12">
+                            <span *ngIf="column.columnDef!=='documentscategories' && column.columnDef!=='created_at' && column.columnDef!=='action' && column.columnDef!=='doc_url'">
+                                {{element[column.columnDef]}}
+                            </span>
+                            <span *ngIf="column.columnDef=='doc_url'">
+                                <a target="_blank" [href]="_appConfig.url.documentsUrl+element['token']+'/'+element['doc_name']">
+                                    {{getDocumentUrl(element)}}
+                                </a>
+                            </span>
+                            <span *ngIf="column.columnDef=='created_at'">
+                                {{element[column.columnDef] | date: defaultDateTimeFormat.date_format}}
+                            </span>
+                            <span *ngIf="column.columnDef=='documentscategories' && element.documentscategories.length>0">
+                                <mat-chip-list aria-label="Categories" *ngFor="let category of element.documentscategories">
+                                    <mat-chip *ngIf="category.categories">
+                                        {{category.categories.category_name}}
+                                    </mat-chip>
+                                </mat-chip-list>    
+                            </span>
+                            <span *ngIf="column.columnDef=='action' && !isTrashView">
+                                <div fxFlex="row" fxLayoutAlign="start center">
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                            (click)="$event.stopPropagation();">
+                                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                                    </button>
+    
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item aria-label="edit" (click)="editDocument(element)">
+                                            <mat-icon>edit</mat-icon>
+                                            <span>Edit</span>
+                                        </button>
+                                        <button mat-menu-item aria-label="remove" (click)="deleteDocument(element.doc_id)">
+                                            <mat-icon>delete</mat-icon>
+                                            <span>Delete</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </span>
+                            <!-- TRASH VIEW BUTTONS -->
+                            <span *ngIf="column.columnDef=='action' && isTrashView==true">
+                                <div fxFlex="row" fxLayoutAlign="start center">
+                                    
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                            (click)="$event.stopPropagation();">
+                                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                                    </button>
+    
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item aria-label="restore" (click)="restoreOrDeleteDocument(element.doc_id,false)">
+                                            <mat-icon>restore</mat-icon>
+                                            <span>Restore</span>
+                                        </button>
+                                        <button mat-menu-item aria-label="delete" (click)="restoreOrDeleteDocument(element.doc_id,true)">
+                                            <mat-icon>delete</mat-icon>
+                                            <span>Remove</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </span>
+                            </td>
+
+                        </span>
+                        <span *ngIf="column.columnDef=='select'">
+                            <th [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef > 
+                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <mat-checkbox 
+                                            (click)="$event.stopPropagation()"
+                                            (change)="$event ? selection.toggle(element.doc_id) : null"
+                                            [checked]="selection.isSelected(element.doc_id)"
+                                            >
+                                </mat-checkbox>    
+                            </td>
+                        </span>                        
+                    </ng-container>
+                    <!--FOOTER MESSAGE-->                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row cdkDrag [cdkDragDisabled]="sortingForm.get('order_type').value=='autosort'" [cdkDragData]="row" *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <!-- Empty Message -->
+                <ng-container *ngIf="dataSource.data.length==0">
+                    <div class="no-record mt-20"> No Documents Found </div>
+                </ng-container>
+                <!-- Pagination -->
+                <mat-paginator 
+                    class="blue-grey-50"
+                    #paginator
+                    [length]="this.dataSource.total"           
+                    [pageSize]="PaginationOpt?.pageSize"
+                    [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                </mat-paginator>
+
+
+                
+            </div>
+            <!-- FILE UPLOAD COMPONEENT-->
+            <div class="content mt-48 p-24"  *ngIf="!isTrashView && fileUploaderSettings && fileUploaderSettings.allowfileupload=='Y'">
+                <!--drag-drop-component-->
+                <app-drag-drop [allowMultiple]="true" [menu]="menuInfo" [fileLimit]="fileUploaderSettings.maxpdfsize || 2" (onfilesUploaded)="refreshDocumentsList()"></app-drag-drop>
+            </div>
+            <div class="content mt-48 p-24"  *ngIf="!isTrashView && fileUploaderSettings && fileUploaderSettings.allowfileupload=='N'">
+                <div class="message-box warning">
+                    File upload is <mark>disabled</mark> in <a [routerLink]="'/admin/files/settings'">Settings</a>.
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->    
+</div>

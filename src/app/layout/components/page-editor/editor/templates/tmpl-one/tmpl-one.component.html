@@ -1,0 +1,19 @@
+<div cdkDropList [cdkDropListData]="column.elements" (cdkDropListDropped)="drop($event)" class="sp-builder-column sp-builder-column-outer sp-builder-column-{{column.column_id}}">
+    <ng-container *ngIf="column.elements.length>0">
+        <ng-container *ngFor="let element of column.elements;let elindex=index;">
+            <element-text cdkDrag  *ngIf="element.type=='text'" [elementinfo]="element" [columnindex]="currentIndex" [elementindex]="elindex" (onEditElement)="openEditElementDialog($event)" (onCloneElement)="cloneElement($event)" (onRemoveElement)="removeElement($event)"></element-text>
+            <element-video cdkDrag  *ngIf="element.type=='media'" [elementinfo]="element" [columnindex]="currentIndex" [elementindex]="elindex"  (onEditElement)="openEditElementDialog($event)" (onCloneElement)="cloneElement($event)" (onRemoveElement)="removeElement($event)"></element-video>
+            <element-button cdkDrag  *ngIf="element.type=='button'" [elementinfo]="element" [columnindex]="currentIndex" [elementindex]="elindex"  (onEditElement)="openEditElementDialog($event)" (onCloneElement)="cloneElement($event)" (onRemoveElement)="removeElement($event)"></element-button>
+            <element-image cdkDrag  *ngIf="element.type=='image'" [elementinfo]="element" [columnindex]="currentIndex" [elementindex]="elindex"  (onEditElement)="openEditElementDialog($event)" (onCloneElement)="cloneElement($event)" (onRemoveElement)="removeElement($event)"></element-image>
+            <element-content-box cdkDrag  *ngIf="element.type=='quicklinks'" [elementinfo]="element" [columnindex]="currentIndex" [elementindex]="elindex"  (onEditElement)="openEditElementDialog($event)" (onCloneElement)="cloneElement($event)" (onRemoveElement)="removeElement($event)"></element-content-box>
+        </ng-container>
+    </ng-container>
+    <div class="add-element-area" fxLayoutAlign="center center">
+        <button type="button" (click)="OpenElementsDialog(currentIndex)" mat-button class="p-12 grey-200-bg font-size-12"> 
+            <div fxLayout="row" fxLayoutAlign="center center" >
+                <mat-icon fxLayout="row" fxLayoutAlign="center center" class="font-size-20">add</mat-icon>
+                <p> Element </p>
+            </div>
+        </button>
+    </div>
+</div>

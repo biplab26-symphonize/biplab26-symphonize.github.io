@@ -1,0 +1,29 @@
+@import 'src/@fuse/scss/fuse';
+
+fuse-navigation {
+    display: flex;
+    flex: 1 0 auto;
+
+    > .nav {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    .hidden{
+        display: none !important;
+    }
+    .front-navbar-style-2{
+        justify-content:center !important;
+    }
+}
+
+.search-btn {
+    background: #a6b340  !important;
+    border-radius: 4px;
+    border: solid 1px #ffffff;
+    // margin-top: 20px;
+}
+
+.search-btn .fuse-white-fg {
+    color: #fff;
+}

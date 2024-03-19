@@ -1,0 +1,41 @@
+<form #upload name="editDocumentForm" [formGroup]="editDocumentForm" (ngSubmit)="sendFileInfo()" class="w-450-px" id="file-uploader-edit-files-library">
+    <h1 matDialogTitle>Edit File Information</h1>
+    <div mat-dialog-content class="mat-dialog-export">
+        <div>
+            <mat-form-field appearance="outline" floatLabel="always" class="filter-search display-block mr-4 ml-4">
+                <mat-label>File Name</mat-label>
+                <input matInput formControlName="doc_name">
+                <mat-error>File Name Is Required !</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline" class="filter-select display-block mr-4 ml-4">
+                <mat-label>Category</mat-label>
+                <mat-select 
+                    placeholder="Category"
+                    formControlName="category">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let category of Categories" [value]="category.id">
+                    {{category.category_name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Category Is Required !</mat-error>
+            </mat-form-field>
+            <mat-form-field class="hideforminput" hidden>
+                <input matInput hidden value="">
+            </mat-form-field>
+            <input  hidden 
+                    #inputfile
+                    type="file"
+                    (change)="fileChangeEvent($event)"
+                    />
+            <div class="btn">
+                <button type="button" mat-stroked-button color="primary" class="mr-12" (click)="inputfile.click();"> <mat-icon>add</mat-icon> Replace <span class="text-boxed">{{fileName}}</span></button>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="mb-4 mt-24" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button [ngStyle]="button" class="mat-accent mr-16 text-uppercase line-height-44 br-ds-0 box-shadow-none" type="submit">Save</button>
+        <button [ngStyle]="button" class="m-0 text-uppercase line-height-44 br-ds-0 box-shadow-none" type="button" mat-button (click)="dialogRef.close('')">Cancel</button>
+    </div>
+    </form>
+    

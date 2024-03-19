@@ -1,0 +1,19 @@
+table thead tr th,
+table thead tr td{
+    text-align: center !important;
+    padding: 6px 20px; 
+
+}
+
+.d-none {display: none !important;}
+.min-100-p {min-width: 100%;}
+
+.add-delete-btn {
+    mat-icon {
+        border-radius: 50px;
+    }
+} 
+
+.min-w-200 {
+    min-width: 200px;
+}

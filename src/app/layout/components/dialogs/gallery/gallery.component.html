@@ -1,0 +1,57 @@
+<div id="fields select-media-img" class="page-layout simple">  
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- CENTER -->
+        <div class="center pt-28">
+
+             <!-- FILTER -->
+             <div class="filters" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                <form #filter validate autocomplete="off" [formGroup]="filterForm">
+                    <!-- SEARCH  -->
+                    <mat-form-field appearance="outline" floatLabel="always" class="filter-search mr-4 ml-4">
+                        <mat-label>Search</mat-label>
+                        <input matInput placeholder="Enter a keyword..." formControlName="searchKey">
+                    </mat-form-field>                    
+
+                </form>
+
+            </div>
+
+            <!-- / FILTER --> 
+
+            <!-- CONTENT -->
+            <div class="content">
+                
+                    <div class="medias"[@animateStagger]="{value:'50'}" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-radio-group (change)="sendMediaUrl($event)" fxLayout="row wrap" fxFlex="100">
+                                <div fxLayout="row wrap" fxLayoutAlign="center center">
+                                    <div class="media m-8 p-8 border" *ngFor="let media of mediaList" fxLayout="column" [@animate]="{value:'*',params:{y:'100%'}}">   
+                                        <img [src]="media.image" [alt]="media.imagename">
+                                        <mat-radio-button class="text-truncate" [name]="media.id" [value]="media">{{media.imagename}}</mat-radio-button>
+                                    </div>
+                                </div>
+                            </mat-radio-group>
+                    
+                        <!-- IF NO MEDIA IS FOUND -->
+                        <div class="no-record mt-20" fxFlex="100" *ngIf="mediaList.length==0">No Media Files Found</div>
+                    </div>
+                
+               
+                <mat-paginator 
+                    class="blue-grey-50 mt-24"
+                    #paginator
+                    [length]="mediaData.total"           
+                    [pageSize]="PaginationOpt?.pageSize"
+                    [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                </mat-paginator>
+           </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

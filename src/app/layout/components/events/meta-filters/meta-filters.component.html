@@ -1,0 +1,5 @@
+<div class="mr-2 t-capitalize" *ngIf="MetaFilters.length>0" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" >
+    <div appearance="outline" fxFlex="0 1 50%" *ngFor="let field of MetaFilters;">
+        <ng-container dynamicField [field]="field" [group]="fieldformGroup" type="{{'field'}}"></ng-container>
+    </div>
+</div>

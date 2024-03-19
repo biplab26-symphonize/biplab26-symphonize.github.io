@@ -1,0 +1,30 @@
+#front-Newest-staff {
+    .owl-prev ,
+    .owl-next {
+        //text-transform: capitalize;
+        color: white;
+        background-color: #3e5c59;
+        line-height: 28px !important;
+        font-size: 16px;
+        border-radius: 0;
+    }  
+
+    .Neighbours-img {
+        width: 80px !important;
+        height: 80px;
+        border-radius: 100px;
+        border: 1px solid #4f4d49;
+    }  
+
+    owl-carousel-o{
+        .owl-item{
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding:10px 6px;
+            //text-transform: capitalize;
+            // margin: 4px;
+            // width: 280px !important;
+        }
+    }     
+}

@@ -1,0 +1,42 @@
+@import "src/@fuse/scss/fuse";
+
+.announcements.pb-100.home-top-announcements {
+
+    .overflow-auto{
+        overflow: auto;
+    }
+    
+    .fuse-card {
+        max-width: 1024px;
+        margin: 0 auto;
+    }
+
+    .sep{
+		border-top: solid 1px #ddd;
+		margin:24px;
+	}
+
+    // Responsive 
+    @include media-breakpoint('lt-sm') {
+        .py-16.px-28.pt-0 {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+        }
+    }
+
+    @include media-breakpoint('lt-md') {
+        .announcements.mb-40 {
+            .fuse-card{
+                width: 100% !important;
+            }
+        }
+    }
+    
+    @include media-breakpoint('lt-lg') {
+       .fuse-card {
+        min-width: 100% !important;
+        max-width: 100% !important;
+       }
+    }
+}
+

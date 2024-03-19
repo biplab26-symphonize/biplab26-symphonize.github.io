@@ -1,0 +1,25 @@
+.dropzone {
+    display: table;
+    width: 100%;
+    background-color: #eee;
+    border: dashed 2px #aaa;
+  }
+  
+  .text-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  
+  .centered {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align:center;
+  }
+
+  .mat-line {
+    width: 600px;
+  }
+
+  .hidecheckbox{
+    opacity: 0;
+  }

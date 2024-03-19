@@ -1,0 +1,47 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content" id="home-topics-pagination">
+    <div class="p-16 title pl-0">
+        <div class="h1 font-weight-800">User Update</div>
+    </div>
+    <table class="simple border">
+        <thead class="text-center">
+            <tr [ngStyle]="green_bg_header">
+                <th class="text-center fuse-white-fg font-size-16">Username</th>
+                <th class="text-center fuse-white-fg font-size-16">Name</th>
+                <th class="text-center fuse-white-fg font-size-16">Email</th>
+                <th class="text-center fuse-white-fg font-size-16">Status</th>
+                <!-- <th class="text-right" *ngIf="homesettings.user_author=='Y'">Author</th>  -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of usersList.data">
+                <td class="text-center first">
+                    {{user.username}}
+                </td>
+                <td class="text-center first">
+                    {{user.first_name}} {{user.last_name}}
+                </td>
+                <td class="text-center third text-lowercase">
+                    {{user.email}}
+                </td>
+                <td class="text-center third">
+                    <div *ngIf="user.status == 'A'">
+                        Active
+                    </div>
+                    <div *ngIf="user.status == 'I'">
+                        Inactive
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="p-0 my-20 d-block">
+        <a [routerLink]="['/admin/users/list/']">See All Users</a>
+        <mat-paginator #paginator class="blue-grey-50 mt-20" [length]="usersList.total"
+            [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+        </mat-paginator>
+    </div>
+
+</div>
+<!-- / CARD CONTENT -->

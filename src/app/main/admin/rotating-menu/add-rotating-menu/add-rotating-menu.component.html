@@ -1,0 +1,235 @@
+<div id="rotating-menu-add" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxFlex>
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+               
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title|titlecase}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="text-right" fxFlex>
+            <div class="mt-16 mt-sm-0" [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                <button class="mr-8" mat-raised-button [routerLink]="'/admin/all-rotating-menu/list'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>Back To List
+                </button>
+                <button mat-raised-button class="mr-8" (click)="saverotatingmenu()" cdkFocusInitial>
+                    <mat-icon class="mr-4">save </mat-icon>Save Setting
+                </button>
+
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+    <div class="content p-24" fusePerfectScrollbar>
+
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto" fxLayout="column">
+                <!-- REACTIVE FORM EXAMPLE -->
+                <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> Rotating Menu </div>
+
+                <form class="p-24 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" #f="ngForm"
+                    [formGroup]="newrotatingmenu" novalidate autocomplete="off">
+                     <div class="h2 mb-12 font-weight-600">{{MenuName}}</div>
+                     <div class="mb-8 font-weight-600">Current week number: {{currentWeekno}}</div>
+                     <div class="word-break"> <span class="font-weight-600"> Current PDF : </span> <a (click)="viewcurrentmenupdf(currentMenuUrl)">{{currentMenuUrl}}</a></div>
+                     <br> 
+                    <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                            <mat-label>Menu Start Day</mat-label>
+                            <mat-select formControlName="start_day" name="start_day" required>
+                                <mat-option [value]="1">Monday</mat-option>
+                                <mat-option [value]="2">Tuesday</mat-option>
+                                <mat-option [value]="3">Wednesday</mat-option>
+                                <mat-option [value]="4">Thursday</mat-option>
+                                <mat-option [value]="5">Friday</mat-option>
+                                <mat-option [value]="6">Saturday</mat-option>
+                                <mat-option [value]="7">Sunday</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Number Of Rotation</mat-label>
+                            <input matInput formControlName="rotation" minlength="1" min="1" max="5" pattern="[1-5]" name="rotation" type="number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                            <mat-label>Menu Start Week</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="start_date" name="start_date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Menu Type</mat-label>
+                            <mat-select formControlName="menu_type" name="menu_type">
+                                <mat-option value="daily">Daily</mat-option>
+                                <mat-option value="weekly">Weekly</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+ 
+                    </div>
+
+                    <div fxLayoutAlign="start center" fxLayoutGap="1em" fxFlex="1 0 auto">
+                        <table fxFlex="100" class="mt-20 border-color" *ngIf="displaymenutype == 'daily'" border="1">
+
+                            <thead>
+                                <tr>
+                                    <th [ngStyle]="green_bg_header" class="text-center p-12 font-weight-600 font-size-16">Menu Name</th>
+                                    <th [ngStyle]="green_bg_header" class="text-center p-12 font-weight-600 font-size-16">Week Rotation</th>
+                                    <th [ngStyle]="green_bg_header" class="text-center p-12 font-weight-600 font-size-16">Day's</th>
+                                    <th [ngStyle]="green_bg_header" class="text-center p-12 font-weight-600 font-size-16">Upload/Replace/Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let week of displaytheweek let i=index">
+                                    <td class="text-center">{{MenuName}}</td>
+                                    <td class="text-center">Week {{week}}</td>
+
+                                    <td style="vertical-align: top;">
+                                        <table class="w-100-p">
+                                            <tbody>
+                                                <tr *ngFor="let days of  weekdays" class="border-bottom">
+                                                    <td class="py-16 px-8 text-center">{{days}}</td>
+                                                </tr>
+                                            </tbody>               
+                                        </table> 
+                                    </td>
+
+                                    <td style="vertical-align: baseline;">
+                                        <table class="w-100-p">
+                                            <tbody>
+                                                <tr *ngFor="let day of  weekdays; let id = index;" class="border-bottom">
+
+                                                    <td fxLayout="row" fxLayoutAlign="center center">
+                                                        <ng-container *ngIf="currentlyselcetddaily.length == 0 || !currentlyWeekArray[week].includes(id)">
+                                                        <button  type="button" (click)="viewdefaultpdf()" mat-raised-button class="pb-4 mx-4 my-8 text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-32 br-ds-0 box-shadow-none" color="green">
+                                                            View
+                                                        </button>
+                                                        
+                                                        <!-- (click)="viewdefaultpdf()" -->
+                                                        <span *ngIf="fileUploaderSettings.allowfileupload=='Y'">
+                                                            <button mat-raised-button class="pb-4 mx-4 my-8 text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-32 br-ds-0 box-shadow-none" color="green">
+                                                                <span (click)="uploaddailyfile(week,id,MenuName)">Upload</span>
+                                                            </button> 
+                                                        </span>
+                                                        <span *ngIf="fileUploaderSettings.allowfileupload=='N'">
+                                                            
+                                                            File Upload Is <mark>Disabled</mark> In <a [routerLink]="'/admin/rotating-menu/setting'">Settings</a>.
+                                                            
+                                                        </span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="currentlyselcetddaily.length>0">
+                                                            
+                                                        <button *ngIf="currentlyWeekArray[week].includes(id) " mat-raised-button class="pb-4 mx-4 my-8 text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-32 br-ds-0 box-shadow-none" color="green">
+                                                                
+                                                                <span (click)="viewdailyPdf(week,id)">View</span>
+                                                        </button> 
+                                                        <button *ngIf="currentlyWeekArray[week].includes(id)" mat-raised-button
+                                                            class="pb-4 mx-4 my-8 text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-32 br-ds-0 box-shadow-none" color="green">
+                                                                <span
+                                                                    (click)="replacdailyfile(week,id,MenuName)">Replace</span>
+                                                            </button>
+                                                            <button *ngIf="currentlyWeekArray[week].includes(id)" mat-raised-button
+                                                                class="pb-4 mx-4 my-8 text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-32 br-ds-0 box-shadow-none" color="green">
+                                                                <span (click)="DeleteRotatingpdfdaily(week,id)">Delete</span>
+                                                            </button>
+                                                        </ng-container>
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table fxFlex="100" class="mt-20" *ngIf="displaymenutype == 'weekly'" border="1">
+
+                            <thead>
+                                <tr>
+                                    <th class="text-center p-12">Menu Name</th>
+                                    <th class="text-center p-12">Week Rotation</th>
+                                    <th class="text-center p-12">Upload/Replace/Delete</th>
+
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                              <tr *ngFor="let week of displaytheweek; let i=index">
+                                <td class="text-center">{{MenuName}}</td>
+                                <td class="text-center">Week {{week}}</td>
+                                
+                                <td >
+                                    <table class="w-100-p">
+                                        <tbody>
+                                            <tr>
+                                                <td fxLayout="row" fxLayoutAlign="center center">
+                                                    <ng-container *ngIf="currentlyselcetd.length == 0 || !currentlyWeekArray[week].includes(week) "> 
+                                                        <!-- <a  [href]="_appConfig.url.mediaUrl+'api'+'/'+'download'+'/'+'rotatingmenupdf'+'/'+0+'/'+'default'"> -->
+                                                            <button  type="button"  mat-stroked-button class="m-4 fuse-white-fg" color="green">
+                                                                <span (click)="viewdefaultpdf()">View</span>
+                                                            </button>
+                                                           <!-- </a> -->
+                                                        <span *ngIf="fileUploaderSettings.allowfileupload=='Y'">
+                                                            <button mat-stroked-button class="m-4 fuse-white-fg" color="green">
+                                                                <span (click)="uploadweeklyfile(week,MenuName)">Upload</span>
+                                                            </button>
+                                                        </span>
+                                                        <span *ngIf="fileUploaderSettings.allowfileupload=='N'">
+                                                                 
+                                                            File upload is <mark>disabled</mark> in <a [routerLink]="'/admin/rotating-menu/setting'">Settings</a>.
+                                                            
+                                                          </span>
+                                                        
+                                                    </ng-container> 
+                                                    <ng-container *ngIf="currentlyselcetd.length>0">
+                                                            
+                                                            <button *ngIf="currentlyWeekArray[week].includes(week)" mat-stroked-button class="m-4 fuse-white-fg" color="green">
+                                                                <span  (click)="viewWeekPdf(week)">View</span>
+                                                            </button>
+                                                            <button *ngIf="currentlyWeekArray[week].includes(week)" mat-stroked-button class="m-4 fuse-white-fg" color="green">
+                                                                <span
+                                                                    (click)="uploadweeklyreplacefile(week,MenuName)">Replace
+                                                                </span>
+                                                            </button>
+                                                            <button *ngIf="currentlyWeekArray[week].includes(week)" mat-stroked-button
+                                                                class="m-4 fuse-white-fg" color="warn">
+                                                                <span (click)="DeleteRotatingpdfweekly(week)">Delete</span>
+                                                            </button>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                   
+                                  </td>
+                                    
+                             </tr>
+                          </tbody>
+                    </table>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

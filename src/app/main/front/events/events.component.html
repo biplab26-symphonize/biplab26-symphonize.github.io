@@ -1,0 +1,134 @@
+<div id="events" class="page-layout simple fullwidth">
+    <!-- CENTER -->
+
+      <!-- HEADER --> 
+      <breadcumb [directoryTitle]="displaySlug" [captialize]="true"></breadcumb>
+  <!-- / HEADER -->
+
+    <div class="content center p-4 pb-4" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <!-- CONTENT CARD -->
+        <div class="content-card br-ds-0 content-wrap fuse-white-bg p-28">
+
+            <!-- CONTENT TOOLBAR -->
+            <div class="filters" fxLayout="row" fxLayoutGap="10px grid" fxLayoutAlign="start end">
+                <div fxFlex="100">
+                    <filter-categories [showinput]="'checkbox'" [showtype]="'registration'"  [categorytype]="'C'" [outerclass]="'category-toolbar'" [EventSettings]="EventSettings" [heading]="'Register for events below, or click on one of the categories below to display events to filter the events.'" (selectedCategory)="setFormCategoryValues($event)" (selectedSubCategory)="setFormSubCategoryValues($event)"></filter-categories>
+                </div>
+            </div>
+            <!-- / CONTENT TOOLBAR -->
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <div class="courses" fxLayout="row wrap" fxLayoutGap="10px grid" [@animateStagger]="{value:'50'}">
+                    <ng-container *ngIf="events && events.data && events.data.length>0;else emptyBlock">
+                        <div class="course" *ngFor="let event of events.data " fxFlex="33"  fxFlex.lt-md="100" [@animate]="{value:'*',params:{y:'100%'}}">
+                            <div class="course-content " fxLayout="column" fxFlex="100">
+                                <div class="fuse-card h-100-p">
+                                    <div class="p-16">                                    
+                                        <div class="NameHighlights" hover-class="NameHighlightsHover">
+                                            <div class="h1 word-break">{{event.event_title }}</div>
+                                            <div class="NameHighlight-shover-block" [ngStyle.lt-sm]="{'max-width' : '250px'}">
+                                                <h5 class="event_title accent">{{event.event_title}}</h5>
+                                                <div class="event_desc" [innerHTML]="event.event_description | sanitizeHtml" [ngStyle.lt-sm]="{'max-width' : '250px'}"></div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="start center" *ngIf="EventSettings && EventSettings.event_list_display_settings.event_display_location=='Y' && event.eventlocation" class="h4 secondary-text p-4"  [style.backgroundColor]="event.locationColor.bg_color" [style.borderColor]="event.locationColor.font_color" [style.color]="event.locationColor.font_color">
+                                            <mat-icon class="length-icon s-16 mr-4">add_location</mat-icon>
+                                            {{event.eventlocation.category_name | titlecase }}
+                                        </div>
+                                    </div>
+                                
+                                    <div class="p-16 pt-4">
+                                        <!-- StartDate -->
+                                        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div><mat-icon class="length-icon s-16">event</mat-icon> Start Date</div>
+                                            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                                                <div class="">{{event.event_start_date | date :defaultDateTimeFormat.date_format}}</div>
+                                            </div>
+                                        </div>
+                                        <!-- endDate -->
+                                        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div><mat-icon class="length-icon s-16">date_range</mat-icon> End Date</div>
+                                            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                                                <div class="">{{event.event_end_date | date :defaultDateTimeFormat.date_format}}</div>
+                                            </div>
+                                        </div>
+                                        <!-- Check IN -->
+                                        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div><mat-icon class="length-icon s-16">access_time</mat-icon> Event Start Time</div>
+                                            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                                                <div *ngIf="event.is_all_day=='N' && event.event_check_in!==''" class="">{{event.event_check_in | date :defaultDateTimeFormat.time_format}}</div>
+                                                <div *ngIf="event.is_all_day=='Y'" class="">All Day</div>
+                                            </div>
+                                        </div>
+                                        <!-- Check OUT -->
+                                        <div *ngIf="event.event_check_out!=='' && event.is_all_day=='N' && event.disable_end_time=='N' && EventSettings && EventSettings.event_list_display_settings.end_time_display=='Y'" class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div><mat-icon class="length-icon s-16">timelapse</mat-icon> Event End Time</div>
+                                            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                                                <div class="">{{event.event_check_out | date :defaultDateTimeFormat.time_format}}</div>
+                                            </div>
+                                        </div>
+                                        <!-- registration_start -->
+                                        <div *ngIf="event.is_all_day=='N' && (event.register_type=='D' || event.register_type=='C')" class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div><mat-icon class="length-icon s-16">timelapse</mat-icon> Registration Start</div>
+                                            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                                                <div class="" *ngIf="event.register_type=='D'">{{event.registration_start | date :defaultDateTimeFormat.date_format}}</div>
+                                                <!-- <div class="" *ngIf="event.register_type=='C'">{{event.registration_start | date :defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</div> -->
+                                                <div class="" *ngIf="event.register_type=='C'">{{event.registration_start | date :defaultDateTimeFormat.date_format}}</div>
+                                            </div>
+                                        </div>
+                                        <!-- registration_end -->
+                                        <div *ngIf="event.is_all_day=='N' && (event.register_type=='D' || event.register_type=='C')" class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div><mat-icon class="length-icon s-16">timelapse</mat-icon> Registration End</div>
+                                            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                                                <div class="" *ngIf="event.register_type=='D'">{{event.registration_end | date :defaultDateTimeFormat.date_format}}</div>
+                                                <!-- <div class="" *ngIf="event.register_type=='C'">{{event.registration_end | date :defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</div> -->
+                                                <div class="" *ngIf="event.register_type=='C'">{{event.registration_end | date :defaultDateTimeFormat.date_format}}</div>
+                                            </div>
+                                        </div>
+                                        <!-- availableSpace -->
+                                        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div> <mat-icon class="length-icon s-16">event_available</mat-icon> Registered Attendees</div>
+                                            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                                                <div class="">{{event.availablespace.attendeebookedcount || '0'}}/{{event.attendee_limit}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Buttons -->
+                                    <div class="p-16 pt-4" fxLayout="row" fxLayoutAlign="start center">
+                                        <event-register-buttons [listType]="'front'" [page]="'eventgrid'" [event]="event" ></event-register-buttons>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- EmptyBlock -->
+                    <ng-template #emptyBlock>
+                        <div fxFlex="100" *ngIf="showEmptyMsg==false" fxLayoutAlign="center center">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </ng-template>
+                </div>
+                <div class="no-record my-20" *ngIf="showEmptyMsg==true && events && events.data && events.data.length==0 ">
+                    No Events Found 
+                </div>
+            </div>
+            <!-- / CONTENT -->
+            <!-- FOOTER -->
+            <div class="list-footer blue-grey-50 mt-20">
+                <div class="pagination" fxLayout="row wrap" fxLayoutAlign="end" [@animateStagger]="{value:'50'}">
+                    <mat-paginator #paginator
+                        class="blue-grey-50"
+                        [length]="events.meta.total"           
+                        [pageSize]="PaginationOpt?.pageSize"
+                        [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                    </mat-paginator>
+                </div>
+            </div>
+            <!-- / FOOTER -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

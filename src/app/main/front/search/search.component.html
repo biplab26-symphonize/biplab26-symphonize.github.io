@@ -1,0 +1,201 @@
+<div id="top-search" class="page-layout simple fullwidth layout-box" *ngIf="AllListData !== ''">
+
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+  
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+  
+            <div class="header-top">
+  
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong> Search </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div> 
+    </div>
+    <!-- / HEADER -->
+  
+    <!-- CONTENT -->
+    <div  class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <!--  CONTENT WRAP -->
+        <section class="content-wrap fuse-white-bg">
+  
+            <form class="p-28" fxLayout="column" fxLayoutAlign="start" #filter name="filterForm" [formGroup]="filterForm" novalidate autocomplete="off">
+  
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start">
+                    <div fxFlex="50" fxFlex.lt-sm="100" class="mr-8">
+                        <mat-form-field appearance="outline" floatLabel="always" class="filter-input w-100-p mr-8">
+                            <mat-label>Search</mat-label>
+                            <input matInput placeholder="Enter a keyword..."
+                            formControlName="searchKey">
+                        </mat-form-field>
+                       
+                    </div>
+                    <div  fxFlex="30" fxFlex.lt-sm="100" [ngClass.lt-sm]="{'mr-8': true}"> 
+                        <mat-form-field appearance="outline" class="w-100-p">
+                            <mat-label>Select Type</mat-label>
+                            <mat-select formControlName="type">
+                                <mat-option  value="">
+                                    Select
+                                </mat-option>
+                              <mat-option  *ngFor="let list of listArray" [value]="list.key">
+                                {{list.value}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                     <div class="ml-8 search-button" [ngClass.lt-sm]="{'text-center': true}">
+                        <button mat-stroked-button color="accent" class="mb-20 w-180 h-60" aria-label="More"
+                           (click)="Search($event);">Search
+                         </button>
+                    </div> 
+                </div>
+            </form>
+
+
+             <!-- events  -->
+             <div class="content p-24 mx-28 mb-28 " *ngIf="ShowEventstable == true">
+                <table class="table table-bordered w-100-p border">
+                    <thead class="border-bottom dt-paginations font-weight-600">
+                        <th class="p-16 text-center font-size-18"> EVENTS </th>
+                    </thead>
+                </table>
+                <div fxFlexFill fxLayoutGap="grid" fxLayout="row wrap" fxLayout.lt-md="column" >
+                    <ng-container  *ngIf="ShowEvents == true">
+                        <div fxFlex="25" fxflex.lt-md="100" *ngFor="let data of AllListData.events.data;let i=index ;">
+                            <div fxFlexFill fxLayoutAlign="start start" style="border:solid 1px #DDD;">
+                                <div class="p-16">
+                                        <h2 *ngIf="data.req_register =='Y'"> Event : <a [routerLink]="['/events/register/',data.event_id]">{{data.event_title}}  </a><br/>
+                                             Date : {{data.event_start_date | date: defaultDateTimeFormat.date_format}}
+                                        </h2>
+                                         <h2 *ngIf="data.req_register =='N'"> Event : {{data.event_title}} <br> 
+                                            Date : {{data.event_start_date | date: defaultDateTimeFormat.date_format}}
+                                        </h2>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div *ngIf="ShowEvents == false">No Record Found </div>
+                </div>
+            </div>
+          <!-- Resident -->
+            <div class="content p-24 mx-28 mb-28 " *ngIf="ShowResidenttable == true">
+                <table class="table table-bordered w-100-p border">
+                    <thead class="border-bottom dt-paginations font-weight-600">
+                        <th class="p-16 text-center font-size-18"> RESIDENTS </th>
+                    </thead>
+                </table>
+                <div fxFlexFill fxLayoutGap="grid" fxLayout="row wrap" fxLayout.lt-md="column"  >
+                    <ng-container  *ngIf="ShowResident == true">
+                        <div fxFlex="25" fxflex.lt-md="100" *ngFor="let data of AllListData.residents.data;let i=index">
+                            <div fxFlexFill fxLayoutAlign="start start" style="border:solid 1px #DDD;">
+                                <div class="p-16">
+                                        <h2> Resident : <a [routerLink]="['/view-other-profile/',data.id]">{{data.first_name}} {{data.last_name}}</a>
+                                        </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div *ngIf="ShowResident == false">No Record Found </div>
+                </div>
+            </div>
+            <!-- /Resident -->
+
+            <!-- Staff -->
+            <div class="content p-24 mx-28 mb-28 " *ngIf="ShowStafftable == true">
+                <table class="table table-bordered w-100-p border">
+                    <thead class="border-bottom dt-paginations font-weight-600">
+                        <th class="p-16 text-center font-size-18"> STAFF </th>
+                    </thead>
+                </table>
+                <div fxFlexFill fxLayoutGap="grid" fxLayout="row wrap" fxLayout.lt-md="column" >
+                    <ng-container  *ngIf="ShowStaff == true">
+                        <div fxFlex="25" fxflex.lt-md="100" *ngFor="let data of AllListData.staff.data;let i=index">
+                            <div fxFlexFill fxLayoutAlign="start start" style="border:solid 1px #DDD;">
+                                <div class="p-16">
+                                        <h2>Staff : {{data.first_name}} {{data.last_name}}</h2>
+                                        <!-- <mat-icon class="s-18 mr-8" *ngIf="data.userdesignation">list_alt</mat-icon>{{data.userdesignation?.category_name}}<br> -->
+                                        <h2 *ngIf="data.phone"><mat-icon class="s-18 mr-8 word-break">phone</mat-icon>{{data.phone}}</h2>
+                                        <h2 *ngIf="data.email"><mat-icon class="s-18 mr-8 word-break">email</mat-icon><p style="word-break: break-all;">{{data.email}}</p></h2> 
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                     <div *ngIf="ShowStaff == false">No Record Found </div>
+                </div>
+            </div>
+
+            <!-- Page -->
+            <div class="content p-24 mx-28 mb-28 "  *ngIf="ShowPagestable == true">
+                <table class="table table-bordered w-100-p border">
+                    <thead class="border-bottom dt-paginations font-weight-600">
+                        <th class="p-16 text-center font-size-18"> POSTS | PAGE </th>
+                    </thead>
+                </table>
+                <div fxFlexFill fxLayoutGap="grid" fxLayout="row wrap" fxLayout.lt-md="column">
+                    <ng-container  *ngIf="ShowPages == true">
+                        <div fxFlex="25" fxflex.lt-md="100" *ngFor="let data of AllListData.pages.data;let i=index">
+                            <div fxFlexFill fxLayoutAlign="start start" style="border:solid 1px #DDD;">
+                                <div class="p-16">
+                                        <h2>Page : <a  class="cursor-pointer" (click)='PageView(data.page_alias)'>{{data.title}} </a></h2>                                       
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div *ngIf="ShowPages == false">No Record Found </div>
+                </div>
+            </div>
+            <!-- Page -->
+
+            <!-- announcement -->
+            <!-- <div class="content p-24 mx-28 mb-28 text-capitalize">
+                <table class="table table-bordered w-100-p border">
+                    <thead class="border-bottom dt-paginations font-weight-600">
+                        <th class="p-16 text-center font-size-18"> ANNOUNCEMENTS </th>
+                    </thead>
+                </table>
+                <div fxFlexFill fxLayoutGap="grid" fxLayout="row wrap" fxLayout.lt-md="column" *ngIf="ShowAnnouncementtable == true">
+                    <ng-container  *ngIf="ShowAnnouncement == true">
+                        <div fxFlex="25" fxflex.lt-md="100"  *ngFor="let data of AllListData.announcement.data;let i=index">
+                            <div fxFlexFill fxLayoutAlign="start start" style="border:solid 1px #DDD;">
+                                <div class="p-16">
+                                        <h2>Announcement : <a [routerLink]="['/view/announcement/',data.content_id]" >{{data.content_title}} </a></h2>                                       
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    
+                </div>
+                <div *ngIf="ShowAnnouncement == false" >No Record Found </div>
+            </div> -->
+                
+
+            <div class="content p-24 mx-28 mb-28 " *ngIf="ShowDocumentstable == true">
+                <table class="table table-bordered w-100-p border">
+                    <thead class="border-bottom dt-paginations font-weight-600">
+                        <th class="p-16 text-center font-size-18"> DOCUMENTS </th>
+                    </thead>
+                </table>
+                <div fxFlexFill fxLayoutGap="grid" fxLayout="row wrap" fxLayout.lt-md="column" >
+                    <ng-container  *ngIf="ShowDocuments == true">
+                        <div fxFlex="25" fxflex.lt-md="100"  *ngFor="let data of AllListData.documents.data;let i=index">
+                            <div fxFlexFill fxLayoutAlign="start start" style="border:solid 1px #DDD;">
+                                <div class="p-16">
+                                        <h2>Document : <a class="cursor-pointer" (click)="ViewDocumenet(data.doc_name,data.token)">{{data.doc_name}} </a></h2>                                       
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                   
+                </div>
+            </div>
+            <div *ngIf="ShowEventstable == false && ShowDocumentstable == false && ShowPagestable == false && ShowStafftable == false && ShowResidenttable == false " class="text-center pb-8">No Record Found </div>
+            
+        </section>
+    </div>
+</div>

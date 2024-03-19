@@ -1,0 +1,143 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="back-media-add">
+
+
+    <!-- HEADER -->
+    <div class="header accent p-24 " fxLayout="column" fxLayoutAlign="start"
+      fxLayout.gt-md="row" fxLayoutAlign.gt-md="space-between center" ngClass.gt-md="h-80" [ngStyle.lt-md]="{'max-height': 'none','min-height': 'auto','height': 'auto'}">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title | titlecase}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+         <!-- BTN's -->
+         <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" class="mr-4 ml-4" [routerLink]="'/admin/media/library'">
+                    <mat-icon class="mr-4">list</mat-icon>
+                    Media Library
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+
+                <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title | titlecase}}</div>
+                <br>
+
+                <div class="p-24">
+                    <br />
+
+                    <div fxLayout="column">
+
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="100">
+                            <div class="font-size-18 font-weight-600 mb-4 text-center mr-12">Upload Media</div>
+                            <div class="secondary-text mb-20 text-capitalize">
+                            </div>
+                        </div>
+                        <app-file-upload class="mt-20" fxLayout="column" fxLayoutAlign="center center" fxFlex="33" [uploadlabel]="''" [cropper]="false" [mediaUpload]="true" (imageUploaded)="setUploadMediaValue($event)" [uploadInfo]="uploadInfo?.media" ></app-file-upload>   
+                    </div>
+
+                    <div *ngIf="editform">
+                        <!-- <mat-video *ngIf="mediaData.type == 'video'" [src]="mediaData.video" [autoplay]="true" [preload]="true" [fullscreen]="true" [download]="true" color="accent"></mat-video> -->
+                        <div class="sep"></div>
+                        <!-- URLS -->
+                        <div  fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4 mt-20">URL</div>
+                                <div class="secondary-text">Uploaded Media Path URL.</div>
+                            </div>
+                            <!-- URL OF DOCUMENT -->
+                            <div *ngIf="mediaData.type == 'document'" fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline">
+                                    <input matInput readonly value="{{mediaData.document}}">
+                                </mat-form-field>
+
+                                <button mat-raised-button class="reference-button" class="mr-4 ml-4" (click)="viewUrl(mediaData.document)">View</button>
+                            </div>
+                            <!-- /URL OF DOCUMENT -->
+                            <!-- URL OF IMAGE -->
+                            
+                            <div  *ngIf="mediaData.type == 'globalmedia'" fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                               <div fxLayout="row" fxLayoutAlign="start start">
+                                <mat-form-field appearance="outline">
+                                    <input matInput readonly value="{{mediaData.image}}">
+                                </mat-form-field>
+                                   <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-12 ml-12 mt-12" (click)="DisplayDialogue(mediaData.image,mediaData.media_id,this.editImgName)">Edit</button>
+                               </div>   
+                            </div>
+                            <!-- /URL OF IMAGE -->
+                            <!-- URL OF AUDIO -->
+                            <div *ngIf="mediaData.type == 'audio'" fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline">
+                                    <input matInput readonly value="{{mediaData.audio}}">
+                                </mat-form-field>
+                                <button mat-raised-button class="reference-button" class="mr-4 ml-4" (click)="viewUrl(mediaData.audio)">Listen Audio</button>
+                            </div>
+                            <!-- /URL OF AUDIO -->
+                        </div>
+                        <!-- /URLS -->
+        
+                        <div class="sep"></div>
+                        <!-- FILE NAME -->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4 mt-20">File Name</div>
+                                <div class="secondary-text">Uploaded Media Title/Name.</div>
+                            </div>
+        
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline">
+                                    <input matInput readonly value="{{mediaData.imagename}}">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- /FILE NAME -->
+
+                        <div class="sep"></div>
+                        
+                        <!-- UPLOADED DATE -->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4 mt-20">Uploaded on</div>
+                                <div class="secondary-text">Uploaded Media Date.</div>
+                            </div>
+        
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline">
+                                    <input matInput readonly value="{{mediaData.updated_at | date:'longDate'}}">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- /UPLOADED DATE -->
+                    </div>
+                </div>            
+                
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

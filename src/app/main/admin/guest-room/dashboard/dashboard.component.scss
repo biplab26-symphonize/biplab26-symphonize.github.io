@@ -1,0 +1,11 @@
+mat-tab-group{
+    overflow: hidden;
+    width: 100%;  
+}
+.mat-tab-header-pagination {
+  width: 14px;
+}
+
+.mat-tab-header-pagination-before, .mat-tab-header-rtl .mat-tab-header-pagination-after{
+    padding-left: 7px;
+}

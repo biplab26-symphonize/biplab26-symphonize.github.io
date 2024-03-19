@@ -1,0 +1,8 @@
+<div *ngIf="MetaUploadInfo.fieldConfig.length > 0"  >
+    <h2 class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16 mt-20">Who is Managing this Event?</h2>
+    <div fxLayout="row wrap" fxLayoutAlign="start center" class="p-16 pb-0 fuse-white-bg">
+        <div appearance="outline" fxFlex *ngFor="let field of fieldConfig;">
+            <ng-container dynamicField [field]="field" [group]="fieldformGroup" type="{{type}}"></ng-container>
+        </div>
+    </div>     
+</div>

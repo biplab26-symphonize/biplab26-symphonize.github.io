@@ -1,0 +1,43 @@
+<div id="profile" class="page-layout simple tabbed">
+	<!-- HEADER -->
+	<div class="static-header h-400 px-16">
+	  <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+		<div class="header-top">
+		  <div class="logo text-center">
+			<span class="logo-text font-size-48 fuse-black-fg" [ngStyle.lt-sm]="{'font-size.px': 30}">
+			  <strong> View Profile </strong>
+			</span>
+		  </div>
+		  <!-- HEADER TEXT -->
+		</div>
+		<!-- / TOOLBAR -->`
+	  </div>
+	</div>
+	<!-- / HEADER -->
+  
+	<!-- CONTENT -->
+	<div class="content">
+	  <div class="content-wrap fuse-white-bg p-28">
+		<div class="profile-dynamic-header">
+		  <!-- HEADER -->
+		  <div class="dynamic-header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" [ngStyle]="{'background-image': 'url('+tmp_cover_img+')','background-size': '100% 100%','background-position':'start' ,'background-repeat':'no-repeat' }" fxLayoutAlign.gt-sm="space-between end">
+			<div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
+			  <img class="profile-image avatar huge" [src]="tmp_avatar_img" />
+			  <div *ngIf="this.loginUserInfo && this.loginUserInfo.first_name" class="name" >
+				{{this.loginUserInfo.first_name}} 
+				<mat-icon class="collapsable-arrow"  [routerLink] = "['edit-profile']">edit</mat-icon>
+			  </div>
+			</div>
+		  </div>
+		  <!-- / HEADER -->
+		</div>
+		<mat-tab-group dynamicHeight="true">
+		  <mat-tab label="About" *ngIf="userData.id">
+			<profile-about [aboutInfo]="userData"></profile-about>
+		  </mat-tab>
+		</mat-tab-group>
+	  </div>
+	</div>
+	<!-- / CONTENT -->
+  </div>
+  

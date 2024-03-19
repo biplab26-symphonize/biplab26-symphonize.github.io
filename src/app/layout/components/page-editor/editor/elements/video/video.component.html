@@ -1,0 +1,13 @@
+<ng-container *ngIf="elementinfo.videoid">
+    <div class="mb-20 word-brk-all">
+        <div class="column-actions green-bg-color text-center drag-handle">
+            <mat-icon class="s-20 m-8 icon fuse-white-fg" (click)="openEditElementDialog()">brush</mat-icon>
+            <mat-icon class="s-20 m-8 icon fuse-white-fg" (click)="cloneElement()">file_copy</mat-icon>
+            <mat-icon class="s-20 m-8 icon fuse-white-fg" (click)="removeElement()">delete</mat-icon>
+        </div>
+        <div class="warn-fg border p-16 -pb-0" fxLayout="column" fxLayoutAlign="center center">
+            <mat-icon class="s-20 icon">ondemand_video</mat-icon>
+            <span>{{elementinfo.videoid}}</span>
+        </div> 
+    </div>
+</ng-container>

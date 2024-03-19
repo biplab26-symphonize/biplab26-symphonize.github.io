@@ -1,0 +1,30 @@
+.all-location-table {
+    td{
+        vertical-align: baseline;
+        word-break: break-word;
+    }
+
+    th {
+        font-size:15px !important;
+    }
+    th:nth-of-type(1),
+    th:nth-of-type(2) {
+        width: 10% ;
+     }
+
+     th:nth-of-type(3) {
+         width: 25%;
+     }
+
+     th:nth-of-type(4){
+         width: 16%;
+     }
+
+     th:nth-of-type(5) {
+         width: 10%;
+     }
+
+     th:nth-of-type(6){
+       width: 5%;  
+     }
+}

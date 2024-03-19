@@ -1,0 +1,93 @@
+<div class="page-layout page-layout-add simple  inner-scroll"
+    id="back-meaeting-room-equipment-add">
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- CENTER -->
+        <div class="center pb-16" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-100-p">
+
+                <form  autocomplete="off" [formGroup]="addExport" novalidate>
+
+                    <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">Export Form Entries
+                    </div>
+
+                    <div class="d-block p-28">
+                        
+                        <div fxLayout="row wrap" *ngIf="fieldStatus">
+                            <mat-checkbox class="font-weight-600"  (change)="allSelect($event)">
+                               Select All 
+                            </mat-checkbox>
+                        </div>
+
+                        <div class="py-16">
+                            <hr />
+                        </div>
+
+                        <div fusePerfectScrollbar class="h-240">
+                            <div class="entries_boxes_wrap" fxLayout="row wrap">
+                                <div class="entries_boxes p-15"  *ngFor="let formField of formsinfo">
+                                    <mat-checkbox class="font-weight-600 mr-4" [value]="formField.form_element_id" [checked]="formField.isSelected" (change)="getFormFieldId($event,formField.form_element_id)">
+                                        {{formField.description}}
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pb-16">
+                            <hr />
+                        </div>
+
+                        <div fxLayout="row wrap">
+                            
+                        </div>
+                        <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap>
+                            <mat-form-field appearance="outline" fxFlex class="px-4">
+                                <mat-label>Select Excel Extension</mat-label>
+                                <mat-select matNativeControl required formControlName="type" required>
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option value=".csv">CSV
+                                    </mat-option>
+                                    <mat-option value=".xlsx">Excel
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>Status Required</mat-error>
+                            </mat-form-field>
+
+                            <!-- SERVICE START AND END DATE -->
+                            <mat-form-field appearance="outline" fxFlex class="px-4">
+                              <mat-label>Start Date</mat-label>
+                              <input matInput #input_start_date [max]="dateTo" [matDatepicker]="picker" (focus)="picker.open()" (dateInput)="fromDate($event)" formControlName="start_date">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50" class="px-4">
+                              <mat-label>End Date</mat-label>
+                              <input matInput #input_end_date [min]="date" [matDatepicker]="picker2" (focus)="picker2.open()" (dateInput)="toDate($event)"
+                                formControlName="end_date">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
+                            <button mat-raised-button [mat-dialog-close]="" 
+                                class="text-uppercase purple-btn-bg font-size-16 mr-8 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                                (click)="onSaveFieldClick()">Export</button>
+                                <button mat-raised-button
+                                class="text-uppercase purple-btn-bg font-size-16 mr-8 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                              type='button' [mat-dialog-close]="" (click)="Close()">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+</div>
+
+

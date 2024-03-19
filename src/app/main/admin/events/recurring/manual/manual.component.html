@@ -1,0 +1,59 @@
+
+
+<form name="manualform"  [formGroup]="manualform">
+    <ng-container *ngIf="!disableRecurring">
+        <div class="border p-20 pb-0 border-radius-4 mb-20"> 
+            <div  formArrayName="recurringdates" 
+            *ngFor="let item of manualform.get('recurringdates')['controls']; let i = index;">
+            <!--DYNAMIC FIELDS-->
+            <div fxLayout="row"  fxLayoutAlign="start center" fxFlex="1 0 auto" [formGroupName]="i">
+                <!--event Start Date-->
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex class="pr-8">
+                    <mat-label>Event Start Date</mat-label>
+                    <input matInput 
+                    #input_start_date
+                    required readonly="readonly" 
+                    [matDatepicker]="event_start_date"  
+                    formControlName="event_start_date" 
+                    placeholder="Event Start Date"
+                    (dateInput)="generateManualRecurrence(i)"
+                    [min]="editEntry==false ? eventStartDate : item.controls.event_start_date.value"
+                    (focus)="event_start_date.open()">
+                    <mat-datepicker-toggle matSuffix [for]="event_start_date"></mat-datepicker-toggle>
+                    <mat-datepicker #event_start_date (closed)="input_start_date.blur()"></mat-datepicker>
+                    
+                </mat-form-field>
+                <!--event End Date-->
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex class="pr-8">
+                    <mat-label>Event End Date</mat-label>
+                    <input matInput 
+                    #input_end_date
+                    required readonly="readonly" 
+                    [matDatepicker]="event_end_date" 
+                    formControlName="event_end_date" 
+                    placeholder="Event End Date"
+                    [min]="item.controls.max_event_date.value"
+                    (dateInput)="generateManualRecurrence(i)"
+                    (focus)="event_end_date.open()"> <!-- [disabled]="is_all_day=='Y'" -->
+                    <mat-datepicker-toggle matSuffix [for]="event_end_date" ></mat-datepicker-toggle>
+                    <mat-datepicker #event_end_date (closed)="input_end_date.blur()"></mat-datepicker>
+                </mat-form-field>
+
+                <div>
+                    <mat-icon matSuffix (click)="removeManualFields(item,i)"  class="secondary-text red-fg mb-28">remove_circle</mat-icon>
+                    <mat-icon matSuffix (click)="addManualFields()" class="secondary-text mb-28 green-500-fg">add_circle</mat-icon>              
+                </div>
+      
+            </div>
+        </div>
+        </div>
+       
+        <div class="mat-error warn-fg" *ngIf="duplicateDatesMsg==true">
+            Duplicate dates in manual recurrence.
+        </div>
+    </ng-container>
+    
+    <div *ngIf="disableRecurring">
+        <div  class="warn-fg">Please select event start/end dates, registration start/end dates</div>
+    </div>
+</form>    

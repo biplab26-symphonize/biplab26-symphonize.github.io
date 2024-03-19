@@ -1,0 +1,123 @@
+<div id="settings-general" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Settings
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+      <!-- BTN's -->
+      <div class="text-right" fxFlex>
+        <div class="mt-16 mt-sm-0" [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+            <button  mat-raised-button [routerLink]="'/admin/all-rotating-menu/list'">
+                <mat-icon class="mr-8">arrow_back</mat-icon>Back To List
+            </button>
+        </div>
+    </div>
+    <div class="ml-8" fxLayout="row" fxLayoutAlign="end center">
+        <div class="mt-16 mt-sm-0">
+            <button mat-raised-button class="reference-button" [disabled]="this.SettingForm.invalid " (click)="onSubmit($event)" cdkFocusInitial>
+                <mat-icon class="mr-4">settings_backup_restore</mat-icon>
+                Update Settings
+            </button>
+        </div>
+    </div>
+    <!-- / BTN's -->
+
+    </div>
+
+    <div class="content" fusePerfectScrollbar>
+
+
+    	<!-- CENTER -->
+        <div class="center p-24 pb-56">
+
+				<!-- SETTINGS -->
+				<form autocomplete="off" #f="ngForm" [formGroup]="SettingForm" novalidate autocomplete="off">
+
+					<div id="settings">
+						
+						<div class="mat-title"><mat-icon>settings</mat-icon> Rotating Menu Settings</div>
+					
+						<div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+
+                            <!-- allowfileupload -->
+							<div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Allow File Upload </div>
+                                    <div class="mat-caption secondary-text">Enable The File Uploading.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-radio-group formControlName="allowfileupload" aria-label="Select an option">
+                                        <mat-radio-button value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="ml-8" value="N">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <!-- /allowfileupload -->
+                            <div class="sep"></div>
+                            <!-- maxpdfsize -->
+							<div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Maximum File Size </div>
+                                    <div class="mat-caption secondary-text">Limit Of File Size.</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                                        <mat-label>Maximum File Size</mat-label>
+                                        <input matInput type="number" formControlName="maxpdfsize" required>
+                                        <mat-icon matSuffix class="secondary-text">present_to_all</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- /maxpdfsize -->
+                            <div class="sep"></div>
+
+                            <!-- accesstime -->
+							<div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Url Expire Time </div>
+                                    <div class="mat-caption secondary-text">File Url Will Be Expired After Given Time ( In Minutes <strong>0 For No Expiry Time</strong> )</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                                        <mat-label>File Url Expiry</mat-label>
+                                        <input matInput type="number" formControlName="accesstime" required>
+                                        <mat-icon matSuffix class="secondary-text">access_time</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- /accesstime -->
+                            <div class="sep"></div>
+
+                            <!-- SET DEFAULT PDF FOR MENU -->
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="34">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Default PDF</div>
+                                    <div class="mat-caption secondary-text">Set default pdf for menu url.</div>
+                                </div>
+                                <app-file-upload fxLayout="column" fxLayoutAlign="top" fxFlex="33" [uploadlabel]="''" [cropper]="false" (imageUploaded)="setDefaultPdf($event)" [uploadInfo]="uploadInfo?.defaultpdf" ></app-file-upload>
+                                <a class="mt-12" target="_blank" *ngIf="this.SettingForm.get('defaultpdf').value!==''" [href]="mediaUrl+this.SettingForm.get('defaultpdf').value"> <mat-icon>picture_as_pdf</mat-icon> View Pdf</a>
+                            </div>
+                            <!-- /SET DEFAULT PDF -->
+                        </div>
+					</div>
+				</form>
+				<!-- / SETTINGS -->
+
+
+		</div>
+		<!-- / CENTER -->
+		
+   </div>   
+    <!-- / HEADER -->
+</div>   

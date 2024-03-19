@@ -1,0 +1,111 @@
+<div id="Resident-Directory-user-profile" [ngClass]="{'frontprofile': showNavBar==true}" class="page-layout simple fullwidth layout-box">
+    
+    <!-- / HEADER -->
+    
+    <!-- CONTENT -->
+    <div class="content">
+        <!-- CENTER -->
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="end center"> 
+                <button mat-stroked-button color="accent" class="mb-20" [routerLink]="routerUrl"  [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                    <mat-icon class="mr-8">arrow_back</mat-icon>
+                    <span>Back To List</span>
+                </button>
+                <button *ngIf="editUserAccess==true" mat-stroked-button color="accent" class="ml-8 mb-20" [routerLink]="['/edit-other-profile/',UserInfo.id]"  [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                    <mat-icon class="mr-8">edit</mat-icon>
+                    <span>Edit User</span>
+                </button>
+            </div> 
+
+            <div class="dynamic-header">
+                <!-- HEADER -->
+                  <div class="dynamic-header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"  [ngStyle]="{'background-image': 'url('+getBackground(UserInfo.cover_file)+')','background-size': '100% 100%','background-position':'start' ,'background-repeat':'no-repeat' }"
+                  fxLayoutAlign.gt-sm="space-between end">
+                      <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
+                          <img class="profile-image avatar huge" [src]="UserInfo.thumb_file ||  UserInfo.avatar_file || _defaultAvatar" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                          <div class="fuse-white-fg h2 name" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            {{UserInfo.first_name +' '+ UserInfo.showpreffix +' '+ UserInfo.middle_name +' '+ UserInfo.last_name}}
+                          </div>
+                      </div>		
+              </div>
+          <!-- / HEADER -->
+          </div>           
+
+            <div fxLayout="column" class="border"> 
+                <header class="accent">
+                    <h2 class="m-0 p-16">General Information</h2>
+                </header>
+    
+                <form *ngIf="UserInfo" class="user-info p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="userform" novalidate autocomplete="false">
+                    <div  fxLayout="row wrap" fxLayoutAlign="start" fxFlex="1 0 auto" fxLayout.lt-sm="column">
+                        <!-- name -->
+                        <div class="mb-20" fxLayout="column" fxFlex="33.3"  *ngIf="fieldOptions.profilecorefields.includes('first_name')">
+                            <div class="text-bold"><mat-icon class="length-icon s-16">person</mat-icon> Name : </div>
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div class=""> {{UserInfo.first_name +' '+ UserInfo.showpreffix +' '+ UserInfo.middle_name +' '+ UserInfo.last_name}} <span *ngIf="UserInfo.suffix">{{UserInfo.suffix}}</span></div>
+                            </div>
+                        </div>
+
+                       
+                        <!-- Email -->
+                        <div class="mb-20" fxLayout="column" fxFlex="33.3"  *ngIf="fieldOptions.profilecorefields.includes('email') && UserInfo.hide_email_res_dir!=='Y' && UserInfo.email!=='' && UserInfo.email!==null">
+                            <div class="text-bold"><mat-icon class="length-icon s-16">email</mat-icon> Email : </div>
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div class="">
+                                    <a href="mailto:{{UserInfo.email}}">{{UserInfo.email}}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Birthdate -->
+                        <div class="mb-20" fxLayout="column" fxFlex="33.3" *ngIf="fieldOptions.profilecorefields.includes('birthdate') && UserInfo.birthdate!='0000-00-00' && UserInfo.birthdate!=''">
+                            <div class="text-bold"><mat-icon class="length-icon s-16">date_range</mat-icon> Birthdate : </div>
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div>{{UserInfo.birthdate | date: 'MMM d'}}</div>
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="mb-20" fxLayout="column" fxFlex="33.3" *ngIf="fieldOptions.profilecorefields.includes('phone') && UserInfo.hide_phone_res_dir!=='Y' && UserInfo.phone!=='' && UserInfo.phone!==null">
+                            <div class="text-bold"><mat-icon class="length-icon s-16">phone</mat-icon> Phone: </div>
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div class="">
+                                    <a href="tel:{{UserInfo.phone}}">
+                                        {{UserInfo.phone}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <!-- Biography -->
+                        <div class="mb-20" fxLayout="column" fxFlex="100" *ngIf="UserInfo.biography">
+                            <div class="text-bold"><mat-icon class="length-icon s-16">list_alt</mat-icon> Biography : </div>
+                            <div>
+                                <div [innerHTML]="UserInfo.biography | sanitizeHtml"></div>
+                            </div>
+                        </div>            
+                        <ng-container *ngFor="let meta of userMeta;trackBy:metaFields">
+                            <div class="mb-20" fxLayout="column" fxFlex="33.3" *ngIf="fieldOptions.profilemetafields.includes(meta.field_id) && meta.dynamicfields!=''">
+                                <div class="text-bold">{{meta.field_label | titlecase }}:</div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="info" *ngIf="meta.field_type =='number' && meta.field_content.extra_field_content && meta.field_content.extra_field_content.ismasking=='Y' && meta.field_content.extra_field_content.maskingpattern!=''">{{meta.dynamicfields  | mask:meta.field_content.extra_field_content.maskingpattern}}</div>
+                                    <div class="info" *ngIf="meta.field_type =='number' && meta.field_content.extra_field_content && meta.field_content.extra_field_content.ismasking=='N'">{{meta.dynamicfields}}</div>
+                                    <div class="info" *ngIf="meta.field_type !=='number'  && meta.field_type !=='date'">{{meta.dynamicfields}}</div>
+                                    <div class="info" *ngIf="meta.field_type =='date' ">{{meta.field_value | date: defaultDateTimeFormat.date_format}}</div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </form>    
+            </div>
+            
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+
+
+
+</div>

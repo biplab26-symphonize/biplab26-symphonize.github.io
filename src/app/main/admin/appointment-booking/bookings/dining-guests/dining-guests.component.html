@@ -1,0 +1,29 @@
+<form name="guestForm"  [formGroup]="guestForm" fxLayout="row wrap"> 
+    <div formArrayName="guestFields" fxFlex="50" fxFlex.lt-sm="100" *ngFor="let item of guestForm.get('guestFields')['controls']; let i = index;" fxLayout.lt-sm="column">
+        <!--DYNAMIC FIELDS-->
+        <div class="px-4" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto" [formGroupName]="i" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start">
+            <!--Name-->
+            <mat-form-field appearance="outline" floatLabel="always"  class="w-100-p min-100-p">
+                <mat-label>Guest Attendees Name*</mat-label>
+                <input matInput #autoCompleteInput [matAutocomplete]="auto" id="first_name" name="first_name" formControlName="first_name" (change)="prepareGuestArray(i)" >
+                 
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setguestFormfields($event,i)" >
+                    <ng-container *ngFor="let option of filteredGuests[i]">
+                        <mat-option   *ngIf="!ignoreIds.includes(option.id)"  [value]="option" >
+                            {{option.first_name+' '+option.last_name}}
+                        </mat-option>
+                    </ng-container>
+                    <mat-option *ngIf="filteredGuests[i] && filteredGuests[i].length==0" disabled="true">Users Not Found</mat-option>
+                </mat-autocomplete>
+                <mat-error>
+                    <div *ngIf="guestForm.get('guestFields')['controls'][i].get('first_name').errors || guestForm.get('guestFields')['controls'][i].get('first_name').drity ||  guestForm.get('guestFields')['controls'][i].get('first_name').touched ">
+                      
+                        <div *ngIf="guestForm.get('guestFields')['controls'][i].get('first_name').errors?.required">Guest Attendees Name Required</div>
+                        <div *ngIf="guestForm.get('guestFields')['controls'][i].get('first_name').errors?.pattern">Guest Attendees Name accept only alphabets</div>
+                    </div>
+                </mat-error>
+                <!-- <mat-error >Guest Attendees Name Required</mat-error>                                      -->
+            </mat-form-field>
+        </div>
+    </div>
+</form> 

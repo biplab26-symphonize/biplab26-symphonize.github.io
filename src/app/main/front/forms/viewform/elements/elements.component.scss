@@ -1,0 +1,100 @@
+@import "src/@fuse/scss/fuse";
+
+#element {
+    .content-wrap{
+        padding-bottom: 3px !important;
+    }
+
+    .white-space-break {
+        white-space: break-spaces;
+    }
+    
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px; 
+        position: relative;
+        background-size: cover;
+        background-position: center;  
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/maintenance-request.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        padding: 0 !important;
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }                
+    }
+    
+    .ng-tns-c37-52.col-sm-12.ng-star-inserted {
+        width: 50%;
+    }
+    .submit-btn 
+    {
+        margin-top: 18px;
+    }
+
+    mat-checkbox {
+        width: 49%;
+    }
+        mat-icon {
+        position: relative;
+        float: right;
+        top: -22px;
+        cursor: pointer;
+        min-height: 1px!important;
+        min-width: 12px!important;
+        height: 1px;
+        color: rgba(0, 0, 0, 0.54);
+      }
+
+}
+
+@include media-breakpoint('lt-sm') {
+    .content-wrap.fuse-white-bg.p-28 {
+        padding: 20px !important;
+
+        .col-halfwidth {
+            max-width: 100%;
+        } 
+    }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

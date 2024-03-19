@@ -1,0 +1,31 @@
+<!-- CARD CONTENT -->
+    <div class="fuse-content" id="home-page-quick-events">
+        <div class="p-16 title">
+            <div class="h1 font-weight-800">Favorite Events</div>
+        </div>
+        <div class="px-16 mat-table-p" >
+            <mat-table class="simple clickable" #table [dataSource]="dataSource" fusePerfectScrollbar>
+                <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                <ng-container *ngIf="column.columnDef">
+                    <mat-header-cell class="dt-paginations" *matHeaderCellDef><h3>{{column.header}}</h3></mat-header-cell>
+                    <mat-cell class="text-capitalize" *matCellDef="let element"> 
+                        <span *ngIf="column.columnDef!=='event_start_date' && column.columnDef!=='event'">
+                            {{element[column.columnDef]}}
+                        </span>
+                        <span *ngIf="column.columnDef=='event_start_date'">{{element[column.columnDef] |  date: defaultDateTimeFormat.date_format}}</span>
+                        <span *ngIf="column.columnDef=='event'">
+                            <a [routerLink] = "['my-events']">Favorite Events <mat-icon class="length-icon s-12">arrow_right</mat-icon></a>
+                        </span>
+                    </mat-cell>
+                </ng-container>        
+                </ng-container>    
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="w-space"></mat-row>
+            </mat-table>
+        </div>
+    
+        <div class="more">
+            <a class="font-weight-600" [routerLink]="['/my-events']">See All Events <mat-icon class="s-20">arrow_right</mat-icon></a>
+        </div>
+    </div>
+<!-- / CARD CONTENT -->  

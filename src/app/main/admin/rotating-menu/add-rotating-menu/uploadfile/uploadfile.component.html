@@ -1,0 +1,67 @@
+<div id="rotating-menu-upload" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+        <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16" fxLayout="row" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxFlex>
+                <div class="logo">
+                    <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title|titlecase}}
+                </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- BTN's -->
+            <div class="text-right" fxFlex>
+                <div class="mt-16 mt-sm-0" [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                    <button   mat-raised-button class="mr-8"  [mat-dialog-close]="this.Savedata" >
+                        <mat-icon class="mr-4">arrow_back</mat-icon> Back
+                    </button>
+                    <button mat-raised-button class="mr-8" [disabled]="showuploadbutton == false "   (click)="onsaveuploadfile()" >
+                        <mat-icon class="mr-4">cloud_upload</mat-icon> Upload
+                    </button>
+                    
+                </div>
+            </div>
+            <!-- / BTN's -->
+    </div>
+     <div class="content p-24" fusePerfectScrollbar>
+
+        <div class="center p-24" fxLayoutAlign="center">
+                    <!-- CONTENT -->
+           <div class="content w-75-p my-auto">
+                <!-- REACTIVE FORM EXAMPLE -->
+                <div class="p-24 w-max-800" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" >
+                    <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="1em" fxFlex="1 0 auto">
+                                    
+                        <div fxLayout="row" fxLayoutAlign="end"  fxFlex="1 0 auto" class="select-background-img">
+                            
+                            <input  hidden
+                                type='file'
+                                [accept]="inputAccpets"
+                                (change)="onSelectLogoFile($event)"
+                                #logofile/> 
+                            <div class="btn">
+                                <button mat-stroked-button class="mr-12 choose-from-gallery mx-4 my-8 text-capitalize purple-btn-bg font-size-16 fuse-white-fg line-height-32 br-ds-0 box-shadow-none" (click)="logofile.click()">Select PDF</button>
+                            </div>           
+                      </div>
+                </div>
+                       <div fxLayout="row" fxLayoutAlign="start center" class="h2 mb-20">
+                            <span class="mat-title">{{currentData.menuname}}</span> 
+                        </div> 
+                        <div fxLayout="row" fxLayoutAlign="start center" class="h2 mb-20">
+                            <span>week  {{data.week}}</span> &nbsp;
+                            <span *ngIf="showday == true">{{DayName}}</span> 
+                        </div> 
+                        
+                        <div  fxLayout="row" fxLayoutAlign="start center" class="pdf-path mb-20">
+                            <a *ngIf="ShowpdfName == true" (click)="Showpdf(filename)"> Pdf Name  :- {{filename}}</a>
+                        </div>   
+                     
+                    </div>
+                 </div>
+            </div>
+        </div>        
+</div>   

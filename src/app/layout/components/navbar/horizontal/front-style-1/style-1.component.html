@@ -1,0 +1,44 @@
+
+<div [ngClass]="fuseConfig.layout.navbar.primaryBackground" *ngIf="navigation && homeSettingsdata">
+
+	<div fxFlex fxFill fxLayout="row" fxLayoutAlign="start center"  *ngIf="homeSettingsdata.default_layout=='layout-1' && homeSettingsdata.navbar_set == 'Y'">
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="17" >
+			<div fxLayout="row"  fxLayoutAlign="center center" class="logo-wrapper fuse-white-bg " [ngClass.gt-md]="{'w-60': 'true','h-60':'true'}" [ngStyle.lt-md]="{'width.px': 100,'height.px':100}"> 
+			 <a class="w-90" [routerLink]="['/']"><img style="width: 83% !important;
+				margin-left: 2px; margin-top: '4px';" src="assets/images/logos/home-logo.png" /></a> 
+			</div>
+		   
+			<div fxFlex="70" fxLayout="row" fxLayoutAlign="start center" *ngIf="fuseConfig.layout.searchbar==false">
+				<!-- <div class="toolbar-separator" fxHide.lt-lg></div> -->
+				<label class="mx-12" for="fuse-search-bar-input toolbar-separator" fxHide.lt-md>
+					<button fxLayout="row" [routerLink]="['/search']" fxLayoutAlign="center center" mat-icon-button class="fuse-search-bar-expander search-btn" aria-label="Expand Search Bar">
+						<mat-icon class="s-24 fuse-white-fg">search</mat-icon>
+					</button>
+				</label>
+			</div>
+		</div>
+
+		<div class="w-100-p" fxLayout="row" fxLayoutAlign="start center" fxFlex="85">
+			<fuse-navigation class="w-100-p" layout="horizontal" [navigation]="navigation"></fuse-navigation>
+		</div>
+	</div>
+</div>
+
+<div  *ngIf="navigation && homeSettingsdata" style="flex-direction:column ;">
+	<div   fxFlex="1 0 auto" display='fxFlex'  *ngIf="homeSettingsdata.default_layout=='layout-2'  && homeSettingsdata.navbar_set == 'Y'">
+		<div fxLayout="row" fxFlex="30" fxLayoutAlign="center" class="logo-wrapper"> 
+			<app-logo></app-logo>
+		</div>
+		<div fxLayout="column"  fxLayoutAlign="end"> 
+			<button  mat-button class="pink-200-bg" [routerLink]="['/edit-profile']">Change The Password And Email </button>
+			<button  mat-button class="pink-200-bg" [routerLink]="['/profile']" >View My Profile</button>
+		</div>
+	</div>
+	<div  *ngIf="homeSettingsdata.default_layout=='layout-2'  && homeSettingsdata.navbar_set == 'Y'">
+		<div [ngClass]="fuseConfig.layout.navbar.primaryBackground" fxFlex fxFill fxLayout="row" fxLayoutAlign="end">
+			<div class="w-100-p" fxLayout="row" fxLayoutAlign="end" fxFlex="70">
+				<fuse-navigation class="w-100-p" layout="horizontal" [navigation]="navigation"></fuse-navigation>
+			</div>
+		</div>
+	</div>
+</div>

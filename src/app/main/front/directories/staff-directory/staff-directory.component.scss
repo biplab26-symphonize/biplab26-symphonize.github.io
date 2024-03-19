@@ -1,0 +1,138 @@
+@import "src/@fuse/scss/fuse";
+
+#staff{
+    .word-break {word-break: break-all;}
+    mat-tab-header {
+        background-color: #cfd8dc !important;
+        color: black !important;
+    }
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;  
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/staff-bg.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+
+
+            .tabbed{
+                margin-left: -28px;
+                margin-right: -28px;
+                // border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+                mat-tab-group{
+                    overflow: hidden;
+                    width: 100%;  
+                }
+
+
+            }
+
+
+            .staff-cards{
+                clear: both;
+
+                .fuse-card-wrap{
+                    clear: both;
+
+                    .title{
+                        clear: both;
+
+                        .h1{
+                            position:relative;
+
+                            &:after{
+                                content: "";
+                                display: block;
+                                height: 1px;
+                                width: 100%;
+                                border-top: solid 1px #ddd;
+                                margin-top: -19px;
+                                position: absolute;
+                            }
+
+                            span{
+                                padding-right: 20px;
+                                position:relative;
+                                z-index: 1;
+                            }
+
+                            
+                        }
+                    }
+
+                    .fuse-card{
+                        max-width: 48.5%;
+                        min-width: 48.5%;
+                        mat-icon{
+                            vertical-align: middle;
+                        }
+                    }
+                }
+            }
+        }
+    }
+  
+    // .fuse-card.mb-20:nth-last-child(1){
+    //     margin-bottom: 0 !important;
+    //    }
+   
+}
+
+
+@include media-breakpoint('lt-sm') {
+    .content-wrap.fuse-white-bg.p-28 {
+        padding: 20px !important;
+    }
+
+    .min-w-100 {
+        min-width: 100%;
+    }
+
+    .pl-0 {
+        padding-left: 0 !important;
+    }
+ }
+
+
+

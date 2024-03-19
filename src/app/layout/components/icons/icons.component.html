@@ -1,0 +1,52 @@
+<div id="helper-classes" class="page-layout simple tabbed" fxLayout="column">
+
+    <!-- CONTENT -->
+    <div class="content p-24" fusePerfectScrollbar>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner *ngIf="loading" color="accent"></mat-spinner>
+        </div>
+        
+        <div *ngIf="!loading">
+
+            <div fxLayout="column">
+
+                <div class="m-32">
+                    <mat-form-field class="w-50-p">
+                        <input matInput placeholder="Search an icon..." (input)="filterIcons($event)" [(ngModel)]="searchKey">
+                        <button mat-button *ngIf="searchKey" matSuffix mat-icon-button aria-label="Clear" (click)="searchKey=''">
+                        <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <button mat-button (click)="dialogRef.close()">Cancel</button>
+                </div>
+
+                <div fxLayout="row wrap" class="w-800 h-200">
+                    <ng-container *ngIf="type=='material'">
+                        <ng-container *ngFor="let icon of filteredIcons">
+                            <div class="icon-holder m-8 pointer" (click)="dialogRef.close(icon.ligature)" fxLayout="column" fxLayoutAlign="center center">
+                                <mat-icon class="secondary-text s-48">{{icon.ligature}}</mat-icon>
+                                <div class="icon-name secondary-text mt-8">{{icon.ligature}}</div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container  *ngIf="type=='fontawesome'">
+                        <ng-container *ngFor="let icon of filteredIcons">
+                            <div class="icon-holder m-8 pointer" (click)="dialogRef.close(icon)" fxLayout="column" fxLayoutAlign="center center">
+                                <i class="secondary-text s-48 {{icon}}"></i>
+                                <div class="icon-name secondary-text mt-8">{{icon}}</div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

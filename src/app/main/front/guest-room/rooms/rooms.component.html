@@ -1,0 +1,181 @@
+<div id="front-meeting-room" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off" [formGroup]="addRooms"
+                novalidate autocomplete="off">
+
+                <div class="w-100-p border pt-24" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="center center"
+                    [ngStyle]="{'background': '#f5f5f5','margin-bottom': '10px','padding-left': '10px'}">
+                    <div fxFlex="10">
+                        <button mat-stroked-button color="accent" [ngStyle]="{'margin-bottom':'22px','height':'58px'}"
+                            (click)="gotoHome()">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+                        </button>
+                    </div>
+                    <div fxFlex="90" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                        <mat-form-field appearance="outline" fxFlex.lt-sm="100" fxFlex="100" class="pr-8">
+                            <mat-label>Step</mat-label>
+                            <mat-select matNativeControl formControlName="step" required (selectionChange)="gotoBack()">
+                                <mat-option value="step1">Step 1- When and Who</mat-option>
+                                <mat-option value="step2">Step 2- Rooms</mat-option>
+                                <mat-option value="step3" disabled>Step 3- Extras</mat-option>
+                                <mat-option value="step4" disabled>Step 4- Check Out</mat-option>
+                                <mat-option value="step5" disabled>Step 5- Preview</mat-option>
+                                <mat-option value="step6" disabled>Step 6- Finish</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="font-size-14" fxLayout="column">
+                    <div class="w-100-p border pt-24 pb-24" fxLayout="column wrap"
+                        [ngStyle]="{'margin-bottom': '10px','padding-left': '10px'}">
+                        <div fxLayout="row" class="font"><span><b>Building Name: </b> {{this.building_name}}</span></div>
+                       
+                    </div>
+                    <div class="w-100-p border pt-24 pb-24" fxLayout="column wrap"
+                        [ngStyle]="{'margin-bottom': '10px','padding-left': '10px'}">
+                        <div fxLayout="row" class="font">RESERVATION DATES</div>
+                        <div fxLayout="row" fxLayout.lt-sm="column">{{fromDayName}}, {{fromDay}} to {{toDayName}}, {{toDay}} &nbsp; <a
+                                [routerLink]="['/guest-room']">Change dates</a></div>
+                    </div>
+                    <div formArrayName="guestRoom" fxLayout="column">
+                        <div [formGroupName]="i" fxFlex="65" class="border mt-20" fxFlex.lt-sm="100"
+                            [ngClass.lt-sm]="{'w-100-p': 'true'}"
+                            *ngFor="let data of addRooms.get('guestRoom')['controls'];let i = index">
+                            <p class="font-weight-600 font-size-18 accent fuse-white-fg p-16 w-100-p d-block"
+                                [ngStyle.lt-sm]="{'font-size.px': 18}">{{roomsData[i].type}} </p>
+                            <div class="p-16 border-bottom service-details" fxLayout="row" fxLayout.lt-sm="column"
+                                fxLayoutAlign.lt-sm="start center">
+                                <div fxFlex="25" fxLayout="column">
+                                    <div fxLayout="row" *ngIf="roomsData[i].available.status != 'notavailable'">
+                                        <mat-form-field appearance="outline" class="pr-8 w-100-p">
+                                            <mat-label>Select number of rooms</mat-label>
+                                            <mat-select matNativeControl required formControlName="guest" required
+                                                (selectionChange)="getRooms($event,i);onAddSelectRowAdultsChildren($event,i)">
+                                                <mat-option value="">-Choose-</mat-option>
+                                                <mat-option
+                                                    *ngFor='let in of counter(roomsData[i].available.available + 1) ;let m = index'
+                                                    [value]="m">{{m}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>Status required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" *ngIf="roomsData[i].available.status == 'notavailable'">
+                                        <span>{{roomsData[i].available.message}}</span>
+                                    </div>
+                                    <!-- <hr> -->
+                                    <div fxLayout="row" [ngStyle]="{'margin-top': '35px'}" [ngStyle.lt-sm]="{'margin-top':'0px'}">
+                                        <span>This room accommodates up to {{roomsData[i].max_people}} guests</span>
+                                    </div>
+                                    <!-- <hr> -->
+                                    <div fxLayout="row" [ngStyle]="{'margin-top': '35px'}"
+                                        *ngIf="roomBookingArr[i] == ''" [ngStyle.lt-sm]="{'margin-top':'10px','margin-bottom':'10px'}" [ngStyle]="{'font-weight': 'bold'}">
+                                        <span>Price from <span
+                                                *ngIf="roomsData[i].price != '' && roomsData[i].price != null">${{roomsData[i].price}}</span><span
+                                                *ngIf="roomsData[i].price == '' || roomsData[i].price == null">$0</span></span>
+                                    </div>
+                                    <div fxLayout="column" [ngStyle]="{'margin-top': '35px'}"
+                                        *ngIf="roomBookingArr[i] != ''" [ngStyle]="{'font-weight': 'bold'}">
+                                        <div fxLayout="row" *ngFor="let room of roomBookingArr[i]">{{room.adults}}
+                                            Adults,
+                                            {{room.children}} Children x {{room.price}}</div>
+                                        <div fxLayout="row" class="mt-12" [ngStyle.lt-sm]="{'margin-top':'10px','margin-bottom':'10px'}">
+                                            <button mat-stroked-button color="accent"
+                                                (click)="gotoNextStep(i)">Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxFlex="75" fxLayout="column">
+                                    <div fxLayout="row" *ngIf="isRooms[i].status">
+                                        <table width="100%" class="reservation-check-table"
+                                            formArrayName="adultsChildren">
+                                            <thead class="green-bg-color fuse-white-fg">
+                                                <tr>
+                                                    <th class="text-center">Rooms</th>
+                                                    <th class="text-center">Adults</th>
+                                                    <th class="text-center">Children</th>
+                                                    <th class="text-center">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr [formGroupName]="n"
+                                                    *ngFor="let in of data.get('adultsChildren')['controls'];let n = index">
+                                                    <td class="text-center">
+                                                        <span>Room{{n + 1}}</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <mat-form-field appearance="outline" class="pr-8"
+                                                            [ngStyle]="{'width': '96%'}">
+                                                            <mat-label>Adults</mat-label>
+                                                            <mat-select matNativeControl required
+                                                                formControlName="adults" (input)="getChildren($event)" (selectionChange)="setAdultValidation($event,i,n)">
+                                                                <mat-option value="">-Choose-</mat-option>
+                                                                <mat-option
+                                                                    *ngFor='let in of counter(adultChildrenArr[i][n].adult) ;let k = index'
+                                                                    [value]="k + 1">{{k + 1}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                            <mat-error>Adults required</mat-error>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <mat-form-field appearance="outline" class="pr-8"
+                                                            [ngStyle]="{'width': '96%'}">
+                                                            <mat-label>Children</mat-label>
+                                                            <mat-select matNativeControl required
+                                                                formControlName="children" (input)="getAdults($event)" (selectionChange)="setChildValidation($event,i,n)">
+                                                                <mat-option value="">-Choose-</mat-option>
+                                                                <mat-option
+                                                                    *ngFor='let in of counter(adultChildrenArr[i][n].child + 1) ;let l = index'
+                                                                    [value]="l">{{l}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                            <mat-error>Children required</mat-error>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td class="text-center" [ngStyle]="{'font-weight': 'bold'}">
+                                                        <span
+                                                            *ngIf="roomsData[i].price != ''">${{roomsData[i].price}}</span>
+                                                        <span *ngIf="roomsData[i].price == ''">$0</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div fxLayout="row" class="px-16 pb-16" fxLayoutAlign="center center"
+                                        *ngIf="isRooms[i].status" [ngStyle.lt-sm]="{'margin-bottom':'12px'}">
+                                        <button mat-stroked-button color="accent" class="mr-8"
+                                            (click)="gotoBack()">Back</button>
+                                        <button mat-stroked-button color="accent"
+                                            (click)="bookRoom(i,roomsData[i].id)">Book</button>
+                                    </div>
+                                    <div class="first" 
+                                        *ngIf="isRooms[i].status == false">
+                                        <img [src]="roomsData[i].image ? roomsData[i].image : default_img"
+                                            [ngStyle]="{'height': '182px','width': 'auto','margin-left': '20px'}" [ngStyle.lt-sm]="{'width':'100%'}" />
+                                    </div>
+                                    <div fxLayout="row" class="px-16 pb-16 mt-20">
+                                        <p *ngIf="isRooms[i].status == false">{{roomsData[i].description}}</p>
+                                        <p *ngIf="isRooms[i].status == true">*Select number of adults and children for
+                                            each room. Price may change and will be calculated based on your selection.
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row" class="px-16 pb-16 mt-10" fxLayoutAlign="center center" [ngStyle]="{'margin-top':'10px'}">
+                        <button mat-stroked-button color="accent" class="mr-8" (click)="gotoBack()">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

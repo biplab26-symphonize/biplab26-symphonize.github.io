@@ -1,0 +1,79 @@
+@import "src/@fuse/scss/fuse";
+
+#my-dining{
+
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/dining.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+    }
+
+    .content{
+        .content-wrap{
+            padding-bottom: 10px !important;
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }               
+    }
+
+    .myDining-details-table {
+        th:nth-of-type(1){ width: 5%; }
+        th:nth-of-type(2){ width: 22%; }
+
+        tr{
+            vertical-align: baseline;
+        }
+    }
+}
+
+
+// Responsive 
+@include media-breakpoint('lt-sm') {
+    .content-wrap.fuse-white-bg.p-28 {
+        padding: 0 !important;
+
+        form {
+            margin-bottom: 8px !important;
+        }
+
+        th {
+            white-space: nowrap !important;
+        }
+    }
+
+
+}

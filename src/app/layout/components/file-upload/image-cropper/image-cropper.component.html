@@ -1,0 +1,21 @@
+<div mat-dialog-content class="mat-dialog-export">
+    <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="aspectRatio"
+        [resizeToWidth]="128"
+        format="png"
+        [cropper]="cropper"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
+    <img [src]="croppedImage" />
+</div>
+<div mat-dialog-actions class="mt-40 text-center"> 
+    <div class="w-100-p" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8"  (click)="dialogRef.close(croppedImage)">Select</button>
+        <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="dialogRef.close('')">Cancel</button>
+    </div>
+</div>

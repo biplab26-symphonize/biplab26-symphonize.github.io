@@ -1,0 +1,29 @@
+:host{
+    .sp-builder-modal-settings-container .sp-builder-column-layouts div.grid-template {
+        padding: 0.5em;
+        cursor: pointer;
+        border: 1px dashed #ccc;
+        margin-bottom: 1em;
+        box-sizing: border-box;
+        word-break: break-all;
+        margin: 1%;
+    }
+    .sp_builder_layout_column {
+        text-align: center;
+        padding: 15% 0;
+        display: inline-block;
+        background: #aaa;
+        color: #ddd;
+        font-size: 13px;
+        width: 100%;
+    }
+    .sp_builder_layout_column_blank {
+        text-align: center;
+        padding: 15% 0;
+        display: inline-block;
+        background: #fff;
+        color: #ddd;
+        font-size: 13px;
+        width: 100%;
+    }
+}

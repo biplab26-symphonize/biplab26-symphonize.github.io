@@ -1,0 +1,37 @@
+<div class="page-layout page-layout-add simple  inner-scroll" id="back-meaeting-room-equipment-add">
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- CENTER -->
+        <div class="center pb-16" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-100-p">
+                <form autocomplete="off" [formGroup]="addSeasonalPrice" novalidate>
+                    <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">Add Seasonal Prices
+                    </div>
+                    <div class="d-block p-28">
+                        <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap>
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Type</mat-label>
+                                <input matInput formControlName="seasonal_price" name="seasonal_price" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
+                            <button mat-raised-button [mat-dialog-close]=""
+                                class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8"
+                                (click)="onSaveFieldClick()">Add</button>
+                            <button mat-raised-button
+                                class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                                type='button' [mat-dialog-close]="" (click)="Close()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+</div>

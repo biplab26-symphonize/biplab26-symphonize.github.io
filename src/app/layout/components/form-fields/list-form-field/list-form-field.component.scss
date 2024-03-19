@@ -1,0 +1,28 @@
+.inline-checkbox{
+    display: flex;
+}
+.date-container{
+    position: relative;
+}
+.shadow-input {
+    position: absolute;
+    top: 22px;
+    width: 0px;
+    height: 0px;
+    border: none;
+}
+span.remove-date{
+    position: absolute;
+    right: 16px;
+    top: 0px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.delete-icon,
+.add-icon {
+    background: #CC8A00 !important;
+    color: white;
+    border-radius: 50%;
+    padding: 16px;
+}

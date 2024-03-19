@@ -1,0 +1,211 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add </mat-icon>
+          <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            {{title}}
+          </span>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+  
+      <!-- BTN's -->
+      <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+        <div class="mt-16 mt-sm-0">
+          <button mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}" [routerLink]="'/admin/food-reservation/orders/orders-list'">
+            <mat-icon class="mr-8">arrow_back</mat-icon>
+            Back To List
+          </button>
+        </div>
+      </div>
+      <!-- / BTN's -->
+    </div>
+    <!-- / HEADER -->
+  
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+      <!-- CENTER -->
+      <div class="center p-24 pb-56" fxLayoutAlign="center">
+        <!-- CONTENT -->  
+        <div class="content w-90-p mx-auto my-auto">
+          <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title}}</div>
+            <div class="p-28">
+            <form fxLayout="column" fxLayoutAlign="start" class="w-100-p" fxFlex="1 0 auto" autocomplete="off" [formGroup]="addOrderForm" novalidate>
+              <table width="100%" class="border reservation-check-table">
+                <thead class="green-bg-color fuse-white-fg">
+                  <tr>
+                    <th class="p-12 border-right text-center green-bg-color fuse-white-fg" width="200px">Product</th>
+                    <th class="p-12 border-right text-center green-bg-color fuse-white-fg" width="100px">Quantity</th>
+                    <th class="p-12 border-right text-center green-bg-color fuse-white-fg" width="200px">Side Dish</th>
+                    <th class="p-12 text-center green-bg-color fuse-white-fg border-right" width="200px">Extra</th>
+                    <th class="p-12 text-center green-bg-color fuse-white-fg" width="70px"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container formArrayName="orderitems">
+                    <tr *ngFor="let item of getOrderItems(addOrderForm); let k = index;" [formGroupName]="k">
+                      <td class="py-12 text-center w-200-px">
+                        <mat-form-field appearance="outline" class="mat-wrapper-p-0 w-190-px font-size-14">
+                          <mat-label>Choose Product</mat-label>
+                          <mat-select (selectionChange)="getExtraSide($event,k)" formControlName="product_id">
+                            <mat-option *ngFor="let product of products; let i = index;" [value]="product.id">{{product.product_name}}</mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="item.get('product_id').touched && item.get('product_id').hasError('required')">Product Name Required</mat-error>
+                        </mat-form-field>
+                      </td>
+  
+                      <td class="p-12 text-center border-right border-left">
+                        <mat-form-field class="w-100-px p-4 pb-0 border-radius-4">
+                          <mat-label>Quantity</mat-label>
+                          <input type="number" matInput min="1" formControlName="quantity" (input)="getSideDishAndExtras($event,k)" />
+                          <mat-error *ngIf="item.get('quantity').touched && item.get('quantity').hasError('required')">Product Quantity Required</mat-error>
+                        </mat-form-field>
+                      </td>
+                      
+                      <td class="p-12 pb-0 text-center border-right text-capitalize">
+                        <ng-container formArrayName="side_dish">
+                          <div [formGroupName]="j" fxLayout="column" *ngFor="let sidesarr of getSideItmes(item); let j = index;">
+                            <ng-container *ngIf="rowsideArr[k] && rowsideArr[k].length>0">
+                              <div *ngFor="let sides of rowsideArr[k];let s=index" class="w-100-p">
+                                <mat-form-field class="border-radius-4 px-8 mb-12 w-100-p font-size-14">
+                                  <mat-label>Select Sidedish</mat-label>
+                                  <mat-select formControlName="side_dish_id_{{s}}" required>
+                                    <mat-option *ngFor="let sidedishes of sides" [value]="sidedishes.sidedish.id" [attr.side_number]="sidedishes.side_number">{{sidedishes.sidedish.side_dish_name}}</mat-option>
+                                  </mat-select>
+                                  <mat-error *ngIf="sidesarr.get('side_dish_id_'+s).touched && sidesarr.get('side_dish_id_'+s).hasError('required')">Side Dish Required</mat-error>
+                                </mat-form-field>
+                                <input hidden name="side_number" formControlName="side_number" />
+                              </div>
+                              <div *ngIf="rowsideArr[k] && rowsideArr[k].length>0" class="w-100-p">
+                                <mat-form-field class="px-8 w-100-p mb-24 underline-0 border border-radius-4 h-65-px">
+                                  <mat-label>Notes</mat-label>
+                                  <textarea formControlName="notes" matInput></textarea>
+                                </mat-form-field>
+                              </div>
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </td>
+  
+                      <td class="p-12 pb-0 text-center border-right text-capitalize">
+                        <ng-container formArrayName="extra">
+                          <div [formGroupName]="j" fxLayout="column" *ngFor="let sidesarr of getExtraItmes(item); let j = index;">
+                            <ng-container *ngIf="rowextraArr[k] && rowextraArr[k].length>0">
+                              <div *ngFor="let extrasarr of rowextraArr[k];let es=index" class="w-100-p">
+                                <mat-form-field class="border-radius-4 px-8 mb-12 w-100-p font-size-14">
+                                  <mat-label>Select Extra</mat-label>
+                                  <mat-select formControlName="extra_id_{{es}}" required>
+                                    <mat-option *ngFor="let extras of extrasarr" [value]="extras.extras.id">{{extras.extras.extra_name}}</mat-option>
+                                  </mat-select>
+                                  <mat-error *ngIf="sidesarr.get('extra_id_'+es).touched && sidesarr.get('extra_id_'+es).hasError('required')">Extras Required</mat-error>
+                                </mat-form-field>
+                                <input hidden name="side_number" formControlName="side_number" />
+                              </div>
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </td>
+  
+                      <td class="text-center border-left">
+                        <mat-icon matSuffix (click)="onRemoveProducts(item,k)" class="secondary-text red-fg mb-28">remove_circle</mat-icon>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+                <tfoot class="warn-fg font-900" *ngIf="loadEditEntry==true">
+                  <tr>
+                    <td colspan="5" class="text-center p-20">Loading Products Please wait...</td>
+                  </tr>
+                </tfoot>
+              </table>
+              <button type="button" (click)="onAddProduct()" mat-raised-button class="my-16 mx-auto w-18-p text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">Add Product</button>
+  
+              <mat-form-field fxFlex appearance="outline" class="filter-select pr-8">
+                <mat-label> Type </mat-label>
+                <mat-select formControlName="type" required>
+                  <mat-option *ngFor="let type of types" [value]="type">{{type}}</mat-option>
+                </mat-select>
+                <mat-error>type is required!</mat-error>
+              </mat-form-field>
+  
+              <mat-form-field fxFlex appearance="outline" class="filter-select pr-8">
+                <mat-label> Status </mat-label>
+                <mat-select formControlName="orderstatus" required>
+                  <mat-option *ngFor="let status of selectStatus" [value]="status">{{status}}</mat-option>
+                </mat-select>
+                <mat-error>Status is required!</mat-error>
+              </mat-form-field>
+  
+              <div fxLayout="row" fxLayoutAlign="start center" class="mb-20">
+                <div appearance="outline" class="pr-16" fxFlex="20">
+                  <mat-checkbox class="font-weight-600" formControlName="lunch">Lunch </mat-checkbox>
+                </div>
+  
+                <div appearance="outline" fxFlex="20">
+                  <mat-checkbox class="font-weight-600" formControlName="dinner">Dinner </mat-checkbox>
+                </div>
+              </div>
+  
+              <mat-form-field fxFlex appearance="outline" class="filter-select pr-8">
+                <mat-label> Locations </mat-label>
+                <mat-select formControlName="location_id" required>
+                  <mat-option *ngFor="let location of locations" [value]="location.id">{{location.location_name}}</mat-option>
+                </mat-select>
+                <mat-error>Location is required!</mat-error>
+              </mat-form-field>
+  
+              <mat-form-field fxFlex appearance="outline" class="filter-select pr-8">
+                <mat-label>Address</mat-label>
+                <textarea matInput formControlName="address"></textarea>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" class="filter-select pr-8">
+                <mat-label>Name</mat-label>
+                <input matInput [matAutocomplete]="auto" name="first_name" formControlName="first_name" required />
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setFormfields($event)">
+                  <mat-option *ngFor="let option of filteredUsers" [value]="option">
+                    {{option.first_name+' '+option.last_name}}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error>Firstname required</mat-error>
+              </mat-form-field>
+              <input hidden name="id" formControlName="id" />
+  
+              <mat-form-field appearance="outline" class="filter-select pr-8">
+                <mat-label>Contact Number</mat-label>
+                <input matInput formControlName="phone" mask="(000) 000 00 00" name="phone" required />
+                <mat-error>Contact Number required</mat-error>
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" class="filter-select pr-8">
+                <mat-label>Email Address</mat-label>
+                <input matInput formControlName="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" name="email" required />
+                <ng-container *ngIf="addOrderForm.get('email').invalid" ngProjectAs="mat-error">
+                  <mat-error *ngIf="addOrderForm.get('email').errors.pattern">Email pattern is wrong</mat-error>
+                </ng-container>
+                <mat-error>Email Address required</mat-error>
+              </mat-form-field>
+  
+              <mat-form-field fxFlex appearance="outline"  class="filter-select pr-8">
+                  <mat-label>Delivery Date / Time</mat-label>
+                  <input matInput [owlDateTimeTrigger]="dt5" [min]="todayDate" [owlDateTime]="dt5" formControlName="booking_start_date">
+                  <owl-date-time [hour12Timer]="true" [pickerMode]="'dialog'" #dt5></owl-date-time>
+              </mat-form-field>
+  
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8" (click)="onSaveOrder()">Save</button>
+                <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" type="button" cdkFocusInitial (click)="Cancel()">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- / CONTENT -->
+      </div>
+      <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+  </div>
+  

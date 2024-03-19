@@ -1,0 +1,679 @@
+<div id="staff" class="page-layout simple fullwidth">
+	<!-- HEADER -->
+	<breadcumb></breadcumb> 
+	<!-- / HEADER -->
+  
+	<!-- CONTENT -->
+	<div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+	  <!--  CONTENT WRAP -->
+	  <section class="content-wrap fuse-white-bg p-28">
+		<form class="mb-20" fxLayout="column" fxLayoutAlign="start" name="filterForm" [formGroup]="filterForm" novalidate autocomplete="off">
+		  <div fxLayout="row" fxLayoutAlign="end center" class="mb-20" fxLayoutAlign.lt-sm="center center">
+			<!-- <button class="px-28 py-4 mr-8" mat-stroked-button color="accent"><mat-icon class="s-18">search</mat-icon> Search</button> -->
+			<button type="button" class="mr-8" mat-stroked-button color="accent" (click)="getPrint()"><mat-icon class="s-18">print</mat-icon> Print</button>
+			<button type="button" mat-stroked-button color="accent" (click)="resetform()"><mat-icon class="s-18">replay</mat-icon> Reset</button>
+		  </div>
+  
+		  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start">
+			<mat-form-field appearance="outline" fxFlex="33.3" class="px-4 min-w-100">
+			  <mat-label>Search By Name</mat-label>
+			  <input matInput placeholder="Search By Name" formControlName="name" maxlength="30" />
+			</mat-form-field>
+  
+			<mat-form-field appearance="outline" fxFlex="33.3" class="px-4 min-w-100">
+			  <mat-label>Search By Email</mat-label>
+			  <input matInput placeholder="Search By Email" formControlName="email" maxlength="30" />
+			</mat-form-field>
+  
+			<mat-form-field appearance="outline" fxFlex="33.3" class="px-4 min-w-100">
+			  <mat-label>Search By Title</mat-label>
+			  <mat-select placeholder="Select Designation" formControlName="designation" (selectionChange)="onDesignationChange($event)">
+				<mat-option *ngFor="let designation of designationList" [attr.data-id]="designation.category_name" [value]="designation.id"> {{designation.category_name}} </mat-option>
+			  </mat-select>
+			</mat-form-field>
+		  </div>
+		</form>
+		<!-- newest Staff -->
+		<section *ngIf="ShowStaffs==true" class="forms-events-section" fxLayout="row" fxLayoutAlign="center center">
+		  <div class="row-wrap" fxLayout="row wrap" fxFlex="1028px" fxLayoutAlign="space-between">
+			<widget-newest-staff class="w-100-p" [homesettings]="homeSettings"></widget-newest-staff>
+		  </div>
+		</section>
+		<!-- /Newest Staff -->
+		<!-- TABS -->
+		<div class="tabbed" fxLayout="column" fxLayoutAlign="start">
+		  <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="staffList && isHide == false && FilteredstaffList.length == 0"> -->
+		  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="staffList && isHide == false && FilteredstaffList.length == 0 && displayType == 'tabs'">
+			<!-- <form name="departpentForm" [formGroup]="departmentForm"> -->
+			<mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="changeTabs($event)">
+			  <mat-tab label="View All">
+				<section class="staff-cards px-28" fxLayout="column" fxLayoutAlign="start" *ngFor="let category of staffList;">
+				  <div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="space-between">
+					<!-- <div class="title mt-20 mb-20" fxLayout="column" fxLayoutAlign="start" fxFlex="100" *ngIf="staffSettings.showemptydepartment == 'Y'"> -->
+					<div class="title mt-20 mb-20" fxLayout="column" fxLayoutAlign="start" fxFlex="100">
+					  <div class="h1 text-capitalize"><span class="fuse-white-bg text-bold">{{category.department.category_name}}</span></div>
+					</div>
+  
+					<div fxLayout="column" fxLayoutAlign="start" fxFlex="100" *ngIf="staffSettings.showemptydepartment == 'Y' && (category.staffs.length == 0 || category.length == 0)">
+					  <div class="h2"><span class="fuse-white-bg no-record">No Staff Available In This Category</span></div>
+					</div>
+  
+					<!-- CARD -->
+					<div class="fuse-card mb-20 word-break" *ngFor="let staff of category.staffs ;" fxFlex.lt-sm="100">
+					  <div fxLayout="row" fxLayoutAlign="start" class="p-16" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+						<div class="w-120 h-120" *ngIf="staffSettings.showprofile == 'Y'" [ngClass.lt-sm]="{'mb-12': 'true'}">
+						  <img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" />
+						</div>
+						<div class="pl-16 pl-0" [ngClass.lt-sm]="{'text-center': true}">
+						  <!-- <div class="h2 mb-4 text-capitalize font-weight-800">{{staff.first_name + ' ' + staff.last_name}}</div> -->
+						  <div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+							{{staff.first_name +' '+staff.last_name }}
+						  </div>
+						  <div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name=='' || staff.first_name==null)">
+							{{staff.last_name }}
+						  </div>
+						  <div class="h3 text-capitalize" *ngIf="staff.userdesignation?.category_name">
+							<mat-icon class="s-18 mr-8">list_alt</mat-icon>
+							{{staff.userdesignation?.category_name}}
+						  </div>
+						  <div class="h3" *ngIf="staff.email">
+							<mat-icon class="s-18 mr-8 word-break">email</mat-icon>
+							<a href="mailto:{{staff.email}}">{{staff.email}} </a>
+						  </div>
+						  <div class="h3" *ngIf="staff.usermeta.length >0">
+							<span *ngFor="let userdata of staff.usermeta ">
+								<p *ngIf="userdata.user_fields.field_label == 'Organization'">
+									<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+								<p *ngIf="userdata.user_fields.field_label == 'Location'">
+								  <mat-icon class="s-18 mr-8">location_on</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+							</span>
+						  </div>
+						 
+						  <div class="h3" *ngIf="staffSettings.show_biography == 'Y' && staff.biography!=''">
+							<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+							<a href="javascript:" (click)="openBiographyDialog(staff.biography)">Show Biography</a>
+						  </div>
+						  <div class="h3" *ngIf="staff.phone">
+							<mat-icon class="s-18 mr-8">phone</mat-icon>
+							<a href="tel:phone">{{staff.phone}} </a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<!-- / CARD -->
+				  </div>
+				</section>
+			  </mat-tab>
+  
+			  <!-- subdepartment tab -->
+			  <ng-container *ngFor="let category of staffList;">
+				<mat-tab label="{{category.department.category_name}}">
+				  <section class="staff-cards px-28" fxLayout="column" fxLayoutAlign="start">
+					<div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="space-between">
+					  <div class="title mb-20 mt-20" fxLayout="column" fxLayoutAlign="start" fxFlex="100">
+						<div class="h1 text-capitalize"><span class="fuse-white-bg text-bold">{{category.department.category_name}}</span></div>
+					  </div>
+  
+					  <div fxLayout="column" fxLayoutAlign="start" fxFlex="100" *ngIf="category.staffs.length == 0 || category.length == 0">
+						<div class="h2"><span class="fuse-white-bg text-bold">No Staff Available In This Category</span></div>
+					  </div>
+  
+					  <!-- CARD -->
+					  <div class="fuse-card mb-20 word-break" *ngFor="let staff of category.staffs" fxFlex.lt-sm="100">
+						<div fxLayout="row" fxLayoutAlign="start" class="p-16" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+						  <div class="w-120 h-120" *ngIf="staffSettings.showprofile == 'Y'" [ngClass.lt-sm]="{'mb-12': 'true'}">
+							<img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" />
+						  </div>
+						  <div class="pl-16 pl-0" [ngClass.lt-sm]="{'text-center': true}">
+							<!-- <div class="h2 mb-4 text-capitalize font-weight-800">{{staff.first_name + ' ' + staff.last_name}}</div> -->
+  
+							<div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+							  {{staff.first_name +' '+staff.last_name }}
+							</div>
+							<div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name=='' || staff.first_name==null)">
+							  {{staff.last_name }}
+							</div>
+  
+							<div class="h3 text-capitalize">
+							  <mat-icon class="s-18 mr-8">list_alt</mat-icon>
+							  {{staff.userdesignation?.category_name}}
+							</div>
+							<div class="h3" *ngIf="staff.email">
+							  <mat-icon class="s-18 mr-8 word-break">email</mat-icon>
+							  <a href="mailto:{{staff.email}}">{{staff.email}}</a>
+							</div>
+							
+							<div class="h3" *ngIf="staff.usermeta.length >0">
+							  
+							  <span *ngFor="let userdata of staff.usermeta ">
+								  <p *ngIf="userdata.user_fields.field_label == 'Organization'">
+									  <mat-icon class="s-18 mr-8">account_circle</mat-icon>
+									{{ userdata.field_value}}
+								  </p>
+								  <p *ngIf="userdata.user_fields.field_label == 'Location'">
+									<mat-icon class="s-18 mr-8">location_on</mat-icon>
+									{{ userdata.field_value}}
+								  </p>
+							  </span>
+							</div>
+							<div class="h3" *ngIf="staffSettings.show_biography == 'Y' && staff.biography!=''">
+							  <mat-icon class="s-18 mr-8">account_circle</mat-icon>
+							  <a href="javascript:" (click)="openBiographyDialog(staff.biography)">Show Biography</a>
+							</div>
+							<div class="h3" *ngIf="staff.phone">
+								<mat-icon class="s-18 mr-8">phone</mat-icon>
+								<!-- {{staff.phone}} -->
+								<a href="tel:{{staff.phone}}">{{staff.phone}} </a>
+							  </div>
+						  </div>
+						</div>
+					  </div>
+					  <!-- / CARD -->
+					</div>
+				  </section>
+				</mat-tab>
+			  </ng-container>
+			</mat-tab-group>
+			<!-- </form> -->
+		  </div>
+  
+		  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="staffList && isHide == false && FilteredstaffList.length == 0 && displayType == 'list'">
+			<mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="changeTabs($event)">
+			  <mat-tab label="View All">
+				<section class="staff-cards px-28" fxLayout="column" fxLayoutAlign="start">
+				  <div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="space-between">
+					<div class="fuse-card mb-20 word-break" *ngFor="let staff of staffList" fxFlex.lt-sm="100">
+					  <!-- <pre>{{staff | json}}</pre>	 -->
+					  <div fxLayout="row" fxLayoutAlign="start" class="p-16" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+						<div class="w-120 h-120" *ngIf="staffSettings.showprofile == 'Y'" [ngClass.lt-sm]="{'mb-12': 'true'}">
+						  <img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" />
+						</div>
+						<div class="pl-16 pl-0" [ngClass.lt-sm]="{'text-center': true}">
+						  <!-- <div class="h2 mb-4 text-capitalize font-weight-800">{{staff.first_name + ' ' + staff.last_name}}</div> -->
+  
+						  <div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+							{{staff.first_name +' '+staff.last_name }}
+						  </div>
+						  <div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name=='' || staff.first_name==null)">
+							{{staff.last_name }}
+						  </div>
+  
+						  <div class="h3 text-capitalize">
+							<mat-icon class="s-18 mr-8">list_alt</mat-icon>
+							{{staff.userdesignation?.category_name}}
+						  </div>
+						  <div class="h3" *ngIf="staff.email">
+							<mat-icon class="s-18 mr-8 word-break">email</mat-icon>
+							{{staff.email}}
+						  </div>
+						
+						  <div class="h3" *ngIf="staff.usermeta.length >0">
+							
+							<span *ngFor="let userdata of staff.usermeta ">
+								<p *ngIf="userdata.user_fields.field_label == 'Organization'">
+									<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+								<p *ngIf="userdata.user_fields.field_label == 'Location'">
+								  <mat-icon class="s-18 mr-8">location_on</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+							</span>
+						  </div>
+						  <div class="h3" *ngIf="staffSettings.show_biography == 'Y' && staff.biography!=''">
+							<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+							<a class="primary-700-fg" href="javascript:" (click)="openBiographyDialog(staff.biography)">Show Biography</a>
+						  </div>
+						  <div class="h3" *ngIf="staff.phone">
+							<mat-icon class="s-18 mr-8">phone</mat-icon>
+							<!-- {{staff.phone}} -->
+							{{staff.phone}}
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</section>
+			  </mat-tab>
+			  <ng-container *ngFor="let category of deptData;">
+				<mat-tab label="{{category.category_name}}">
+				  <section class="staff-cards px-28" fxLayout="column" fxLayoutAlign="start">
+					<div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="space-between">
+					  <!-- CARD -->
+					  <div class="fuse-card mb-20 word-break" *ngFor="let staff of staffFiletered" fxFlex.lt-sm="100">
+						<div fxLayout="column" fxLayoutAlign="start" fxFlex="100" *ngIf="filteredLength===0">
+						  <div class="h2"><span class="fuse-white-bg">No staff Available In This Category</span></div>
+						</div>
+						<div fxLayout="row" fxLayoutAlign="start" class="p-16">
+						  <div class="w-120 h-120" *ngIf="staffSettings.showprofile == 'Y'" [ngClass.lt-sm]="{'mb-12': 'true'}">
+							<img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" />
+						  </div>
+						  <div class="pl-16 pl-0" [ngClass.lt-sm]="{'text-center': true}">
+							<!-- <div class="h2 mb-4 text-capitalize font-weight-800">{{staff.first_name + ' ' + staff.last_name}}</div> -->
+							<div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+							  {{staff.first_name +' '+staff.last_name }}
+							</div>
+							<div class="h2 mb-4 text-capitalize font-weight-800" *ngIf="(staff.first_name=='' || staff.first_name==null)">
+							  {{staff.last_name }}
+							</div>
+							<div class="h3 text-capitalize">
+							  <mat-icon class="s-18 mr-8">list_alt</mat-icon>
+							  {{staff.userdesignation?.category_name}}
+							</div>
+							<div class="h3" *ngIf="staff.email">
+							  <mat-icon class="s-18 mr-8 word-break">email</mat-icon>
+							  {{staff.email}}
+							</div>
+  
+							
+							<div class="h3" *ngIf="staff.usermeta.length >0">
+							  
+							  <span *ngFor="let userdata of staff.usermeta ">
+								<p *ngIf="userdata.user_fields.field_label == 'Organization'">
+									<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+								<p *ngIf="userdata.user_fields.field_label == 'Location'">
+								  <mat-icon class="s-18 mr-8">location_on</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+							</span>
+							</div>
+							<div class="h3" *ngIf="staffSettings.show_biography == 'Y'  && staff.biography!=''">
+							  <mat-icon class="s-18 mr-8">account_circle</mat-icon>
+							  <a class="primary-700-fg" href="javascript:" (click)="openBiographyDialog(staff.biography)">Show Biography</a>
+							</div>
+							<div class="h3" *ngIf="staff.phone">
+								<mat-icon class="s-18 mr-8">phone</mat-icon>
+								<!-- {{staff.phone}} -->
+								{{staff.phone }}
+							  </div>
+						  </div>
+						</div>
+					  </div>
+					  <!-- / CARD -->
+					</div>
+				  </section>
+				</mat-tab>
+			  </ng-container>
+			</mat-tab-group>
+		  </div>
+  
+		  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="FilteredstaffList.length > 0 && displayType == 'tabs'">
+			<mat-tab-group [(selectedIndex)]="selectedTabIndex" class="invisible-tabs">
+			  <mat-tab>
+				<section class="staff-cards px-28 w-100-p" fxLayout="column" fxLayoutAlign="start" *ngFor="let department of FilteredstaffList">
+				  <div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="space-between">
+					<div class="title mb-20 mt-20" fxLayout="column" fxLayoutAlign="start" fxFlex="100">
+					  <div class="h1 text-capitalize"><span class="fuse-white-bg text-bold">{{department.department.category_name}}</span></div>
+					</div>
+					<!-- CARD -->
+					<div class="fuse-card mb-20 word-break" *ngFor="let staff of department.staffs" fxFlex.lt-sm="100">
+					  <div fxLayout="row" fxLayoutAlign="start" class="p-16" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+						<div class="w-120 h-120" *ngIf="staffSettings.showprofile == 'Y'" [ngClass.lt-sm]="{'mb-12': 'true'}">
+						  <img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" />
+						</div>
+						<div class="pl-16 pl-0">
+						  <!-- <div class="h2 mb-4 text-capitalize font-weight-800">{{staff.first_name + ' ' + staff.last_name}}</div> -->
+  
+						  <div class="h2 mb-4 font-weight-800" *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+							{{staff.first_name +' '+staff.last_name }}
+						  </div>
+						  <div class="h2 mb-4 font-weight-800" *ngIf="(staff.first_name=='' || staff.first_name==null)">
+							{{staff.last_name }}
+						  </div>
+  
+						  <div class="h3 text-capitalize">
+							<mat-icon class="s-18 mr-8">list_alt</mat-icon>
+							{{staff.userdesignation?.category_name}}
+						  </div>
+						  <div class="h3" *ngIf="staff.email">
+							<mat-icon class="s-18 mr-8 word-break">email</mat-icon>
+							<a href="mailto:{{staff.email}}"> {{staff.email}} </a>
+						  </div>
+						 
+						  <div class="h3" *ngIf="staff.usermeta.length >0">
+							
+							<span *ngFor="let userdata of staff.usermeta ">
+								<p *ngIf="userdata.user_fields.field_label == 'Organization'">
+									<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+								<p *ngIf="userdata.user_fields.field_label == 'Location'">
+								  <mat-icon class="s-18 mr-8">location_on</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+							</span>
+						  </div>
+						  <div class="h3" *ngIf="staffSettings.show_biography == 'Y' && staff.biography!=''">
+							<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+							<a href="javascript:" (click)="openBiographyDialog(staff.biography)">Show Biography</a>
+						  </div>
+						  <div class="h3" *ngIf="staff.phone">
+							<mat-icon class="s-18 mr-8">phone</mat-icon>
+							<!-- {{staff.phone}} -->
+							<a href="tel:{{staff.phone }}">
+							  {{staff.phone }}
+							</a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<!-- / CARD -->
+				  </div>
+				</section>
+			  </mat-tab>
+			</mat-tab-group>
+		  </div>
+  
+		  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="FilteredstaffList.length > 0 && displayType == 'list'">
+			<mat-tab-group [(selectedIndex)]="selectedTabIndex" class="invisible-tabs">
+			  <mat-tab>
+				<section class="staff-cards p-28 w-100-p" fxLayout="column" fxLayoutAlign="start">
+				  <div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="space-between">
+					<!-- CARD -->
+					<div class="fuse-card mb-20 word-break" *ngFor="let staff of FilteredstaffList" fxFlex.lt-sm="100">
+					  <div fxLayout="row" fxLayoutAlign="start" class="p-16" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+						<div class="w-120 h-120" *ngIf="staffSettings.showprofile == 'Y'" [ngClass.lt-sm]="{'mb-12': 'true'}">
+						  <img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" />
+						</div>
+						<div class="pl-16 pl-0">
+						  <!-- <div class="h2 mb-4 text-capitalize font-weight-800">{{staff.first_name + ' ' + staff.last_name}}</div> -->
+  
+						  <div class="h2 mb-4 font-weight-800" *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+							{{staff.first_name +' '+staff.last_name }}
+						  </div>
+						  <div class="h2 mb-4 font-weight-800" *ngIf="(staff.first_name=='' || staff.first_name==null)">
+							{{staff.last_name }}
+						  </div>
+  
+						  <div class="h3 text-capitalize">
+							<mat-icon class="s-18 mr-8">list_alt</mat-icon>
+							{{staff.userdesignation?.category_name}}
+						  </div>
+						  <div class="h3" *ngIf="staff.email">
+							<mat-icon class="s-18 mr-8 word-break">email</mat-icon>
+							{{staff.email}}
+						  </div>
+						 
+						  <div class="h3" *ngIf="staff.usermeta.length >0">
+							
+							<span *ngFor="let userdata of staff.usermeta ">
+								<p *ngIf="userdata.user_fields.field_label == 'Organization'">
+									<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+								<p *ngIf="userdata.user_fields.field_label == 'Location'">
+								  <mat-icon class="s-18 mr-8">location_on</mat-icon>
+								  {{ userdata.field_value}}
+								</p>
+							</span>
+						  </div>
+						  <div class="h3" *ngIf="staffSettings.show_biography == 'Y'">
+							<mat-icon class="s-18 mr-8">account_circle</mat-icon>
+							<a class="primary-700-fg" href="javascript:" (click)="openBiographyDialog(staff.biography)">Show Biography</a>
+						  </div>
+						  <div class="h3" *ngIf="staff.phone">
+							<mat-icon class="s-18 mr-8">phone</mat-icon>
+							{{staff.phone}}
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<!-- / CARD -->
+				  </div>
+				</section>
+			  </mat-tab>
+			</mat-tab-group>
+		  </div>
+  
+  
+		  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="FilteredstaffList.length == 0 && isHide == true">
+			<section class="staff-cards px-28 w-100-p" fxLayout="column" fxLayoutAlign="start">
+			  <div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="space-between">
+				<div class="" fxLayout="column" fxLayoutAlign="start" fxFlex="100">
+				  <div class="no-record"><span>No Staff Found</span></div>
+				</div>
+			  </div>
+			</section>
+		  </div>
+		</div>
+		<!-- / TABS -->
+	  </section>
+	  <!--  CONTENT WRAP -->
+	</div>
+	<!-- / CONTENT -->
+  
+	<!-- Remove After Testing -->
+	<!-- =================== -->
+	<div class="content" *ngIf="">
+	  <!-- CENTER -->
+	  <div class="center">
+		<!-- CONTENT -->
+		<div class="content my-auto p-24">
+		  <div class="filters px-8 mb-12" fxLayout="row" fxLayoutGap="10px grid" fxLayoutAlign="start end">
+			
+		  </div>
+		  <form class="courses p-5" fxLayoutAlign="start center" fxLayout="row wrap" fxLayoutGap="10px grid" name="filterForm" [formGroup]="filterForm" novalidate autocomplete="off">
+			<!-- filter option -->
+			<div fxFlex="30">
+			  <mat-form-field appearance="outline" class="w-100-p">
+				<mat-label>Name</mat-label>
+				<input matInput placeholder="name" formControlName="name" maxlength="30" />
+				<mat-icon matSuffix class="secondary-text">perm_identity</mat-icon>
+			  </mat-form-field>
+			</div>
+			<div fxFlex="30">
+			  <mat-form-field appearance="outline" class="w-100-p">
+				<mat-label>Email</mat-label>
+				<input matInput placeholder="email" formControlName="email" maxlength="30" />
+				<mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+			  </mat-form-field>
+			</div>
+			<div fxFlex="30">
+			  <mat-form-field appearance="outline" class="w-100-p">
+				<mat-label>Select Designation</mat-label>
+				<mat-select placeholder="designation" formControlName="designation">
+				  <mat-option *ngFor="let designation of designationList" [value]="designation.id"> {{designation.category_name}} </mat-option>
+				</mat-select>
+			  </mat-form-field>
+			</div>
+			<!-- /filter option -->
+		  </form>
+		  <div class="content" *ngIf="staffList && isHide == false && FilteredstaffList.length == 0">
+			<mat-tab-group [(selectedIndex)]="selectedTabIndex">
+			  <!-- view all tab -->
+			  <mat-tab label="View All">
+				<div *ngFor="let category of staffList;">
+				  <div class="courses" *ngIf="staffSettings.showemptydepartment == 'Y'">
+					<span class="h2 mt-15"> {{category.department.category_name | titlecase}}</span>
+					<hr class="mt-5 mb-5" />
+					<div *ngIf="category.staffs.length == 0 || category.length == 0">
+					  <h3 class="no-record">No staff available in this Category</h3>
+					</div>
+					<br />
+				  </div>
+				  <div class="courses" *ngIf="staffSettings.showemptydepartment == 'N' && category.staffs.length > 0">
+					<span class="h2 mt-15"> {{category.department.category_name | titlecase}}</span>
+					<hr class="mt-5 mb-5" />
+				  </div>
+				  <!--Staff list  -->
+				  <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
+					<div class="course" *ngFor="let staff of category.staffs" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-sm="50" [@animate]="{value:'*',params:{y:'100%'}}">
+					  <div class="course-content my-auto" fxLayout="column" fxFlex="1 1">
+						<div class="content p-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start" fxFlex="1 1 auto">
+						  <div *ngIf="staffSettings.showprofile == 'Y'" fxLayout="column" fxLayoutAlign="start" fxFlex="50"><img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" width="150" height="250" /></div>
+						  <div fxLayout="column" fxLayoutAlign="start" fxFlex="50">
+							<div class="header" fxLayout="row" fxLayoutAlign="start center">
+							  <!-- <div class="category mat-title" fxFlex>{{staff.first_name + ' ' + staff.last_name}}</div> -->
+							  <div class="category mat-title" fxFlex *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+								{{staff.first_name +' '+staff.last_name }}
+							  </div>
+							  <ng-template #displayLastname class="category mat-title" fxFlex> {{staff.last_name }}</ng-template>
+							</div>
+							<div class="h2 length">
+							  <mat-icon class="length-icon s-20">list_alt</mat-icon>
+							  {{staff.userdesignation?.category_name}}
+							</div>
+							<div class="h2 length" *ngIf="staff.email != ''"><mat-icon class="length-icon s-20">email</mat-icon><a href="mailto:staff.email">{{staff.email}}</a></div>
+							
+							<div class="h2 length" *ngIf="staffSettings.show_biography == 'Y'">
+							  <mat-icon class="length-icon s-20">list_alt</mat-icon><span type="button" (click)="openBiographyDialog(staff.biography)">Show Biography</span>
+							</div>
+							<div class="h2 length"><mat-icon class="length-icon s-20">phone</mat-icon><a href="tel:staff.phone">{{staff.phone}}</a></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  <!--Staff list  -->
+				</div>
+			  </mat-tab>
+			  <!-- /view all tab -->
+			  <!-- subdepartment tab -->
+			  <ng-container *ngFor="let category of staffList;">
+				<mat-tab label="{{category.department.category_name | titlecase}}" *ngIf="staffSettings.showemptydepartment == 'N' && category.staffs != 0">
+				  <div class="courses">
+					<span class="h2 mt-15"> {{category.department.category_name | titlecase}}</span>
+					<hr class="mt-5 mb-5" />
+					<div *ngIf="category.staffs.length == 0 || category.length == 0">
+					  <h3 class="no-record">No staff available in this Category</h3>
+					</div>
+					<br />
+				  </div>
+				  <!--Staff list  -->
+				  <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
+					<div class="course" *ngFor="let staff of category.staffs" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-sm="50" [@animate]="{value:'*',params:{y:'100%'}}">
+					  <div class="course-content my-auto" fxLayout="column" fxFlex="1 1">
+						<div class="content p-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start" fxFlex="1 1 auto">
+						  <div *ngIf="staffSettings.showprofile == 'Y'" fxLayout="column" fxLayoutAlign="start" fxFlex="50"><img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" width="150" height="250" /></div>
+						  <div fxLayout="column" fxLayoutAlign="start" fxFlex="50">
+							<div class="header" fxLayout="row" fxLayoutAlign="start center">
+							  <!-- <div class="category mat-title" fxFlex>{{staff.first_name +' '+staff.last_name }}</div> -->
+  
+							  <div class="category mat-title" fxFlex *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+								{{staff.first_name +' '+staff.last_name }}
+							  </div>
+							  <ng-template #displayLastname class="category mat-title" fxFlex> {{staff.last_name }}</ng-template>
+							</div>
+							<div class="h2 length">
+							  <mat-icon class="length-icon s-20">list_alt</mat-icon>
+							  {{staff.userdesignation?.category_name}}
+							</div>
+							<div class="h2 length" *ngIf="staff.email != ''"><mat-icon class="length-icon s-20">email</mat-icon><a href="mailto:staff.email">{{staff.email}}</a></div>
+							
+							<div class="h2 length" *ngIf="staffSettings.show_biography == 'Y'">
+							  <mat-icon class="length-icon s-20">list_alt</mat-icon><span type="button" (click)="openBiographyDialog(staff.biography)">Show Biography</span>
+							</div>
+							<div class="h2 length"><mat-icon class="length-icon s-20">phone</mat-icon><a href="tel:staff.phone">{{staff.phone}}</a></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  <!--Staff list  -->
+				  <!-- </mat-tab> -->
+				</mat-tab>
+				<mat-tab label="{{category.department.category_name | titlecase}}" *ngIf="staffSettings.showemptydepartment == 'Y'">
+				  <div class="courses">
+					<span class="h2 mt-15"> {{category.department.category_name | titlecase}}</span>
+					<hr class="mt-5 mb-5" />
+					<div *ngIf="category.staffs.length == 0 || category.length == 0">
+					  <h3 class="no-recoed">No staff available in this Category</h3>
+					</div>
+					<br />
+				  </div>
+				  <!--Staff list  -->
+				  <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
+					<div class="course" *ngFor="let staff of category.staffs" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-sm="50" [@animate]="{value:'*',params:{y:'100%'}}">
+					  <div class="course-content my-auto" fxLayout="column" fxFlex="1 1">
+						<div class="content p-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start" fxFlex="1 1 auto">
+						  <div *ngIf="staffSettings.showprofile == 'Y'" fxLayout="column" fxLayoutAlign="start" fxFlex="50"><img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" width="150" height="250" /></div>
+						  <div fxLayout="column" fxLayoutAlign="start" fxFlex="50">
+							<div class="header" fxLayout="row" fxLayoutAlign="start center">
+							  <div class="category mat-title" fxFlex *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+								{{staff.first_name +' '+staff.last_name }}
+							  </div>
+							  <ng-template #displayLastname class="category mat-title" fxFlex> {{staff.last_name }}</ng-template>
+							</div>
+							<div class="h2 length">
+							  <mat-icon class="length-icon s-20">list_alt</mat-icon>
+							  {{staff.userdesignation?.category_name}}
+							</div>
+							<div class="h2 length" *ngIf="staff.email != ''"><mat-icon class="length-icon s-20">email</mat-icon><a href="mailto:staff.email">{{staff.email}}</a></div>
+							
+							<div class="h2 length" *ngIf="staffSettings.show_biography == 'Y'">
+							  <mat-icon class="length-icon s-20">list_alt</mat-icon><span type="button" (click)="openBiographyDialog(staff.biography)">Show Biography</span>
+							</div>
+							<div class="h2 length"><mat-icon class="length-icon s-20">phone</mat-icon><a href="tel:staff.phone">{{staff.phone}}</a></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  <!--Staff list  -->
+				</mat-tab>
+			  </ng-container>
+			  <!-- /subdepartment tab -->
+			</mat-tab-group>
+		  </div>
+		  <!-- filtered staff list -->
+		  <div class="content" *ngIf="FilteredstaffList.length > 0">
+			<!--Staff list  -->
+			<mat-tab-group [(selectedIndex)]="selectedTabIndex">
+			  <!-- view all tab -->
+			  <mat-tab label="View All">
+				<div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
+				  <div class="course" *ngFor="let staff of FilteredstaffList" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-sm="50" [@animate]="{value:'*',params:{y:'100%'}}">
+					<div class="course-content my-auto" fxLayout="column" fxFlex="1 1">
+					  <div class="content p-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start" fxFlex="1 1 auto">
+						<div *ngIf="staffSettings.showprofile == 'Y'" fxLayout="column" fxLayoutAlign="start" fxFlex="50"><img [src]="getImage(staff.usermedia)" [alt]="staff.last_name" width="150" height="250" /></div>
+						<div fxLayout="column" fxLayoutAlign="start" fxFlex="50">
+						  <div class="header" fxLayout="row" fxLayoutAlign="start center">
+							<!-- <div class="category mat-title" fxFlex>{{staff.first_name +' '+staff.last_name }}</div> -->
+							<div class="category mat-title" fxFlex *ngIf="(staff.first_name!='' && staff.first_name!=null);else displayLastname">
+							  {{staff.first_name +' '+staff.last_name }}
+							</div>
+							<ng-template #displayLastname class="category mat-title" fxFlex> {{staff.last_name }}</ng-template>
+						  </div>
+						  <div class="h2 length">
+							<mat-icon class="length-icon s-20">list_alt</mat-icon>
+							{{staff.userdesignation?.category_name}}
+						  </div>
+						  <div class="h2 length" *ngIf="staff.email != ''"><mat-icon class="length-icon s-20">email</mat-icon><a href="mailto:staff.email">{{staff.email}}</a></div>
+						  
+						  <div class="h2 length" *ngIf="staffSettings.show_biography == 'Y'"><mat-icon class="length-icon s-20">list_alt</mat-icon><span type="button" (click)="openBiographyDialog(staff.biography)">Show Biography</span></div>
+						  <div class="h2 length"><mat-icon class="length-icon s-20">phone</mat-icon><a href="tel:staff.phone">{{staff.phone}}</a></div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </mat-tab>
+			</mat-tab-group>
+			<!--Staff list  -->
+		  </div>
+		  <!-- No staff  -->
+		  <div class="content" *ngIf="FilteredstaffList.length == 0 && isHide == true">
+			<mat-tab-group [(selectedIndex)]="selectedTabIndex">
+			  <!-- view all tab -->
+			  <mat-tab label="View All">
+				<h2 class="no-record">No staff Found</h2>
+			  </mat-tab>
+			</mat-tab-group>
+		  </div>
+		  <!-- /No staff  -->
+		</div>
+		<!-- / CONTENT -->
+	  </div>
+	  <!-- / CENTER -->
+	</div>
+	<!-- / CONTENT -->
+	<!-- ==================== -->
+	<!-- Remove After Testing -->
+  </div>
+<!-- / STAFF -->  

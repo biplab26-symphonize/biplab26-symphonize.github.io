@@ -1,0 +1,94 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="dining-service-add">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+   
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <!-- <button mat-raised-button class="reference-button">
+                      <mat-icon class="mr-4">add</mat-icon>
+                      <span>Add Fields</span>
+                  </button> -->
+                <button mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                    [routerLink]="'/admin/restaurant-reservations/dashboard'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            
+            <div class="content w-90-p my-auto">
+                <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg d-block p-16">
+                Service Details
+                </div>
+
+                <div class="p-28">
+                    <div fxLayout="row">
+                        <mat-label fxFlex="20" class="font-size-16 font-weight-600">Name :</mat-label>
+                        <p class="text-capitalize">{{name}}</p>
+                    </div>
+                    <br>
+                    <div fxLayout="row">
+                        <mat-label fxFlex="20" class="font-size-16 font-weight-600">Contact Number :</mat-label>
+                        <p>{{phone}}</p>
+                    </div>
+                    <br>
+                    <div fxLayout="row">
+                        <mat-label fxFlex="20" class="font-size-16 font-weight-600">Email Address :</mat-label>
+                        <p>{{email}}</p>
+                    </div>
+                    <br>
+                    
+                    <div fxLayout="row" class="text-capitalize line-height-30" *ngIf="reservationData">
+                        <mat-label fxFlex="20" class="font-size-16 font-weight-600">Details :</mat-label>
+                        <p>
+                            <span class="font-weight-600"> {{reservationData.service.service_title}}<br> </span>
+                            <span class="font-weight-600 mr-16">Date/Time :</span>
+                            {{reservationData.booking_start_date | date : defaultDateTimeFormat.date_format}} , {{reservationData.booking_start_time }}<br>
+                            <span class="font-weight-600 mr-16"> Party Size : </span> {{reservationData.guestcount}}<br>
+                            <!-- <span class="font-weight-600 mr-16" *ngIf="ShowTablesize == true"> Table Size : </span> {{min}}<br> -->
+                            <span class="font-weight-600 mr-16" *ngIf="ShowTablesize == false"> Table Size : </span>{{min}} - {{max}}<br>
+                            {{reservationData.service.notes}}<br>
+                        </p>
+                    </div>
+                    <br>
+                    
+                    <div fxLayout="row">
+                        <div>                    
+                            <button mat-raised-button class="mr-8 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" [routerLink]="['/admin/restaurant-reservations/bookings/edit/',url_id]">Edit This Reservation </button>
+                        </div>
+                        <div>                   
+                            <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" [routerLink]="['/dmin/restaurant-reservations/bookings/list']">See Other Reservation for This Resident</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

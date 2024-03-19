@@ -1,0 +1,66 @@
+<ng-container *ngIf="elements.length>0">
+    <ng-container *ngFor="let element of elements;let el=index">
+        <!-- text -->
+        <ng-container *ngIf="element.type=='text'">
+            <div 
+            class="py-16"
+            [style.column-count] = "element.columns" 
+            [style.column-gap]   = "element.columnspacing" 
+            [style.column-width] = "element.columnminwidth" 
+            [style.column-rule]  = "element.bordercolor"
+            [style.column-rule-width] = "element.borderwidth"
+            [style.column-rule-style] = "element.borderstyle"
+            [innerHTML]          = "element.content | sanitizeHtml"></div>
+        </ng-container>
+        <!-- video -->
+        <ng-container *ngIf="element.type=='media' && element.videoid!=='' && element.videoid!==undefined && element.videoid!==null">
+            <div [ngClass]="element.cssclass" id="{{element.cssid}}" [style.text-align]="element.alignment" class="py-16">
+                <iframe [width]="element.playerwidth" [height]="element.playerheight" [src]="element.videoid" allow='autoplay; encrypted-media' class="{{element.videotype}}"></iframe>
+            </div>
+        </ng-container>
+        <!-- image -->
+        <ng-container *ngIf="element.type=='image' && element.imageurl!=='' && element.imageurl!==undefined && element.imageurl!==null">
+            <div (click)="OpenElementLink(element)" [ngClass]="element.cssclass" id="{{element.cssid}}"  [style.text-align]="element.alignment" class="py-16">
+                
+                <span
+                [style.display]="'inline-block'"
+                [style.border-style]="'solid'"
+                [style.border-width]="element.borderwidth"
+                [style.border-color]="element.bordercolor"
+                [style.border-radius]="element.borderradius"
+                [style.max-width]="element.maxwidth"
+                >
+                <img 
+                [src]="element.imageurl"
+                [alt]="element.imagealttext"
+                [style.width]="'100%'"
+                [style.border-radius]="element.borderradius"
+                />
+                </span>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="element.type=='button'">
+            
+            <div id="element-button" [style.text-align]="element.alignment" class="py-16">
+                <button
+                (mouseover)="buttonhover=true" 
+                (mouseleave)="buttonhover=false"
+                mat-raised-button
+                (click)="OpenElementLink(element)"
+                class="button-{{element.buttonsize}} button-{{element.buttonshape}} {{element.cssclass}} {{element.buttonstyle}}"
+                >
+
+                    <i *ngIf="element.icon && element.iconposition=='L'" class="icon {{element.icon}}"></i>
+                    <span *ngIf="element.buttonspan=='Y' && element.texttransform=='uppercase'">{{element.buttontext | uppercase}}</span>
+                    <span *ngIf="element.buttonspan=='Y' && (element.texttransform=='normal' || element.texttransform=='')">{{element.buttontext}}</span>
+                    <ng-container *ngIf="element.buttonspan=='N'">{{element.buttontext}}</ng-container>
+                    <i *ngIf="element.icon && element.iconposition=='R'" class="icon {{element.icon}}"></i>
+                
+                </button>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="element.type=='quicklinks' && element.quicklinks.length>0">
+            <element-content-boxes [element]="element"></element-content-boxes>
+        </ng-container>
+    </ng-container>
+</ng-container>

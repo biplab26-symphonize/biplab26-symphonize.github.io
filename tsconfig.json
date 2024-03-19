@@ -1,0 +1,37 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "module": "es2020",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "target": "es5",
+        "skipLibCheck": true,
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+        "paths": {
+            "@fuse": [
+                "@fuse/"
+            ],
+            "@angular/*": ["../node_modules/@angular/*"]
+        },
+        "allowSyntheticDefaultImports" :true //EXTRA Changes
+    },
+    "exclude": [
+        "./node_modules/preact/*",
+      ],
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": false,
+        "strictInjectionParameters": false
+    }
+}

@@ -1,0 +1,54 @@
+<div  fxLayout="row wrap" fxLayoutGap="8px" fxLayoutAlign="center center">
+    
+    <div fxFlex *ngIf="showNoRegistrationRequired">
+        <span class="mat-stroked-button mat-accent cursor-auto" *ngIf="listType=='front'"> No Registration Required </span>
+        <span *ngIf="listType=='admin'" class="primary-fg font-weight-900" >NOT_REQUIRED</span>
+        <button *ngIf="listType=='front' && alreadyFav==false"  mat-stroked-button color="accent" (click)="addToFavourite(event.event_id)" class="my-4 float-right">Favorite Events</button>
+        <button *ngIf="listType=='front' && alreadyFav==true" mat-stroked-button color="accent" (click)="removeFavourite(event.event_id)" class="my-4 float-right">Remove Favorite</button>
+    </div>
+
+    <div fxFlex *ngIf="showRegistrationNotOpen">
+        <button *ngIf="listType=='front'" mat-stroked-button color="accent" class="my-4">Registration Not Open</button>
+        <span *ngIf="listType=='admin'" class="green-fg font-weight-900" >NOT_OPEN</span>
+    </div>
+
+    <div fxFlex *ngIf="showRegistrationRequired">
+        <button color="accent" *ngIf="listType=='front'" [routerLink]="['/events/register/',event.event_id]" mat-stroked-button color="accent" >Register</button>
+        <span *ngIf="listType=='admin'" class="green-fg font-weight-900" >OPEN</span>
+    </div>
+    <!-- FOR BACKEND STATUS -->
+    <div fxFlex *ngIf="showRegistrationAlwaysOpen">
+        <span *ngIf="listType=='admin'" class="green-fg font-weight-900" >OPEN</span>
+    </div>
+    <div fxFlex *ngIf="showRegistered">
+        <button color="accent" *ngIf="listType=='front'" mat-stroked-button disabled>Registered</button>
+    </div>
+
+    <div fxFlex *ngIf="showCancelled">
+        <span *ngIf="listType=='admin'" class="warn-fg font-weight-900" >CANCELLED</span>
+        <span *ngIf="listType=='front'" class="warn-fg font-weight-900" >CANCELLED</span>
+    </div> 
+
+    <div fxFlex *ngIf="showJoinWaitlist">
+        <button *ngIf="listType=='front'" mat-stroked-button [routerLink]="['/events/register/',event.event_id]" color="warn" >Join waitlist</button>
+    </div>
+
+    <div fxFlex *ngIf="showRegistrationClosed">
+        <button *ngIf="listType=='front'" mat-stroked-button >Registration closed</button>
+        <span *ngIf="listType=='admin'" class="warn-fg font-weight-900" >CLOSED</span>
+    </div>
+
+    <div fxFlex *ngIf="showAttendees">
+        <button *ngIf="listType=='front'" color="accent" mat-stroked-button [routerLink]="['/events/attendee-list/',event.event_id]">Attendees</button>
+    </div>
+    
+    <div fxFlex *ngIf="showEventFull">
+        <button *ngIf="listType=='front'" color="accent" mat-stroked-button >Event is full</button>
+    </div>
+
+    <div fxFlex *ngIf="showEventClosed">
+        <button *ngIf="listType=='front'" mat-stroked-button color="warn" disabled >Event Closed</button>
+        <span *ngIf="listType=='admin'" class="warn-fg font-weight-900" >CLOSED</span>
+    </div>
+
+</div> 

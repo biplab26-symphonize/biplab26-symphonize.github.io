@@ -1,0 +1,687 @@
+<div id="settings" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+	<!-- HEADER -->
+	<div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+		<!-- APP TITLE -->
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<div class="logo" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting</mat-icon>
+				<span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Event Settings</span>
+			</div>
+		</div>
+		<!-- / APP TITLE -->
+		<!-- BTN's -->
+		<div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+			<div class="mt-16 mt-sm-0">
+				<button mat-raised-button class="reference-button" (click)="onClickSave()">
+					<mat-icon class="mr-4">save</mat-icon> 
+					<span>Save Settings</span>
+				</button>
+			</div>
+		</div>
+		<!-- / BTN's -->
+
+	</div>
+	<!-- / HEADER -->
+	<!-- CONTENT -->
+	<div class="content" fusePerfectScrollbar>
+		<form class="product w-100-p" [formGroup]="addEventSetting" #addEventForm="ngForm" fxLayout="column" fxFlex>
+			<mat-tab-group #tabGroup (selectedTabChange)="handleTabChange($event)" [selectedIndex]="0">
+				<mat-tab label="Contact information">
+					<div id="settings" class="p-24">
+						<div class="mat-title mb-12">
+							<!-- <mat-icon>import_export</mat-icon> -->
+							Contact information :</div>
+							<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+								<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+									<mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-50-p">
+										<mat-label>Organizer's Name</mat-label>
+										<input matInput type="text" placeholder="Organizer's Name" name="community_name" formControlName="community_name">
+									</mat-form-field>
+									<!-- orgnizer email -->
+									<mat-form-field fxFlex appearance="outline"  class="w-50-p">
+										<mat-label>Organizer's Email</mat-label>
+										<input matInput type="text" name="organizer_email" formControlName="organizer_email">
+										<mat-error *ngIf="addEventSetting.controls['organizer_email'].errors?.email">Invalid email</mat-error>
+                          				<mat-error *ngIf="addEventSetting.controls['organizer_email'].errors?.required">Organizer Email is required</mat-error>
+									</mat-form-field>
+									<mat-form-field fxFlex appearance="outline" class="w-50-p">
+										<mat-label>Organization City</mat-label>
+										<input matInput name="organization_city" formControlName="organization_city">
+									</mat-form-field>
+								</div>
+								<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+									<mat-form-field fxFlex appearance="outline" class="w-50-p">
+										<mat-label>Organization State</mat-label>
+										<input matInput name="organization_state" formControlName="organization_state">
+									</mat-form-field>
+									<mat-form-field fxFlex appearance="outline"  class="w-50-p">
+										<mat-label>Organization Zip/Postal Code</mat-label>
+										<input matInput name="organization_zip" formControlName="organization_zip">
+									</mat-form-field>
+									<mat-form-field fxFlex appearance="outline"  class="w-50-p">
+										<mat-label>Organization Country</mat-label>
+										<input matInput  name="organization_country" formControlName="organization_country">
+									</mat-form-field>
+								</div>
+								<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+									<mat-form-field fxFlex="33.3" appearance="outline" class="w-50-p">
+										<mat-label>Event Admin Email</mat-label>
+										<input matInput name="event_admin_email" formControlName="event_admin_email">
+										<mat-hint class="h4"> Multiple email seprate with comma ( , )</mat-hint>
+									</mat-form-field>
+									<mat-form-field fxFlex="33.3" appearance="outline"  class="w-50-p pr-8">
+										<mat-label>Organization Address</mat-label>
+										<textarea matInput name="organization_address" formControlName="organization_address"></textarea>
+									</mat-form-field>
+								</div>								
+							</div>
+					</div>
+				</mat-tab>
+				<mat-tab label="Registration">
+					<div id="settings" class="p-24">
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<!-- Add edit setting -->
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex>
+									<mat-label>Event Organizer Field</mat-label>
+									<mat-select  name="event_organizer_field" formControlName="event_organizer_field">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline"  fxFlex class="space">
+									<mat-label>Add Location</mat-label>
+									<mat-select  name="add_location" formControlName="add_location">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- show_ticket_dropdown -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show Ticket Dropdown</mat-label>
+									<mat-select name="show_ticket_dropdown" formControlName="show_ticket_dropdown">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<!-- registration setting -->
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Show Guest Details Fields On Ticket Selection</mat-label>
+									<mat-select name="show_guest_details_on_tickets" formControlName="show_guest_details_on_tickets">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Restrict Resident to Register for an event only once</mat-label>
+									<mat-select name="restrict_registration_only_once" formControlName="restrict_registration_only_once">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- category_description_when_listing -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Display Category Description on Event Listings Page</mat-label>
+									<mat-select name="category_description_when_listing" formControlName="category_description_when_listing">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<!-- category setting -->
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Display Category on Event Registration Page</mat-label>
+									<mat-select name="display_on_registration" formControlName="display_on_registration">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Display Category on Event Calendar Page</mat-label>
+									<mat-select name="display_on_calender" formControlName="display_on_calender">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- event_background_color -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Category Background Color</mat-label>
+									<input matInput type="color" placeholder="Category Background Color" name="event_background_color" formControlName="event_background_color">
+								</mat-form-field>
+                            </div>
+                            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<!-- text_color -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Category Text Color</mat-label>
+									<input matInput type="color" placeholder="Category Text Color" name="text_color" formControlName="text_color">
+								</mat-form-field>
+								<!-- WAITLIST SETTINGS -->
+								<!-- waitlist order process -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Add waitlist members to the event by</mat-label>
+									<mat-select placeholder="Add waitlist members to the event by" name="add_members_by" formControlName="add_members_by">
+										<mat-option value="chronologically">Chronologically</mat-option>
+										<mat-option value="manually">Manually</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- ALLOW-GUEST-ATTENDEE-IN-JOIN-WAITLIST -->
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Guest Attendee</mat-label>
+									<mat-select placeholder="Guest Attendee" name="guest_attendee" formControlName="guest_attendee">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" >
+								<!-- DefaultAttendeeLimit -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex="33">
+									<mat-label>Default Attendee Limit</mat-label>
+									<input matInput type="number" min="1" placeholder="Default Attendee Limit" name="attendee_limit" formControlName="attendee_limit">
+								</mat-form-field>
+								<mat-form-field appearance="outline" fxFlex="33">
+									<mat-label>Required Guest Fields</mat-label>
+									<mat-select  name="required_guest_fields" formControlName="required_guest_fields" multiple>
+										<mat-option value="email">Email</mat-option>
+										<mat-option value="phone">Phone</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- reg_success_msg -->
+								<mat-form-field appearance="outline"  fxFlex="100%">
+									<mat-label>Registration success message</mat-label>
+									<input matInput type="text" min="1"  name="reg_success_msg" formControlName="reg_success_msg">
+								</mat-form-field>
+							</div>
+                            
+						</div>
+					</div>
+				</mat-tab>
+				<!-- ***** //// PRINT TAB //// **** -->
+				<mat-tab label="Print">
+					<div id="settings" class="p-24">
+						<!-- My Event Print PDF Options -->
+						<div class="mat-title mb-12">My Event Print PDF Options :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center"  fxLayoutWrap >
+								<mat-form-field appearance="outline" fxFlex class="pr-8">
+									<mat-label>Paper size</mat-label>
+									<mat-select placeholder="Paper size" name="eventpapersize" formControlName="eventpapersize">
+										<mat-option *ngFor="let papersize of papersize" [value]="papersize">{{papersize}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline" fxFlex class="space pr-8" >
+									<mat-label>Orientation</mat-label>
+									<mat-select placeholder="Orientation" name="eventorientation" formControlName="eventorientation">
+										<mat-option *ngFor="let orientation of orientation" [value]="orientation">{{orientation}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline" fxFlex class="pr-8">
+									<mat-label>Font color</mat-label>
+									<input matInput type="color" placeholder="Font color" name="eventfontcolor" formControlName="eventfontcolor">
+								</mat-form-field>
+								<mat-form-field appearance="outline" fxFlex class="space">
+									<mat-label>Apply Header Footer</mat-label>
+									<mat-select placeholder="Apply Header Footer" name="event_apply_header_footer" formControlName="event_apply_header_footer">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+						<br> 
+						<br>
+						<!-- Attendee List Print PDF Options -->
+						<div class="mat-title mb-12">Attendee List Print PDF Options :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Paper size</mat-label>
+									<mat-select placeholder="Paper size" name="attendeepapersize" formControlName="attendeepapersize">
+										<mat-option *ngFor="let papersize of papersize" [value]="papersize">{{papersize}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Orientation</mat-label>
+									<mat-select placeholder="Orientation" name="attendeeorientation" formControlName="attendeeorientation">
+										<mat-option *ngFor="let orientation of orientation" [value]="orientation">{{orientation}}</mat-option>
+									</mat-select>
+                                </mat-form-field>
+							</div>
+                            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+                                <mat-form-field appearance="outline" class="hiddenInput" floatLabel="always" fxFlex >
+                                    <input type="text" matInput style="display: none;" disabled />
+                                    <mat-label>Font color</mat-label>
+									<input matInput type="color" placeholder="Font color" name="attendeefontcolor" formControlName="attendeefontcolor">
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Apply Header Footer</mat-label>
+									<mat-select placeholder="Apply Header Footer" name="attendee_apply_header_footer" formControlName="attendee_apply_header_footer">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+				</mat-tab>
+				<!-- ***** //// DISPLAY TAB //// **** -->
+				<mat-tab label="Display">
+					<div id="settings" class="p-24">
+						<!-- ***///Events List Display Settings/////** -->
+						<div class="mat-title mb-12">Events List Display Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="33.3" class="pr-8">
+									<mat-label>Show categories on top</mat-label>
+									<mat-select name="show_categories_on_top" formControlName="show_categories_on_top">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline"  fxFlex="33.3" class="space pr-8">
+									<mat-label>Events Limit</mat-label>
+									<mat-select name="events_to_display" formControlName="events_to_display">
+										<mat-option *ngFor="let event of event_List" value="{{event}}">{{event}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline"  fxFlex="33.3" class="space">
+									<mat-label>Event Display location</mat-label>
+									<mat-select name="event_display_location" formControlName="event_display_location">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline"  fxFlex="33.3" class="pr-8">
+									<mat-label>Event Price display</mat-label>
+									<mat-select name="price_display" formControlName="price_display">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" fxFlex="33.3" class="space" class="pr-8">
+									<mat-label>Require registration only</mat-label>
+									<mat-select name="show_only_registration_events" formControlName="show_only_registration_events">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+									<mat-hint>Only show events that require registration on the Events List Display</mat-hint>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" fxFlex="33.3" class="space">
+									<mat-label>Event End Time display</mat-label>
+									<mat-select name="end_time_display" formControlName="end_time_display">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+
+									<!-- SHOW CLOSED EVENTS IN LIST -->
+									<mat-form-field appearance="outline" fxFlex="33.3" class="space pr-8">
+										<mat-label>Show Closed events</mat-label>
+										<mat-select name="show_closed_events" formControlName="show_closed_events">
+											<mat-option value="Y">Yes</mat-option>
+											<mat-option value="N">No</mat-option>
+										</mat-select>
+										<mat-hint>Show passed date events</mat-hint>
+									</mat-form-field>
+							</div>
+						
+						</div>
+						<br><br>
+						<!-- ***///Time Format/////** -->
+						<div class="mat-title mb-12">Notifications and Default Time Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Default Email</mat-label>
+									<input matInput type="email" placeholder="Default Email" name="defaultemail" formControlName="defaultemail">
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Default Name</mat-label>
+									<input matInput type="text" placeholder="Default Name" name="defaultname" formControlName="defaultname">
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Notify to Admin</mat-label>
+									<mat-select name="notifyadmin" formControlName="notifyadmin">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Admin Role</mat-label>
+									<mat-select name="adminroles" formControlName="adminroles">
+										<mat-option-select-all></mat-option-select-all>
+										<mat-option *ngFor="let role of RoleList" [value]="role.id">{{role.role_name}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Export Attendee Fields</mat-label>
+									<mat-select name="exportattendeefields" formControlName="exportattendeefields">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Event Delete Notification </mat-label>
+									<mat-select name="event_delete_notification" formControlName="event_delete_notification">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+									<mat-hint>Email to resident on event delete</mat-hint>
+								</mat-form-field>
+							</div>
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex="33">
+									<mat-label>Event All Day Start Time</mat-label>
+									<input matInput readonly="readonly" placeholder="Event All Day Start Time" formControlName="allday_start_time" [owlDateTimeTrigger]="allday_start_time" [owlDateTime]="allday_start_time">
+									<owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'" [hour12Timer]="true" #allday_start_time></owl-date-time>
+								</mat-form-field>
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex="33" class="space">
+									<mat-label>Event All Day End Time</mat-label>
+									<input matInput readonly="readonly" placeholder="Event All Day End Time" formControlName="allday_end_time" name="allday_end_time" [owlDateTimeTrigger]="allday_end_time" [owlDateTime]="allday_end_time">
+									<owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'" [hour12Timer]="true" #allday_end_time></owl-date-time>
+								</mat-form-field>
+							</div>
+						</div>
+						<br><br>
+						
+						<!-- ***///Event Calendar Display Settings/////** -->
+						<div class="mat-title mb-12">Event Calendar Display Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4">
+							<div class="pb-16" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Background Color</mat-label>
+									<input matInput type="color" placeholder="Required Registration Event's Background Color" name="registration_require_bgcolor" formControlName="registration_require_bgcolor">
+									<mat-hint>Required Registration Event's Background Color</mat-hint>
+								</mat-form-field>
+
+								<!-- FontColor -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Text Color</mat-label>
+									<input matInput type="color" placeholder="Required Registration Event's Text Color" name="registration_require_textcolor" formControlName="registration_require_textcolor">
+									<mat-hint>Required Registration Event's Text Color</mat-hint>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show categories filter</mat-label>
+									<mat-select placeholder="Categories filter" name="category_filter" formControlName="category_filter">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div class="pb-16" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<!-- Show Event Time  -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show event start time</mat-label>
+									<mat-select placeholder="Start time" name="show_start_time" formControlName="show_start_time">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- title truncate limit -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Truncate event title</mat-label>
+									<mat-select placeholder="Start time" name="truncate_limit" formControlName="truncate_limit">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- show location on cell -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show event location</mat-label>
+									<mat-select placeholder="Event location" name="show_cell_location" formControlName="show_cell_location">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+									<mat-hint>Show event's location with event title and time</mat-hint>
+								</mat-form-field>
+							</div>
+							<div class="pb-16" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<!-- show modal on  -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show modal on</mat-label>
+									<mat-select placeholder="Show modal" name="show_modal_on" formControlName="show_modal_on">
+										<mat-option value="click">OnClick</mat-option>
+										<mat-option value="hover">OnHover</mat-option>
+									</mat-select>
+									<mat-hint>Show event's modal window on mouse action</mat-hint>
+								</mat-form-field>
+								<!-- SHOW FLOOR FILTER -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show Floor Filter</mat-label>
+									<mat-select placeholder="Floor" name="show_floor" formControlName="show_floor">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- SHOW ROOM FILTER -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex>
+									<mat-label>Show Room Filter</mat-label>
+									<mat-select placeholder="Room" name="show_room" formControlName="show_room">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div class="pb-16" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<!-- SHOW TEAM FILTER -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex="33">
+									<mat-label>Show Team Member</mat-label>
+									<mat-select placeholder="Team Member" name="show_team" formControlName="show_team">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- SHOW SPECIAL EVENT CHECKBOX -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex="33">
+									<mat-label>Show Special event</mat-label>
+									<mat-select placeholder="Special Event" name="special_event" formControlName="special_event">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+						<br><br>
+						<!-- ADMIN EVENT LIST SETTINGS -->
+						<div class="mat-title mb-12">Administrator Events Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<!-- SHOW CLOSED EVENTS IN LIST -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Show Meta Filters</mat-label>
+									<mat-select name="show_meta_filters" formControlName="show_meta_filters">
+										<mat-option value="Y">Yes</mat-option>
+										<mat-option value="N">No</mat-option>
+									</mat-select>
+									<!-- <mat-hint>Show meta filters on adminstrator events list</mat-hint> -->
+								</mat-form-field>
+								<!-- Meta Fields -->
+								<mat-form-field appearance="outline" floatLabel="always" fxFlex class="space">
+									<mat-label>Select Meta Fields</mat-label>
+									<mat-select name="meta_fields" multiple formControlName="meta_fields" [required]="addEventSetting.get('show_meta_filters').value=='Y'">
+										<mat-option *ngFor="let metafield of EventMetaFields" [value]="metafield.id">{{metafield.field_label}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center"  fxLayoutWrap >
+								<!-- ADD EVENT DEFAULT ROLE -->
+								<mat-form-field appearance="outline" fxFlex="50" class="space pr-8">
+									<mat-label>Add Event Default Role </mat-label>
+									<mat-select name="add_event_default_role" formControlName="add_event_default_role" multiple>
+										<mat-option-select-all></mat-option-select-all>
+										<mat-option *ngFor="let role of RoleList" [value]="role.id">{{role.role_name}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+								<!-- ADD EVENT DEFAULT CATEGORY -->
+								<mat-form-field appearance="outline"  fxFlex="50" class="space">
+									<mat-label>Add Event Default Category </mat-label>
+									<mat-select name="add_event_default_category" formControlName="add_event_default_category" multiple>
+										<mat-option *ngFor="let category of CategorysList" [value]="category.id">{{category.category_name}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+						<br>
+					</div>
+				</mat-tab>
+				<!-- ***** //// EMAIL TAB //// **** -->
+				<mat-tab label="Email">
+					<div id="settings" class="p-24">
+						<!-- Events List Display Settings -->
+						<div class="mat-title mb-12">Admin Email Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Registration to Admin :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Admin Email Subject</mat-label>
+									<input matInput type="text" name="admin_reg_subject" formControlName="admin_reg_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="admin_reg_mail_body" [formControl]="addEventSetting.get('admin_reg_mail_body')"></editor>
+							</div>
+							<br>
+							<br>
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Cancellation to Admin :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Admin Email Subject</mat-label>
+									<input matInput type="text" name="admin_cancel_subject" formControlName="admin_cancel_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="admin_cancel_mail_body" [formControl]="addEventSetting.get('admin_cancel_mail_body')"></editor>
+							</div>
+						</div>
+						<br><br>
+						<!-- Event Organizer Email Settings -->
+						<div class="mat-title mb-12">Event Organizer Email Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Registration to Event Organizer :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Event Organizer Email Subject</mat-label>
+									<input matInput type="text"  name="event_reg_subject" formControlName="event_reg_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="event_reg_mail_body" [formControl]="addEventSetting.get('event_reg_mail_body')"></editor>
+							</div>
+							<br><br>
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Cancellation to Event Organizer :</mat-label>
+						
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Event Organizer Email Subject</mat-label>
+									<input matInput type="text"  name="event_cancel_subject" formControlName="event_cancel_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="event_cancel_mail_body" [formControl]="addEventSetting.get('event_cancel_mail_body')"></editor>
+							</div>
+						</div>
+						<br><br>
+						<!-- Attendee Email Settings -->
+						<div class="mat-title mb-12">Attendee Email Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Registration to Attendee :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Attendee Email Subject</mat-label>
+									<input matInput type="text"  name="attendee_reg_subject" formControlName="attendee_reg_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="attendee_reg_mail_body" [formControl]="addEventSetting.get('attendee_reg_mail_body')"></editor>
+							</div>
+							<br><br>
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Cancellation to Attendee :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Attendee Email Subject</mat-label>
+									<input matInput type="text"  name="attendee_cancel_subject" formControlName="attendee_cancel_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="attendee_cancel_mail_body" [formControl]="addEventSetting.get('attendee_cancel_mail_body')"></editor>
+							</div>
+							<br><br>
+							<!-- SEND MAIL TO RESIDENT IF EVENT GOT DELETED AFTER REGISTRATION -->
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Deletion to Attendee :</mat-label>
+						
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Attendee Email Subject</mat-label>
+									<input matInput type="text" placeholder="Attendee Email Subject" name="event_delete_subject" formControlName="event_delete_subject">
+									<mat-hint>Send email on event deletion to Attendee if that event have registrations</mat-hint>
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="event_delete_mail_body" [formControl]="addEventSetting.get('event_delete_mail_body')"></editor>
+							</div>
+						</div>
+						<br><br>
+						<!-- Guest Attendee Email Settings -->
+						<div class="mat-title mb-12">Guest Attendee Email Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Registration to Guest Attendee :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" fxFlex="82">
+									<mat-label>Guest Attendee Email Subject</mat-label>
+									<input matInput type="text"  name="guest_reg_subject" formControlName="guest_reg_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="guest_reg_mail_body" [formControl]="addEventSetting.get('guest_reg_mail_body')"></editor>
+							</div>
+							<br><br>
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Event Cancellation to Guest Attendee :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline" fxFlex="82">
+									<mat-label>Guest Attendee Email Subject</mat-label>
+									<input matInput type="text"  name="guest_cancel_subject" formControlName="guest_cancel_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="guest_cancel_mail_body" [formControl]="addEventSetting.get('guest_cancel_mail_body')"></editor>
+							</div>
+						</div>
+						<br><br>
+						<!-- Waitlist Event Registration Approval Email Settings -->
+						<div class="mat-title mb-12">Waitlist Event Registration Approval Email Settings :</div>
+						<div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Waitlist Event Registration Approval to Attendee :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Attendee Email Subject</mat-label>
+									<input matInput type="text"  name="waitlist_reg_subject" formControlName="waitlist_reg_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="waitlist_reg_mail_body" [formControl]="addEventSetting.get('waitlist_reg_mail_body')"></editor>
+							</div>
+							<br><br>
+							<mat-label class="font-weight-600 font-size-16 mb-12">Email on Waitlist Event Registration Approval to Admin :</mat-label>
+							
+							<div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+								<mat-form-field appearance="outline"  fxFlex="82">
+									<mat-label>Attendee Email Subject</mat-label>
+									<input matInput type="text"  name="waitlist_cancel_subject" formControlName="waitlist_cancel_subject">
+								</mat-form-field>
+								<br>
+								<editor *ngIf="isEditorTab()" [init]="tinyMceSettings" name="waitlist_cancel_mail_body" [formControl]="addEventSetting.get('waitlist_cancel_mail_body')"></editor>
+							</div>
+						</div>
+					</div>
+				</mat-tab>
+			</mat-tab-group>
+		</form>
+	</div>
+</div>

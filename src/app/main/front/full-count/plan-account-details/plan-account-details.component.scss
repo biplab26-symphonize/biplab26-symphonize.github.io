@@ -1,0 +1,81 @@
+@import "src/@fuse/scss/fuse";
+
+#my-appointment{
+.header {
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #FAFAFA;
+
+    background-image: url('/assets/images/backgrounds/maintenance-request.jpg');
+
+    @include media-breakpoint(xs) {
+        height: 300px;
+        min-height: 300px;
+        max-height: 300px;
+    }
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.45);
+    }
+
+    .header-content {
+
+        .header-top {
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+}
+
+.content{
+    .content-wrap{
+        max-width: 1080px; 
+        margin: 0 auto; 
+        margin-top: -40px;
+        position: relative;
+        z-index: 1;
+    }              
+}
+
+.my-appointment-table {
+    th:nth-of-type(1){ width: 15%; }
+    th:nth-of-type(2){ width: 18%;}
+    th:nth-of-type(3){ width: 13%;}
+    th:nth-of-type(4){ width: 13%;}
+    th:nth-of-type(5){ width: 10%;}
+    th:nth-of-type(6){width: 10%;}
+
+    tr{
+        vertical-align: baseline;
+    }
+}
+
+    // Responsive 
+    @include media-breakpoint('lt-sm')  {
+        .p-28{
+            padding: 0px !important;
+        }
+
+        th {
+            white-space: nowrap !important;
+        }
+    }
+
+
+}
+
+
+

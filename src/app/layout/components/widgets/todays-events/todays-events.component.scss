@@ -1,0 +1,42 @@
+@import "src/@fuse/scss/fuse";
+#home-page-quick-events{
+    tr{
+        white-space: break-spaces;
+    }
+    // td  {
+    //     padding: 8px;
+    // }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    td {
+        word-break: break-word;
+    }
+
+
+    @include media-breakpoint('lt-sm') {
+        table {
+            overflow-x: auto;
+            display: block;
+
+            td ,
+            th{
+                white-space: nowrap;    
+            }
+
+            td:nth-of-type(1) {
+                min-width: 70px;
+            }
+
+            td:nth-of-type(2) {
+                min-width: 170px;
+            }
+
+            td:nth-of-type(3) {
+                min-width: 150px;
+            }
+        }
+    }
+}

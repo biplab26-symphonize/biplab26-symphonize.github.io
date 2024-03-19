@@ -1,0 +1,51 @@
+<div id="front-meeting-room" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <div fxLayout="column">
+                <div class="w-100-p border pt-24" fxLayout="row wrap" fxLayout.lt-sm="column"
+                    fxLayoutAlign="center center" [ngStyle]="{'background': '#f5f5f5','padding-left': '10px'}">
+                    <div fxFlex="10">
+                        <button mat-stroked-button color="accent" [ngStyle]="{'margin-bottom':'22px','height':'58px'}"
+                            (click)="gotoHome()">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+                        </button>
+                    </div>
+                    <div fxFlex="90" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                        <mat-form-field appearance="outline" fxFlex.lt-sm="100" [ngClass.lt-sm]="{'w-100-p': 'true'}"
+                            fxFlex="100" class="pr-8">
+                            <mat-label>Step 6- Finish</mat-label>
+                            <mat-select matNativeControl>
+                                <mat-option value="step1" disabled>Step 1- When and Who</mat-option>
+                                <mat-option value="step2" disabled>Step 2- Rooms</mat-option>
+                                <mat-option value="step3" disabled>Step 3- Extras</mat-option>
+                                <mat-option value="step4" disabled>Step 4- Check Out</mat-option>
+                                <mat-option value="step5" disabled>Step 5- Preview</mat-option>
+                                <mat-option value="step6" [routerLink]="'/guest-room'">Step 6- Finish</mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="p-24 d-block" fxLayoutAlign="start center" [ngStyle]="{'text-align':'center'}">
+                    <span>
+                        Your reservation has been successfully sent to the administrator.
+                    </span>
+                    <br><br>
+                    <span>
+                        Your reservation ID is {{reservation_id}}.
+                    </span>
+                    <br><br>
+                    <span>
+                        If you have any questions, please contact us.
+                    </span>
+                    <br><br>
+                    <button mat-stroked-button color="accent" (click)="gotoBack()">Start New Reservation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,186 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">import_export
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Staff Import
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- TABS -->
+    <div class="tabs-wrap">
+
+    	<!-- TABS -->
+		<nav mat-tab-nav-bar class="px-24">
+			<a mat-tab-link class="fuse-black-fg opacity-1" routerLink="/admin/imports/user" >User</a>
+            <a mat-tab-link class="fuse-black-fg opacity-1" routerLink="/admin/imports/staff" active="true">Staff</a>
+            <a mat-tab-link class="fuse-black-fg opacity-1" routerLink="/admin/settings/event" >Event</a>
+		</nav>
+		<!-- / TABS -->
+
+    </div>
+  <!-- CONTENT -->
+  <div class="content" fusePerfectScrollbar>
+
+
+    <!-- CENTER -->
+    <div class="center p-24 pb-56">
+
+        <form autocomplete="off" #f="ngForm" [formGroup]="StaffImportForm" novalidate autocomplete="off" (ngSubmit)="onImportSubmit()">
+
+            <!-- SETTINGS -->
+            <div id="settings">
+                <!--  Portal Settings -->
+                <div class="mat-title"><mat-icon>settings</mat-icon> Download Sample Format</div>
+
+                <div class="mat-card p-24" fxLayout="column">
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Download Sample Format :</div>
+                            <div class="mat-caption secondary-text">Download Import Document Format with default fields/columns.</div>
+                        </div>
+
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="60" class="pl-8">
+                            <mat-form-field appearance="outline" >
+                                <mat-label>Format</mat-label>
+                                <mat-select name="format" [(ngModel)]="format" [ngModelOptions]="{standalone: true}">
+                                    <ng-container *ngFor="let formats of FormatsList | keyvalue">
+                                        <mat-option *ngIf="formats.key!==''" [value]="formats.key">
+                                        {{formats.value}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="30" class="pl-8">
+                            <button (click)="DownloadFormat()" *ngIf="format"  type="button" mat-raised-button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" >
+                                <mat-icon class="mr-4">cloud_download</mat-icon>
+                                Download
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- <div class="sep"></div> -->
+                </div>
+
+                <div class="mat-title mt-20 mb-8"><mat-icon>import_export</mat-icon> Import Staff Settings</div>
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <!--Core Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Core Fields:</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Core Fields</mat-label>
+                                <mat-select name="corefields" formControlName="corefields" multiple>
+                                    <ng-container *ngFor="let core of FieldsArray.coreFieldsArray">
+                                        <mat-option *ngIf="core!=='id' && core!=='password'" [value]="core">
+                                        {{core}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <!--Meta Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Meta Fields :</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Meta Fields</mat-label>
+                                <mat-select name="metafields" formControlName="metafields" multiple>
+                                    <ng-container *ngFor="let meta of FieldsArray.metaFieldsArray">
+                                        <mat-option [value]="meta.id">
+                                        {{meta.field_name}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+
+
+                    <!-- select Departement  -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4"> Department :</div>
+                          
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Select Department</mat-label>
+                                <mat-select formControlName="departement" required> 
+                                    <mat-optgroup *ngFor="let department of departments" [label]="department.category_name" >
+                                        <mat-option *ngFor="let dept of department.sub_categories" [value]="dept.parent_id+','+dept.id">
+                                        {{dept.category_name}}</mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>  
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Designation :</div>
+                            
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Select Designation</mat-label>
+                                <mat-select formControlName="designation" required>
+                                    <mat-option value="">Select Designation</mat-option>
+                                    <mat-option *ngFor="let designation of designations" [value]="designation.id">
+                                        {{designation.category_name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div> 
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">CSV File :</div>
+                            <p>This Field Is Required</p>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-label class="font-weight-600 mb-8">CSV File :</mat-label>
+                            <input hidden  type='file' [accept]="inputAccpets"  (change)="onSelectLogoFile($event)"   
+                            #logofile required />
+                            <div class="btn border p-16 border-radius-4" fxLayout="row" fxLayoutAlign="start center">
+                            <button mat-stroked-button color="accent" class="mr-12 choose-from-gallery" (click)="logofile.click()" >Choose File
+                            </button>
+                                <input hidden type="text" required formControlName="CSV" />
+                                 <div *ngIf="Display_File == true">
+                                  {{file.name}}
+                                 </div>
+                            </div>
+                           
+                       </div>
+                    </div>
+                    
+
+                    <div fxLayout="column" fxLayout.gt-md="row" class="mt-24">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="20">
+                            <button mat-raised-button type="submit" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none"  cdkFocusInitial>Save Staff Import </button>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </form>
+     </div>
+  </div>
+</div>
+   

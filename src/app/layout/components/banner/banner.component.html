@@ -1,0 +1,68 @@
+<!-- default -->
+<div *ngIf="homeSettingsdata && homeSettingsdata.featured_layout=='default'" 
+class="header {{this.homeSettingsdata.featured_layout || 'default'}}" 
+[style.background-image]="'url(' + Image_URL + ')'"
+appBackgroundImageLoaded 
+(imageLoaded)="bgvisibility='visible'">
+    <div class="header-content" [ngStyle.gt-lg]="{'width': '1024pxpx','margin':'0'}">
+       <div class="header-top" fxLayout="column" fxLayoutAlign="center" fxLayout.xs="column">
+            <div>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"    [ngStyle.xs]="{'font-size.px': 24}">
+                    <div *ngIf="DisplayFront_Title != undefined "  [innerHTML]="  DisplayFront_Title | sanitizeHtml  " class="px-16" [ngStyle.lt-md]="{'font-size.px': 24}"></div>
+                </span>
+            </div>      
+       </div>
+    </div>
+    <div [ngClass]="bgvisibility=='hidden'?'show':'hide'" class="preloader"></div>
+ </div>
+ <!-- style-1 -->
+ <div *ngIf="homeSettingsdata && homeSettingsdata.featured_layout=='style-1'" 
+ class="header {{this.homeSettingsdata.featured_layout || 'style-1'}}" 
+ [style.background-image]="'url(' + Image_URL + ')'"
+ appBackgroundImageLoaded 
+ (imageLoaded)="bgvisibility='visible'">
+    <div class="header-content" [ngStyle.gt-lg]="{'width': '1024px','margin':'0'}">
+       <div class="header-top" fxLayout="column" fxLayoutAlign="center" fxLayout.xs="column" [ngStyle.xs]="{'font-size.px': 24}">
+            <div >
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >
+                    <div *ngIf="DisplayFront_Title != undefined " [ngStyle.lt-sm]="{'font-size.px': 18}"  [innerHTML]="  DisplayFront_Title | sanitizeHtml  " class="px-16"></div>
+                </span>
+            </div>      
+       </div>
+    </div>
+    <div [ngClass]="bgvisibility=='hidden'?'show':'hide'" class="preloader"></div>
+ </div>
+ <!-- style-2 -->
+ <div *ngIf="homeSettingsdata && homeSettingsdata.featured_layout=='style-2'" 
+ class="header {{this.homeSettingsdata.featured_layout || 'style-2'}}" 
+ [style.background-image]="'url(' + Image_URL + ')'"
+appBackgroundImageLoaded 
+(imageLoaded)="bgvisibility='visible'">
+    <div class="header-content" [ngStyle.gt-lg]="{'width': '1024pxpx','margin':'0'}">
+       <div class="header-top" fxLayout="column" fxLayoutAlign="center" fxLayout.xs="column">
+            <div>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"    [ngStyle.xs]="{'font-size.px': 24}">
+                    <div *ngIf="DisplayFront_Title != undefined "  [innerHTML]="  DisplayFront_Title | sanitizeHtml  " class="px-16"></div>
+                </span>
+            </div>      
+       </div>
+    </div>
+    <div [ngClass]="bgvisibility=='hidden'?'show':'hide'" class="preloader"></div>
+ </div>
+ <!-- style-3 -->
+ <div *ngIf="homeSettingsdata && homeSettingsdata.featured_layout=='style-3'" 
+ class="header {{this.homeSettingsdata.featured_layout || 'style-3'}}" 
+ [style.background-image]="'url(' + Image_URL + ')'"
+appBackgroundImageLoaded 
+(imageLoaded)="bgvisibility='visible'">
+    <div class="header-content">
+       <div class="header-top" fxLayout="column" fxLayoutAlign="center" fxLayout.xs="column">
+            <div>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"    [ngStyle.xs]="{'font-size.px': 24}">
+                    <div *ngIf="DisplayFront_Title != undefined "  [innerHTML]="  DisplayFront_Title | sanitizeHtml  " class="px-16"></div>
+                </span>
+            </div>      
+       </div>
+    </div>
+    <div [ngClass]="bgvisibility=='hidden'?'show':'hide'" class="preloader"></div>
+ </div>

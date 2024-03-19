@@ -1,0 +1,213 @@
+@import "src/@fuse/scss/fuse";
+
+#Fav-Events {
+    table {
+        border: 1px solid #f0f0f0;
+        border-top: 0;
+        box-shadow: none;
+    }
+    .mr-8 {margin-right: 8px;}
+    .filter-search-section {
+        align-items:baseline;
+        
+        .mat-form-field-wrapper {
+            padding-bottom: 0 !important;
+        }
+    }
+
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;  
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/my-events.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        padding: 0 !important;
+
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: 0px;
+            position: relative;
+            z-index: 1;
+
+            .text-boxed{
+                font-size: 20px;
+            }
+
+            .table-wrap{
+
+                // margin-left: -28px;
+                // margin-right: -28px;
+
+                table{
+                    clear: both;
+                    
+                    tr{
+                        clear: both;
+                        th{
+                            white-space: normal;
+                            font-size: 20px;
+                            font-weight: bold;
+
+                            .mat-sort-header-container{
+                                clear: both;
+                                .mat-sort-header-button{
+                                    text-align: left;
+                                }
+                            }
+                        }
+                        td{
+                            vertical-align: baseline;
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
+
+
+            .notifications{
+                min-width: 100%;
+                &.w-100-p{
+                    max-width: 100%;
+
+                    table{
+                        clear: both;
+                        border: none;
+
+                        tr{
+                            clear: both;
+                            .mat-icon{
+                                vertical-align: text-bottom;
+                            }
+
+                            &:last-child{
+                                td{
+                                    border-bottom: none;                                    
+                                }
+                            }                            
+                        }
+                    }
+                }
+            }
+
+
+            
+        }              
+    }
+
+    th:nth-of-type(2) {
+        width: 20%;
+    }
+
+    .mat-sort-header-arrow {
+        color: white;
+    }
+  
+}
+
+.text-size{
+    padding-bottom: 15px;
+    font-weight: bold;
+    color: #4f4d49;
+
+}
+
+
+// Responsive 
+@media (max-width:1100px) {
+    .content-wrap {
+        margin-top: 0px !important;
+    }
+}
+
+@include media-breakpoint('lt-md') {
+    .search-wrapper{
+        min-width: 100%;
+    }
+
+    .px-28.simple {
+        padding: 0 0 !important;
+    }
+}
+
+@include media-breakpoint('lt-sm') {
+   .mb-40 {
+       margin-bottom: 10px !important;
+   }
+
+   table {
+        tr{
+            th{
+                white-space: nowrap !important;
+            }
+        }
+    }  
+    
+    .filters.mb-12.px-28 {
+        padding-right: 20px !important;
+        padding-left: 20px !important;
+    }
+    
+    form.px-28.pt-28 {
+        padding: 20px 20px 0 20px !important;
+    }
+
+
+    .table-wrap.px-28 {
+        padding-left:0px !important;
+        padding-right: 0px !important;
+    }
+
+    .my-20.px-28 ,
+    .px-28.table-no-record{
+        padding: 0 !important;
+    }
+
+    .p-28.warning {
+        padding: 20px !important;
+    }
+    
+}
+
+
+@media (max-width:320px) {
+    .check-delete-cancel-btn {
+        button {
+            padding: 0 5px;
+        }
+    }
+}

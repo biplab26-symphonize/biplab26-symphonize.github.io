@@ -1,0 +1,82 @@
+@import "src/@fuse/scss/fuse";
+
+#MyService-view-form {
+    width: 100%;
+    .header {
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;  
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/staff-bg.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        padding: 0 !important;
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }              
+    }
+
+    
+    .fuse-black-fg {
+        color: black !important;
+    }
+
+    // .all-list-fields {
+    //     .p-8.border-bottom.font-weight-600:nth-of-type(4) {
+    //          text-transform: lowercase !important;   
+    //     }
+    // }
+
+    .grey-50  {
+        background-color: #f5f5f5 !important;
+        color: black !important;
+    }
+}
+.green_bg_header{
+    background-color: rgb(175, 187, 42);
+}
+
+
+@include media-breakpoint('lt-sm') {
+    .content-wrap.fuse-white-bg.p-28 {
+        padding: 20px !important;
+    }
+}
+
+

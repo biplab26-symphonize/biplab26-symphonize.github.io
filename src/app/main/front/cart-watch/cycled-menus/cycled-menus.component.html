@@ -1,0 +1,89 @@
+<div id="front-CartWatch-cycled-nonCycled" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+  
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+  
+            <div class="header-top">
+  
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong> Cycled Menus for Seven Days </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div> 
+    </div>
+     <!--  / CONTENT WRAP --> 
+     <section class="content">
+        <div class="content-wrap fuse-white-bg p-28" fusePerfectScrollbar>
+          <mat-card  fusePerfectScrollbar class="w-100-p p-24 box-shadow-none" *ngIf="ShowData == true">
+              <form name="FormData" [formGroup]="FormData" novalidate autocomplete="off">
+                     <div flex  fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-evenly center" >
+                        <div fxLayout="row" fxLayoutAlign="center center" class="mb-20">
+                            <mat-checkbox class="example-margin mr-16" name="non cycle" formControlName="non_cycled">Non Cycled</mat-checkbox>
+                            <mat-checkbox class="example-margin" name="cycle" formControlName="cycled">Cycled</mat-checkbox>
+                        </div>
+                        
+                            <mat-form-field  appearance="outline" class="filter-select w-30-p" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                                <mat-label></mat-label>
+                                <mat-select formControlName="locationNumber">
+                                    <mat-option *ngFor="let data  of LocationData"  [value]="data.locationNumber">{{data.locationName}}</mat-option> 
+                                </mat-select>
+                            </mat-form-field>
+                       
+                        <button mat-stroked-button color="accent" class="mb-20" aria-label="More"
+                               (click)="submit($event);">Submit
+                        </button>
+                     </div>
+
+                    <!-- <div fxLayout="column">
+                   Customer Name :-  <h3>{{LocationData[0].customer.firstName}} {{LocationData[0].customer.lastName}}</h3>
+                    </div>
+                --> 
+                <div *ngIf="CycleData">
+                      <table class="border-collapse-inherit text-capitalize mb-20 border table table-bordered w-100-p"  *ngFor="let record of CycleData ;let i=index">
+                            <thead class="border-bottom">
+                                <th class="p-16 font-weight-600 text-center accent">{{record.date | date : 'MM/dd/yyyy'}}</th>
+                                <th class="p-16 font-weight-600 text-center accent">{{record.day}}</th>
+                                <!-- <th class="p-16  font-weight-600" width="160px">Year To Date Purchase</th> -->
+                            </thead>
+  
+                            <tbody *ngIf="showItemData == false" class="non-cycle-body"> <!-- non cycle  -->
+                                <ng-container *ngFor="let item of CycleData[i].items ;"  >                              
+                                    <tr class="border-bottom">
+                                        <td class="p-12 font-weight-600">
+                                            {{item.pluItemName}} ({{item.category}} {{item.cycleType}})
+                                        </td>
+                                        <td class="p-12 ">{{item.description}} 
+                                            <a (click)="viewimg(item.pluItemName,item.menuNumber,item.pluItemNumber,item.imageType)" class="cursor-pointer">View Image</a>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+
+                            <tbody *ngIf="showItemData == true" class="cycle-body"> <!-- cycle  -->
+                                <ng-container>                              
+                                    <tr>
+                                       <div>
+                                        <td class="p-12">
+                                            {{record.items}} 
+                                        </td>
+                                       </div>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                      </table>
+                    </div>
+                </form>
+             </mat-card>
+
+             <div *ngIf="ShowData == false">
+                <h3 class="font-weight-600 text-center">Please Check The Cartwatch Setting Is Disable</h3>
+            </div>
+        </div> 
+    </section>
+</div>
+

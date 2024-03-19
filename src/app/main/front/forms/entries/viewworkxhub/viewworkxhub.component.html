@@ -1,0 +1,98 @@
+<div class="page-layout blank" fusePerfectScrollbar id="front-MyService-worxhub-view-form">
+  <div class="page-layout blank" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div class="header px-16">
+
+      <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+
+        <div class="header-top">
+
+          <div class="logo text-center">
+            <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+              [ngStyle.lt-sm]="{'font-size.px': 30}">
+              <strong>View Request Form </strong>
+            </span>
+          </div> 
+          <!-- HEADER TEXT -->
+
+        </div>
+        <!-- / TOOLBAR -->
+      </div>
+
+    </div>
+    <!-- / HEADER -->
+
+
+        <div>
+            <!-- CENTER -->
+            <div class="content p-4 pb-4">
+                <!-- CONTENT -->
+                <div class="content-wrap fuse-white-bg p-28 w-100-p br-ds-0">
+                    <div class="text-capitalize">
+                        <!-- <span class="mat-display-1">VIEW FORM</span> -->                      
+                        <button color="accent" type="button" class="mb-20" mat-stroked-button [routerLink]="['/forms/my-entries/']">   
+                          <mat-icon class="mr-4">arrow_back</mat-icon>Back
+                        </button>
+                        
+                        <div class="dt-paginations  m-0 fuse-white-200-fg p-16" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start" fxLayoutAlign="space-between center">
+                          <h1 class="m-0" [ngStyle.lt-sm]="{'font-size.px': 16}" [ngClass.lt-sm]="{'pb-4': true}"> Entry Id : Entry{{Number}}</h1>  
+                           <h1 class="m-0" [ngStyle.lt-sm]="{'font-size.px': 16}"> Submitted Date : {{RequestDateTime | date: defaultDateTimeFormat.date_format}} </h1> 
+                        </div>
+
+                          <div class="w-100-p border" fxLayout="column" fxLayoutAlign="start">
+                               <ng-container>
+                                    <div  class="border-bottom px-20 py-12" fxLayout="column" fxLayout.lt-sm="column" fxLAyoutAlign="start center"  >
+                                        <h1 class="font-size-18 line-height-48 m-0 font-weight-600 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}" fxFlex="30"> Department : </h1>
+                                        <h1 class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}">{{Department}}</h1>
+                                    </div>   
+                          
+                                    <div  class="border-bottom px-20 py-12" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column"> 
+                                        <h1 class="font-size-18 line-height-48 m-0 font-weight-600 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}" fxFlex="30"> Description :</h1>
+                                        <h1 class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> {{Description}} </h1>
+                                    </div>
+                                 
+                                    <div  class="border-bottom px-20 py-12" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <h1 class="font-size-18 line-height-48 m-0 font-weight-600 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}" fxFlex="30"> Details : </h1>
+                                        <h1 class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> {{Details}} </h1>
+                                    </div>
+                                   
+                                    <div  class="border-bottom px-20 py-12"  fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <h1 fxFlex="30" class="font-size-18 line-height-48 m-0 font-weight-600 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> Location Description : </h1>
+
+                                        <h1 class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> {{LocationDescription}} </h1>
+                                    </div>    
+                                 
+                                    <div  class="border-bottom px-20 py-12" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <h1 fxFlex="30" class="font-size-18 line-height-48 m-0 font-weight-600 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> Permission to Enter : </h1>
+                                        <h1 class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}">
+                                          <span  *ngIf="PermissionToEnter == true" class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}">Yes</span>
+                                           <span  *ngIf="PermissionToEnter == false" class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}">No</span>
+                                        </h1>
+                                    </div>    
+                                      
+                                     <div class="border-bottom px-20 py-12" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <h1 fxFlex="30" class="font-size-18 line-height-48 m-0 font-weight-600 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> Request Date Time : </h1>
+
+                                        <div fxLayout="column">
+                                          <h1 class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> {{RequestDateTime | date: defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}} </h1>
+                                        </div>
+                                    </div>  
+
+                                    <div  class="border-bottom px-20 py-12" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <h1 fxFlex="30" class="font-size-18 line-height-48 m-0 font-weight-600 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> Requested For : </h1>
+
+                                        <div fxLayout="column">
+                                          <h1 class="font-size-18 line-height-48 m-0 media-line-height-28" [ngClass.lt-sm]="{'font-size-16': true}"> {{RequestedFor}} </h1>
+                                        </div>
+                                    </div>   
+                                </ng-container>  
+                           </div>
+                       
+                    </div>
+                    <!-- /CENTER -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<div id="all-topics" class="page-layout simple fullwidth">
+
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+
+         <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+
+             <div class="header-top">
+
+                 <div class="logo text-center">
+                     <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                         <strong class="text-capitalize"> Topics </strong>
+                     </span>
+                 </div>
+                 <!-- HEADER TEXT -->
+
+             </div>
+             <!-- / TOOLBAR -->
+         </div>
+
+    </div>
+    <!-- / HEADER -->
+
+     
+    <!-- CONTENT -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        
+        <!--  CONTENT WRAP -->
+        <section class="content-wrap fuse-white-bg p-28">
+
+            <div class="mb-20 top-buttons" fxLayout="row wrap" fxLayoutAlign="space-between">
+                <button class="m-4" type="button" color="accent" mat-stroked-button routerLink="/forums/"  *ngIf="ForumSettings">
+                    <mat-icon class="s-20 mr-4">arrow_back</mat-icon>{{ForumSettings.back_to_forum}}</button>
+                
+                <button type="button" class="m-4" color="accent" mat-stroked-button [routerLink]="['/forums/create-topic/',id]">
+                    <mat-icon class="s-20 mr-4">add</mat-icon>{{ForumSettings.add_topic}}</button>
+            </div>
+
+            <div class="table-wrap" [ngStyle.lt-sm]="{'overflow-x': 'auto'}">     
+                <table class="simple w-100-p topics-list-table">
+                    <thead>
+                        <tr class="accent">
+                            <th class="fuse-white-fg" colspan="2">
+                                <span class="font-size-18">{{ForumSettings.topics_title}}</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let topic of topicsList">
+                            <td>
+                                <div class="mb-8 user-name">
+                                    <a class="font-weight-600 font-size-18" [routerLink]="['/forum/topic/',topic.content_id]">{{topic.content_title}}</a>
+                                </div>
+                                
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div *ngIf="topic.replies_count && topic.replies_count.count" class="mr-24 accent-fg">
+                                        <mat-icon class="s-20 mr-4">chat_bubble_outline</mat-icon> {{topic.replies_count.count}} <span *ngIf="topic.replies_count.count>1">{{ForumSettings.replies_title}}</span><span *ngIf="topic.replies_count.count==1">{{ForumSettings.reply_title}}</span>
+                                    </div>
+
+                                    <div *ngIf="topic.created_by==userId" class="mr-24">
+                                        <a class="accent-fg" [routerLink]="['/forums/edit-topic/',topic.content_id]"><mat-icon class="s-20 mr-4 accent-fg">edit</mat-icon>Edit</a>
+                                    </div>
+
+                                    <div *ngIf="topic.created_by==userId">
+                                        <a class="accent-fg" (click)="deleteTopic(topic.content_id)" href="javascript:void(0);"><mat-icon class="s-20 mr-4 accent-fg">close</mat-icon>Remove</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="mb-4 creator-date">
+                                    {{topic.created_at | date:defaultDateTimeFormat.date_format}}
+                                </div>
+                                <div *ngIf="topic.creator" class="text-capitalize creator-name">
+                                   {{topic.creator.first_name + ' ' +topic.creator.last_name}}
+                               </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="topicsList && topicsList.length==0">
+                            <td colspan="2" class="text-center">
+                                <div class="accent-fg font-size-16 no-record mt-20">{{ForumSettings.empty_topics}}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- / TABLE WRAP -->
+
+
+        </section>
+        <!--  / CONTENT WRAP -->
+    </div>
+    <!-- / CONTENT -->
+     
+</div>

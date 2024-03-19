@@ -1,0 +1,54 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content" id="home-topics-pagination">
+    <div class="p-16 title pl-0">
+        <div  class="h1 font-weight-800">Form Entries</div>
+    </div>
+    <table class="simple border text-capitalize">
+        <thead class="text-center">
+            <tr [ngStyle]="green_bg_header">
+                <th class="text-center fuse-white-fg font-size-16">First Name</th>
+                <th class="text-center fuse-white-fg font-size-16">Last Name</th>
+                <th class="text-center fuse-white-fg font-size-16">Email</th>
+                <th class="text-center fuse-white-fg font-size-16">Title</th>
+                <th class="text-center fuse-white-fg font-size-16">Status</th>
+                <!-- <th class="text-right" *ngIf="homesettings.entry_author=='Y'">Author</th>  -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let entry of formEntriesList.data">
+                <td class="text-center first">
+                    <span *ngIf="entry.usermeta!=null">{{entry.first_name}}</span>
+                    <span *ngIf="entry.usermeta==null">--</span>
+                </td>
+                <td class="text-center first">
+                    <span *ngIf="entry.usermeta!=null"> {{entry.last_name}}</span>
+                    <span *ngIf="entry.usermeta==null">--</span>
+                </td>
+                <td class="text-center first text-lowercase">
+                    <span *ngIf="entry.usermeta!=null">{{entry.email}}</span>
+                    <span *ngIf="entry.usermeta==null">--</span>
+                </td>
+                <td class="text-center first">
+                    <span *ngIf="entry.usermeta!=null">{{entry.formmeta.form_title}}</span>
+                    <span *ngIf="entry.usermeta==null">--</span>
+                </td>
+                <td class="text-center second" [style.color]="entry.status == 'cancelled' ||  entry.status == 'denied' ||  entry.status == 'rejected' ? 'red' : entry.status == 'pending'?  'orange':'green'">
+                    {{statusName[entry.status]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="p-0 my-20 d-block">
+        <a [routerLink]="['/admin/forms/entries/']">View All Entries</a>
+        <mat-paginator 
+            #paginator
+            class="blue-grey-50 mt-20"
+            [length]="formEntriesList.total"           
+            [pageSize]="PaginationOpt?.pageSize"
+            [pageSizeOptions]="PaginationOpt?.pageSizeOptions"> 
+        </mat-paginator>
+    </div>    
+
+</div>
+<!-- / CARD CONTENT -->

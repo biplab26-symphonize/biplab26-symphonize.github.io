@@ -1,0 +1,161 @@
+<div class="page-layout blank" fusePerfectScrollbar id="MyAppointment-view-form">
+    <div class="page-layout blank" fusePerfectScrollbar>
+
+        <!-- HEADER -->
+        <breadcumb></breadcumb>
+        <!-- / HEADER --> 
+
+        <div>
+            <!-- CENTER -->
+            <div class="content p-4 pb-4">
+                <!-- CONTENT -->
+                <div class="content-wrap fuse-white-bg p-28 w-100-p br-ds-0">
+                    <div *ngIf="accountList && accountList.length > 0">
+                        <!-- <span class="mat-display-1">VIEW FORM</span> -->
+                        <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="mb-20 print-btn">
+                            <button color="accent" type="button" mat-stroked-button [routerLink]="['/my-guestroom/']">
+                                <mat-icon class="mr-4">arrow_back</mat-icon>Back
+                            </button>
+                        </div> -->
+                        <div fxLayout="row" class="w-100-p">
+                            <div *ngFor="let account of accountList" class="w-100-p">
+                                <div fxFlex="100" *ngIf="account.planType == 'PLAN'" class="mr-10 w-100-p" [ngStyle]="{'margin-right':'10px'}">
+                                    <div  class="font-weight-600 font-size-18 p-16">Dining Plan Summary</div>
+                                    <table class="w-100-p border" fxLayout="column" fxLayoutAlign="start">
+                                        <ng-container>
+                                            <tr class=" w-100-p  m-0 " fxLayout="column" fxLayout.lt-sm="column"
+                                                fxLAyoutAlign="start center">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Plan
+                                                        Type
+                                                        :</span>
+                                                </td>
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p"><span
+                                                        class="w-100-p">
+                                                        {{account.description || account.planName}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center"
+                                                fxLayout.lt-sm="column">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p"
+                                                        [ngClass.lt-sm]="{'font-size-16': true}">Period
+                                                        :</span>
+                                                </td>
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                                    <span class="w-100-p">
+                                                        {{account.periodStartDate  | date: defaultDateTimeFormat.date_format}} - {{account.periodEndDate  | date: defaultDateTimeFormat.date_format}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center"
+                                                fxLayout.lt-sm="column">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p"
+                                                        [ngClass.lt-sm]="{'font-size-16': true}">Allowance
+                                                        :</span>
+                                                </td>
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                                    <span class="w-100-p">{{account.startingAllowance}}</span>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center"
+                                                fxLayout.lt-sm="column">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Usage
+                                                        :</span>
+                                                </td>
+
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                                    <span class="w-100-p">{{account.usage}}</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center"
+                                                fxLayout.lt-sm="column">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p"
+                                                        [ngClass.lt-sm]="{'font-size-16': true}">Remaining Balance:</span>
+                                                </td>
+
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                                    <span class="w-100-p">{{account.currentBalance}}</span>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </table>
+                                    <div  class="font-weight-600 font-size-18 p-16" [ngStyle]="{'text-align': 'center'}">
+                                        <button color="accent" type="button" mat-stroked-button [routerLink]="['/customer-plan-account-details/',fc_id,account.id]">
+                                            <mat-icon class="mr-4">remove_red_eye</mat-icon>View Details
+                                        </button>
+                                    </div>
+                                </div>
+                                <div fxFlex="100" *ngIf="account.planType == 'CHARGE'" class="ml-10 w-100-p" [ngStyle]="{'margin-left':'10px'}">
+                                    <div  class="font-weight-600 font-size-18 p-16">Resident
+                                        Charge Account</div>
+                                    <table class="w-100-p border" fxLayout="column" fxLayoutAlign="start">
+                                        <ng-container>
+                                            <tr class=" w-100-p  m-0 " fxLayout="column" fxLayout.lt-sm="column"
+                                                fxLAyoutAlign="start center">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Plan
+                                                        Type
+                                                        :</span> </td>
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p"><span
+                                                        class="w-100-p">
+                                                        Resident
+                                                        Charge Account
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center"
+                                                fxLayout.lt-sm="column">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p"
+                                                        [ngClass.lt-sm]="{'font-size-16': true}">Period
+                                                        :</span> </td>
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                                    <span class="w-100-p">
+                                                        {{account.periodStartDate  | date: defaultDateTimeFormat.date_format}} - {{account.periodEndDate  | date: defaultDateTimeFormat.date_format}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center"
+                                                fxLayout.lt-sm="column">
+                                                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                                                    <span class="w-100-p"
+                                                        [ngClass.lt-sm]="{'font-size-16': true}">Total Amount Spent:</span>
+                                                </td>
+                                                <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                                    <span class="w-100-p">{{account.currentBalance}}</span>
+                                                </td>
+                                            </tr>
+
+                                        </ng-container>
+                                    </table>
+                                    <div  class="font-weight-600 font-size-18 p-16" [ngStyle]="{'text-align': 'center'}">
+                                        <button color="accent" type="button" mat-stroked-button [routerLink]="['/customer-charge-account-details/',accountList[0].id,fc_id]">
+                                            <mat-icon class="mr-4">remove_red_eye</mat-icon>View Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div  class="font-weight-600 font-size-18 p-16" [ngStyle]="{'text-align': 'center'}">Please contact your community admin for questions about your balance.</div>
+                    </div>
+                    <div class="message-box m-4" *ngIf="noAccountFound==true">
+                        No Account Details Found.
+                    </div>
+                    <!-- /CENTER -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

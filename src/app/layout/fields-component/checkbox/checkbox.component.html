@@ -1,0 +1,31 @@
+<div class="pb-20" [ngClass]="fieldContent.extra_field_content.col_class"
+  *ngIf="fieldContent && (type == 'field' || type == 'resident')">
+  <div [ngClass]="fieldContent.extra_field_content.class" [formGroup]="group">
+    <mat-label class="h3">{{field.field_label}}</mat-label>
+    <mat-checkbox fxLayout="row" [id]="fieldContent.extra_field_content.id" [formControlName]="field.field_name"
+      *ngFor="let option of fieldContent.options" [value]="option.key">
+      {{option.value}}</mat-checkbox>
+    <mat-error
+      *ngIf="group.get(field.field_name).invalid && (group.get(field.field_name).dirty || group.get(field.field_name).touched)">
+      {{fieldContent.extra_field_content.error_msg}}
+    </mat-error>
+  </div>
+</div>
+<!-- field for forms -->
+<div class="pb-20" [ngClass]="field.content.extra_field_content.col_class" *ngIf="type == 'dynForm'">
+  <div [ngClass]="field.content.extra_field_content.class" [formGroup]="group">
+    
+    <ng-container *ngIf="field.field_type=='checkbox' && field.content.options.length>0">
+      <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="calc(48%-15px)"  class=" mat-form-field--no-underline dynamic_checkbox">
+        <mat-label class="h3 ">{{field.description}}</mat-label>
+        <input matInput placeholder="Input" style="display: none" >
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" class="mt-12">
+          <ng-container *ngFor="let checks of field.content.options; let i = index" [formArrayName]="field.form_element_id">
+            <mat-checkbox class="mx-4 " [formControlName]="i" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" (change)="updateCheckboxValues(checks.value, $event.checked, field.form_element_id)" [value]="checks.value">{{checks.key}}</mat-checkbox>
+          </ng-container>
+        </div>
+        <div class="mat-error custom-error my-4" *ngIf="!this.group.controls[field.form_element_id].valid">{{field.error_msg || 'Field Required'}}</div>
+      </mat-form-field>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,202 @@
+<div id="front-meeting-room-back-room" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                        [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>Meeting Room</strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+
+            </div>
+            <!-- / TOOLBAR -->`
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" (ngSubmit)="onSubmit()"
+                [formGroup]="bookRoom" novalidate autocomplete="off">
+                <div class="w-100-p border pt-24" fxLayout="row" fxLayoutAlign="start center"
+                    [ngStyle]="{'background': '#f5f5f5','margin-bottom': '10px','padding-left': '10px'}">
+                    <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-sm="100" class="pr-8">
+                        <mat-label>Step</mat-label>
+                        <mat-select matNativeControl required formControlName="step">
+                            <mat-option [routerLink]="['/meeting-room']" value="step1">Step 1- Rooms</mat-option>
+                            <mat-option value="step2">Step 2- Book Room</mat-option>
+                            <mat-option value="step3" disabled>Step 3- Room Setup</mat-option>
+                            <mat-option value="step4" disabled>Step 4- Amenities</mat-option>
+                            <mat-option value="step5" disabled>Step 5- Checkout</mat-option>
+                            <mat-option value="step6" disabled>Step 6- Confirmation</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row wrap" *ngIf="roomData" class="border p-16 mb-24">
+                    <div fxFlex="30" fxFlex.lt-sm="100" class="mr-28 booking-img">
+                        <p *ngIf="roomData.image == ''">
+                            <img [src]="default_img" height="250" width="350" />
+                        </p>
+                        <p *ngIf="roomData.image != ''">
+                            <img [src]="roomData.image" alt=" no image" height="250" width="350">
+                        </p>
+                    </div>
+
+                    <div fxFlex="60" class="text-capitalize" fxFlex.lt-sm="100" fxLayout="column"
+                        [ngStyle.lt-sm]="{'margin-top.px': '20'}" [ngClass.lt-sm]="{'text-center': 'true'}">
+                        <div fxLayout="column">
+                            <h3 class="text-bold font-size-24">{{roomData.title}}</h3>
+                            <p class="mt-12 text-bold"> Capacity : {{roomData.capacity}} </p>
+                        </div>
+                        <div fxFlex.lt-sm="100" fxLayout="row" class="mt-20">
+                            <mat-form-field class="w-100-p mat-wrapper-p-0 underline-0 service-datepicker" fxFlex="81"
+                                appearance="outline" floatLabel="always" class="w-100-p" fxFlex.lt-sm="100">
+                                <mat-label>Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" [formControl]="date" required
+                                    (dateChange)="OnDateChange()">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex.lt-sm="100" fxLayout="row">
+                            <mat-form-field appearance="outline" fxFlex="81" fxFlex.lt-sm="100" class="w-100-p">
+                                <mat-label>Duration</mat-label>
+                                <mat-select required formControlName="duration" *ngIf="Duration">
+                                    <mat-option *ngFor="let durations of  Duration" [value]="durations.type">
+                                        {{durations.value}}</mat-option>
+                                </mat-select>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row">
+                            <mat-form-field class="mat-wrapper-p-0 underline-0 service-datepicker w-100-p" *ngIf="roomData"
+                                fxFlex="81" fxFlex.lt-sm="100" appearance="outline" floatLabel="always">
+                                <mat-label>Attendees</mat-label>
+                                <input matInput formControlName="attendees" type="number" min="1"
+                                    max='{{roomData.capacity}}' required>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100" fxLayout="row">
+                            <table class="table table-bordered w-100-p mb-20"
+                                *ngIf="bookRoom.get('duration').value =='hour'">
+                                <h3 class="mb-4 font-size-16 font-weight-600">From - To :</h3>
+                                <tbody fxLayout="row wrap" fxLayoutAlign="start center">
+                                    <ng-container>
+                                        <tr *ngFor="let time of timeSlot;let i=index ;" class="m-4 border">
+                                            <td class="from-to-time" [ngClass]="{'active' : checkbox_checked[i] == true}">
+                                                <mat-checkbox [ngClass.lt-sm]="{'font-size-14': 'true'}" required
+                                                    [disabled]="Time_status[i].status" [checked]="isChecked(time.type)" [ngModelOptions]="{standalone: true}"
+                                                    (change)="onSelctedTimeSlot($event.checked,time.type,time.value,i,bookRoom.get('duration').value)"
+                                                    [value]='time.type' [(ngModel)]='checkbox_checked[i]'>{{time.value}} 
+                                                </mat-checkbox>
+                                            </td>
+                                        </tr> 
+                                        <mat-error></mat-error>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayout.lt-sm="row" class="w-100-p mt-28">
+                            <div class="pr-8 submit-btn  text-center">
+                                <button [routerLink]="['/meeting-room']" type="button" color="accent" class="px-32"
+                                    mat-stroked-button>Back</button>
+                            </div>
+                            <div class="pr-8 submit-btn  text-center">
+                                <button [disabled]="bookRoom.invalid" class="px-32" color="accent"
+                                    mat-stroked-button>Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div fxLayout="row wrap" fxLayoutAlign="center center">
+                        <div fxFlex="50" fxFlex.lt-sm="100" fxLayout="column"> 
+                            <h3 class="mb-4 font-size-16 font-weight-600"> Date :</h3> 
+                            <mat-form-field class="w-100-p mat-wrapper-p-0 underline-0 service-datepicker"  fxFlex="100" appearance="outline" floatLabel="always" class="pr-8">
+                                <mat-label>Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" [formControl]="date" required (dateChange)="OnDateChange()" >
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+                        </div>
+    
+                        <div fxFlex="50" fxFlex.lt-sm="100" fxLayout="column">
+                            <h3 class="mb-4 font-size-16 font-weight-600">Duration :</h3> 
+                            <mat-form-field appearance="outline" fxFlex="100" class="pr-8 w-100-p">
+                                <mat-label>Duration</mat-label>
+                                <mat-select  required formControlName="duration" *ngIf="Duration">
+                                    <mat-option  *ngFor="let durations of  Duration" [value]="durations.type">{{durations.value}}</mat-option>
+                                </mat-select>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="100">
+                            
+                            <table class="table table-bordered w-100-p mb-20" *ngIf="bookRoom.get('duration').value =='hour'">
+                                <h3 class="mb-4 font-size-16 font-weight-600">From - To :</h3> 
+                                <tbody fxLayout="row wrap" fxLayoutAlign="start center" >
+                                    <ng-container>
+                                        <tr *ngFor="let time of timeSlot;let i=index ;" class="m-4 border">
+                                            <td class="from-to-time">
+                                                <mat-checkbox 
+                                                    [ngClass.lt-sm]="{'font-size-14': 'true'}"
+                                                    required [disabled]="Time_status[i].status" [checked]="isChecked(time.type)" 
+                                                    (change)="onSelctedTimeSlot($event.checked,time.type,time.value,i,bookRoom.get('duration').value)" 
+                                                    [value]='time.type'>{{time.value}}
+                                                </mat-checkbox>
+                                            </td>
+                                        </tr>
+                                        <mat-error></mat-error>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> -->
+
+
+
+
+                <!-- <div fxLayout="column">
+                    <h3 class="mb-8 font-size-16 font-weight-600"> Attendees :</h3>
+                    <div fxLayout="row">
+                        <mat-form-field class="mat-wrapper-p-0 underline-0 service-datepicker" *ngIf="roomData"
+                            fxFlex="50" fxFlex.lt-sm="100" appearance="outline" floatLabel="always">
+                            <mat-label>Attendees</mat-label>
+                            <input matInput formControlName="attendees" type="number" min="1"
+                                max='{{roomData.capacity}}' required>
+                            <mat-error></mat-error>
+                        </mat-form-field>
+                    </div>
+                </div> -->
+
+                <!-- <div fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-sm="row" class="w-100-p mt-28">
+                    <div class="pr-8 submit-btn  text-center">
+                        <button [routerLink]="['/meeting-room']" type="button" color="accent" class="px-32"
+                            mat-stroked-button>Back</button>
+                    </div>
+                    <div class="pr-8 submit-btn  text-center">
+                        <button [disabled]="bookRoom.invalid" class="px-32" color="accent"
+                            mat-stroked-button>Next</button>
+                    </div>
+                </div> -->
+
+            </form>
+        </div>
+    </div>
+</div>

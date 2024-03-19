@@ -1,0 +1,45 @@
+<form name="optionsForm"  [formGroup]="optionsForm" >
+    <h3>{{listName.description}}</h3>
+    <mat-divider class="mb-24"></mat-divider>
+         <div  fxLayout="row wrap"  fxLayout.lt-md="column" fxLayoutGap="20px" *ngFor="let data of usersJson">
+            <!-- SELECT FIELDS -->
+           <div *ngIf="data.dbsettings.show_as =='select' "  > 
+               <mat-form-field appearance="outline" fxFlex="100" >
+                   <mat-label>{{data.dbsettings.show_as}} :</mat-label>
+                   <mat-select  name='selectfields'   formControlName='selectfields' [(ngModel)]="selectedDevice" (ngModelChange)="onChange($event)" multiple >  
+                    <mat-option *ngFor="let options of dynamiclistdata.listinfo"  [value]="options.id">
+                     {{options.name}}
+                    </mat-option>
+                  </mat-select>
+               </mat-form-field>
+           </div>
+            <!-- RADIO BUTTON  -->
+           <div *ngIf="data.dbsettings.show_as =='radio'" fxFlex >
+                <mat-label>{{data.dbsettings.show_as}}:</mat-label>
+                  <mat-radio-group aria-label="radio" (ngModelChange)="onChange($event)" formControlName='radiofields' fxFlex>
+                    <mat-radio-button class="example-radio-button" *ngFor="let options of dynamiclistdata.listinfo" [value]="options.id">
+                      {{options.name}}
+                    </mat-radio-button>
+                 </mat-radio-group>
+           </div>
+            <!-- AUTOCOMPLETE -->
+           <div *ngIf="data.dbsettings.show_as =='autocomplete'" fxFlex>
+                <mat-label>{{data.dbsettings.show_as}}:</mat-label>
+                <mat-form-field class="example-full-width" >
+                    <input type="text" placeholder="Pick one" name="autocompletefield" (ngModelChange)="onChange($event)"  aria-label="Number" matInput formControlName="autocompletefield" [matAutocomplete]="auto" >
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let options of dynamiclistdata.listinfo" [value]="options.name">
+                        {{options.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+           </div>
+            <!-- CHECKBOX  -->
+            <div *ngIf="data.dbsettings.show_as =='checkbox'"    fxFlex>
+                 <mat-label>{{data.dbsettings.show_as}} :</mat-label>
+                   <div *ngFor="let options of dynamiclistdata.listinfo">
+                    <mat-checkbox class="example-margin" name="checkboxfield" (change)="onChange1($event,options.id)"  formControlName="checkboxfield" [value]="options.id" >{{options.name}}</mat-checkbox>
+                   </div>
+           </div>
+      </div>
+</form>

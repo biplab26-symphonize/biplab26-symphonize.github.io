@@ -1,0 +1,70 @@
+<ng-container [formGroup]="satffmetaForm" *ngIf= "MetaUploadInfo.length>0">
+    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" class="usermeta-wrapper">
+        <ng-container *ngFor="let metafield of MetaUploadInfo">  
+            
+                        <!-- TextBox -->
+                        <ng-container *ngIf="metafield.field_type=='text'">
+                            <mat-form-field appearance="outline"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100"> 
+                                <mat-label>{{metafield.field_label}}</mat-label>
+                                <input matInput
+                                [required]="metafield.field_required=='Y'"
+                                [formControlName]="metafield.id" 
+                                [placeholder]="metafield.field_label">
+                            </mat-form-field>
+                        </ng-container> 
+                        <!-- Number -->
+                        <ng-container *ngIf="metafield.field_type=='number'">
+                            <mat-form-field appearance="outline"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100">
+                                <mat-label>{{metafield.field_label}}</mat-label>
+                                <input matInput
+                                [required]="metafield.field_required=='Y'"
+                                [formControlName]="metafield.id" 
+                                [placeholder]="metafield.field_label">
+                            </mat-form-field>
+                            <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                    </ng-container>
+                       <!-- Email -->
+                       <ng-container *ngIf="metafield.field_type=='email'">
+                        <mat-form-field appearance="outline"  fxFlex="calc(50%-8px)" fxFlex.lt-sm="100">
+                            <mat-label>{{metafield.field_label}}</mat-label>
+                            <input matInput
+                            (keyup)="validateEmail(metafield.id)"
+                            [required]="metafield.field_required=='Y'"
+                            [formControlName]="metafield.id" 
+                            [placeholder]="metafield.field_label">
+                            <mat-error>{{metafield.extra_field_content.error_msg}}</mat-error>
+                        </mat-form-field>
+                    </ng-container>
+                    <!-- Editor -->
+                    <ng-container *ngIf="metafield.field_type=='textarea'">
+                        <mat-form-field appearance="outline" class="hiddenInput editor"  fxFlex="calc(100%-8px)">
+                            <mat-label>{{metafield.field_label}}</mat-label>
+                            <input matInput hidden value="">
+                            <editor 
+                                [init]="tinyMceSettings" 
+                                [required]="metafield.field_required=='Y'"
+                                [formControlName]="metafield.id"
+                            ></editor>
+                        </mat-form-field>
+                    </ng-container> 
+                    <!-- DatePicker -->
+                    <ng-container *ngIf="metafield.field_type=='date'">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-sm="100">
+                            <mat-label>{{metafield.field_label}}</mat-label>
+                            <input matInput
+                            [id]="metafield.id"
+                            [required]="metafield.field_required=='Y'"
+                            [formControlName]="metafield.id" 
+                            [placeholder]="metafield.field_label"
+                            [max]="getMinDate(metafield.extra_field_content.max_date)"
+                            [min]="getMinDate(metafield.extra_field_content.min_date)"
+                            [owlDateTimeTrigger]="datePicker" 
+                            [owlDateTime]="datePicker">
+                            <owl-date-time [pickerType]="metafield.extra_field_content.pickerType || 'calendar'" [hour12Timer]="true" #datePicker></owl-date-time>
+                            <mat-icon [owlDateTimeTrigger]="datePicker"  matSuffix>date_range</mat-icon>
+                        </mat-form-field>
+                    </ng-container>
+        <!-- ####DYNAMIC FIELDS ENDS#### -->
+        </ng-container>
+    </div>
+</ng-container>

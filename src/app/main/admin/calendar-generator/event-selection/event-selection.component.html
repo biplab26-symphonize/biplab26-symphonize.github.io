@@ -1,0 +1,133 @@
+<div fxLayout id="Calendar-Format-Event-Selection" class="h-100-p">
+    <mat-card fxFlex="0 1 100%">
+        <mat-card-content fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" class="w-100-p">
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="eventselectionform"
+                [formGroup]="eventselectionform" novalidate autocomplete="off">
+                <h2 class="px-16 py-12 green-bg-color fuse-white-fg h2 mb-20">Category Calendar </h2>
+                <div fxLayout="row" fxFlex fxLayoutAlign="space-between">
+                    <div fxLayout="column" fxFlex="50">
+                        <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                            <mat-label>Calendar</mat-label>
+                            <mat-select name="event_calendar_category" multiple formControlName="event_calendar_category"
+                                (selectionChange)="getCategoryAndLocation($event)">
+                                <mat-option *ngFor="let data of eventCalendar" [value]="data.id">{{data.category_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <h2 class="px-16 py-12 green-bg-color fuse-white-fg h2 mb-20"> Event Selection </h2>
+
+                <div fxLayout="row" fxFlex fxLayoutAlign="space-between">
+                    <div fxLayout="column" class="v-scroll" fxFlex="50">
+                        <mat-label class="h2 mb-12 font-weight-600" style="display: block;">Categories</mat-label>
+                        <div fxLayout="column" fxLayoutAlign="left">
+                            <mat-checkbox aria-label="Select All" formControlName="categories" [checked]="isChecked()"
+                                [indeterminate]="isIndeterminate()" (change)="$event ? toggleAll($event) : null">
+                                Select All
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="left" class="demo-select-all-checkboxes"
+                            *ngFor="let category of categories; let i = index;">
+                            <mat-checkbox (click)="$event.stopPropagation()" [value]="category.id"
+                                (change)="$event ? toggle(category.id, $event) : null" [checked]="exists(category.id)">
+                                {{category.category_name}}
+                            </mat-checkbox>
+                        </div>
+                    </div>
+
+                    <div fxLayout="column" class="v-scroll" fxFlex="50">
+                        <mat-label class="h2 mb-12 font-weight-600" style="display: block;">Location</mat-label>
+
+                        <div fxLayout="column" fxLayoutAlign="left">
+                            <mat-checkbox aria-label="Select All" formControlName="location"
+                                [checked]="isCheckedlocations()" [indeterminate]="isIndeterminatelocations()"
+                                (change)="$event ? toggleAlllocations($event) : null">
+                                Select All
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="left" class="demo-select-all-checkboxes"
+                            *ngFor="let items of locations; let i = index;">
+                            <mat-checkbox (click)="$event.stopPropagation()" [value]="items.id"
+                                (change)="$event ? togglelocations(items.id, $event) : null"
+                                [checked]="existslocations(items.id)">
+                                {{items.category_name}}
+                            </mat-checkbox> 
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="px-16 py-12 green-bg-color fuse-white-fg h2 mb-20"> Common Categories </h2>
+                <div fxLayout="row" fxFlex fxLayoutAlign="space-between">
+                    <div fxLayout="column" fxFlex="50">
+                        
+
+                        <div fxLayout="column" fxLayoutAlign="left">
+                            <mat-checkbox aria-label="Select All" formControlName="common_category"
+                                [checked]="isCheckedCommonCategories()" [indeterminate]="isIndeterminateCommonCategories()"
+                                (change)="$event ? toggleAllCommonCategories($event) : null">
+                                Select All
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="left" class="demo-select-all-checkboxes"
+                            *ngFor="let items of commonCategories; let i = index;">
+                            <mat-checkbox (click)="$event.stopPropagation()" [value]="items.id"
+                                (change)="$event ? toggleCommonCategories(items.id, $event) : null"
+                                [checked]="existsCommonCategories(items.id)">
+                                {{items.category_name}}
+                            </mat-checkbox> 
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngFor="let metafield of EventMetaFields">
+                    <ng-container [ngSwitch]="metafield.field_type">
+                        <ng-container *ngSwitchCase="'select'">
+                            <ng-container *ngIf="MetaArray.includes(metafield.id)">
+                                <mat-label class="h1 mt-20">{{metafield.field_label}}</mat-label>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                    <div *ngIf="metafield.field_label =='Team'">
+                                        <mat-checkbox aria-label="Select All" [checked]="isCheckedmeta()"
+                                            [indeterminate]="isIndeterminatemeta()"
+                                            (change)="$event ? toggleAllmeta($event,metafield) : null"
+                                            formControlName="teamMeta">
+                                            Select All
+                                        </mat-checkbox>
+                                    </div>
+                                    <div *ngIf="metafield.field_label =='Floor'">
+                                        <mat-checkbox aria-label="Select All" [checked]="isCheckedmetafloor()"
+                                            [indeterminate]="isIndeterminatemetafloor()"
+                                            (change)="$event ? toggleAllmetafloor($event,metafield) : null"
+                                            formControlName="floorMeta">
+                                            Select All
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                                <div *ngIf="metafield.field_label =='Team'">
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                        *ngFor="let fieldoption of AllTeamArr.options">
+                                        <!-- <mat-checkbox (change)=getMetaFields($event,fieldoption.key,metafield)  class="m-8"   [value]="fieldoption.key">{{fieldoption.value}}</mat-checkbox>     -->
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                            (change)="$event ? togglemeta(fieldoption.key, $event,metafield) : null"
+                                            [checked]="existsmeta(fieldoption.key)">{{fieldoption.value}}</mat-checkbox>
+                                    </div>
+                                </div>
+                                <div *ngIf="metafield.field_label =='Floor'">
+                                    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngFor="let fieldoption of metafield.team_content.options"> -->
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                        *ngFor="let fieldoption of AllFloorArr.options">
+                                        <!-- <mat-checkbox (change)=getMetaFields($event,fieldoption.key,metafield)  class="m-8"   [value]="fieldoption.key">{{fieldoption.value}}</mat-checkbox>     -->
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                            (change)="$event ? togglemetafloor(fieldoption.key, $event,metafield) : null"
+                                            [checked]="existsmetafloor(fieldoption.key)">{{fieldoption.value}}
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+</div>

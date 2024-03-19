@@ -1,0 +1,10 @@
+<div class="logo" [ngStyle.gt-md]="{'padding-left': '39px'}">
+    <a [routerLink]="['/']" fxHide.lt-md>
+        <img [src]="_mediaUrl+_siteInfo.portal_logo || _defaultsitelogo" [alt]="_defaultsitetitle" />
+    </a>
+    <a [routerLink]="['/']" fxHide.gt-sm>
+        <img *ngIf="!_siteInfo.small_logo" [src]="_mediaUrl+_siteInfo.portal_logo || _defaultsitelogo" [alt]="_defaultsitetitle" />
+        <img *ngIf="_siteInfo.small_logo" [src]="_mediaUrl+_siteInfo.small_logo || _defaultsitelogo" [alt]="_defaultsitetitle" />
+    </a>
+</div>
+ 

@@ -1,0 +1,228 @@
+<form id="img-setting-popup" name="imageSettingsForm" [formGroup]="imageSettingsForm" (ngSubmit)="sendImageSettingsInfo($event)"  novalidate autocomplete="off">
+    <div mat-dialog-content class="pb-dialog-settings">
+        <!-- imageurl -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="500">
+                <div class="font-weight-600 mb-0 ">Image</div>
+                <div class="font-size-14 secondary-text text-capitalize">Select Image From Gallery.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <img *ngIf="imageSettingsForm.get('imageurl').value" [src]="imageSettingsForm.get('imageurl').value" alt="imageSettingsForm.get('imagealttext').value" class="preview-image w-100-p mb-20 select-img" />
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <div fxLayout="row" fxLayoutAlign="center center" class="pr-4">
+                        <input matInput name="imageurl" formControlName="imageurl">
+                        <mat-icon matSuffix class="secondary-text pl-8 mr-4" (click)="OpenMediaDialog({type:'imageurl','group':''})">cloud_upload</mat-icon>
+                        <mat-icon matSuffix class="secondary-text pl-8" *ngIf="imageSettingsForm.get('imageurl').value" (click)="ResetField({type:'imageurl','group':''})">delete</mat-icon>
+                    </div>    
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <!-- borderwidth -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Border width</div>
+                <div class="font-size-14 secondary-text text-capitalize">Sets the size of the border of  image.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="borderwidth" formControlName="borderwidth">
+                    <mat-icon matSuffix class="secondary-text">border_right</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- bordercolor -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Border Color</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label>Border Color</mat-label>
+                    <input matInput formControlName="bordercolor" type="color" name="bordercolor">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- borderradius -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Border Radius</div>
+                <div class="font-size-14 secondary-text text-capitalize">Sets the border radius of the image.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="borderradius" formControlName="borderradius">
+                    <mat-icon matSuffix class="secondary-text">border_right</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- maxwidth -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Image Max width</div>
+                <div class="font-size-14 secondary-text text-capitalize">Sets the maximum width of  image.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="maxwidth" formControlName="maxwidth">
+                    <mat-icon matSuffix class="secondary-text">border_right</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- imagestyle -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Image Style</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to style of the image.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center" name="imagestyle" formControlName="imagestyle">
+                        <ng-container *ngFor="let style of pageOptions.imageparams.styles | keyvalue:disableSort">
+                            <mat-radio-button class="mr-8" fxFlex value="{{style.key}}">{{style.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- imagehover -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Image Hover</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to hover effect of the image.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center" name="imagehover" formControlName="imagehover">
+                        <ng-container *ngFor="let hover of pageOptions.imageparams.hovertype | keyvalue:disableSort">
+                            <mat-radio-button class="mx-4" fxFlex="20" fxFlex.lt-sm="100" value="{{hover.key}}">{{hover.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- imagealttext -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Image Alt text</div>
+                <div class="font-size-14 secondary-text text-capitalize">The alt attribute provides alternative information if an image cannot be viewed.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="imagealttext" formControlName="imagealttext">
+                    <mat-icon matSuffix class="secondary-text">text</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- link_type -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Link Type</div>
+                <div class="font-size-14 secondary-text text-capitalize">image link custom/menu url</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="link_type" formControlName="link_type" (change)="imageSettingsForm.get('link_url').reset()">
+                        <mat-radio-button class="mx-4" fxFlex="33"  value="C">Custom</mat-radio-button>
+                        <mat-radio-button class="mx-4" fxFlex="33"  value="M">Menu Url</mat-radio-button>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- link_url -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Link Url</div>
+                <div class="font-size-14 secondary-text text-capitalize">Link to column area custom or menu.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <div fxLayout="row" fxLayoutAlign="start end">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="imageSettingsForm.get('link_type').value=='C'">
+                        <input matInput name="link_url" formControlName="link_url" >
+                        <mat-icon matSuffix class="secondary-text">link</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="imageSettingsForm.get('link_type').value=='M'">
+                        <mat-label>Menu Url</mat-label>
+                        <mat-select name="link_url" formControlName="link_url" [required]="imageSettingsForm.get('link_type').value=='M'">
+                            <mat-option value="">Select Menu</mat-option>
+                            <mat-option *ngFor="let menu of menusList" [value]="menu.menu_url">
+                            {{menu.menu_title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <!-- visiblity -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Visibility</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to show or hide the image small, medium or large screens.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="visiblity" formControlName="visiblity">
+                        <ng-container *ngFor="let visiblity of pageOptions.visibilityOptions | keyvalue:disableSort">
+                            <mat-radio-button class="mx-4" fxFlex="calc(33%-8px)" fxFlex.lt-sm="100" value="{{visiblity.key}}">{{visiblity.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="column" class="p-8" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Video Alignment</div>
+                <div class="font-size-14 secondary-text text-capitalize">Alignment of Video.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="alignment" formControlName="alignment">
+                        <ng-container *ngFor="let align of pageOptions.alignment | keyvalue: disableSort">
+                            <mat-radio-button class="mr-24" fxFlex="20" value="{{align.key}}">{{align.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- cssclass -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">CSS Class</div>
+                <div class="font-size-14 secondary-text text-capitalize">Add a class to the wrapping HTML element.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="cssclass" formControlName="cssclass">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- cssid -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">CSS ID</div>
+                <div class="font-size-14 secondary-text text-capitalize">Add an ID to the wrapping HTML element.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="cssid" formControlName="cssid">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="border-top py-20">
+        <button type="submit" mat-stroked-button class="mr-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">SAVE</button>
+        <button type="button" mat-stroked-button class="ml-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" mat-dialog-close>CANCEL</button>
+    </div>
+</form>

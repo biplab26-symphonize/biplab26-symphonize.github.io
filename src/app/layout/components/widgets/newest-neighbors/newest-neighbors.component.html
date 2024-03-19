@@ -1,0 +1,21 @@
+<div class="text-center pb-40" id="front-Newest-Neighbours" *ngIf="neighborList.length !== 0">
+    <h3 class="mt-12 mat-title mb-0 accent-text-color">MEET YOUR</h3>
+    <h1 class="font-size-32 line-height-400 font-weight-700 mt-0 secondary-text-color">NEWEST NEIGHBORS</h1>
+    <div class="content overflow-auto" [@animateStagger]="{value:'50'}"  [ngStyle.xs]="neighborList.length == 1 ? { 'width.px' : 400 } : '' ">
+        <owl-carousel-o [options]="customOptions">
+            <ng-container *ngFor="let neighbor of neighborList; let index = index ">
+                <ng-template carouselSlide [id]="neighbor.id">
+                    <img class="Neighbours-img mr-12" [src]="neighbor.thumb_file" (error)="neighbor.thumb_file = _defaultAvatar" [alt]="" 
+                        [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    
+                    <div fxLayout="row" fxLayoutAlign="center center" class="text-left">
+                        <p fxLayoutAlign="start start"  class="mr-12">{{neighbor.first_name}}</p>
+                        <div *ngFor="let usermeta of neighbor.usermeta">
+                            <p *ngIf=" usermeta.user_fields.field_name == 'move-in-date'">{{usermeta.field_value | date: defaultDateTimeFormat.date_format}}</p>
+                        </div> 
+                    </div>
+                </ng-template>
+            </ng-container>
+        </owl-carousel-o> 
+    </div>
+</div>    

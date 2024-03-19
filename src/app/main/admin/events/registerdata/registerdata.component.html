@@ -1,0 +1,238 @@
+
+<form class="w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"  name="isregisterform" [formGroup]="isregisterform" novalidate autocomplete="off">
+    <h2 class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">Event Settings</h2> 
+    <div class="border px-16 pt-16 fuse-white-bg">    
+        <div fxLayout="column">
+            <div fxFlex="100">
+                <p class="mb-8 font-size-16"> <span class="font-weight-600"> Current Time : </span> {{currentTime}}</p>
+                <p *ngIf="sendRegisterData && sendRegisterData.createdby" class="mb-16 font-size-16"> <span span class="font-weight-600"> Created by : </span> {{sendRegisterData.createdby.username}}</p>
+            </div>
+        </div>
+        <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+            <div appearance="outline" class="pb-4" fxFlex>
+            <label  fxLayout="column" class="mb-20 font-size-16 font-weight-600">Is This An All Day Event ?</label>
+            <mat-radio-group name="is_all_day" [formControl]="isregisterform.get('is_all_day')">
+                <mat-radio-button (change)="onIsAllDayChange('Y')" value="Y"> Yes </mat-radio-button>
+                <mat-radio-button (change)="onIsAllDayChange('N')" value="N" class="pl-12"> No </mat-radio-button>
+            </mat-radio-group>
+            </div>
+        </div>
+        <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+            <!-- EVENT START AND END DATE -->
+            <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Event Start Date</mat-label>
+                <input matInput 
+                #input_start_date
+                required readonly="readonly" 
+                [matDatepicker]="event_start_date" 
+                formControlName="event_start_date"
+                [formControl]="isregisterform.get('event_start_date')" 
+            
+                [min]="today"
+                (dateInput)="changeEventStartD()"
+                (focus)="event_start_date.open()">
+                <mat-datepicker-toggle matSuffix [for]="event_start_date"></mat-datepicker-toggle>
+                <mat-datepicker [startAt]="today" #event_start_date (close)="input_start_date.blur();"></mat-datepicker>
+                <mat-error *ngIf="isregisterform.get('event_start_date').invalid ">Event Start Date is required</mat-error>
+            </mat-form-field>
+            <ng-container *ngIf="isregisterform.get('is_all_day').value =='N'">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Event End Date</mat-label>
+                    <input matInput 
+                    #input_end_date
+                    required readonly="readonly" 
+                    [matDatepicker]="event_end_date" 
+                    formControlName="event_end_date" 
+                
+                    [min]="event_start_date_min"
+                    [formControl]="isregisterform.get('event_end_date')"
+                    (dateInput)="changeEventEndD()"
+                    (focus)="event_end_date.open()">
+                    <mat-datepicker-toggle matSuffix [for]="event_end_date"></mat-datepicker-toggle>
+                    <mat-datepicker #event_end_date (close)="input_end_date.blur();"></mat-datepicker>
+                    <mat-error *ngIf="isregisterform.get('event_end_date').invalid ">Event End Date is required</mat-error>
+                </mat-form-field>
+            </ng-container>        
+        </div>
+        <!-- DISABLE TOTAL TIME SETTINGS FOR ALL DAY EVENT -->
+        <ng-container *ngIf="isregisterform.get('is_all_day').value=='N'">
+            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" >
+                <div appearance="outline" class="pb-4" fxFlex>
+                <mat-checkbox class="font-weight-600" formControlName="disable_end_time" 
+                        placeholder="Event End Date" 
+                        [formControl]="isregisterform.get('disable_end_time')"
+                        (change)="disableEndTime($event)">
+                        Disable End Time :
+                    </mat-checkbox>
+                </div>
+                <div appearance="outline" class="pb-4" fxFlex  *ngIf="!isregisterform.get('disable_end_time').value">
+                    <label class="font-weight-600 mr-8">Custom End Time : </label>
+                    <mat-radio-group name="custom_event_end" [formControl]="isregisterform.get('custom_event_end')">
+                    <mat-radio-button  (change)="onCustomEndTimeChange('Y')" value="Y"> Yes </mat-radio-button>
+                    <mat-radio-button (change)="onCustomEndTimeChange('N')" value="N" class="pl-12"> No </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <!-- EVENT TIME SETTINGS -->
+            <div fxLayout="row " fxLayoutAlign="start center" fxLayoutGap="8px" >
+                <!-- START TIME -->
+                <mat-form-field appearance="outline" fxFlex="50">
+                    <input matInput
+                    required
+                    readonly="readonly" 
+                    formControlName="event_start_time" 
+                    [min]="min_start_time" 
+                    placeholder="Event Start Time"
+                    [owlDateTimeTrigger]="event_start_time" 
+                    [owlDateTime]="event_start_time"
+                    [formControl]="isregisterform.get('event_start_time')"
+                    (dateTimeInput)="changeEventEndTime({'dateTime':isregisterform.get('event_start_time').value,'type':'event_end_time'})">
+                    <owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'" [hour12Timer]="true" #event_start_time></owl-date-time>
+                    <mat-icon [owlDateTimeTrigger]="event_start_time" matSuffix>access_time</mat-icon>
+                    <mat-error *ngIf="isregisterform.controls['event_start_time'].errors?.required">Event Start Time is required</mat-error>
+                </mat-form-field>
+                <!-- EVENT END TIME -->
+                <ng-container *ngIf="!isregisterform.get('disable_end_time').value">
+                    <mat-form-field appearance="outline" fxFlex *ngIf="isregisterform.get('custom_event_end').value == 'N'">
+                        <input matInput
+                        required
+                        readonly="readonly" 
+                        formControlName="event_end_time" 
+                        [min]="min_end_time" 
+                        placeholder="Event End Time"
+                        [owlDateTimeTrigger]="event_end_time" [owlDateTime]="event_end_time"
+                        [formControl]="isregisterform.get('event_end_time')"
+                        (dateTimeInput)="enableEditPopup()">
+                        <owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'" [hour12Timer]="true" #event_end_time></owl-date-time>
+                        <mat-icon [owlDateTimeTrigger]="event_end_time" matSuffix>access_time</mat-icon>
+                        <mat-error *ngIf="isregisterform.controls['event_end_time'].errors?.required">Event End Time is required</mat-error>
+                    </mat-form-field>
+                    <!-- CUSTOM END TIME -->
+                    <mat-form-field appearance="outline" fxFlex *ngIf="isregisterform.get('custom_event_end').value == 'Y'">
+                        <mat-label>Event Custom End Time</mat-label>
+                        <input matInput required type="text" name="custom_end_time" placeholder="Event Custom End Time" formControlName="custom_end_time"/>
+                        <mat-icon matSuffix>timer</mat-icon>
+                        <mat-error *ngIf="isregisterform.get('custom_end_time').invalid">Custom end time is required</mat-error>
+                    </mat-form-field>
+                </ng-container>         
+            </div>
+        </ng-container>
+    </div>
+
+     <!-- REGISTRATION SETTINGS -->
+     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap >
+        <div appearance="outline" class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16 mt-20" fxFlex fxLayout="row" >
+            <label fxLayout="column" class="font-weight-600 mr-8" fxFlex="50">Does This Event Require Registration ?</label>
+            <mat-radio-group class="radio-btn-white-color" fxFlex="50" name="req_register" [formControl]="isregisterform.get('req_register')">
+               <mat-radio-button (change)="onRequireRegChange('Y')" value="Y"> Yes </mat-radio-button>
+               <mat-radio-button (change)="onRequireRegChange('N')" value="N" class="pl-12"> No </mat-radio-button>
+            </mat-radio-group>
+         </div>
+     </div>
+     
+     <div class="p-16 fuse-white-bg pb-0">
+        <div *ngIf="isregisterform.get('req_register').value =='Y'" fxLayout="row " fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+            <!-- attendee limit -->
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Attendee Limit</mat-label>
+                <input matInput required (change)="enableEditPopup()" (keypress)="validateNumber($event)" minlength="1" maxlength="4" placeholder="Attendee Limit" formControlName="attendee_limit">
+                <mat-icon matSuffix>confirmation_number</mat-icon>
+                <mat-error *ngIf="isregisterform.get('attendee_limit').invalid">Attendee limit is required</mat-error>
+            </mat-form-field>
+            <!-- group registration -->
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Allow Group Registrations</mat-label>
+                <mat-select name="group_register" placeholder="Allow Group Registrations" formControlName="group_register" (selectionChange)="onAllowGroupRegChange($event.value)">
+                <mat-option value="Y">Yes</mat-option>
+                <mat-option value="N">No</mat-option>
+                </mat-select>
+                <mat-error *ngIf="isregisterform.get('group_register').invalid">Allow group registrations is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="isregisterform.get('req_register').value =='Y'" fxLayout="row " fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+            <!-- MAX GROUP LIMIT -->
+            <mat-form-field appearance="outline" fxFlex *ngIf="isregisterform.get('group_register').value == 'Y'">
+                <mat-label>Max Group Registrants</mat-label>
+                <input matInput required (keypress)="validateNumber($event)" minlength="1" maxlength="4" formControlName="group_limit" placeholder="Max Group Registrants">
+                <mat-error *ngIf="isregisterform.get('group_limit').invalid">Enter max group registrants</mat-error>
+            </mat-form-field>
+            <!-- REGISTRATION TYPE -->
+            <mat-form-field appearance="outline" fxFlex >
+                <mat-label>Select Registration Type</mat-label>
+                <mat-select name="register_type" placeholder="Registration Type" formControlName="register_type" (selectionChange)="onRegTypeChange($event.value)">
+                    <mat-option value="A">Always Open</mat-option>
+                    <mat-option value="D">Day Range</mat-option>
+                    <mat-option value="C">Custom Date</mat-option>
+                </mat-select>
+                <mat-error *ngIf="isregisterform.get('register_type').invalid">Registration Type is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="isregisterform.get('register_type').value !=='A'" fxLayout="row " fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap >
+            <!-- DAY RANGE TYPE -->
+            <mat-form-field appearance="outline" fxFlex *ngIf="isregisterform.get('register_type').value == 'D'" >
+                <mat-label>Select Date Range</mat-label>
+                <mat-select name="date_range" placeholder="Date Range" formControlName="date_range" (selectionChange)="isDateRangeChange($event.value)">
+                    <mat-option value="7">7 days</mat-option>
+                    <mat-option value="15">15 days</mat-option>
+                    <mat-option value="30">30 days</mat-option>
+                </mat-select>
+                <mat-error *ngIf="isregisterform.get('date_range').invalid">Date Range is required</mat-error>
+            </mat-form-field>
+            <!-- CUSTOM DATE TIME TYPE -->
+            <ng-container *ngIf="isregisterform.get('register_type').value == 'C'">
+                <!-- CUSTOM START DATE -->
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Registration Start Date</mat-label>
+                    <input matInput
+                    required
+                    readonly="readonly"
+                    placeholder="Registration Start Date"
+                    formControlName="registration_start" 
+                    [max]="registration_end_max"
+                    [owlDateTimeTrigger]="registration_start" [owlDateTime]="registration_start"
+                    (dateTimeInput)="changeRegEndD()">
+                    <owl-date-time [pickerType]="'both'" [hour12Timer]="true" #registration_start></owl-date-time>
+                    <mat-icon [owlDateTimeTrigger]="registration_start"  matSuffix>date_range</mat-icon>
+                    <mat-error *ngIf="isregisterform.get('registration_start').invalid || isregisterform.get('registration_start').untouched">Registration Start Date is required</mat-error>
+                </mat-form-field>
+                <!-- CUSTOM END DATE -->
+                <mat-form-field appearance="outline" fxFlex >
+                    <mat-label>Registration End Date</mat-label>
+                    <input matInput
+                    required
+                    readonly="readonly"
+                    placeholder="Registration End Date" 
+                    formControlName="registration_end"
+                    [min]="registration_start_min" 
+                    [max]="registration_end_max"
+                    [owlDateTimeTrigger]="registration_end" [owlDateTime]="registration_end"
+                    [formControl]="isregisterform.get('registration_end')"
+                    (dateTimeInput)="changeRegEndD()">
+                    <owl-date-time [pickerType]="'both'"  [hour12Timer]="true" #registration_end></owl-date-time>
+                    <mat-icon [owlDateTimeTrigger]="registration_end" matSuffix>date_range</mat-icon>
+                    <mat-error *ngIf="isregisterform.get('registration_end').invalid || isregisterform.get('registration_end').untouched">Registration End Date is required</mat-error>
+                </mat-form-field>
+            </ng-container>        
+        </div>
+        
+        <!-- WAITLIST OPTIONS -->
+        <div *ngIf="isregisterform.get('req_register').value =='Y'" fxLayout="row " fxLayoutAlign="start center" fxLayoutGap="8ps" fxLayoutWrap >
+            <mat-form-field appearance="outline" fxFlex="50%" class="pr-8">
+                <mat-label>Assign a waitlist to the event?</mat-label>
+                <mat-select name="is_waitlist" placeholder="Assign a Waitlist Event" formControlName="is_waitlist" (selectionChange)="onWaitlistTypeChange($event.value)">
+                    <mat-option value="Y">Yes</mat-option>
+                    <mat-option value="N">No</mat-option>
+                </mat-select>
+                <mat-error *ngIf="isregisterform.get('is_waitlist').invalid">Select Waitlist Event</mat-error>
+            </mat-form-field>
+            <!-- WAITLIST LIMIT -->
+            <mat-form-field appearance="outline" fxFlex *ngIf="isregisterform.get('is_waitlist').value == 'Y'">
+                <mat-label>Waitlist attendee limit</mat-label>
+                <input matInput required (keypress)="validateNumber($event)" minlength="1" maxlength="4" placeholder="Waitlist attendee limit" formControlName="waitlist_limit">
+                <mat-icon matSuffix>list_alt</mat-icon>
+                <mat-error *ngIf="isregisterform.get('waitlist_limit').invalid">Waitlist attendee limit is required</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    
+</form>

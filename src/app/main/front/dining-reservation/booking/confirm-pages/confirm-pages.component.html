@@ -1,0 +1,46 @@
+<div class="page-layout simple fullwidth layout-box" id="dining-reservation-confirm-page">
+    <!-- HEADER -->
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>Confirmed Reservation</strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+
+            </div> 
+            <!-- / TOOLBAR -->`
+        </div> 
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28">
+          
+            <!-- <h2 class="mb-32 text-bold font-size-28 text-center py-56" [ngStyle.lt-sm]="{'font-size.px': 18}">
+                Thank you for your reservation! Your party size and time are confirmed. We will take into consideration other notes you have added, but we cannot guarantee that we can accommodate them.
+            </h2> -->
+            <h2 class="mb-32 text-bold font-size-28 text-center py-56" [ngStyle.lt-sm]="{'font-size.px': 18}">
+                Thank you for submitting you request.  A member of our team will review your request and contact you.
+            </h2>
+            
+            <div class="text-center confirm-page-four-buttons" fxLayout="row" fxLayoutAlign="center" fxLayout.lt-sm="column">
+                <button class="m-4" (click)="makeAnotherReservation()" mat-stroked-button color="accent" [ngStyle.lt-sm]="{'font-size.px': 15}" >Make Another Reservation</button>
+                <button class="m-4" (click)="returnToHomePage()" mat-stroked-button color="accent" [ngStyle.lt-sm]="{'font-size.px': 15}" >Return To Home Page </button>
+                <button class="m-4" (click)="exportToGoogle()" mat-stroked-button color="accent" [ngStyle.lt-sm]="{'font-size.px': 15}" >Add To Google Calendar</button>
+                <button class="m-4" (click)="exportToOutlook()" mat-stroked-button color="accent" [ngStyle.lt-sm]="{'font-size.px': 15}" >Add To Outlook / iCal Calendar</button>
+            </div>
+            
+          
+        </div>
+    </div>    
+
+</div>
+

@@ -1,0 +1,27 @@
+:host {
+    .sp_builder_blank_page {
+        text-align: center;
+        border: 1px dashed #c8c7c7;
+        color: #777;
+        box-sizing: border-box;
+    }
+    .sp_builder_container{
+        width: 100%;
+        display: inline-block;
+        position: relative;
+        vertical-align: top;
+
+        .sp-builder-section-header {
+            background: #0091cd;
+            float: left;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            color: #fff;
+            border-bottom: 1px solid #fff;
+        }
+    }
+    .mat-form-field-outline-start, .mat-form-field-outline-end {
+        border-radius: 0 !important;
+    }
+}

@@ -1,0 +1,760 @@
+<div fxLayout="column" id="content-box-setting-popup" fxLayout.gt-md="row" >
+    <div fxFlex="30" class="mr-12">
+        <mat-list class="mb-16" *ngIf="contentSettingsForm.get('quicklinks').value">
+            <mat-list-item *ngFor="let quicklink of contentSettingsForm.get('quicklinks').value;let bindex=index " class="mb-8 border-radius-4 border-top border-right border-left content-box-left-section">
+                <div fxLayoutAlign="start center" mat-line>{{quicklink.title}}</div>
+                <div fxLayoutAlign="end center">
+                <mat-icon mat-list-icon  class="mx-4 purple-btn-bg font-size-16 fuse-white-fg" fxLayout="row" fxLayoutAlign="start center" (click)="openContentBoxSettings(quicklink,bindex)">brush</mat-icon>
+                <mat-icon mat-list-icon class="mx-4 purple-btn-bg font-size-16 fuse-white-fg" fxLayout="row" fxLayoutAlign="start center" (click)="copyContentBox(bindex)">note_add</mat-icon>
+                <mat-icon mat-list-icon class="mx-4 purple-btn-bg font-size-16 fuse-white-fg" fxLayout="row" fxLayoutAlign="start center" (click)="removeContentBox(bindex)">delete</mat-icon>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </mat-list>
+        <button mat-stroked-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="pushContentBoxDefaultJson()">
+            <mat-icon class="icon fuse-white-fg s-24">add</mat-icon>
+            Content Box
+        </button>
+    </div>
+    <div fxFlex="70">
+        <form name="contentSettingsForm" [formGroup]="contentSettingsForm" (ngSubmit)="sendContentSettingsInfo($event)"  novalidate autocomplete="off">
+            <div mat-dialog-content class="pb-dialog-settings">
+                <!-- boxlayout -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Box Layout</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Select the layout for the content box</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <div fxLayout="row" fxLayoutAlign="start end">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Box Layout</mat-label>
+                                <mat-select name="boxlayout" formControlName="boxlayout">
+                                    <mat-option *ngFor="let layout of pageOptions.contentboxparams.layouts | keyvalue:disableSort" [value]="layout.key">
+                                    {{layout.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!-- no-of-columns -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Number Of Columns</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Set the number of columns per row.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput (keypress)="validateNumber($event)" name="columns" formControlName="columns">
+                            <mat-icon matSuffix class="secondary-text">text_fields</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- titlesize -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Title Size</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Controls the size of the title. In pixels ex: 18px.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="titlesize" formControlName="titlesize">
+                            <mat-icon matSuffix class="secondary-text">text_fields</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- headingsize -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Heading Size</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose the title size, H1-H6.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <div fxLayout="row" fxLayoutAlign="start end">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Heading Size</mat-label>
+                                <mat-select name="headingsize" formControlName="headingsize">
+                                    <mat-option *ngFor="let head of pageOptions.contentboxparams.headings | keyvalue:disableSort" [value]="head.key">
+                                    {{head.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!-- titlecolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Title Font Color</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Title Font Color</mat-label>
+                            <input matInput formControlName="titlecolor" type="color" name="titlecolor">
+                        </mat-form-field>
+                    </div>
+                </div> 
+                <!-- bodycolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Body Font Color</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Body Font Color</mat-label>
+                            <input matInput formControlName="bodycolor" type="color" name="bodycolor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- boxbgcolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Content Box Background Color</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Content Box Background Color</mat-label>
+                            <input matInput formControlName="boxbgcolor" type="color" name="boxbgcolor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- icon -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Global setting for all content boxes, this can be overridden individually.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-form-field appearance="outline" fxFlex="75" fxAlign="start center" class="mat-wrapper-p-0 pr-16">
+                                <mat-label>Icon</mat-label>
+                                <input matInput formControlName="icon" name="icon">
+                            </mat-form-field>
+                            <button type="button" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" fxAlign="center"  fxFlex="25" (click)="selectMenuIcon('contentSettingsForm')">
+                                Select Icon
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- flipicon -->
+                <div fxLayout="column"  fxLayout.gt-md="row" class="mt-24">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Flip Icon</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose to flip the icon.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="border pb-12 mb-20 border-radius-4 ml-8">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="flipicon" formControlName="flipicon">
+                                <ng-container *ngFor="let flip of pageOptions.contentboxparams.fliptypes | keyvalue:disableSort">
+                                    <mat-radio-button class="mx-4" fxFlex="31" fxFlex.lt-sm="100" value="{{flip.key}}">{{flip.value}}</mat-radio-button>
+                                </ng-container>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- rotateicon -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Rotate Icon</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose to rotate the icon.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="border pb-12 mb-20 border-radius-4 ml-8">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="rotateicon" formControlName="rotateicon">
+                                <ng-container *ngFor="let rotate of pageOptions.contentboxparams.rotatetypes | keyvalue:disableSort">
+                                    <mat-radio-button class="mx-4" fxFlex="23" fxFlex.lt-sm="100" value="{{rotate.key}}">{{rotate.value}}</mat-radio-button>
+                                </ng-container>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- spinicon -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Spining Icon</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose to spining the icon.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="border pb-12 mb-20 border-radius-4 ml-8">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="spinicon" formControlName="spinicon">
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconcolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Color</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Icon Background Color</mat-label>
+                            <input matInput formControlName="iconcolor" type="color" name="iconcolor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconbg -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Background</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose to icon background.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="border pb-12 mb-20 border-radius-4 ml-8" >
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center" name="iconbg" formControlName="iconbg">
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconbgcolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Background Color</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Icon Background Color</mat-label>
+                            <input matInput formControlName="iconbgcolor" type="color" name="iconbgcolor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconbgradius -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Background Radius</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose the border radius of the icon background. In pixels (px), ex: 1px</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Icon Background Radius</mat-label>
+                            <input matInput formControlName="iconbgradius" name="iconbgradius">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconinnerborder -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Background Inner Border</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose the border of icon inner background. In pixels (px), ex: 1px</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Icon Background Inner Border</mat-label>
+                            <input matInput formControlName="iconinnerborder" name="iconinnerborder">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconinnerbordercolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Background Inner Border Color</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100" >
+                            <mat-label>Icon Background Inner Border Color</mat-label>
+                            <input matInput formControlName="iconinnerbordercolor" type="color" name="iconinnerbordercolor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconouterborder -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Background Outer Border</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose the border of icon Outer background. In pixels (px), ex: 1px</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100" >
+                            <mat-label>Icon Background Outer Border</mat-label>
+                            <input matInput formControlName="iconouterborder" name="iconouterborder">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconouterbordercolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Background Outer Border Color</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100" >
+                            <mat-label>Icon Background Outer Border Color</mat-label>
+                            <input matInput formControlName="iconouterbordercolor" type="color" name="iconouterbordercolor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconsize -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Size</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose the size of icon. In pixels (px), ex: 1px</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" class="w-100-p">
+                            <mat-label>Icon Size</mat-label>
+                            <input matInput formControlName="iconsize" name="iconsize">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconhover -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Hover Animation Type</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Select the animation type for icon on hover.</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <div fxLayout="row" fxLayoutAlign="start end" class="w-100-p">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Icon Hover Animation Type</mat-label>
+                                <mat-select name="iconhover" formControlName="iconhover">
+                                    <mat-option *ngFor="let layout of pageOptions.contentboxparams.hovertypes | keyvalue:disableSort" [value]="layout.key">
+                                    {{layout.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!-- iconhovercolor -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Hover Color</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Icon Hover Color</mat-label>
+                            <input matInput formControlName="iconhovercolor" type="color" name="iconhovercolor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconcustomimg -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Image</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Select Icon Image From Gallery.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <img *ngIf="contentSettingsForm.get('iconcustomimg').value" [src]="contentSettingsForm.get('iconcustomimg').value" alt="contentSettingsForm.get('imagealttext').value" class="preview-image w-100-p" />
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="iconcustomimg" formControlName="iconcustomimg">
+                            <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'iconcustomimg','group':''})">cloud_upload</mat-icon>
+                            <mat-icon matSuffix class="secondary-text" *ngIf="contentSettingsForm.get('iconcustomimg').value" (click)="ResetField({type:'iconcustomimg','group':''})">delete</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconcustomimgwidth -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Custom Icon Image Width</div>
+                        <div class="font-size-14 secondary-text text-capitalize">width of custom icon image. In pixels (px), ex: 1px</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" class="w-100-p">
+                            <mat-label>Custom Icon Width</mat-label>
+                            <input matInput formControlName="iconcustomimgwidth" name="iconcustomimgwidth">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconcustomimgheight -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Custom Icon Image Height</div>
+                        <div class="font-size-14 secondary-text text-capitalize">height of custom icon image. In pixels (px), ex: 1px</div>
+                    </div>    
+                    <div fxLayout="row" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" class="w-100-p">
+                            <mat-label>Custom Icon Height</mat-label>
+                            <input matInput formControlName="iconcustomimgheight" name="iconcustomimgheight">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- link_target -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Link Target</div>
+                        <div class="font-size-14 secondary-text text-capitalize">content box link target</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="border pb-12 mb-20 border-radius-4 ml-8">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="link_target" formControlName="link_target">
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="_self">Same Window</mat-radio-button>
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="_blank">New Window</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- iconposition -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Icon Position</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose the position of the icon.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="border pb-12 mb-20 border-radius-4 ml-8">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="iconposition" formControlName="iconposition">
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="L">Left</mat-radio-button>
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="R">Right</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- margin -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Margin</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Spacing above and below the content boxes. In px, em or %, e.g. 10px.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-form-field appearance="outline" floatLabel="always" class="mr-8 w-50-p">
+                                <mat-icon matPrefix class="secondary-text">arrow_upward</mat-icon>
+                                <input matInput name="margintop" formControlName="margintop">
+                            </mat-form-field>
+                            <!-- bottom -->
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-50-p">
+                                <mat-icon matPrefix class="secondary-text">arrow_downward</mat-icon>
+                                <input matInput name="marginbottom" formControlName="marginbottom">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!-- visiblity -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">Element Visibility</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose to show or hide the element on small, medium or large screens.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="border pb-12 mb-20 border-radius-4 ml-8">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="visiblity" formControlName="visiblity">
+                                <ng-container *ngFor="let visiblity of pageOptions.visibilityOptions | keyvalue:disableSort">
+                                    <mat-radio-button class="mx-4" fxFlex="31" fxFlex.lt-sm="100" value="{{visiblity.key}}">{{visiblity.value}}</mat-radio-button>
+                                </ng-container>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- cssclass -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">CSS Class</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Add a class to the wrapping HTML element.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="cssclass" formControlName="cssclass">
+                            <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- cssid -->
+                <div fxLayout="column"  fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+                        <div class="font-weight-600 mb-0">CSS ID</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Add an ID to the wrapping HTML element.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="70" class="ml-8">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="cssid" formControlName="cssid">
+                            <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="border-top py-20">
+                <button type="submit" mat-stroked-button class="mr-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">SAVE</button>
+                <button type="button" mat-stroked-button class="ml-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" mat-dialog-close>CANCEL</button>
+            </div>
+        </form> 
+    </div>
+     
+</div>
+<!-- BOX SETTINGS DIALOG OPEN ON ADD BUTTON -->
+<ng-template #boxSettingsDialog>
+    <form name="boxSettingsForm" [formGroup]="boxSettingsForm" (ngSubmit)="sendBoxSettingsInfo($event)"  novalidate autocomplete="off">
+        <h2 matDialogTitle>Content Box</h2>
+        <!-- title -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Title</div>
+                <div class="font-size-14 secondary-text text-capitalize">The box title.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="title" formControlName="title">
+                    <mat-icon matSuffix class="secondary-text">text_fields</mat-icon>
+                </mat-form-field>
+            </div>
+        </div> 
+        <!-- boxbgcolor -->
+        <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Content Box Background Color</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                    <mat-label>Content Box Background Color</mat-label>
+                    <input matInput formControlName="boxbgcolor" type="color" name="boxbgcolor">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- icon -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon</div>
+                <div class="font-size-14 secondary-text text-capitalize">Global setting for all content boxes, this can be overridden individually.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field appearance="outline" fxFlex="75" fxAlign="start center" class="pr-16 mat-wrapper-p-0">
+                        <mat-label>Icon</mat-label>
+                        <input matInput formControlName="icon" name="icon">
+                    </mat-form-field>
+                    <button type="button" mat-raised-button fxAlign="center" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" fxFlex="25" (click)="selectMenuIcon('boxSettingsForm')">
+                        Select Icon
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- flipicon -->
+        <div fxLayout="column"  fxLayout.gt-md="row" class="mt-24">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Flip Icon</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to flip the icon.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="flipicon" formControlName="flipicon">
+                        <ng-container *ngFor="let flip of pageOptions.contentboxparams.fliptypes | keyvalue:disableSort">
+                            <mat-radio-button class="mx-4" fxFlex="31" fxFlex.lt-sm="100" value="{{flip.key}}">{{flip.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- rotateicon -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Rotate Icon</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to rotate the icon.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="rotateicon" formControlName="rotateicon">
+                        <ng-container *ngFor="let rotate of pageOptions.contentboxparams.rotatetypes | keyvalue:disableSort">
+                            <mat-radio-button class="mx-4" fxFlex="23" fxFlex.lt-sm="100" value="{{rotate.key}}">{{rotate.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- spinicon -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Spining Icon</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to spining the icon.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="spinicon" formControlName="spinicon">
+                        <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                        <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconcolor -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon Color</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50" class="ml-8">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Icon Background Color</mat-label>
+                    <input matInput formControlName="iconcolor" type="color" name="iconcolor">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconbgcolor -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon Background Color</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Icon Background Color</mat-label>
+                    <input matInput formControlName="iconbgcolor" type="color" name="iconbgcolor">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconinnerborder -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon Background Inner Border</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose the border of icon inner background. In pixels (px), ex: 1px</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Icon Background Inner Border</mat-label>
+                    <input matInput formControlName="iconinnerborder" name="iconinnerborder">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconinnerbordercolor -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon Background Inner Border Color</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50" class="ml-8">
+                <mat-form-field appearance="outline" fxFlex="100" >
+                    <mat-label>Icon Background Inner Border Color</mat-label>
+                    <input matInput formControlName="iconinnerbordercolor" type="color" name="iconinnerbordercolor">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconouterborder -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon Background Outer Border</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose the border of icon Outer background. In pixels (px), ex: 1px</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex="100" >
+                    <mat-label>Icon Background Outer Border</mat-label>
+                    <input matInput formControlName="iconouterborder" name="iconouterborder">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconouterbordercolor -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon Background Outer Border Color</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex="100" >
+                    <mat-label>Icon Background Outer Border Color</mat-label>
+                    <input matInput formControlName="iconouterbordercolor" type="color" name="iconouterbordercolor">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconcustomimg -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Icon Image</div>
+                <div class="font-size-14 secondary-text text-capitalize">Select Icon Image From Gallery.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <img *ngIf="boxSettingsForm.get('iconcustomimg').value" [src]="boxSettingsForm.get('iconcustomimg').value" alt="contentSettingsForm.get('imagealttext').value" class="preview-image w-100-p" />
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="iconcustomimg" formControlName="iconcustomimg">
+                    <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'iconcustomimg','group':'boxSettingsForm'})">cloud_upload</mat-icon>
+                    <mat-icon matSuffix class="secondary-text" *ngIf="boxSettingsForm.get('iconcustomimg').value" (click)="ResetField({type:'iconcustomimg','group':'boxSettingsForm'})">delete</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconcustomimgwidth -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Custom Icon Image Width</div>
+                <div class="font-size-14 secondary-text text-capitalize">width of custom icon image. In pixels (px), ex: 1px</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p">
+                    <mat-label>Custom Icon Width</mat-label>
+                    <input matInput formControlName="iconcustomimgwidth" name="iconcustomimgwidth">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- iconcustomimgheight -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Custom Icon Image Height</div>
+                <div class="font-size-14 secondary-text text-capitalize">height of custom icon image. In pixels (px), ex: 1px</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" class="w-100-p">
+                    <mat-label>Custom Icon Height</mat-label>
+                    <input matInput formControlName="iconcustomimgheight" name="iconcustomimgheight">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- column link type-->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Link Type</div>
+                <div class="font-size-14 secondary-text text-capitalize">column link custom/menu url</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group class="mt-12" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="link_type" formControlName="link_type" (change)="boxSettingsForm.get('link_url').reset()">
+                        <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="C">Custom</mat-radio-button>
+                        <mat-radio-button class="mx-4" fxFlex="calc(50%-8px)" fxFlex.lt-sm="100" value="M">Menu Url</mat-radio-button>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- custom Link -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0">Link Url</div>
+                <div class="font-size-14 secondary-text text-capitalize">Link to column area custom or menu.</div>
+            </div>    
+            <!-- link_url -->
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <div fxLayout="row" fxLayoutAlign="start end">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="boxSettingsForm.get('link_type').value=='C'">
+                        <input matInput name="link_url" formControlName="link_url" >
+                        <mat-icon matSuffix class="secondary-text">link</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="boxSettingsForm.get('link_type').value=='M'">
+                        <mat-label>Menu Url</mat-label>
+                        <mat-select name="link_url" formControlName="link_url" [required]="boxSettingsForm.get('link_type').value=='M'">
+                            <mat-option value="">Select Menu</mat-option>
+                            <mat-option *ngFor="let menu of menusList" [value]="menu.menu_url">
+                            {{menu.menu_title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>  
+        <!-- content -->
+        <div fxLayout="row"  fxLayout.gt-md="row">
+            <div class="preview" fxLayoutAlign="start top" fxFlex="100">
+                <div class="font-weight-600 mb-0">Content</div>
+            </div>    
+            <div fxLayoutAlign="start center" fxFlex="100">
+                <editor [init]="tinyMceSettings" name="content" formControlName="content"></editor>
+            </div>
+        </div>
+        <mat-dialog-actions fxLayoutAlign="center center" class="border-top py-20 mt-20">
+            <button type="submit" mat-raised-button class="mr-8 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">SAVE</button>
+            <button type="button" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" mat-dialog-close>CANCEL</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>

@@ -1,0 +1,257 @@
+<div id="front-food-Reservation" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <!-- <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                        [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>Food Reservation</strong>
+                    </span>
+                </div>
+            
+
+            </div>
+         
+        </div>
+
+    </div> -->
+
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <!-- <div class="font-weight-600 blue-grey-50 p-12 mb-20 line-height-28 text-capitalize">
+                <p>It can take up to one hour to complete the delivery.</p>
+                <p>Food orders must be submitted by the following times:</p>
+                <p>- Building 'A' and 'B' by 3:00PM</p>
+                <p>- Building 'C', 'D', E and Cottages by 3:30PM.</p>
+                <p>All orders placed after 3:30PM should be made by calling To-Go Orders at 843-689-7005.</p>
+                <p>Orders placed after 3:30PM will be delivered after 6:30PM.</p>
+            </div> -->
+
+            <div fxLayout="row" fxLayout.lt-sm="column">
+                <div fxFlex="60" class="left-dropdown-section border p-16 mr-20 pt-32 border-radius-4"
+                    fxFlex.lt-sm="100" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                    <p>Take-Out orders placed by phone require 30 minutes to be prepared.</p>
+                    <div *ngFor="let categories of category">
+                        <mat-accordion>
+                            <mat-expansion-panel class=" box-shadow-none border" (opened)="panelOpenState = true"
+                                (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{categories.category_name}}
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div *ngFor="let products of categories.products">
+                                    <div>
+                                        <mat-accordion>
+                                            <mat-expansion-panel (opened)="panelState" (closed)="panelState">
+                                                <mat-expansion-panel-header (click)="resetQuantity();">
+                                                    <mat-panel-title>
+                                                        {{products.product_name}}
+                                                    </mat-panel-title>
+                                                </mat-expansion-panel-header>
+                                                <div *ngIf="getArray(products.side_number)"></div>
+                                                <form class="w-max-800" fxLayout="column" fxLayoutAlign="start"
+                                                    fxFlex="1 0 auto" autocomplete="off" [formGroup]="addOrder"
+                                                    novalidate autocomplete="off">
+                                                    <!-- <p class="pb-16">
+                                                            <img src="{{products.image}}" alt=" no image" height="100"
+                                                                width="100">
+                                                        </p> -->
+                                                    <!-- <p class="pb-16" *ngIf="products.image == ''">
+                                                        <img [src]="default_img" height="100" width="100" />
+                                                    </p>
+                                                    <p class="pb-16" *ngIf="products.image != ''">
+                                                        <img src="{{products.image}}" alt=" no image" height="100"
+                                                            width="100">
+                                                    </p> -->
+                                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                        <p class="pb-16" *ngIf="products.image == ''" fxFlex="30">
+                                                            <img [src]="default_img" height="100" width="100" />
+                                                        </p>
+                                                        <p class="pb-16" *ngIf="products.image != ''" fxFlex="30">
+                                                            <img src="{{products.image}}" alt=" no image" height="100"
+                                                                width="100">
+                                                        </p>
+                                                        <p *ngIf="products.product_description != ''" fxFlex="70">
+                                                            {{products.product_description}}
+                                                        </p>
+                                                    </div>
+
+                                                    <p>
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Quantity</mat-label>
+                                                            <input type="number" matInput min="1"
+                                                                formControlName="quantity"
+                                                                (input)="getSideDishAndExtras($event,products.id,categories.id)">
+                                                        </mat-form-field>
+                                                    </p>
+                                                    <!-- <div *ngIf="getArray(products.side_number)"></div> -->
+                                                    <div
+                                                        *ngIf="products.productsidedish.length > 0 || products.productextras.length > 0">
+                                                        <div *ngFor="let item of products.numberOfSideAndExtras; let k = index;"
+                                                            fxLayout="column">
+                                                            <div class="font-weight-600 mb-8 font-size-16">Entree
+                                                                {{k+1}}
+                                                            </div>
+
+                                                            <div class="p-16 mb-20 border border-color border-radius-4">
+                                                                <div *ngFor="let items of side_number; let i = index;">
+                                                                    <mat-form-field appearance="outline" *ngIf="products.productsidedish.length > 0" fxFlex>
+                                                                        <mat-label>SideDish {{i+1}}</mat-label>
+                                                                        <mat-select formControlName="side_dish"
+                                                                            (selectionChange)="getSideDishValue($event,item,items,products.product_name,products.side_number)">
+                                                                            <span
+                                                                                *ngFor="let sideDishData of products.productsidedish">
+                                                                                <mat-option
+                                                                                    *ngIf="sideDishData.side_number == items"
+                                                                                    value="{{sideDishData.sidedish.side_dish_name}}">
+                                                                                    {{sideDishData.sidedish.side_dish_name}}
+                                                                                </mat-option>
+                                                                            </span>
+                                                                        </mat-select>
+                                                                    </mat-form-field>
+                                                                </div>
+ 
+                                                                <div *ngFor="let items of side_number; let i = index;">
+                                                                    <mat-form-field appearance="outline" *ngIf="products.productextras.length > 0" fxFlex>
+                                                                        <mat-label>Extras {{i+1}}</mat-label>
+                                                                        <mat-select formControlName="extras"
+                                                                            (selectionChange)="getExtrasValue($event,item,items,products.product_name,products.side_number)">
+                                                                            <span
+                                                                                *ngFor="let extrasData of products.productextras">
+                                                                                <mat-option
+                                                                                    *ngIf="extrasData.side_number == items"
+                                                                                    value="{{extrasData.extras.extra_name}}">
+                                                                                    {{extrasData.extras.extra_name}}
+                                                                                </mat-option>
+                                                                            </span>
+                                                                        </mat-select>
+                                                                    </mat-form-field>
+                                                                </div>
+
+                                                                <div
+                                                                    *ngIf="products.productsidedish.length > 0 || products.productextras.length > 0">
+                                                                    <mat-form-field appearance="outline" fxFlex
+                                                                        class="mat-wrapper-p-0">
+                                                                        <mat-label>Notes</mat-label>
+                                                                        <textarea matInput formControlName="notes"
+                                                                            placeholder="Notes..."
+                                                                            (input)="getNotesValue($event,item,products.id)"></textarea>
+                                                                    </mat-form-field>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div fxLayout="column" fxLayoutAlign="center center"
+                                                        fxFlex="1 0 auto">
+                                                        <button mat-stroked-button color="accent" cdkFocusInitial
+                                                            (click)="onSubmit(categories.id,products.id,products.product_name,products.side_number)">ORDER
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- <p>{{getExtraSide(products.id)}}
+                                                    </p> -->
+
+                                                </form>
+                                            </mat-expansion-panel>
+                                        </mat-accordion>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                    </div>
+                </div>
+
+                <div fxFlex="40" class="border" fxFlex.lt-sm="100" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                    <h4 class="font-weight-600 font-size-18 accent fuse-white-fg p-12 text-center"> Your Order </h4>
+                    <div class="p-16">
+                        <div *ngIf="product_name2 != ''">
+                            <div *ngFor="let data of orderDataArr; let k = index;">
+                                <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-20">
+                                    <!-- <button mat-stroked-button color="accent" cdkFocusInitial
+                                                (click)="removeOrder(k)">
+                                                
+                                            </button> -->
+                                    <div class="font-weight-600">
+                                        {{data.product_name}}
+                                    </div>
+                                    <mat-icon (click)="removeOrder(k)" class="border p-12 font-size-20" fxLayout="row"
+                                        fxLayoutAlign="center center">clear</mat-icon>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-16">
+                                    <div class="font-weight-600 text-capitalize">Quantity: {{data.quantity}} </div>
+                                </div>
+
+
+
+                                <div *ngFor="let item of data.numberOfSideAndExtras; let i = index;" class="mb-28">
+
+                                    <div class="font-weight-600 mb-8 font-size-16"
+                                        *ngIf="data.sideDishFrontArr[i] || data.extrasFrontArr[i] || data.notes[i]">
+                                        Entree {{i+1}} </div>
+
+                                    <div class="border px-8 py-12 border-color border-radius-4 line-height-24"
+                                        *ngIf="data.sideDishFrontArr[i] || data.extrasFrontArr[i] || data.notes[i]">
+                                        <div class="font-weight-600"> {{notesData[item-1]}} </div>
+
+                                        <div fxLayout="row" class="mb-12">
+                                            <div class="mr-8 font-weight-600" fxFlex="40"
+                                                *ngIf="data.sideDishFrontArr[i] && data.sideDishFrontArr[i] != ''"> Side
+                                                Dish : </div>
+
+                                            <div fxFlex="60">
+                                                <div *ngFor="let items of data.sideDishFrontArr[i]">
+                                                    {{items}}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="row" class="mb-12">
+                                            <div class="mr-8 font-weight-600" fxFlex="40"
+                                                *ngIf="data.extrasFrontArr[i] && data.extrasFrontArr[i] != ''"> Extras :
+                                            </div>
+
+                                            <div fxFlex="60">
+                                                <div *ngFor="let items of data.extrasFrontArr[i]">
+                                                    {{items}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" *ngIf="data.notes[item-1]">
+                                            <div class="mr-8 font-weight-600" fxFlex="40"> Notes : </div>
+                                            <div fxFlex="60">
+                                                <div>{{data.notes[item-1]}} </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-20 left-place-order-section">
+                            <button mat-stroked-button color="accent" [disabled]="disableButton" cdkFocusInitial
+                                [routerLink]="'/to-go-order-load-types'">
+                                PLACE ORDER
+                            </button>
+
+                            <div *ngIf="orderDataArr.length == 0">
+                                <p class="mt-8">Your Cart Is Empty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,253 @@
+<div id="settings" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Settings
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" (click)="onSaveClick($event)" cdkFocusInitial>
+                    <mat-icon class="mr-4">settings_backup_restore</mat-icon>
+                    Update Settings
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+
+    	<!-- CENTER -->
+        <div class="center p-24 pb-56">
+
+				<!-- SETTINGS -->
+				<form autocomplete="off" #f="ngForm" [formGroup]="SettingForm" novalidate autocomplete="off">
+
+					<div id="settings">
+						
+						<div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16" fxLayout="row">
+                            <mat-icon class="mr-4">settings</mat-icon> Staff Settings
+                        </div>
+					
+						<div class="mat-card mat-elevation-z2 p-24 br-ds-0" fxLayout="column">
+
+
+
+
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+									<div class="mat-subheading-1 mb-4 font-weight-600"> Show staff  of How Many Days Back</div>
+								</div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                                        <mat-label>
+                                                Show staff  of How Many Days Back
+                                        </mat-label>
+                                        <input matInput type="number" min="0" formControlName="subtractdays" required>
+                                        <!-- <mat-icon matSuffix class="secondary-text">remove_red_eye</mat-icon> -->
+                                        <mat-error>Moving days input required!</mat-error>
+                                    </mat-form-field>   
+                                </div>
+                            </div>
+                            <!-- DEFAULT ROLE OF STAFF -->
+                            <div fxLayout="column" fxLayout.gt-md="row">
+								<div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+									<div class="mat-subheading-1 mb-4 font-weight-600">Default Role</div>
+									<div class="font-size-14 secondary-text">Change the role of the staff.</div>
+								</div>
+
+								<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                      
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                    <mat-label>Roles</mat-label>
+                                        <mat-select name="staffRoles" formControlName="defaultroleid">
+                                            <mat-option *ngFor="let staffRoles of roles_list" [value]="staffRoles.id">
+                                              {{staffRoles.role_name}}  </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+								</div>
+                            </div>
+                            <!-- /DEFAULT ROLE OF STAFF -->
+
+                            <div class="sep"></div>
+                            
+							<!-- PRINT VIEW -->
+							<div fxLayout="column" fxLayout.gt-md="row">
+								<div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+									<div class="mat-subheading-1 mb-4 font-weight-600">Print PDF View</div>
+									<div class="font-size-14 secondary-text">Select the print pdf view option.</div>
+								</div>
+
+								<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                    <mat-label>Print PDF view</mat-label>
+                                        <mat-select name="directoryview" formControlName="directoryview">
+                                            <mat-option value="list">List</mat-option>
+                                            <mat-option value="tabs">Tabs</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+								</div>
+							</div>
+                            <!-- /PRINT VIEW -->
+
+                            <div class="sep"></div>
+
+                            <!-- SHOW DEPARTMENT -->
+							<div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Show Empty Department</div>
+                                    <div class="font-size-14 secondary-text">Display the department or not.</div>
+                                </div>
+
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-slide-toggle [(ngModel)]="Checked" formControlName="showemptydepartment">
+                                        <span *ngIf="Checked">Yes</span>
+                                        <span *ngIf="!Checked">No</span>
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                            <!-- /SHOW DEPARTMENT -->
+                            <div class="sep"></div>
+                            <!-- SHOW profile on STAFF DIRECTORY -->
+							<div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Show Profile Photo On Staff Directory</div>
+                                    <div class="font-size-14 secondary-text">Select the option to display the photo on staff directory.</div>
+                                </div>
+
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-slide-toggle [(ngModel)]="showprofileChecked" formControlName="showprofile">
+                                        <span *ngIf="showprofileChecked">Yes</span>
+                                        <span *ngIf="!showprofileChecked">No</span>
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+
+                            <!-- VIEW all on STAFF DIRECTORY -->
+                            <!-- <div class="sep"></div>
+							<div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                    <div class="mat-subheading-1 mb-4">Staff Directory View</div>
+                                    <div class="font-size-14 secondary-text">Display the department name alphabetically in the view all tab</div>
+                                </div>
+
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-slide-toggle [(ngModel)]="viewallChecked" formControlName="staffview">
+                                        <span *ngIf="viewallChecked">Yes</span>
+                                        <span *ngIf="!viewallChecked">No</span>
+                                    </mat-slide-toggle>
+                                </div>
+                            </div> -->
+                            <!-- / Name sorting start from -->
+                            <div class="sep"></div>
+
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Name Sorting Start From</div>
+                                    <div class="font-size-14 secondary-text">Sorting should be on first name or last name.</div>
+                                </div>
+
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Name Sorting</mat-label>
+                                        <mat-select placeholder="Name Sorting" name="staff_name_sorting" formControlName="staff_name_sorting">
+                                            <mat-option value="LN">Last Name</mat-option>
+                                            <mat-option value="FN">First Name</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="sep"></div>
+                            <!-- show manager  -->
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Show Manager</div>
+                                    <div class="font-size-14 secondary-text">Select the option to show manager on staff directory.</div>
+                                </div>
+
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Show Manager</mat-label>
+                                        <mat-select placeholder="Show Manager" name="show_manager" formControlName="show_manager">
+                                            <mat-option value="Y">Yes</mat-option>
+                                            <mat-option value="N">No</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="sep"></div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Show Newest Staff</div>
+                                    <div class="font-size-14 secondary-text">Select the option to show Newest staff carousal on staff directory.</div>
+                                </div>
+                                <!-- SHOW CAROUSAL ON STAFF PAGE -->
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Show Newest Staff On Directory</mat-label>
+                                        <mat-select placeholder="Show Newest Staff" name="newest_staff" formControlName="newest_staff">
+                                            <mat-option value="Y">Yes</mat-option>
+                                            <mat-option value="N">No</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="sep"></div>
+                            
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Show Biography</div>
+                                    <div class="font-size-14 secondary-text">Select the option to show biography on staff directory.</div>
+                                </div>
+
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                        <mat-label>Show Biography</mat-label>
+                                        <mat-select placeholder="Show biography" name="show_biography" formControlName="show_biography">
+                                            <mat-option value="Y">Yes</mat-option>
+                                            <mat-option value="N">No</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+
+                            <div class="sep"></div>
+
+                            <!-- SET DEFAULT PROFILE PICTURE FOR STAFF -->
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-8" fxLayout="column" fxLayoutAlign="top" fxFlex="49">
+                                    <div class="mat-subheading-1 mb-4 font-weight-600">Default Profile Picture</div>
+                                    <div class="font-size-14 secondary-text">Set default profile picture if staff not uploaded own.</div>
+                                </div>
+                                <app-file-upload fxLayout="column" fxLayoutAlign="top" fxFlex="33" [uploadlabel]="''" [cropper]="false" (imageUploaded)="setMediaFieldValue($event)" [uploadInfo]="uploadInfo?.avatar" ></app-file-upload>
+                            </div>
+                            <!-- /SET DEFAULT PROFILE PICTURE FOR STAFF -->
+                        </div>
+					</div>
+				</form>
+				<!-- / SETTINGS -->
+
+
+		</div>
+		<!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->

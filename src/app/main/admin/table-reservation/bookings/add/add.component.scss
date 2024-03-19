@@ -1,0 +1,74 @@
+#back-table-reservation-add {
+    button.timeslots-btn {
+       width: 91px; 
+       margin: 1px;
+   }
+   .cursor-pointer {cursor: pointer;}
+   .min-100-p {min-width:100%;}
+
+   button.available {
+       background-color: #0ab67a;
+       color: white;
+   } 
+
+   button.available:hover {
+       background: #d6d6d6;
+       color: #000;
+   }
+   button.timeslots-btn.selectedbooking {
+       background: #d6d6d6;
+       color: #000;
+   }
+
+   button.unavailable {
+       background-color: #b9b7b8;
+       cursor: not-allowed !important;
+       color: #4147487d;
+   } 
+
+   button.booked {
+       background: #d07364;
+       color: #fff;
+       cursor: text;
+       
+   }
+
+   button.booked:hover {
+       background-color:#b95d50 ;
+       color: black;
+   }
+   .update-btn-wrapper { 
+       .mat-raised-button[disabled] {
+           background-color: #ac087757 !important;
+       }
+   }
+
+   .Indicates-btn {
+       width: 20px;
+       height: 12px;
+       display: inline-block;
+   }   
+
+   td.booked {
+       background-color:#b95d50;
+       color: white;
+   }
+   td.available {
+       background-color: #0ab67a;
+       color: white;
+   }
+   td.unavailable {
+       background-color: #b9b7b8;
+       cursor: not-allowed;
+       color: #4147487d;
+   }
+   
+
+   .time-slot-image-wrpper {
+    position: relative;
+
+    .time-slot-image {
+        position: absolute;
+    }
+}
+}

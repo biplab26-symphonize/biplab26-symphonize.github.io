@@ -1,0 +1,44 @@
+<div class="fuse-content forms" id="My-Dining-home">
+    
+    <div class="p-16 title"> 
+        <div class="h1 font-weight-800">MEETING ROOMS</div>
+    </div> 
+    
+    <div class="px-16 mat-table-p">
+        <mat-table class="simple clickable" #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+            <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+            <span *ngIf="column.columnDef">
+            
+                <mat-header-cell class="accent" *matHeaderCellDef class="justify-center accent">
+                    <h3>{{column.header}}</h3>
+                </mat-header-cell>
+
+                <mat-cell class="text-capitalize" *matCellDef="let element" class="justify-center"> 
+                    <span *ngIf=" column.columnDef!=='status' && column.columnDef !== 'start_date' && column.columnDef !='rooms'">
+                        {{element[column.columnDef]}} 
+                    </span>
+                    <span *ngIf="column.columnDef =='rooms'">
+                        {{element.rooms.title}}
+                    </span>
+                    <span *ngIf="column.columnDef=='start_date'">{{element[column.columnDef] | date: defaultDateTimeFormat.date_format}}</span>
+                    <span *ngIf="column.columnDef=='status'" > 
+                        <span *ngIf="element[column.columnDef]=='confirmed'" class=" line-height-16 pl-20" style="color: green;">{{element[column.columnDef] | titlecase}}</span>
+                        <span *ngIf="element[column.columnDef]=='cancelled'" class=" line-height-16 pl-20" style="color: red;">{{element[column.columnDef] | titlecase}}</span>
+                        <span *ngIf="element[column.columnDef]=='pending'" class=" line-height-16 pl-20" style="color:orange;">{{element[column.columnDef] | titlecase}}</span>
+                    </span>
+                </mat-cell>
+            </span>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+
+    <div *ngIf="length > 0" class="more">
+        <a class="font-weight-600" [routerLink]="[homesettings.table_see_more_url]">See All  Booking <mat-icon class="s-20">arrow_right</mat-icon></a>
+    </div>
+
+    <div class="no-record pt-20 pb-20 mx-16 border-bottom border-left border-right mb-20" *ngIf="length === 0">No Records Found</div>
+
+</div>
+

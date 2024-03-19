@@ -1,0 +1,9 @@
+@import "src/@fuse/scss/fuse";
+
+@include media-breakpoint('lt-md') {
+    .max-width-100 {
+        min-width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

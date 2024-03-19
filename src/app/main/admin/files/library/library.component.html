@@ -1,0 +1,96 @@
+<div class="page-layout page-layout-list simple left-sidebar inner-sidebar inner-scroll">
+
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">add</mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Click “Replace” or “Add” to update your Page with a new PDF.
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+    </div>
+    <!-- / HEADER -->
+    
+  <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" >
+
+
+            <!-- FILTER -->
+            <div class="filters fuse-white-bg py-20 px-16 mb-20 pb-0" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                <form #filter name="filterForm" [formGroup]="filterForm">
+                    <mat-form-field appearance="outline" floatLabel="always" class="filter-search mr-4 ml-4">
+                        <mat-label>Search</mat-label>
+                        <input matInput placeholder="Enter a keyword..." formControlName="searchKey">
+                    </mat-form-field>
+                </form>
+
+            </div>
+
+            <!-- / FILTER -->
+
+            <!-- CONTENT -->
+            <div class="content">
+ 
+                <table class="menus-table files-library-list" mat-table #table [dataSource]="dataSource.data" matSort matSortActive="menu_id" matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+                    <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                    <!-- OTHER THAN CHECKBOX -->    
+                        <th class="p-12" [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}" disabled="{{!column.sortable}}"> {{column.header}} </th>
+                        <span *ngIf="column.columnDef=='menu_id'">
+                            <td class="p-12" mat-cell *matCellDef="let element">
+                                <span *ngIf="element.menu_type=='M'">
+                                    {{element.menu_title}}
+                                </span>
+                                <span *ngIf="element.menu_type=='S' && element.parent!==null">
+                                    {{element.parent.menu_title}}
+                                </span>
+                            </td>
+                        </span>
+                        <span *ngIf="column.columnDef=='menu_parent_id'">
+                            <td class="p-12" mat-cell *matCellDef="let element">{{element.menu_title}}</td>
+                        </span>
+                        <span *ngIf="column.columnDef=='action'">
+                            <td class="p-12" mat-cell *matCellDef="let element">
+                                <!--if source is page-->
+                                <a [routerLink]="['/admin/files/add/',element.menu_id]" mat-raised-button class="w-100 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" color="accent" *ngIf="element.menu_source_type=='page'">
+                                    Add
+                                </a>
+                                <!--if source is URL-->
+                                <a [routerLink]="['/admin/files/replace/',element.menu_id]" mat-raised-button class="w-100 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" color="accent" *ngIf="element.menu_source_type=='url'">
+                                    Replace
+                                </a>
+                            </td>
+                        </span>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator 
+                    class="blue-grey-50"
+                    #paginator    
+                    [length]="dataSource.meta.total"                   
+                    [pageSize]="PaginationOpt?.pageSize"
+                    [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+                </mat-paginator>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT -->
+
+
+
+</div>

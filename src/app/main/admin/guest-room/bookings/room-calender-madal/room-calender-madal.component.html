@@ -1,0 +1,64 @@
+<div class="fuse-card no-br">
+    <div class="p-16">
+        <div class="h1">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <span fxFlex="90" fxFlexAlign="start" class="title" style="white-space: normal;">{{eventInfo.event._def.extendedProps.name | titlecase}}</span>
+                <mat-icon fxFlex="10" fxFlexAlign="start" (click)="dialogRef.close()" class="icon s-20 text-right close-btn">close</mat-icon>
+            </div>
+            <div>
+                <span fxFlex="90" fxFlexAlign="start" class="title" style="white-space: normal;">Building: {{eventInfo.event._def.extendedProps.building.name | titlecase}}</span> 
+             </div>
+        </div> 
+    </div>
+
+    <!-- <ng-container *ngIf="eventInfo.event.extendedProps.display_description=='Y'">
+        <div class="info-section px-16 line-height-24" [innerHTML]="eventInfo.event.extendedProps.event_description | sanitizeHtml"></div>
+    </ng-container> -->
+    
+    <div class="card-divider"></div>
+
+    <div class="p-16 pt-0 line-height-1.75">
+        <!-- StartDate -->
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">date_range</mat-icon>Booking Date</div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right">{{eventInfo.event.extendedProps.date_from | date :defaultDateTimeFormat.date_format}}</div>
+            </div>  
+        </div>
+        <!-- endDate -->
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">date_range</mat-icon> Departure Date</div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right">{{eventInfo.event.extendedProps.date_to | date :defaultDateTimeFormat.date_format}}</div>
+            </div>
+        </div>
+        <!-- Check IN -->
+        <div *ngIf="eventInfo.event.extendedProps.date_from!=='' && showArrival==true" class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">access_time</mat-icon> Arrival Time </div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right">{{eventInfo.event.extendedProps.date_from | date :defaultDateTimeFormat.time_format}}</div>
+                
+            </div>
+        </div> 
+        <!-- CHECKIN  -->
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">access_time</mat-icon> Check-In Time </div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right">3:00 PM EST</div>
+                
+            </div>
+        </div> 
+        <!-- CHECKOUT -->
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">access_time</mat-icon> Check-Out Time </div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right">11:00 AM EST</div>
+                
+            </div>
+        </div> 
+    </div>
+<!-- 
+    <div class="p-16 calendar-popup-bottom-btn" fxLayout >
+        <event-register-buttons [listType]="'front'" [event]="eventInfo.event.extendedProps" [page]="'eventcalendar'" ></event-register-buttons>
+    </div> -->
+</div>

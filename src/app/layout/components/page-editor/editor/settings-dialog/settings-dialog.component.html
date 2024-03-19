@@ -1,0 +1,375 @@
+<h1 mat-dialog-title>{{settingType | titlecase}}</h1>
+<form name="pageSettingsForm" [formGroup]="pageSettingsForm" (ngSubmit)="sendSettingsInfo($event)"  novalidate autocomplete="off">
+    <div mat-dialog-content class="pb-dialog-settings">
+            <mat-tab-group mat-align-tabs="start">
+                <mat-tab label="General">
+                    <div formGroupName="general">
+                        <ng-container *ngIf="settingType=='container'">
+                            <div fxLayout="column"  fxLayout.gt-md="row" class="pt-24">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class=" font-weight-600 mb-0 ">Container Title</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">it will identify mutliple containers</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <input matInput name="name" formControlName="name">
+                                        <mat-icon matSuffix class="secondary-text">text_fields</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- 100% height -->
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                    <div class=" font-weight-600 mb-0 ">100% Height</div>
+                                    <div class="font-size-14 secondary-text text-capitalize">it will identify mutliple containers</div>
+                                </div>    
+                                <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                    <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                        <mat-label> </mat-label>
+                                        <input matInput placeholder="Input" style="display: none" >
+                                        <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="hundred_percent" formControlName="hundred_percent">
+                                            <mat-radio-button fxFlex="33" value="N">No</mat-radio-button>
+                                            <mat-radio-button fxFlex="33" value="Y">Yes</mat-radio-button>
+                                        </mat-radio-group>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="pageSettingsForm.get('general.hundred_percent').value=='Y'">
+                                <!-- 100% height scroll -->
+                                <div fxLayout="column" fxLayout.gt-md="row">
+                                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                        <div class=" font-weight-600 mb-0 ">Enable 100% Height Scroll</div>
+                                        <div class="font-size-14 secondary-text text-capitalize">it will identify mutliple containers</div>
+                                    </div>    
+                                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                            <mat-label> </mat-label>
+                                            <input matInput placeholder="Input" style="display: none" >
+                                            <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="hundred_percent_height_scroll" formControlName="hundred_percent_height_scroll">
+                                                <mat-radio-button fxFlex="33"  value="N">No</mat-radio-button>
+                                                <mat-radio-button fxFlex="33"  value="Y">Yes</mat-radio-button>
+                                            </mat-radio-group>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <!-- 100 height center content -->
+                                <div fxLayout="column"  fxLayout.gt-md="row">
+                                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                        <div class=" font-weight-600 mb-0 ">Center Content</div>
+                                        <div class="font-size-14 secondary-text text-capitalize">it will identify mutliple containers</div>
+                                    </div>    
+                                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                            <mat-label> </mat-label>
+                                            <input matInput placeholder="Input" style="display: none" >
+                                            <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="hundred_percent_height_center_content" formControlName="hundred_percent_height_center_content">
+                                                <mat-radio-button class="mx-4"fxFlex="33"  value="N">No</mat-radio-button>
+                                                <mat-radio-button class="mx-4"fxFlex="33" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                            </mat-radio-group>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                        <!-- column spacing -->
+                        <div fxLayout="column"  fxLayout.gt-md="row" *ngIf="settingType=='column'" class="mt-24">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Column Spacing</div>
+                                <div class="font-size-14 secondary-text text-capitalize">space between each column.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <input matInput name="columnspacing" formControlName="columnspacing">
+                                    <mat-icon matSuffix class="secondary-text">compare_arrows</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- center content of column -->
+                        <div fxLayout="column" fxLayout.gt-md="row" *ngIf="settingType=='column'">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Center Content</div>
+                                <div class="font-size-14 secondary-text text-capitalize">it will center content</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                    <mat-label> </mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center" name="hundred_percent_height_center_content" formControlName="hundred_percent_height_center_content">
+                                        <mat-radio-button fxFlex="33" value="N">No</mat-radio-button>
+                                        <mat-radio-button fxFlex="33" value="Y">Yes</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- eaual height -->
+                        <div fxLayout="column"  fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50"  >
+                                <div class=" font-weight-600 mb-0 ">Set Columns to Equal Height</div>
+                                <div class="font-size-14 secondary-text text-capitalize">it will identify mutliple containers</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                    <mat-label> </mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="equal_height_columns" formControlName="equal_height_columns">
+                                        <mat-radio-button fxFlex="33" value="N">No</mat-radio-button>
+                                        <mat-radio-button fxFlex="33" value="Y">Yes</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- menu_anchor -->
+                        <div fxLayout="column"  fxLayout.gt-md="row" *ngIf="settingType=='container'">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Menu Anchor</div>
+                                <div class="font-size-14 secondary-text text-capitalize">link to container (https://xyz.com).</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <input matInput name="menu_anchor" formControlName="menu_anchor">
+                                    <mat-icon matSuffix class="secondary-text">link</mat-icon>
+                                    <mat-error *ngIf="pageSettingsForm.get('general.menu_anchor').invalid">Menu Url invalid</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- visiblity -->
+                        <div fxLayout="column"  fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Container Visibility</div>
+                                <div class="font-size-14 secondary-text text-capitalize">it will identify mutliple containers</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                    <mat-label> </mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="hide_on_mobile" formControlName="hide_on_mobile">
+                                        <ng-container *ngFor="let visiblity of pageOptions.visibilityOptions | keyvalue">
+                                            <mat-radio-button fxFlex="33" fxFlex.lt-sm="100" value="{{visiblity.key}}">{{visiblity.value}}</mat-radio-button>
+                                        </ng-container>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- publishing status -->
+                        <div fxLayout="column"  fxLayout.gt-md="row" *ngIf="settingType=='container'">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Container Publishing Status</div>
+                                <div class="font-size-14 secondary-text text-capitalize">it will identify mutliple containers</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50"  class="border pb-12 mb-20">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                    <mat-label> </mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="status" formControlName="status">
+                                        <ng-container *ngFor="let visiblity of pageOptions.status | keyvalue">
+                                            <mat-radio-button  fxFlex="33" fxFlex.lt-sm="100" value="{{visiblity.key}}">{{visiblity.value}}</mat-radio-button>
+                                        </ng-container>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- column link type-->
+                        <div fxLayout="column"  fxLayout.gt-md="row" *ngIf="settingType=='column'">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Link Type</div>
+                                <div class="font-size-14 secondary-text text-capitalize">column link custom/menu url</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                    <mat-label> </mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center" name="link_type" formControlName="link_type" (change)="pageSettingsForm.get('general.link_url').reset()">
+                                        <mat-radio-button fxFlex="33" value="C">Custom</mat-radio-button>
+                                        <mat-radio-button fxFlex="33" value="M">Menu Url</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- custom Link -->
+                        <div fxLayout="column"  fxLayout.gt-md="row" *ngIf="settingType=='column'">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Link Url</div>
+                                <div class="font-size-14 secondary-text text-capitalize">Link to column area custom or menu.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <div fxLayout="row" fxLayoutAlign="start end">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="pageSettingsForm.get('general.link_type').value=='C'">
+                                        <input matInput name="link_url" formControlName="link_url" >
+                                        <mat-icon matSuffix class="secondary-text">link</mat-icon>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="pageSettingsForm.get('general.link_type').value=='M'">
+                                        <mat-label>Menu Url</mat-label>
+                                        <mat-select name="link_url" formControlName="link_url" [required]="pageSettingsForm.get('general.link_type').value=='M'">
+                                            <mat-option value="">Select Menu</mat-option>
+                                            <mat-option *ngFor="let menu of menusList" [value]="menu.menu_url">
+                                            {{menu.menu_title}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- link target -->
+                        <div fxLayout="column"  fxLayout.gt-md="row" *ngIf="settingType=='column'">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Link Target</div>
+                                <div class="font-size-14 secondary-text text-capitalize">column link target</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 pl-8">
+                                    <mat-label> </mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="link_target" formControlName="link_target">
+                                        <mat-radio-button fxFlex="33" value="_self">Same Window</mat-radio-button>
+                                        <mat-radio-button fxFlex="33" value="_blank">New Window</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- cssclass -->
+                        <div fxLayout="column"  fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">CSS Class</div>
+                                <div class="font-size-14 secondary-text text-capitalize">Add a class to the wrapping HTML element.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <input matInput name="cssclass" formControlName="cssclass">
+                                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- cssid -->
+                        <div fxLayout="column"  fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">CSS ID</div>
+                                <div class="font-size-14 secondary-text text-capitalize">Add an ID to the wrapping HTML element.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <input matInput name="cssid" formControlName="cssid">
+                                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Background">
+                    <div formGroupName="background">
+                        <!-- bgcolor -->
+                        <div fxLayout="row" fxLayoutAlign="start start" class="mt-24">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Background Color</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                    <mat-label>Background Color</mat-label>
+                                    <input matInput formControlName="bgcolor" type="color" name="bgcolor">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- bgimage -->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Background Image</div>
+                                <div class="font-size-14 secondary-text text-capitalize">Background Image.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <input matInput name="bgimage" formControlName="bgimage">
+                                    <mat-icon matSuffix class="secondary-text" (click)="OpenMediaDialog({type:'bgimage','group':'background'})">cloud_upload</mat-icon>
+                                    <mat-icon matSuffix class="secondary-text" *ngIf="pageSettingsForm.get('background').get('bgimage').value" (click)="ResetField({type:'bgimage','group':'background'})">delete</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- bgvideo -->
+                        <div fxLayout="column"  fxLayout.gt-md="row"  *ngIf="settingType=='container'">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Background Video Url</div>
+                                <div class="font-size-14 secondary-text text-capitalize">play video as background.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <input matInput name="bgvideo" formControlName="bgvideo">
+                                    <mat-icon matSuffix class="secondary-text">personal_video</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Design">
+                    <div formGroupName="design">
+                        <!-- bordersize -->
+                        <div fxLayout="row" class="mt-24">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Border Size</div>
+                                <div class="font-size-14 secondary-text text-capitalize">Controls the border size of the element. In pixels. Default currently set to 0. Reset to default.Using default value.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <input matInput name="bordersize" formControlName="bordersize">
+                                    <mat-icon matSuffix class="secondary-text">border_clear</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- margin -->
+                        <div fxLayout="column"  fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Margin</div>
+                                <div class="font-size-14 secondary-text text-capitalize">Spacing above and below the section. Enter values including any valid CSS unit, ex: 4%.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" formGroupName="margin">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+                                        <mat-icon matPrefix class="secondary-text">arrow_upward</mat-icon>
+                                        <input matInput name="top" formControlName="top">
+                                    </mat-form-field>
+                                    <!-- bottom -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+                                        <mat-icon matPrefix class="secondary-text">arrow_downward</mat-icon>
+                                        <input matInput name="bottom" formControlName="bottom">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- padding -->
+                        <div fxLayout="column"  fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                                <div class=" font-weight-600 mb-0 ">Padding</div>
+                                <div class="font-size-14 secondary-text text-capitalize">Spacing above and below the section. Enter values including any valid CSS unit, ex: 4%.</div>
+                            </div>    
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" formGroupName="padding">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                                        <mat-icon matPrefix class="secondary-text">arrow_upward</mat-icon>
+                                        <input matInput name="top" formControlName="top">
+                                    </mat-form-field>
+                                    <!-- bottom -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                                        <mat-icon matPrefix class="secondary-text">arrow_downward</mat-icon>
+                                        <input matInput name="bottom" formControlName="bottom">
+                                    </mat-form-field>
+                                    <!-- left -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                                        <mat-icon matPrefix class="secondary-text">arrow_back</mat-icon>
+                                        <input matInput name="left" formControlName="left">
+                                    </mat-form-field>
+                                    <!-- right -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                                        <mat-icon matPrefix class="secondary-text">arrow_forward</mat-icon>
+                                        <input matInput name="right" formControlName="right">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+    </div>
+    <div mat-dialog-actions class="border-top py-16" fxLayout="row" fxLayoutAlign="center center" >
+        <button type="submit" mat-stroked-button class="mr-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">SAVE</button>
+        <button type="button" mat-stroked-button class="ml-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" mat-dialog-close>CANCEL</button>
+    </div>
+</form>

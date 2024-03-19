@@ -1,0 +1,82 @@
+<div class="page-layout simple fullwidth layout-box" id="view-booking">
+    <!-- HEADER -->
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>Fitness Reservations</strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+
+            </div>
+            <!-- / TOOLBAR -->
+        </div> 
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <!-- <form class="br-radius-8"  [formGroup]="addBookingForm"  autocomplete="off" > -->
+        <div class="content-wrap fuse-white-bg">
+            <h1 class="zont-size-28 accent fuse-white-fg px-28 py-16 m-0">Booking Preview :</h1>
+            <div class="word-break p-28">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" > Service : </h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.service_title}} </h2>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" > Resident Name :</h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.name}} </h2>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="15" fxFlex.lt-sm="35" > Phone Number :</h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.phone}} </h2>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline"> 
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" > Email :</h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.email}} </h2>
+                </div>
+                <div *ngIf="bookingValues.address!=''" fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" > Location : </h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.address}} </h2>
+                </div>
+                <div *ngIf="bookingValues.notes!=''" fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" > Notes : </h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.notes}} </h2>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" >Date : </h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.booking_start_date | date: defaultDateTimeFormat.date_format}} </h2>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" >Time : </h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.booking_start_time}} </h2>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" >Party Size : </h2>
+                    <h2  fxFlex="65" class="font-weight-400 font-size-18" > {{bookingValues.guestcount}} </h2>
+                </div>
+                <div *ngIf="guestsInfo.length!=0" fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.It-sm="start baseline">
+                    <h2 class="font-size-18 line-height-40 font-weight-600" fxFlex="12" fxFlex.lt-sm="35" >Guests :</h2>
+                    
+                    <div fxLayout="column" fxFlex.lt-sm="65">
+                        <div *ngFor="let guestsInfos of guestsInfo;let i = index;"  fxFlex="100">
+                            <h2 class="font-weight-400 font-size-18 mb-8" >{{i+1}}. {{guestsInfos.name}}</h2>
+                        </div>
+                    </div>    
+                </div>
+                <div class="mt-20">
+                    <button (click)="goDisplayBookingPage()" mat-stroked-button color="accent"  class="mr-8">Back</button>
+                    <button (click)="makeReservation()" mat-stroked-button [disabled]="Show_button" color="accent" >Make Reservation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

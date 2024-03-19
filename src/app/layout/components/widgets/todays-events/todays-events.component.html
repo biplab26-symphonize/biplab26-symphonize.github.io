@@ -1,0 +1,42 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content" id="home-page-quick-events">
+    <div class="p-16 title">
+        <div class="h1 font-weight-800">EVENTS</div>
+    </div>
+    <table class="simple font-size-14">
+        <thead class="text-center">
+            <tr class="dt-paginations">
+                <th class="text-center w-25-p"  *ngIf="homesettings.event_datetime == 'Y'"> Time </th>
+                <th class="text-center w-40-p" *ngIf="homesettings.event_decription == 'Y' "> Event Name </th> 
+                <th class="text-center w-35-p" *ngIf="homesettings.event_location == 'Y' "> Location </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of eventsList">
+                <ng-container *ngIf="homesettings.event_datetime == 'Y'">
+                    <td class="text-center">
+                        {{event.event_start_time | date :  defaultDateTimeFormat.time_format}}
+                    </td>
+                </ng-container>
+
+                <ng-container *ngIf="homesettings.event_decription == 'Y' ">
+                    <td class="text-center">
+                        <span >{{event.event_title}}</span>
+                        <!-- <span *ngIf="homesettings.event_decription == 'Y'" >{{event.event_description}}</span> -->
+                    </td>
+                </ng-container>
+
+                <ng-container *ngIf="homesettings.event_location == 'Y' && event.eventlocation && event.eventlocation.category_name">
+                    <td class="text-center">
+                        {{event.eventlocation.category_name}}
+                    </td>
+                </ng-container> 
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="more">
+        <a class="font-weight-600" [routerLink]="['/events']">See All Events <mat-icon class="s-20">arrow_right</mat-icon></a>
+    </div>
+</div>
+<!-- / CARD CONTENT -->

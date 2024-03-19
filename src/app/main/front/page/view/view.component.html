@@ -1,0 +1,87 @@
+<div id="front-page-builder" class="page-layout simple fullwidth layout-box" [ngClass]="pageInfo && pageInfo.pagesettings ? pageInfo.pagesettings.pagelayout : '' " *ngIf="pageInfo">
+    <!-- HEADER -->  
+    <div *ngIf="pageInfo.settings && pageInfo.settings.headersettings.displayheader=='Y'" class="main-header" [style.background-image]="getBackground(pageInfo.settings.headersettings.bgimage+'?'+dateTemp)">
+        <!-- TITLEBAR -->
+        <div *ngIf="pageInfo.settings && pageInfo.settings.titlebarsettings.showtitlebar=='Y'" class="title-bar-header px-16" [style.background-image]="getBackground(pageInfo.settings.titlebarsettings.titlebarbgimg+'?'+dateTemp)">
+            <div  class="title-bar-header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" >
+                <div class="title-bar-header-top">
+                    <div class="logo text-center">
+                        <span class="logo-text titlebar-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                            <strong> <h1 class="main-text font-weight-600" *ngIf="pageInfo.settings.titlebarsettings.showtext=='Y'"> {{pageInfo.settings.titlebarsettings.text}} </h1> </strong>
+                            <h2 class="sub-text" *ngIf="pageInfo.settings.titlebarsettings.subtext"> {{pageInfo.settings.titlebarsettings.subtext}} </h2>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / TITLEBAR -->
+    </div>    
+    <!-- / HEADER -->
+
+
+    <!-- CONTENT -->
+    <ng-container *ngIf="pageInfo && pageInfo.settings">
+        <div  class="content p-0" [style.background-image]="getBackground(pageInfo.settings.pagesettings.bgimage+'?'+dateTemp)" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+            <!-- OUTER CONTENT WRAP -->
+            <section class="content-wrap" [style.background-image]="pageInfo.settings.pagesettings.contentbgimage ? getBackground(pageInfo.settings.pagesettings.contentbgimage+'?'+dateTemp):'none'" >
+                <!-- PAGECONTENT SECTION -->
+                <ng-container *ngIf="pageInfo.pagecontent.length>0">
+                    <ng-container *ngFor="let content of pageInfo.pagecontent;let pageindex=index;">
+                        <!-- CONTAINER SECTION -->
+                        <div 
+                        *ngIf="content.general.status=='A' || content.general.status==''"
+                        class="page-container"
+                        [ngClass]="content.general.cssclass"
+                        id="{{content.general.cssid}}"    
+                        [style.background-image]="content.background.bgimage ? getBackground(content.background.bgimage+'?'+dateTemp):'none'"
+                        [style.background-color]="content.background.bgcolor ? content.background.bgcolor :'transparent'"
+                        [style.height]="content.general.hundred_percent_height=='Y' ? '100%' : 'auto'"
+                        [style.overflow]="content.general.hundred_percent_height_scroll=='Y' ? 'auto' : 'hidden'"
+                        [style.border]="content.design.bodersize ? content.design.bodersize + ' solid transparent':'0px'"
+                        [style.margin-top]="content.design.margin.top ? content.design.margin.top : '0'"
+                        [style.margin-bottom]="content.design.margin.bottom ? content.design.margin.bottom : '0'"
+                        [style.padding-top]="content.design.padding.top"
+                        [style.padding-bottom]="content.design.padding.bottom"
+                        [style.padding-left]="content.design.padding.left"
+                        [style.padding-right]="content.design.padding.right">
+                        
+                        <!-- ROW COLUMNS SECTION -->
+                        <ng-container *ngIf="content.isrow=='Y' && content.row && content.row.columns.length>0">
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between stretch" class="m-4">
+                                <!-- COLUMNS -->
+                                <ng-container *ngFor="let column of content.row.columns;let colindex=index;">
+                                    <div *ngIf="column.elements.length>0" fxFlex="0 1 calc({{column.columnwidth + '%'}}  - 8px )" class="mx-4 p-16 border mb-20 fuse-white-bg ">
+                                        <!-- LOAD ELEMENTS -->
+                                        <page-elements-loader [elements]="column.elements"></page-elements-loader> 
+                                    </div>
+                                </ng-container>                                
+                            </div>
+                        </ng-container>
+                           
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </section>   
+        </div>
+    </ng-container>
+    <!-- / CONTENT -->
+</div>
+<!-- IF NO PAGE DAT OR NOT HAVE ACCESS -->
+<div id="front-page-builder" class="page-layout simple fullwidth layout-box" *ngIf="noAccess==true">
+
+    <!-- HEADER -->  
+    <div>
+        <div class="title-bar-header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+            <div class="title-bar-header-top"> 
+                <div class="logo text-center">
+                    <span class="logo-text titlebar-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong> <h1 class="main-text">You are not allowed to access this page. </h1> </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div>
+    </div>
+    <!-- / HEADER -->
+</div>

@@ -1,0 +1,743 @@
+<div id="forms" class="page-layout simple left-sidebar inner-sidebar inner-scroll Forms-AddForms" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start center">
+
+        <!-- APP TITLE -->
+        <div fxFlex>
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{title|titlecase}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="text-right" fxFlex> 
+            <div class="mt-16 mt-sm-0" [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                <button class="mr-8" mat-raised-button [routerLink]="'/admin/forms/all'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                 </button>
+           
+                <button mat-raised-button class="mr-8" (click)="previewForm()">
+                    <mat-icon class="mr-4">slideshow</mat-icon> 
+                    Preview
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div> 
+    <!-- / HEADER -->
+ 
+    <!-- CONTENT -->
+
+    <div class="py-24 w-90-p mx-auto">
+        <!-- REACTIVE FORM EXAMPLE -->
+        <form class="w-max-800" fxLayout="column" fxLayoutAlign="start" autocomplete="off" #f="ngForm" [formGroup]="newform" novalidate autocomplete="off">  
+            <mat-tab-group #tabGroup (selectedTabChange)="handleTabChange($event)" [selectedIndex]="0">
+                <mat-tab label="Settings"> 
+                    <div fxLayout="row" fxLayoutAlign="end">
+                        <button mat-raised-button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" (click)="saveForm($event,'false')" cdkFocusInitial>
+                            <mat-icon class="mr-4">settings_backup_restore</mat-icon> 
+                            Save Settings
+                        </button>
+                    </div>
+                    
+                    <div class="mat-title my-12">
+                        <mat-icon>import_export</mat-icon> 
+                        General Information
+                    </div>
+                        <div class="mat-card mat-elevation-z2 p-24 pb-0" fxLayout="column">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>Form Title</mat-label>
+                                    <input matInput placeholder="Form Title" formControlName="form_title" name="form_title" required>
+                                    <mat-error class="mt-28 text-capitalize">Form title is required !</mat-error>
+                                </mat-form-field>
+            
+                                <!-- SELECT ROLES -->
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>Form Type</mat-label>
+                                    <mat-select formControlName="form_type" name="form_type" required>
+                                        <mat-option *ngFor="let formtype of formTypeList" [value]="formtype">
+                                            {{formtype}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error class="text-capitalize">Form type is required !</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33.33">
+                                    <mat-label>Form Class</mat-label>
+                                    <input matInput placeholder="Form Class" formControlName="formclass" name="formclass" >
+                                    <mat-error class="text-capitalize">Form class is required !</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto">
+                            
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>Roles</mat-label>
+                                    <mat-select name="adminroles" formControlName="adminroles" multiple (selectionChange)="selecteddata()" required>
+                                        <!-- <mat-option #allSelected (click)="toggleAllSelection()"   [value]="0">Select All</mat-option> -->
+                                        <div class="p-16 green-checkbox">
+                                            <mat-checkbox [(ngModel)]="selectall" (ngModelChange)="selectalllang()" [ngModelOptions]="{standalone: true}" >Select All</mat-checkbox>
+                                        </div>
+                                        <mat-option *ngFor="let role of RoleList" [value]="role.id">
+                                            {{role.role_name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error class="text-capitalize">Roles Is Required </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8"> 
+                                    <mat-label>Form Description</mat-label>
+                                    <textarea matInput placeholder="Form Description"  formControlName="form_desc" name="form_desc"></textarea>
+                                </mat-form-field>
+
+                               
+                            </div>
+                        </div>
+            
+                        <br>
+                        <!-- notification -->
+                        <div class="mat-title my-12">
+                        <mat-icon>import_export</mat-icon> Pdf Settings Information</div>
+                        <div class="mat-card mat-elevation-z2 p-24 pb-0" fxLayout="column">    
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mat-form-field-wrapper-padding">
+                                  
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>File Name</mat-label>
+                                    <input matInput placeholder="File Name" formControlName="filename" name="filename" >
+                                    <mat-error class="text-capitalize">File name is required !</mat-error>
+                                </mat-form-field>
+            
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>Header</mat-label>
+                                    <input matInput placeholder="Header" formControlName="header" name="header" >
+                                    <mat-error class="text-capitalize">Header is required !</mat-error>
+                                </mat-form-field>
+            
+                                <mat-form-field appearance="outline" fxFlex="33" class=" ">
+                                    <mat-label>Footer</mat-label>
+                                    <input matInput placeholder="Footer" formControlName="footer" name="footer" >
+                                    <mat-error class="text-capitalize"> Footer is required !</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto" class=" ">
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>Paper Size</mat-label>
+                                    <mat-select formControlName="papersize" name="papersize">
+                                        <mat-option *ngFor="let papersize of papersize" [value]="papersize">
+                                            {{papersize |titlecase}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error class="text-capitalize">Paper Size is required !</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>Paper Orientation</mat-label>
+                                    <mat-select formControlName="orientation" name="orientation">
+                                        <mat-option *ngFor="let orientation of orientation" [value]="orientation">
+                                            {{orientation |titlecase}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33.33">
+                                    <mat-label>Background Color</mat-label>
+                                    <input matInput type="color" placeholder="Background Color" formControlName="bgcolor" name="bgcolor" >
+                                    <mat-error class="text-capitalize">Background color is required !</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                    <mat-label>Font Color</mat-label>
+                                    <input matInput type="color" placeholder="Font Color" formControlName="fontcolor" name="fontcolor" >
+                                    <mat-error class="text-capitalize">Font color is required !</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <br>
+                            <!-- Submit button setting -->
+                        <div class="mat-title my-12"><mat-icon>import_export</mat-icon> Form Button Settings </div>
+                            <div class="mat-card mat-elevation-z2 p-24" fxLayout="row" fxLayoutAlign="start center">    
+                                    <div fxLayout="column" fxLayout.gt-md="row" fxFlex="29">
+                                        <div fxFlex="100" class="pr-4">
+                                            <label class="font-weight-600">Button Text :</label>
+                                            <!-- <mat-radio-group formControlName="button_type" name="button_type">
+                                                <mat-radio-button class="example-margin" value="text">
+                                                Text
+                                                </mat-radio-button>
+                                                <mat-radio-button class="example-margin" value="image">
+                                                Image
+                                                </mat-radio-button>
+                                                
+                                            </mat-radio-group> -->
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="newform.get('button_type').value=='text'" fxFlex="70">
+                                        <mat-form-field appearance="outline" fxFlex="33" class="mat-wrapper-p-0">
+                                            <mat-label>Button text</mat-label>
+                                            <input matInput placeholder="Button text" formControlName="button_text" name="button_text" >
+                                            <mat-error class="text-capitalize">button text is required !</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="newform.get('button_type').value=='image'">
+                                        <mat-form-field appearance="outline" fxFlex="33" class="pl-4 mat-wrapper-p-0">
+                                            <mat-label>Button image path </mat-label>
+                                            <input matInput placeholder="Button image path" formControlName="button_path" name="button_path" >
+                                            <mat-error class="text-capitalize">button image path is required !</mat-error>
+                                        </mat-form-field>
+                                </div>
+                         </div>
+                         <div class="mat-card mat-elevation-z2 p-24" fxLayout="row" fxLayoutAlign="start center">    
+                            <div fxLayout="column" fxLayout.gt-md="row" class="w-100-p">
+                                <div fxFlex="100" fxLayout="row" >
+                                    <label class="font-weight-600" fxFlex="29">Show Reset Button :</label>
+                                        <!-- <label class="font-weight-600">Input Type :</label> -->
+                                        <div fxFlex="71">
+                                            <div fxFlex="22">
+                                                <mat-radio-group formControlName="reset_button" name="reset_button">
+                                                    <mat-radio-button class="mr-16" value="Y">
+                                                    Yes
+                                                    </mat-radio-button>
+                                                        <mat-radio-button value="N">
+                                                    No
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+
+                                            <div fxFlex="50" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="newform.get('reset_button').value=='Y'">
+                                                <mat-form-field appearance="outline" fxFlex="50" class="mat-wrapper-p-0">
+                                                    <mat-label> Reset Button Text</mat-label>
+                                                    <input matInput placeholder="Button text" formControlName="reset_button_text" name="reset_button_text" >
+                                                    <mat-error class="text-capitalize">button text is required !</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                            <br>
+                                      <!-- Confirmation setting -->
+                        <div class="mat-title my-12">
+                           <mat-icon>import_export</mat-icon>Confirmation Settings </div>
+                           <div class="mat-card mat-elevation-z2 p-24" fxLayout="column">    
+                                <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-24"> -->
+                                    <!-- <div fxFlex="20"> -->
+                                        <!-- <label class="font-weight-600">Confirmation Type :</label>
+                                        <mat-radio-group formControlName="confirmation_type" name="confirmation_type">
+                                            <mat-radio-button class="example-margin" value="text">
+                                            Text
+                                            </mat-radio-button> -->
+                                            <!-- <mat-radio-button class="example-margin" value="page">
+                                                Page
+                                            </mat-radio-button>
+                                            <mat-radio-button class="example-margin" value="redirect">
+                                                Redirect
+                                            </mat-radio-button> -->
+                                        <!-- </mat-radio-group>
+                                    </div> -->
+
+                                    <!-- <mat-form-field appearance="outline" fxFlex="33" class="mr-8   ">
+                                        <mat-label>Confirmation Name</mat-label>
+                                        <input matInput placeholder="Confirmation Name" formControlName="confirmation_name" name="confirmation_name" >
+                                        <mat-error>First Page Footer Is Required</mat-error>
+                                    </mat-form-field> -->
+                               <!-- </div> -->
+                               <mat-label class="font-weight-600">Confirmation Message :</mat-label>
+                                <br>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"  *ngIf="newform.get('confirmation_type').value=='text'">
+                                    <editor [init]="tinyMceSettings" *ngIf="isEditorTab()" class="w-100-p" formControlName="message" name="message" ></editor>    
+                                </div>   
+                            </div>
+                        <br>
+                        <!-- radio button -->
+                        <div class="mat-title my-12">
+                            <mat-icon>import_export</mat-icon>Other Settings </div>
+                        <div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div fxFlex="50" class="pr-4" fxLayout="row">
+                                    <label class="font-weight-600" fxFlex="50">Required Login :</label>
+                                    <mat-radio-group formControlName="requiredlogin" name="requiredlogin">
+                                        <mat-radio-button  value="Y" class="mr-16">
+                                            Yes
+                                        </mat-radio-button>
+                                        <mat-radio-button  value="N">
+                                            No
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div fxFlex="50" class="pr-4" fxLayout="row">
+                                    <label class="font-weight-600" fxFlex="50">Form Title :</label>
+                                    <mat-radio-group formControlName="pdf_form_title" name="pdf_form_title">
+                                        <mat-radio-button  value="Y" class="mr-16">
+                                            Yes
+                                        </mat-radio-button>
+                                        <mat-radio-button  value="N">
+                                            No
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                              
+                            </div>
+                            <div class="sep"></div>
+                        </div>
+                        <div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div fxFlex="50" class="pr-4" fxLayout="row">
+                                    <label class="font-weight-600" fxFlex="50">Pdf Attachment :</label>
+                                    <mat-radio-group formControlName="pdfattachment" name="pdfattachment">
+                                        <mat-radio-button  value="Y" class="mr-16">
+                                            Yes
+                                        </mat-radio-button>
+                                        <mat-radio-button  value="N">
+                                            No
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                
+                            </div>
+                            <div class="sep"></div>
+                        </div>
+                        <div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div fxFlex="50" class="pr-4" fxLayout="row">
+                                    <label class="font-weight-600" fxFlex="50">Empty Fields :</label>
+                                    <mat-radio-group formControlName="empty_fields" name="empty_fields">
+                                        <mat-radio-button  value="Y" class="mr-16">
+                                            Yes
+                                        </mat-radio-button>
+                                        <mat-radio-button  value="N">
+                                            No
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div fxFlex="50" class="pr-4" fxLayout="row">
+                                    <label class="font-weight-600" fxFlex="50">Always Save Pdf :</label>
+                                    <mat-radio-group formControlName="always_save_pdf" name="always_save_pdf">
+                                        <mat-radio-button  value="Y" class="mr-16">
+                                            Yes
+                                        </mat-radio-button>
+                                        <mat-radio-button  value="N">
+                                            No
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div class="sep"></div>
+                        </div>
+                        <br>
+                        <div class="mat-title my-12">
+                            <mat-icon>import_export</mat-icon> Workxhub Settings 
+                        </div>
+                        <div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div fxFlex="50" fxLayout="row">
+                                    <mat-radio-group formControlName="workxhub_status" name="workxhub_status">
+                                        <mat-radio-button  value="Y" class="mr-16">
+                                            Yes
+                                        </mat-radio-button>
+                                        <mat-radio-button  value="N">
+                                            No
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>   
+                            <div class="sep"></div>
+                            <div *ngIf="newform.get('workxhub_status').value=='Y'"  fxLayout="column" class="mt-12">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Form_Id</mat-label>
+                                        <input matInput  type="number" min='0' formControlName="FORM_ID" name="FORM_ID" >
+                                        <mat-error class="mt-28 text-capitalize">Form id required !</mat-error>
+                                    </mat-form-field>
+  
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Dude Site Name</mat-label>
+                                        <input matInput formControlName="DUDE_SITE" name="DUDE_SITE" required >
+                                        <mat-error class="text-capitalize">Dude site name is required !</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33.33">
+                                        <mat-label>Dude Client Id</mat-label>
+                                        <input matInput formControlName="DUDE_CLIENT_ID" name="	DUDE_CLIENT_ID" >
+                                    </mat-form-field>
+                                </div>
+                                <div class="sep"></div>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+            
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Dude Client Secret</mat-label>
+                                        <input matInput   formControlName="DUDE_CLIENT_SECRET" name="DUDE_CLIENT_SECRET" >
+                                    </mat-form-field>
+  
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Dude Token Grant</mat-label>
+                                        <input matInput formControlName="DUDE_TOKEN_GRANT" name="DUDE_TOKEN_GRANT"  >
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33">
+                                        <mat-label> Dude Instance</mat-label>
+                                        <input matInput  formControlName="DUDE_INSTANCE" name="DUDE_INSTANCE" >
+                                    </mat-form-field>
+                                </div>
+                                <div class="sep"></div>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8 mat-wrapper-p-0">
+                                        <mat-label>Dude Token Url</mat-label>
+                                        <input matInput  formControlName="DUDE_TOKEN_URL" name="DUDE_TOKEN_URL" >
+                                    </mat-form-field>
+                                   
+                                </div> 
+                                <div class="sep"></div>
+                                <label class="mt-20 mb-8 font-weight-600">Select Workxhub Form Field</label>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Description</mat-label>
+                                        <mat-select formControlName="description" name="description">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>RequestedFor</mat-label>
+                                        <mat-select formControlName="requestedfor" name="requestedfor">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Number</mat-label>
+                                        <mat-select formControlName="number" name="number">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields " [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                              </div> 
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>LocationDescription</mat-label>
+                                        <mat-select formControlName="locationdescription" name="locationdescription">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Email</mat-label>
+                                        <mat-select formControlName="email" name="email">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Details</mat-label>
+                                        <mat-select formControlName="details" name="details">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>PermissionToEnter</mat-label>
+                                        <mat-select formControlName="permissiontoenter" name="permissiontoenter">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>EntryComments</mat-label>
+                                        <mat-select formControlName="entrycomments" name="entrycomments">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Department</mat-label>
+                                        <mat-select formControlName="department" name="department">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                                
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>First Name </mat-label>
+                                        <mat-select formControlName="firstname" name="firstname">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields"  [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Last Name </mat-label>
+                                        <mat-select formControlName="lastname" name="lastname">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let  field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Requested Of </mat-label>
+                                        <mat-select formControlName="requestedof" name="requestedof">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let  field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                                
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Location </mat-label>
+                                        <mat-select formControlName="location" name="location">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let field of Listformfields"  [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="33.33" class="pr-8">
+                                        <mat-label>Requestor </mat-label>
+                                        <mat-select formControlName="requestor" name="requestor">
+                                            <mat-option value=''>Select</mat-option>
+                                            <mat-option *ngFor="let  field of Listformfields" [value]="field.form_element_id">
+                                                {{field.caption |titlecase}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                             
+                            </div> 	
+                       </div>
+                       <br>
+
+
+                       <div fxLayout="row" fxLayoutAlign="center center" class="mt-40">
+                            <button mat-raised-button [ngStyle]="button" class="mr-8 text-uppercase line-height-44 br-ds-0 box-shadow-none" (click)="saveForm($event,'false')" cdkFocusInitial>
+                                <mat-icon class="mr-4">settings_backup_restore</mat-icon> 
+                                Save Settings
+                            </button>
+                       </div>
+                </mat-tab>
+
+
+               
+                <mat-tab label="Edit Form">  
+                    <div fxLayout="row" fxLayoutAlign="end center" class="mb-20">
+                        <button mat-raised-button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none"  (click)="saveForm($event,'true')" cdkFocusInitial>
+                            <mat-icon class="mr-4">save</mat-icon> 
+                            Save Form
+                        </button>
+                    </div>
+                    <div cdkDropListGroup fxLayout="row" class="m-0 mb-24 drag-drop-section-wrapper" >
+                    
+                        <!-- **** DRAG AREA **** -->
+                        <div fxFlex="70" class="pr-16 left-section">
+                            <!-- <h2 class="mat-title my-12">Form</h2> -->
+                            <div cdkDropList [cdkDropListData]="formElements" class="box-shadow example-list min-height-440" (cdkDropListDropped)="onDrop($event)">
+                                <div class="form-wrapper">
+                                    <div class="example-box border-radius-4 border py-0 pt-16 mb-16 " *ngFor="let item of formElements; let indx = index" cdkDrag fxLayout="row" fxLayoutAlign="center center">
+                                        <div class="input-row" fxLayout="row" fxFlexFill>
+                                            <div fxFlex="80" class="text-capitalize">
+                                                <ng-container [ngSwitch]="item.field_type">
+                                                    <!-- input -->
+                                                    <ng-container *ngSwitchCase="'input'">
+                                                        <mat-form-field floatLabel="always" class="w-100-p font-size-16 fuse-black-fg field-input">
+                                                            <input matInput [placeholder]="item.field_label">
+                                                        </mat-form-field>
+                                                    </ng-container>
+            
+                                                    <!-- input -->
+                                                    <ng-container *ngSwitchCase="item.field_type === 'text' 
+                                                || item.field_type === 'password' 
+                                                || item.field_type === 'number'
+                                                || item.field_type === 'email' ? item.field_type : ''">
+                                                        <mat-form-field floatLabel="always" class="w-100-p font-size-16 fuse-black-fg field-input">
+                                                            <input matInput [placeholder]="item.field_label">
+                                                        </mat-form-field>
+                                                    </ng-container>
+            
+                                                    <!-- hidden -->
+                                                    <ng-container *ngSwitchCase="'hidden'">
+                                                        <mat-form-field floatLabel="always" class="w-100-p font-size-16 fuse-black-fg field-input">
+                                                            <input matInput [placeholder]="item.field_label">
+                                                        </mat-form-field>
+                                                    </ng-container>
+            
+                                                    <!-- upload -->
+                                                    <ng-container *ngSwitchCase="'upload'">
+                                                        <mat-form-field floatLabel="always" class="underline-0 mat-wrapper-p-0 pb-16 w-100-p font-size-16 fuse-black-fg field-input">
+                                                            <mat-label class="font-weight-600">{{item.field_label | titlecase}}</mat-label>
+                                                            <input type='file' class="p-0 mt-8" />
+                                                            <input matInput style="display: none;" [placeholder]="item.field_label" />
+                                                        </mat-form-field>
+            
+                                                    </ng-container>
+            
+                                                    <!-- textarea -->
+                                                    <ng-container *ngSwitchCase="'textarea'">
+                                                        <mat-form-field floatLabel="always" class="w-100-p field-input">
+                                                            <mat-label>{{item.field_label | titlecase}}</mat-label>
+                                                            <textarea matInput> </textarea>
+                                                        </mat-form-field>
+                                                    </ng-container>
+                                                    <!-- select -->
+                                                    <ng-container *ngSwitchCase="'select'">
+                                                        <mat-form-field class="w-100-p field-input" floatLabel="always">
+                                                            <mat-label>{{item.field_label | titlecase}}</mat-label>
+                                                            <mat-select>
+                                                                <mat-option *ngFor="let option of item.field_content.options" [value]="option.key">
+                                                                    {{option.value}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </ng-container>
+            
+                                                    <!-- date -->
+                                                    <ng-container *ngSwitchCase="'date'">
+                                                        <mat-form-field floatLabel="always" class="w-100-p field-input">
+                                                            <input matInput [matDatepicker]="picker" [placeholder]="item.field_label">
+                                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #picker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </ng-container>
+            
+                                                    <!-- checkbox -->
+                                                    <ng-container *ngSwitchCase="'checkbox'">
+                                                        <div class="demo-full-width margin-top w-100-p pb-16 font-size-14">
+                                                            <mat-label class="d-block font-weight-700 mb-8 font-size-15">{{item.field_label | titlecase}}</mat-label>
+                                                            <mat-checkbox class="mr-8" *ngFor="let option of item.field_content.options" [value]="option.key">{{option.value}}</mat-checkbox>
+                                                        </div>
+                                                    </ng-container>
+                                                    <!-- radiobutton -->
+                                                    <ng-container *ngSwitchCase="'radio'" class="w-100-p">
+                                                        <div class="font-weight-700 font-size-15 mb-8" *ngIf="item.field_label">{{item.field_label | titlecase}}</div>
+                                                        <mat-radio-group [attr.aria-label]="item.field_label" class="pb-16">
+                                                            <mat-radio-button class="mr-8 pb-16" *ngFor="let option of item.field_content.options" [value]="option.key">{{option.value}}</mat-radio-button>
+                                                        </mat-radio-group>
+                                                    </ng-container>
+            
+                                                    <!-- list -->
+                                                    <ng-container *ngSwitchCase="'list'">
+                                                        <div class="demo-full-width margin-top w-100-p pb-16 font-weight-700">
+                                                            {{item.field_label | titlecase}}
+                                                        </div>
+                                                    </ng-container>
+
+                                                    <!-- Html -->
+                                                    <ng-container *ngSwitchCase="'html'">
+                                                        <div class="demo-full-width margin-top w-100-p pb-16 font-weight-700">
+                                                            {{item.field_label | titlecase}}
+                                                        </div>
+                                                    </ng-container>
+                                                    <!-- website -->
+                                                    <ng-container *ngSwitchCase="'website'">
+                                                        <div class="demo-full-width margin-top w-100-p pb-16 font-weight-700">
+                                                            {{item.field_label | titlecase}}
+                                                        </div>
+                                                    </ng-container>
+                                                    <!-- rating -->
+                                                    <ng-container *ngSwitchCase="'rating'">
+                                                        <div class="demo-full-width margin-top pb-16 font-weight-700">
+                                                            {{item.field_label | titlecase}}
+                                                        </div>
+                                                    </ng-container>
+    
+                                                    <!-- signature -->
+                                                    <ng-container *ngSwitchCase="'signature'">
+                                                        <div class="demo-full-width margin-top w-100-p pb-16 font-weight-700">
+                                                            {{item.field_label | titlecase}}
+                                                        </div>
+                                                    </ng-container>
+                                                    <!-- time  -->
+                                                    <ng-container *ngSwitchCase="'time'">
+                                                        <div class="demo-full-width margin-top w-100-p pb-16 font-size-16 fuse-black-fg font-weight-600">
+                                                            {{item.field_label | titlecase}}
+                                                        
+                                                        </div>
+                                                    </ng-container>
+            
+                                                    <!-- submit -->
+                                                    <ng-container *ngSwitchCase="'button'">
+                                                        <button type="submit" mat-raised-button color="primary">{{item.field_label | titlecase}}</button>
+                                                    </ng-container>
+                                                    
+                                                    <!--  Dynamic Fields -->
+                                                    <ng-container *ngSwitchCase="'dynamic'">
+                                                        <div  class="demo-full-width margin-top">
+                                                        <span>{{item.field_label | titlecase}}</span>
+                                                        </div>
+                                                    </ng-container>
+            
+            
+                                                </ng-container>
+                                            </div>
+                                            <div fxFlex="20" class="text-right">
+                                                <mat-icon class="material-icons" (click)="openDialog('settings', item, indx)">settings</mat-icon>
+                                                <mat-icon class="material-icons" (click)="removeItem(item,indx)">remove_circle</mat-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- **** /DRAG AREA **** -->
+        
+
+
+                          <!-- ***** Form fields  *****-->
+                          <div fxFlex="22" class="pr-0 left-side">
+                            <!-- <h2 class="mat-title my-12">Fields</h2> -->
+                            <div cdkDropList [cdkDropListData]="dragFields" class="example-list box-shadow field-section-wrapper" fxLayout="row wrap">
+                                
+                                <div class="example-box border mx-8 my-4 field-section border-radius-4 text-center" *ngFor="let item of dragFields" cdkDrag fxFlex="45" fxLayout="row" fxLayoutAlign="center center">
+                                    
+                                    {{item.field_label | titlecase}}</div>
+                            </div>
+                        </div>
+                        <!-- ***** /Form fields  *****-->
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center" class="w-70-p">
+                        <button mat-raised-button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none"  (click)="saveForm($event,'true')" cdkFocusInitial>
+                            <mat-icon class="mr-4">save</mat-icon> 
+                            Save Form
+                        </button>
+                    </div>
+                </mat-tab>
+              </mat-tab-group>
+            <br> <br>
+        </form>
+    </div>
+</div>
+<!-- / CONTENT -->

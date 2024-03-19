@@ -1,0 +1,1047 @@
+<div id="settings-general" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+	<!-- HEADER -->
+	<div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+		fxLayoutAlign.gt-xs="space-between center">
+
+		<!-- APP TITLE -->
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<div class="logo" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+					perm_data_setting
+				</mat-icon>
+				<span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+					Settings
+				</span>
+			</div>
+		</div>
+		<!-- / APP TITLE -->
+
+		<!-- BTN's -->
+		<div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+			<div class="mt-16 mt-sm-0">
+				<button mat-raised-button class="reference-button" [disabled]="isSubmit"
+					(click)="onSaveGeneralClick($event)">
+					<mat-icon class="mr-4">settings_backup_restore</mat-icon>
+					Update Settings
+				</button>
+			</div>
+		</div>
+		<!-- / BTN's -->
+
+	</div>
+	<!-- / HEADER -->
+
+	<!-- TABS -->
+	<div class="tabs-wrap">
+
+		<!-- TABS -->
+		<nav mat-tab-nav-bar class="px-24">
+			<a mat-tab-link routerLink="/admin/settings/general" active="true">General</a>
+			<a mat-tab-link routerLink="/admin/settings/home">Home</a>
+			<a mat-tab-link routerLink="/admin/settings/export">Export</a>
+			<!-- <a mat-tab-link routerLink="/admin/settings/theme">Theme</a>
+			<a mat-tab-link routerLink="/admin/settings/permissions">Permissions</a> -->
+		</nav>
+		<!-- / TABS -->
+
+	</div>
+	<!-- / TABS -->
+
+
+	<!-- CONTENT -->
+	<div class="content" fusePerfectScrollbar>
+
+
+		<!-- CENTER -->
+		<div class="center p-24 pb-56">
+
+			<form autocomplete="off" #f="ngForm" [formGroup]="generalSettingForm" novalidate autocomplete="off">
+
+				<!-- SETTINGS -->
+				<div id="settings">
+					<!--  Portal Settings -->
+					<div class="mat-title">
+						<mat-icon>settings</mat-icon> Portal Settings
+					</div>
+
+					<div class="mat-card p-24" fxLayout="column">
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Portal Name</div>
+								<div class="mat-caption secondary-text"> This setting use to change the portal name on
+									admin side navigation bar .</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="60" class="pl-8">
+								<mat-form-field appearance="outline">
+									<input matInput placeholder="Enter portal name" type="text" name="site_name"
+										formControlName="site_name">
+
+									<ng-container
+										*ngIf="generalSettingForm.get('site_name').invalid && (generalSettingForm.get('site_name').dirty || generalSettingForm.get('site_name').touched)"
+										ngProjectAs="mat-error">
+										<mat-error *ngIf="generalSettingForm.get('site_name').errors.required">Site name
+											is required</mat-error>
+									</ng-container>
+								</mat-form-field>
+							</div>
+
+							<!-- <div fxLayout="column" fxLayoutAlign="center" fxFlex="60" class="pl-8">
+								<mat-form-field appearance="outline">
+									<input matInput  placeholder="Enter admin email address" type="email"  name="admin_email" 	
+										   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  formControlName="admin_email" >
+										 
+									<ng-container *ngIf="generalSettingForm.get('admin_email').invalid && (generalSettingForm.get('admin_email').dirty || generalSettingForm.get('admin_email').touched)" ngProjectAs="mat-error">
+										<mat-error *ngIf="generalSettingForm.get('admin_email').errors.required">Admin email is required</mat-error>
+										<mat-error *ngIf="generalSettingForm.get('admin_email').errors.pattern">Email pattern is wrong</mat-error>
+									</ng-container> 
+								</mat-form-field>
+							</div> -->
+
+						</div>
+
+						<div class="sep"></div>
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Portal URL</div>
+								<div class="mat-caption secondary-text">Show the portal url.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-form-field appearance="outline">
+									<input matInput placeholder="Enter portal URL" type="url" name="url"
+										pattern="https?://.+" formControlName="url">
+
+									<ng-container
+										*ngIf="generalSettingForm.get('url').invalid && (generalSettingForm.get('url').dirty || generalSettingForm.get('url').touched)"
+										ngProjectAs="mat-error">
+										<mat-error *ngIf="generalSettingForm.get('url').errors.required">URL is required
+										</mat-error>
+										<mat-error *ngIf="generalSettingForm.get('url').errors.pattern">URL pattern is
+											wrong</mat-error>
+									</ng-container>
+								</mat-form-field>
+							</div>
+						</div>
+
+
+					</div>
+					<!-- / Portal Settings -->
+
+					<br /><br />
+					<div class="mat-title">
+						<mat-icon>insert_photo</mat-icon> Logos &amp; Icons
+					</div>
+					<!--  Logo -->
+					<div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Portal Logo</div>
+								<div class="mat-caption secondary-text">This setting are use to add or remove the front
+									end nevigation bar logo</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="isPortalLogo">
+									<img [src]="portalLogoURL" height="150" width="170">
+									<span style="color:red;" *ngIf="portalLogoMessage">{{portalLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="isPortalLogo">
+									<input matInput readonly placeholder="URL Here" value="{{portalLogoURL}}">
+								</mat-form-field>
+								<input hidden #portalfile id="portal_logo"
+									(change)="logoPreview($event, portalfile.files , 'Portal')" type="file"
+									[accept]="inputAccpets" />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="portalfile.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('portal')">Remove</button>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div class="sep"></div>
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Favicon</div>
+								<div class="mat-caption secondary-text">This setting are use to add or remove the back
+									end admin nevigation bar logo</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="isFeviconLogo">
+									<img [src]="feviconLogoURL" height="150" width="170">
+									<span style="color:red;" *ngIf="feviconLogoMessage">{{feviconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="isFeviconLogo">
+									<input matInput readonly placeholder="URL Here" value="{{feviconLogoURL}}">
+								</mat-form-field>
+								<input hidden #feviconfile id="fevicon_logo"
+									(change)="logoPreview($event, feviconfile.files , 'Fevicon')" type="file"
+									[accept]="inputAccpets" />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="feviconfile.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('Fevicon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<!-- mobile view logo -->
+						<div class="sep"></div>
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Mobile View Logo</div>
+								<div class="mat-caption secondary-text">This setting are use to add or remove the front
+									end mobile view nevigation bar logo</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="isSmallLogo">
+									<img [src]="smallLogoURL" height="150" width="170">
+									<span style="color:red;" *ngIf="smallLogoMessage">{{smallLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="isSmallLogo">
+									<input matInput readonly placeholder="URL Here" value="{{smallLogoURL}}">
+								</mat-form-field>
+								<input hidden #smallfile id="small_logo"
+									(change)="logoPreview($event, smallfile.files , 'Small')" type="file"
+									[accept]="inputAccpets" />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="smallfile.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('small')">Remove</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Print and Email Logo</div>
+								<div class="mat-caption secondary-text">This setting is use to display the log on the
+									print and email.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="isLargeLogo">
+									<img [src]="largeLogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="largeLogoMessage">{{largeLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="isLargeLogo">
+									<input matInput readonly placeholder="URL Here" value="{{largeLogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="large_logo"
+									(change)="logoPreview($event, largefile.files ,'Large')" [accept]="inputAccpets"
+									#largefile />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="largefile.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('large')">Remove</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+						<!-- icon for the shortcut  -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Website Favicon </div>
+								<div class="mat-caption secondary-text">Favicon for your website at 16px x 16px.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="isFaviconLargeLogo">
+									<img [src]="largeFaviconLogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="FaviconlargeLogoMessage">{{FaviconlargeLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="isFaviconLargeLogo">
+									<input matInput readonly placeholder="URL Here" value="{{largeFaviconLogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="Faviconlarge_logo"
+									(change)="logoPreview($event, Faviconlargefile.files ,'FaviconLarge')" [accept]="inputAccpets"
+									#Faviconlargefile />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="Faviconlargefile.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('FaviconLarge')">Remove</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iPhone Icon </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPhone at 32px x 32px.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_Icon">
+									<img [src]="iPhone_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_IconLogoMessage">{{iPhone_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_Icon">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_Icon"
+									(change)="logoPreview($event, iPhone_Icon_logo.files ,'iPhone_Icon')" [accept]="inputAccpets"
+									#iPhone_Icon_logo />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_Icon_logo.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iPhone Retina Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPhone Retina Version at 40px x 40px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_Retina_Icon">
+									<img [src]="iPhone_Retina_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_Retina_IconLogoMessage">{{iPhone_Retina_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_Retina_Icon">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_Retina_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_Retina_logo"
+									(change)="logoPreview($event, iPhone_Retina_Icon_file.files ,'iPhone_Retina_Icon')" [accept]="inputAccpets"
+									#iPhone_Retina_Icon_file />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_Retina_Icon_file.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_Retina_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iPad Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 57px x 57px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_iPad_Icons">
+									<img [src]="iPhone_iPad_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_iPad_IconLogoMessage">{{iPhone_iPad_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_iPad_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_iPad_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_iPad_Icon_logo"
+									(change)="logoPreview($event, iPhone_iPad_Icon.files ,'iPhone_iPad_Icon')" [accept]="inputAccpets"
+									#iPhone_iPad_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_iPad_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_iPad_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone max Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 72px x 72px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_max_Icons">
+									<img [src]="iPhone_max_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_max_IconLogoMessage">{{iPhone_max_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_max_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_max_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_max_Icon_logo"
+									(change)="logoPreview($event, iPhone_max_Icon.files ,'iPhone_max_Icon')" [accept]="inputAccpets"
+									#iPhone_max_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_max_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_max_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 80px x 80px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_40_Icons">
+									<img [src]="iPhone_40_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_40_IconLogoMessage">{{iPhone_40_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_40_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_40_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_40_Icon_logo"
+									(change)="logoPreview($event, iPhone_40_Icon.files ,'iPhone_40_Icon')" [accept]="inputAccpets"
+									#iPhone_40_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_40_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_40_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone 114 Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 114px x 114px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_32_Icons">
+									<img [src]="iPhone_32_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_32_IconLogoMessage">{{iPhone_32_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_32_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_32_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_32_Icon_logo"
+									(change)="logoPreview($event, iPhone_32_Icon.files ,'iPhone_32_Icon')" [accept]="inputAccpets"
+									#iPhone_32_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_32_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_32_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone 144 Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 144px x 144px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_57_Icons">
+									<img [src]="iPhone_57_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_57_IconLogoMessage">{{iPhone_57_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_57_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_57_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_57_Icon_logo"
+									(change)="logoPreview($event, iPhone_57_Icon.files ,'iPhone_57_Icon')" [accept]="inputAccpets"
+									#iPhone_57_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_57_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_57_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone 512 Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 512px x 512px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_72_Icons">
+									<img [src]="iPhone_72_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_72_IconLogoMessage">{{iPhone_72_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_72_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_72_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_72_Icon_logo"
+									(change)="logoPreview($event, iPhone_72_Icon.files ,'iPhone_72_Icon')" [accept]="inputAccpets"
+									#iPhone_72_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_72_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_72_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone 1024 Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 1024px x 1024px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_114_Icons">
+									<img [src]="iPhone_114_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_114_IconLogoMessage">{{iPhone_114_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_114_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_114_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_114_Icon_logo"
+									(change)="logoPreview($event, iPhone_114_Icon.files ,'iPhone_114_Icon')" [accept]="inputAccpets"
+									#iPhone_114_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_114_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_114_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone 2048 Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 2048px x 2048px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_144_Icons">
+									<img [src]="iPhone_144_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_144_IconLogoMessage">{{iPhone_144_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_144_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_144_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_144_Icon_logo"
+									(change)="logoPreview($event, iPhone_144_Icon.files ,'iPhone_144_Icon')" [accept]="inputAccpets"
+									#iPhone_144_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_144_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_144_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iphone 512 Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 512px x 512px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_512_Icons">
+									<img [src]="iPhone_512_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_512_IconLogoMessage">{{iPhone_512_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_512_Icons">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_512_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_512_Icon_logo"
+									(change)="logoPreview($event, iPhone_512_Icon.files ,'iPhone_512_Icon')" [accept]="inputAccpets"
+									#iPhone_512_Icon />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_512_Icon.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_512_Icon')">Remove</button>
+								</div>
+							</div>
+						</div> -->
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Apple iPad Retina Icon Upload </div>
+								<div class="mat-caption secondary-text">Favicon for Apple iPad at 120px x 120px</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="iPhone_iPad_Retina_Icon">
+									<img [src]="iPhone_iPad_Retina_Icon_LogoURL" height="100" width="200">
+									<span style="color:red;" *ngIf="iPhone_iPad_Retina_IconLogoMessage">{{iPhone_iPad_Retina_IconLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="iPhone_iPad_Retina_Icon">
+									<input matInput readonly placeholder="URL Here" value="{{iPhone_iPad_Retina_Icon_LogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="iPhone_iPad_Retina_Icon"
+									(change)="logoPreview($event, iPhone_iPad_Retina_Icon_logo.files ,'iPhone_iPad_Retina_Icon')" [accept]="inputAccpets"
+									#iPhone_iPad_Retina_Icon_logo />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="iPhone_iPad_Retina_Icon_logo.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('iPhone_iPad_Retina_Icon')">Remove</button>
+								</div>
+							</div>
+						</div>
+					
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Login and forgot password page logo</div>
+								<div class="mat-caption secondary-text">This setting is use to display the log on the
+									login page.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<div class="logo-preview pb-12" *ngIf="isLargeLogoLogin">
+									<img [src]="largeLoginLogoURL" height="100" width="200">
+									<span style="color:red;"
+										*ngIf="largeLoginLogoMessage">{{largeLoginLogoMessage}}</span>
+								</div>
+								<mat-form-field class="readonly" appearance="outline" *ngIf="isLargeLogoLogin">
+									<input matInput readonly placeholder="URL Here" value="{{largeLoginLogoURL}}">
+								</mat-form-field>
+								<input hidden type="file" id="login_page_logo"
+									(change)="logoPreview($event, loginforgot.files ,'login')" [accept]="inputAccpets"
+									#loginforgot />
+
+								<div class="btn">
+									<button mat-stroked-button color="primary" class="mr-12"
+										(click)="loginforgot.click()">Upload</button>
+									<button mat-stroked-button color="warn"
+										(click)="removeLogo('large')">Remove</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+						
+
+					</div>
+					<!-- / Logo -->
+
+					<br /><br />
+					<div class="mat-title">
+						<mat-icon>share</mat-icon> Social &amp; Contact
+					</div>
+
+					<div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Social Links (Follow Us)</div>
+								<div class="mat-caption secondary-text"> This setting are use to show or hide the social
+									links on the footer.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="top" fxFlex="60">
+
+								<mat-slide-toggle [(ngModel)]="socialChecked"
+									(change)="is_follow_usChange(socialChecked)" formControlName="is_follow_us">
+									<span *ngIf="socialChecked">Visible</span>
+									<span *ngIf="!socialChecked">Hidden</span>
+								</mat-slide-toggle>
+
+
+								<div class="mt-20" *ngIf="socialChecked">
+									<!--/ fixed social links  -->
+									<div class="row">
+										<div fxFlex="30" fxLayout="column" class="mr-12">
+
+											<mat-form-field appearance="outline">
+												<mat-label>Follow us on</mat-label>
+												<input matInput type="text" placeholder="Follow us on"
+													name="content_follow_name_facebook"
+													formControlName="content_follow_name_facebook">
+											</mat-form-field>
+										</div>
+										<div fxFlex="50" fxLayout="column">
+											<mat-form-field appearance="outline">
+												<mat-label>Follow us URL</mat-label>
+												<input matInput type="url" placeholder="Follow us URL"
+													pattern="https?://.+" name="content_follow_url_facebook"
+													formControlName="content_follow_url_facebook">
+											</mat-form-field>
+										</div>
+										<div fxFlex="20" class="ml-12 pb-12" fxLayout="column" fxLayoutAlign="center">
+											<mat-slide-toggle [(ngModel)]="facebook" name="is_facebook_checked"
+												formControlName="is_facebook_checked">
+												<span *ngIf="facebook">Visible</span>
+												<span *ngIf="!facebook">Hidden</span>
+											</mat-slide-toggle>
+										</div>
+									</div>
+									<div class="row">
+										<div fxFlex="30" fxLayout="column" class="mr-12">
+
+											<mat-form-field appearance="outline">
+												<mat-label>Follow us on</mat-label>
+												<input matInput type="text" placeholder="Follow us on"
+													name="content_follow_name_twitter"
+													formControlName="content_follow_name_twitter">
+											</mat-form-field>
+										</div>
+										<div fxFlex="50" fxLayout="column">
+											<mat-form-field appearance="outline">
+												<mat-label>Follow us URL</mat-label>
+												<input matInput type="url" placeholder="Follow us URL"
+													pattern="https?://.+" name="content_follow_url_twitter"
+													formControlName="content_follow_url_twitter">
+											</mat-form-field>
+										</div>
+										<div fxFlex="20" class="ml-12 pb-12" fxLayout="column" fxLayoutAlign="center">
+											<mat-slide-toggle [(ngModel)]="twitter" name="is_twitter_checked"
+												formControlName="is_twitter_checked">
+												<span *ngIf="twitter">Visible</span>
+												<span *ngIf="!twitter">Hidden</span>
+											</mat-slide-toggle>
+										</div>
+									</div>
+									<div class="row">
+										<div fxFlex="30" fxLayout="column" class="mr-12">
+
+											<mat-form-field appearance="outline">
+												<mat-label>Follow us on</mat-label>
+												<input matInput type="text" placeholder="Follow us on"
+													name="content_follow_name_instagram"
+													formControlName="content_follow_name_instagram">
+											</mat-form-field>
+										</div>
+										<div fxFlex="50" fxLayout="column">
+											<mat-form-field appearance="outline">
+												<mat-label>Follow us URL</mat-label>
+												<input matInput type="url" placeholder="Follow us URL"
+													pattern="https?://.+" name="content_follow_url_instagram"
+													formControlName="content_follow_url_instagram">
+											</mat-form-field>
+										</div>
+										<div fxFlex="20" class="ml-12 pb-12" fxLayout="column" fxLayoutAlign="center">
+											<mat-slide-toggle [(ngModel)]="instgram" name="is_instagram_checked"
+												formControlName="is_instagram_checked">
+												<span *ngIf="instgram">Visible</span>
+												<span *ngIf="!instgram">Hidden</span>
+											</mat-slide-toggle>
+										</div>
+									</div>
+									<!--/ fixed social links  -->
+
+								</div>
+								<!-- /follow_name  follow_url -->
+							</div>
+						</div>
+
+						<div class="sep"></div>
+						<!--  Social &amp; Contact -->
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Contact Info</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the contact
+									info on the footer.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="top" fxFlex="30">
+								<mat-slide-toggle [(ngModel)]="contactChecked"
+									(change)="is_contact_infoChange(contactChecked)" formControlName="is_contact_info">
+									<span *ngIf="contactChecked">Visible</span>
+									<span *ngIf="!contactChecked">Hidden</span>
+								</mat-slide-toggle>
+
+								<div class="mt-20" *ngIf="contactChecked">
+
+									<div fxLayout="row" class="w-100-p">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Contact number</mat-label>
+											<input matInput name="contact_number" (keypress)="validatePhone($event)"
+												mask="(000) 000-0000" placeholder="Contact number"
+												formControlName="contact_number">
+
+											<!-- <ng-container *ngIf="generalSettingForm.get('contact_number').invalid && (generalSettingForm.get('contact_number').dirty || generalSettingForm.get('contact_number').touched)" ngProjectAs="mat-error">
+											<mat-error *ngIf="generalSettingForm.get('contact_number').errors.required">Contact Number is Required</mat-error>
+											</ng-container> -->
+										</mat-form-field>
+									</div>
+
+									<div fxLayout="row" class="w-100-p">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Address</mat-label>
+											<textarea matInput type="text" placeholder="Address" name="contact_address"
+												formControlName="contact_address"></textarea>
+
+											<!-- <ng-container *ngIf="generalSettingForm.get('contact_address').invalid && (generalSettingForm.get('contact_address').dirty || generalSettingForm.get('contact_address').touched)" ngProjectAs="mat-error">
+											<mat-error *ngIf="generalSettingForm.get('contact_address').errors.required">Contact Address is required</mat-error>
+											</ng-container> -->
+										</mat-form-field>
+									</div>
+
+									<div fxLayout="row" class="w-100-p">
+										<mat-form-field appearance="outline" class="w-100-p">
+											<mat-label>Email</mat-label>
+											<input type="email" matInput formControlName="email" name="email"
+												fromControlName="email"
+												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+											<!-- <ng-container *ngIf="generalSettingForm.get('email').errors.pattern" ngProjectAs="mat-error">
+												<mat-error *ngIf="generalSettingForm.get('email').errors.pattern">Email Pattern Wrong</mat-error>
+												</ng-container>-->
+										</mat-form-field>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="sep"></div>
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Copyright Content</div>
+								<div class="mat-caption secondary-text">This setting are use to show or hide the
+									copyright on the front side and change the content of the copyright.</div>
+							</div>
+
+							<!-- <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+									<mat-slide-toggle [(ngModel)]="maskChecked" formControlName="masking">
+										<span *ngIf="maskChecked">Visible</span>
+										<span *ngIf="!maskChecked">Hidden</span>
+									</mat-slide-toggle>
+								</div> -->
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+								<mat-form-field appearance="outline" floatLabel="always" class="hiddenInput editor"
+									hidden fxFlex="100">
+									<mat-label>Copyright Content</mat-label>
+									<input matInput hidden value="">
+									<editor [init]="tinyMceSettings" name="copyright_content"
+										formControlName="copyright_content"></editor>
+								</mat-form-field>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+
+						<!-- <div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Masking</div>
+								<div class="mat-caption secondary-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+								<mat-slide-toggle [(ngModel)]="maskChecked" formControlName="masking">
+									<span *ngIf="maskChecked">Visible</span>
+									<span *ngIf="!maskChecked">Hidden</span>
+								</mat-slide-toggle>
+							</div>
+						</div> -->
+
+					</div>
+					<!-- / Social &amp; Contact -->
+
+					<br /><br />
+					<div class="mat-title">
+						<mat-icon>today</mat-icon> Date &amp; Time
+					</div>
+					<!-- Date &amp; Time -->
+					<div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Time Zone</div>
+								<div class="mat-caption secondary-text">This Setting are use full for display the date
+									time for all list as per the selected time zone and selected format .</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="30">
+								<mat-form-field appearance="outline">
+									<mat-select name="APP_TIMEZONE"
+										[formControl]="generalSettingForm.get('APP_TIMEZONE')">
+										<mat-option *ngFor="let timezone of timezones" [value]="timezone">
+											{{timezone}}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Date Format</div>
+								<div class="mat-caption secondary-text">This Setting are use full for display the date
+									for all list as per the selected time zone and selected format .</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="30">
+								<mat-form-field appearance="outline">
+									<mat-select name="date_format"
+										[formControl]="generalSettingForm.get('date_format')">
+										<mat-option *ngFor="let dateFormat of dateFormats | keyvalue"
+											[value]="dateFormat.key">
+											{{dateFormat.value}}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Time Format</div>
+								<div class="mat-caption secondary-text">This Setting are use full for display the time
+									for all list as per the selected time zone and selected format .</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="30">
+								<mat-form-field appearance="outline">
+									<mat-select name="time_format"
+										[formControl]="generalSettingForm.get('time_format')">
+										<mat-option *ngFor="let timeFormat of timeFormats | keyvalue"
+											[value]="timeFormat.key">
+											{{timeFormat.value}}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+
+						<div class="sep"></div>
+
+						<!-- <div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Weeks Starts On</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="30">
+								<mat-form-field appearance="outline">
+									<mat-select name="week_starts_on" [formControl]="generalSettingForm.get('week_starts_on')">
+										<mat-option *ngFor="let WeekDay of WeekDays" [value]="WeekDay">{{WeekDay}} </mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div> -->
+
+						<div class="sep"></div>
+
+						<div fxLayout="column" fxLayout.gt-md="row">
+							<div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+								<div class="mat-subheading-1 mb-4">Past Days</div>
+								<div class="mat-caption secondary-text">This setting are you to display the past days
+									data on the list like forms entries .</div>
+							</div>
+
+							<div fxLayout="column" fxLayoutAlign="center" fxFlex="30">
+								<mat-form-field appearance="outline">
+									<mat-select name="pastdays" [formControl]="generalSettingForm.get('pastdays')">
+										<mat-option *ngFor="let pastDay of pastDays" [value]="pastDay.value">
+											{{pastDay.name}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+
+					</div>
+					<!-- / Date &amp; Time -->
+					<div class="mat-title mt-24">Autopopulate Settings</div>
+					<div class="mat-card mat-elevation-z2 p-24" fxLayout="row">
+						<mat-form-field appearance="outline" floatLabel="always" class="mr-4" fxFlex="50">
+							<mat-label>Select Roles</mat-label>
+							<mat-select formControlName="autopopulate" name="autopopulate" multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<!-- adminaccess -->
+						<mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+							<mat-label>Admin Access Roles</mat-label>
+							<mat-select formControlName="adminaccess" name="adminaccess" multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<!-- dashboard_widget_access -->
+					<div class="mat-title mt-24">Dashboard Widget Access</div>
+					<div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+						<mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+							<mat-label>Dashboard Document</mat-label>
+							<mat-select formControlName="dashboard_document" name="dashboard_document" multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+							<mat-label>Dashboard Event Attendees</mat-label>
+							<mat-select formControlName="dashboard_event_attendees" name="dashboard_event_attendees" multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+							<mat-label>Dashboard Forms</mat-label>
+							<mat-select formControlName="dashboard_forms" name="dashboard_forms" multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+							<mat-label>Dashboard Forms Entries</mat-label>
+							<mat-select formControlName="dashboard_forms_entries" name="dashboard_forms_entries"
+								multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+							<mat-label>Dashboard Today Event</mat-label>
+							<mat-select formControlName="dashboard_today_event" name="dashboard_today_event"
+								multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+							<mat-label>Dashboard User Update</mat-label>
+							<mat-select formControlName="dashboard_user_updates" name="dashboard_user_updates" multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="mat-title mt-24">Kiosk User Settings</div>
+					<div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+						<mat-form-field appearance="outline" floatLabel="always" class="mr-4" fxFlex="50">
+							<mat-label>Select Kiosk User Roles</mat-label>
+							<mat-select formControlName="kiosk_user" name="kiosk_user" multiple>
+								<mat-option *ngFor="let role of roles" [value]="role.id">{{role.role_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<!-- / SETTINGS -->
+
+			</form>
+
+		</div>
+		<!-- / CENTER -->
+
+	</div>
+	<!-- / CONTENT -->
+
+</div>

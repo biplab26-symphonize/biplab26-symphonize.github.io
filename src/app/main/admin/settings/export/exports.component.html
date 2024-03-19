@@ -1,0 +1,245 @@
+<div id="settings" class="page-layout simple tabbed" fxLayout="column">
+
+        <!-- HEADER -->
+        <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="row" fxLayoutAlign="start center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">settings
+                    </mat-icon>
+                    <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Export Settings
+                    </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <div class="tabs-wrap">
+
+            <!-- TABS -->
+            <nav mat-tab-nav-bar class="px-24">
+                <a mat-tab-link routerLink="/admin/settings/general">General</a>
+                <a mat-tab-link routerLink="/admin/settings/home">Home</a>
+                <a mat-tab-link routerLink="/admin/settings/export" active="true">Export</a>
+                <!-- <a mat-tab-link routerLink="/admin/settings/theme">Theme</a>
+                <a mat-tab-link routerLink="/admin/settings/permissions">Permissions</a> -->
+            </nav>
+            <!-- / TABS -->
+
+        </div>
+    
+        <!-- CONTENT -->
+        <div class="content">
+            <form name="exportfieldsform"  [formGroup]="exportfieldsform" (ngSubmit)="onExportSubmit(exportfieldsform.value)" novalidate autocomplete="off">
+                <div class="mat-title mt-20 mb-8"><mat-icon>import_export</mat-icon> Export Users Fields Settings</div>
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <!--Core Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Core Fields</mat-label>
+                                <mat-select name="corefields" formControlName="corefields" multiple>
+                                    <ng-container *ngFor="let core of FieldsArray.coreFieldsArray">
+                                        <mat-option *ngIf="core!=='id' && core!=='password'" [value]="core">
+                                        {{core}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <!--Meta Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Meta Fields</mat-label>
+                                <mat-select name="metafields" formControlName="metafields" multiple>
+                                    <ng-container *ngFor="let meta of FieldsArray.metaFieldsArray">
+                                        <mat-option [value]="meta.id">
+                                        {{meta.field_name}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div> 
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="20">
+                            <button mat-raised-button type="submit" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [disabled]="!exportfieldsform.valid" cdkFocusInitial>Save Export Fields</button>
+                        </div>
+                    </div>            
+                </div>
+            </form>
+
+
+            <form name="exportstafffieldsform"  [formGroup]="exportstafffieldsform" (ngSubmit)="onExportStaffSubmit(exportstafffieldsform.value)" novalidate autocomplete="off">
+                <div class="mat-title mt-20 mb-8"><mat-icon>import_export</mat-icon> Export Staff Fields Settings</div>
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <!--Core Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Core Fields</mat-label>
+                                <mat-select name="corefields" formControlName="corefields" multiple>
+                                    <ng-container *ngFor="let core of FieldsArray.coreStaffFieldsArray">
+                                        <mat-option *ngIf="core!=='id' && core!=='password'" [value]="core">
+                                        {{core}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <!--Meta Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Meta Fields</mat-label>
+                                <mat-select name="metafields" formControlName="metafields" multiple>
+                                    <ng-container *ngFor="let meta of FieldsArray.metaStaffFieldsArray">
+                                        <mat-option [value]="meta.id">
+                                        {{meta.field_name}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div> 
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="20">
+                            <button mat-raised-button type="submit" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [disabled]="!exportfieldsform.valid" cdkFocusInitial>Save Export Fields</button>
+                        </div>
+                    </div>            
+                </div>
+            </form>
+
+
+            <form name="exporteventfieldsform"  [formGroup]="exporteventfieldsform" (ngSubmit)="onExportEventSubmit(exporteventfieldsform.value)" novalidate autocomplete="off">
+                <div class="mat-title mt-20 mb-8"><mat-icon>import_export</mat-icon> Export Event Fields Settings</div>
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <!--Core Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Core Fields</mat-label>
+                                <mat-select name="corefields" formControlName="corefields" multiple>
+                                    <ng-container *ngFor="let core of FieldsArray.coreEventFieldsArray">
+                                        <mat-option *ngIf="core!=='id' && core!=='password'" [value]="core">
+                                        {{core}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <!--Meta Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Meta Fields</mat-label>
+                                <mat-select name="metafields" formControlName="metafields" multiple>
+                                    <ng-container *ngFor="let meta of FieldsArray.metaEventFieldsArray">
+                                        <mat-option [value]="meta.id">
+                                        {{meta.field_name}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div> 
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="20">
+                            <button mat-raised-button type="submit" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [disabled]="!exportfieldsform.valid" cdkFocusInitial>Save Export Fields</button>
+                        </div>
+                    </div>            
+                </div>
+            </form>
+
+
+            
+            <form name="exporteventattendeefieldsform"  [formGroup]="exporteventattendeefieldsform" (ngSubmit)="onExportEventAttendeeSubmit(exporteventattendeefieldsform.value)" novalidate autocomplete="off">
+                <div class="mat-title mt-20 mb-8"><mat-icon>import_export</mat-icon> Export Event Attendee Fields Settings</div>
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <!--Core Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Core Fields</mat-label>
+                                <mat-select name="corefields" formControlName="corefields" multiple>
+                                    <ng-container *ngFor="let core of FieldsArray.coreEventAttendeeFieldsArray">
+                                        <mat-option *ngIf="core!=='id' && core!=='password'" [value]="core">
+                                        {{core}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <!--Meta Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Meta Fields</mat-label>
+                                <mat-select name="metafields" formControlName="metafields" multiple>
+                                    <ng-container *ngFor="let meta of FieldsArray.metaEventAttendeeFieldsArray">
+                                        <mat-option [value]="meta.id">
+                                        {{meta.field_name}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div> 
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="20">
+                            <button mat-raised-button type="submit" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [disabled]="!exportfieldsform.valid" cdkFocusInitial>Save Export Fields</button>
+                        </div>
+                    </div>            
+                </div>
+            </form>
+
+
+            <form name="exportactivitylogfieldsform"  [formGroup]="exportactivitylogfieldsform" (ngSubmit)="onExportActivityLogSubmit(exportactivitylogfieldsform.value)" novalidate autocomplete="off">
+                <div class="mat-title mt-20 mb-8"><mat-icon>import_export</mat-icon> Export Activity Log Fields Settings</div>
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <!--Core Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Core Fields</mat-label>
+                                <mat-select name="corefields" formControlName="corefields" multiple>
+                                    <ng-container *ngFor="let core of FieldsArray.coreActivityLogFieldsArray">
+                                        <mat-option *ngIf="core!=='id' && core!=='password'" [value]="core">
+                                        {{core}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <!--Meta Columns to export-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="70">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Meta Fields</mat-label>
+                                <mat-select name="metafields" formControlName="metafields" multiple>
+                                    <ng-container *ngFor="let meta of FieldsArray.metaActivityLogFieldsArray">
+                                        <mat-option [value]="meta.id">
+                                        {{meta.field_name}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                    </div> 
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="20">
+                            <button mat-raised-button type="submit" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [disabled]="!exportfieldsform.valid" cdkFocusInitial>Save Export Fields</button>
+                        </div>
+                    </div>            
+                </div>
+            </form>
+        </div>
+</div>  

@@ -1,0 +1,396 @@
+<form id="btn-setting-popup" name="buttonSettingsForm" [formGroup]="buttonSettingsForm" (ngSubmit)="sendButtonSettingsInfo($event)"  novalidate autocomplete="off">
+    <div mat-dialog-content class="pb-dialog-settings">
+
+        <mat-tab-group fxFlex="100">
+            <!-- PageSettings -->
+            <mat-tab label="General">
+                <!-- column link type-->
+                <div fxLayout="column" fxLayout.gt-md="row" class="mt-20">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Link Type</div>
+                        <div class="font-size-14 secondary-text text-capitalize">column link custom/menu url</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" name="link_type" formControlName="link_type" (change)="buttonSettingsForm.get('link_url').reset()">
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="C">Custom</mat-radio-button>
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="M">Menu Url</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- custom Link -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Link Url</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Link to column area custom or menu.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                        <div fxLayout="row" fxLayoutAlign="start end">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="buttonSettingsForm.get('link_type').value=='C'">
+                                <input matInput name="link_url" formControlName="link_url" >
+                                <mat-icon matSuffix class="secondary-text">link</mat-icon>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="buttonSettingsForm.get('link_type').value=='M'">
+                                <mat-label>Menu Url</mat-label>
+                                <mat-select name="link_url" formControlName="link_url" [required]="buttonSettingsForm.get('link_type').value=='M'">
+                                    <mat-option value="">Select Menu</mat-option>
+                                    <mat-option *ngFor="let menu of menusList" [value]="menu.menu_url">
+                                    {{menu.menu_title}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!-- link target -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Link Target</div>
+                        <div class="font-size-14 secondary-text text-capitalize">column link target</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="link_target" formControlName="link_target">
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="_self">Same Window</mat-radio-button>
+                                <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="_blank">New Window</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- buttontext -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Button Text</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Add a show on button.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="buttontext" formControlName="buttontext">
+                            <mat-icon matSuffix class="secondary-text">text_fields</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- texttransform -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Text Transform</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Text transform of Button Text.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50"  class="border pb-12 mb-20 border-radius-4">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="texttransform" formControlName="texttransform">
+                                <ng-container *ngFor="let text of pageOptions.texttransform | keyvalue: disableSort">
+                                    <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="{{text.key}}">{{text.value}}</mat-radio-button>
+                                </ng-container>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- titleattr -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Button Title Attribute</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Set a title attribute for the button link.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="titleattr" formControlName="titleattr">
+                            <mat-icon matSuffix class="secondary-text">text_fields</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- alignment -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Alignment</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Alignment of Button.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center"  name="alignment" formControlName="alignment">
+                                <ng-container *ngFor="let align of pageOptions.alignment | keyvalue: disableSort">
+                                    <mat-radio-button class="mx-4" fxFlex="20" fxFlex.lt-sm="100" value="{{align.key}}">{{align.value}}</mat-radio-button>
+                                </ng-container>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- visiblity -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Visibility</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Choose to show or hide the button on small, medium or large screens.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                        <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                            <mat-label> </mat-label>
+                            <input matInput placeholder="Input" style="display: none" >
+                            <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="visiblity" formControlName="visiblity">
+                                <ng-container *ngFor="let visiblity of pageOptions.visibilityOptions | keyvalue: disableSort">
+                                    <mat-radio-button class="mx-4" fxFlex="31" fxFlex.lt-sm="100" value="{{visiblity.key}}">{{visiblity.value}}</mat-radio-button>
+                                </ng-container>
+                            </mat-radio-group>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- cssclass -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">CSS Class</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Add a class to the wrapping HTML element.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="cssclass" formControlName="cssclass">
+                            <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- cssid -->
+                <div fxLayout="column" fxLayout.gt-md="row">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">CSS ID</div>
+                        <div class="font-size-14 secondary-text text-capitalize">Add an ID to the wrapping HTML element.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <input matInput name="cssid" formControlName="cssid">
+                            <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Design">
+                <!-- buttonstyle -->
+                <div fxLayout="column" fxLayout.gt-md="row" class="mt-20">
+                    <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                        <div class="font-weight-600 mb-0">Button Style</div>
+                        <div class="font-size-14 secondary-text text-capitalize">style of button.</div>
+                    </div>    
+                    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                        <div fxLayout="row" fxLayoutAlign="start end">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Button Style</mat-label>
+                                <mat-select name="buttonstyle" formControlName="buttonstyle">
+                                    <mat-option value="">Default</mat-option>
+                                    <mat-option *ngFor="let style of pageOptions.buttonparams.style | keyvalue:disableSort" [value]="style.key">
+                                    {{style.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="buttonSettingsForm.get('buttonstyle').value=='custom'">
+                    <!-- gradienttop -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Gradient Top Color</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                <mat-label>Gradient Top Color</mat-label>
+                                <input matInput formControlName="gradienttop" type="color" name="gradienttop">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- gradientbottom -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Gradient Bottom Color</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                <mat-label>Gradient Bottom Color</mat-label>
+                                <input matInput formControlName="gradientbottom" type="color" name="gradientbottom">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- gradienttophover -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Gradient Top Hover Color</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                <mat-label>Gradient Top Hover Color</mat-label>
+                                <input matInput formControlName="gradienttophover" type="color" name="gradienttophover">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- gradientbottomhover -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Gradient Bottom Hover Color</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                <mat-label>Gradient Bottom Hover Color</mat-label>
+                                <input matInput formControlName="gradientbottomhover" type="color" name="gradientbottomhover">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </ng-container>
+                    <!-- buttontextcolor -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Text Color</div>
+                        </div>    
+                        <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                <mat-label>Text Color</mat-label>
+                                <input matInput formControlName="buttontextcolor" type="color" name="buttontextcolor">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- buttontexthover -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Text Hover Color</div>
+                        </div>    
+                        <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                <mat-label>Text Hover Color</mat-label>
+                                <input matInput formControlName="buttontexthover" type="color" name="buttontexthover">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- buttontype -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Button Type</div> 
+                            <div class="font-size-14 secondary-text text-capitalize">choose the button type.</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                                <mat-label> </mat-label>
+                                <input matInput placeholder="Input" style="display: none" >
+                                <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="buttontype" formControlName="buttontype">
+                                    <ng-container *ngFor="let type of pageOptions.buttonparams.types | keyvalue: disableSort">
+                                        <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="{{type.key}}">{{type.value}}</mat-radio-button>
+                                    </ng-container>
+                                </mat-radio-group>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- buttonsize -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Button Size</div>
+                            <div class="font-size-14 secondary-text text-capitalize">choose the button size.</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                                <mat-label> </mat-label>
+                                <input matInput placeholder="Input" style="display: none" >
+                                <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="buttonsize" formControlName="buttonsize">
+                                    <ng-container *ngFor="let size of pageOptions.buttonparams.sizes | keyvalue: disableSort">
+                                        <mat-radio-button class="mx-4" fxFlex="20" fxFlex.lt-sm="100" value="{{size.key}}">{{size.value}}</mat-radio-button>
+                                    </ng-container>
+                                </mat-radio-group>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- buttonspan -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Button Span</div>
+                            <div class="font-size-14 secondary-text text-capitalize">Controls if the button spans the full width of its container.</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                                <mat-label> </mat-label>
+                                <input matInput placeholder="Input" style="display: none" >
+                                <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="buttonspan" formControlName="buttonspan">
+                                    <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                    <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                </mat-radio-group>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- buttonshape -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Button Shape</div>
+                            <div class="font-size-14 secondary-text text-capitalize">choose the button shape.</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                                <mat-label> </mat-label>
+                                <input matInput placeholder="Input" style="display: none" >
+                                <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="buttonshape" formControlName="buttonshape">
+                                    <ng-container *ngFor="let shape of pageOptions.buttonparams.shapes | keyvalue: disableSort">
+                                        <mat-radio-button class="mx-4" fxFlex="31" fxFlex.lt-sm="100" value="{{shape.key}}">{{shape.value}}</mat-radio-button>
+                                    </ng-container>
+                                </mat-radio-group>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- icon -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Icon</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <mat-form-field appearance="outline" fxFlex="75" fxAlign="start center" class="pr-16 mat-wrapper-p-0" >
+                                    <mat-label>Icon</mat-label>
+                                    <input matInput formControlName="icon" name="icon">
+                                </mat-form-field>
+                                <button type="button" mat-raised-button  fxAlign="center"  class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" fxFlex="25" (click)="selectMenuIcon()">
+                                    Select Icon
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- iconposition -->
+                    <div fxLayout="column" fxLayout.gt-md="row" class="mt-24">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Icon Position</div>
+                            <div class="font-size-14 secondary-text text-capitalize">Choose the position of the icon on the button.</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                                <mat-label> </mat-label>
+                                <input matInput placeholder="Input" style="display: none" >
+                                <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center" name="iconposition" formControlName="iconposition">
+                                    <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="L">Left</mat-radio-button>
+                                    <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="R">Right</mat-radio-button>
+                                </mat-radio-group>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- icondivider -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                            <div class="font-weight-600 mb-0">Icon Divider</div>
+                            <div class="font-size-14 secondary-text text-capitalize">Choose to display a divider between icon and text.</div>
+                        </div>    
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-12 mb-20 border-radius-4">
+                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                                <mat-label> </mat-label>
+                                <input matInput placeholder="Input" style="display: none" >
+                                <mat-radio-group  fxLayout="row wrap" fxLayoutAlign="start center"  name="icondivider" formControlName="icondivider">
+                                    <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="Y">Yes</mat-radio-button>
+                                    <mat-radio-button class="mx-4" fxFlex="33" fxFlex.lt-sm="100" value="N">No</mat-radio-button>
+                                </mat-radio-group>
+                            </mat-form-field>
+                        </div>
+                    </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="border-top py-20">
+        <button type="submit" mat-stroked-button class="mr-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">SAVE</button>
+        <button type="button" mat-stroked-button class="ml-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" mat-dialog-close>CANCEL</button>
+    </div>
+</form>

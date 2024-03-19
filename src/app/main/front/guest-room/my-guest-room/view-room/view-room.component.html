@@ -1,0 +1,187 @@
+<div class="page-layout blank" fusePerfectScrollbar id="MyAppointment-view-form">
+  <div class="page-layout blank" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div class="header px-16">
+
+      <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+
+        <div class="header-top">
+
+          <div class="logo text-center">
+            <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+              [ngStyle.lt-sm]="{'font-size.px': 30}">
+              <strong> View Form </strong>
+            </span>
+          </div>
+          <!-- HEADER TEXT -->
+
+        </div>
+        <!-- / TOOLBAR -->
+      </div>
+
+    </div>
+
+    <div>
+      <!-- CENTER -->
+      <div class="content p-4 pb-4">
+        <!-- CONTENT -->
+        <div class="content-wrap fuse-white-bg p-28 w-100-p br-ds-0">
+          <div>
+            <!-- <span class="mat-display-1">VIEW FORM</span> -->
+            <div fxLayout="row" fxLayoutAlign="space-between end" class="mb-20 print-btn">
+              <button color="accent" type="button" mat-stroked-button [routerLink]="['/my-guestroom/']">
+                <mat-icon class="mr-4">arrow_back</mat-icon>Back
+              </button>
+              <button color="accent" type="button" mat-stroked-button (click)="getPrint()">
+                <mat-icon class="mr-4">local_printshop</mat-icon>Print
+              </button>
+            </div>
+
+            <div class="accent fuse-white-200-fg p-16" fxLayout="row" fxLayoutAlign="space-between start">
+              <h1 class="m-0 font-size-20" fxFlex="55" [ngStyle.lt-sm]="{'font-size.px': 16}">Entry#{{url_id}}</h1>
+              <h1 class="m-0 font-size-20 text-right" fxFlex="45" [ngStyle.lt-sm]="{'font-size.px': 16}">Submitted Date
+                : {{content.created_at | date: defaultDateTimeFormat.date_format}}</h1>
+            </div>
+
+            <table class="w-100-p border" fxLayout="column" fxLayoutAlign="start">
+              <ng-container>
+                <tr class=" w-100-p  m-0 " fxLayout="column" fxLayout.lt-sm="column" fxLAyoutAlign="start center">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom"> <span class="w-100-p"
+                      [ngClass.lt-sm]="{'font-size-16': true}">Resident Name :</span> </td>
+                  <td class="p-8 border-bottom font-weight-600 w-100-p"><span class="w-100-p">{{content.name}}</span>
+                  </td>
+                </tr>
+
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.email">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom" *ngIf="content.email != '' && content.email != null"> <span class="w-100-p"
+                      [ngClass.lt-sm]="{'font-size-16': true}">Email :</span> </td>
+                  <td class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p">{{content.email}}</span>
+                  </td> 
+                </tr>
+
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Phone :</span>
+                  </td>
+                  <td class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p">{{content.phone}}</span>
+                  </td>
+                </tr>
+
+
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Check-In Date :</span>
+                  </td>
+
+                  <td class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p">{{content.date_from | date: defaultDateTimeFormat.date_format}}</span>
+                  </td>
+                </tr>
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Check-Out Date :</span>
+                  </td>
+
+                  <td class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p">{{content.date_to | date: defaultDateTimeFormat.date_format}}</span>
+                  </td>
+                </tr>
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">For :</span>
+                  </td>
+                  <td class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p" *ngFor="let data of content.bookingrooms">
+                      <span *ngIf="data.rooms != null && data.rooms != ''">
+                        {{data.rooms.type}} - {{data.room_number_id}} <br>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" >
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Check-In Time :</span>
+                  </td>
+
+                  <td *ngIf="content.date_to!=undefined" class="p-8 border-bottom font-weight-600 w-100-p">
+                    <!-- <span class="w-100-p">{{content.booking_start_time}}</span> -->
+                    <span class="w-100-p">3:00 PM EST</span>
+                  </td>
+                </tr>
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" >
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Check-Out Time :</span>
+                  </td>
+
+                  <td *ngIf="content.date_to!=undefined" class="p-8 border-bottom font-weight-600 w-100-p">
+                    <!-- <span class="w-100-p">{{content.booking_start_time}}</span> -->
+                    <span class="w-100-p">11:00 AM EST</span>
+                  </td>
+                </tr>
+
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Building :</span>
+                  </td>
+
+                  <td *ngIf="content.date_to!=undefined" class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p">{{content.building.name}}</span>
+                  </td>
+                </tr>
+
+               
+
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.bookingextras">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom"  *ngIf="content.bookingextras.length > 0">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Extras :</span>
+                  </td>
+                  <td class="p-8 border-bottom font-weight-600 w-100-p" *ngFor="let extra of content.bookingextras">                    
+                    <span *ngIf="extra.extras.per_price == 'day_person'" class="w-100-p">
+                      {{extra.extras.name}} (${{extra.extras.price}} Per day / Per person): ${{extra.total}}
+                    </span>
+                  <span *ngIf="extra.extras.per_price != 'day_person'" class="w-100-p">
+                    {{extra.extras.name}} (${{extra.extras.price}} Per {{extra.extras.per_price}}): ${{extra.total}}
+                  </span>
+                    <!-- <span class="w-100-p">{{extra.extras.name}}</span> -->
+                  </td>
+                </tr>
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Status :</span>
+                  </td>
+                  <td class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p">{{content.status}}</span>
+                  </td>
+                </tr>
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column"
+                *ngIf="content.total != '' && content.total != null">
+                <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                  <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Total :</span>
+                </td>
+                <td class="p-8 border-bottom font-weight-600 w-100-p">
+                  <span class="w-100-p">${{content.total}}</span>
+                </td>
+              </tr>
+                <tr class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column"
+                  *ngIf="content.notes != '' && content.notes != null">
+                  <td class="blue-grey-50 fuse-black-fg text-bold p-8 border-bottom">
+                    <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Additional Requirements :</span>
+                  </td>
+                  <td class="p-8 border-bottom font-weight-600 w-100-p">
+                    <span class="w-100-p">{{content.notes}}</span>
+                  </td>
+                </tr>
+
+
+              </ng-container>
+            </table>
+          </div>
+          <!-- /CENTER -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+<div class="page-layout blank" fusePerfectScrollbar id="front-dining-my-table-reservation-view-form">
+  <div class="page-layout blank" fusePerfectScrollbar >
+
+        <!-- HEADER -->  
+        <div class="header px-16">
+
+          <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+    
+              <div class="header-top">  
+    
+                  <div class="logo text-center">
+                      <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                          <strong> View Form </strong>
+                      </span>
+                  </div>
+                  <!-- HEADER TEXT -->
+    
+              </div>
+                <!-- / TOOLBAR -->  
+            </div>
+      
+        </div>
+        <!-- / HEADER -->
+ 
+
+     <div>
+    <!-- CENTER -->
+          <div class="content p-4 pb-4">
+            <!-- CONTENT -->
+             <div class="content-wrap fuse-white-bg p-28 w-100-p br-ds-0">
+                 <div>
+                   <!-- <span class="mat-display-1">VIEW FORM</span> -->
+                     <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-20 print-btn text-capitalize">
+                      <button color="accent" type="button"  mat-stroked-button  [routerLink]="['/my-reservations/']"> <mat-icon class="mr-4">arrow_back</mat-icon>Back</button>
+                      <button color="accent" type="button"  mat-stroked-button (click)="getPrint()"> <mat-icon class="mr-4">local_printshop</mat-icon>Print</button>
+
+                     </div>
+
+                     <div fxLayout="row" fxLayoutAlign="space-between center" class="accent fuse-white-200-fg p-16 ">
+                          <h1 class="m-0 font-size-20 text-capitalize" [ngStyle.lt-sm]="{'font-size.px': 16}">{{serviceTitle}} : Entry#{{url_id}}</h1>  
+                          <h1 class="m-0 font-size-20 text-capitalize" [ngStyle.lt-sm]="{'font-size.px': 16}">Submitted Date : {{content.created_at | date: defaultDateTimeFormat.date_format}}</h1>
+                     </div>
+                        
+                          <table class="w-100-p border text-capitalize" fxLayout="column" fxLayoutAlign="start">
+                               <ng-container>
+                                    <tr  class=" w-100-p  m-0 " fxLayout="column" fxLayout.lt-sm="column" fxLAyoutAlign="start center"  >
+                                        <td class="grey-50 text-bold p-8 border-bottom"> <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Resident Name </span> </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p"><span class="w-100-p">{{content.name}}</span></td>
+                                    </tr>   
+                          
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column"> 
+                                        <td class="grey-50 text-bold p-8 border-bottom"> <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Email </span> </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <span class="w-100-p text-lowercase" >{{content.email}}</span>
+                                        </td>
+                                    </tr>
+                                 
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Phone</span>
+                                        </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <span class="w-100-p" class=" w-100-p">{{content.phone | mask:CustomFormats.phone}}</span>
+                                        </td>
+                                    </tr>
+                                   
+                                    
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Service Name </span>
+                                        </td>
+
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <span class="w-100-p" >{{serviceTitle}}</span>
+                                        </td>
+                                    </tr>
+                                   
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Reservation Date </span>
+                                        </td>
+
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <span class="w-100-p" >{{content.booking_start_date | date: defaultDateTimeFormat.date_format}}</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Reservation Time </span>
+                                        </td>
+
+                                        <td *ngIf="content.booking_start_date!=undefined" class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <!-- <span class="w-100-p" >{{content.booking_start_time}}</span> -->
+                                          <!-- <span class="w-100-p" >{{(content.booking_start_date+' '+content.booking_start_time )| date :'shortTime'}}</span> -->
+                                          <span>{{content.booking_start_time | date :defaultDateTimeFormat.time_format}}</span>
+                                        </td>
+                                    </tr>    
+                                     
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.address!=''"> 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Address </span>
+                                        </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <span class="w-100-p" >{{content.address}}</span>
+                                        </td>
+                                    </tr>    
+                                 
+                                    <tr  class=" w-100-p   m-0 " *ngIf="content.notes!=''" fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Notes </span>
+                                        </td>
+
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <span class="w-100-p" >{{content.notes}}</span>
+                                        </td>
+                                    </tr>    
+                                    
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Table Size </span>
+                                        </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p" *ngIf="content.min_table_size!=content.max_table_size">
+                                          <span class="w-100-p" >{{content.min_table_size}} - {{content.max_table_size}}</span>
+                                        </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p" *ngIf="content.min_table_size==content.max_table_size">
+                                          <span class="w-100-p" >{{content.min_table_size}}</span>
+                                        </td>
+                                    </tr>  
+                                    <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Guest Count </span>
+                                        </td>
+                                        <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                          <span class="w-100-p" >{{content.guestcount}}</span>
+                                        </td>
+                                    </tr>    
+                                      
+                                     <tr  class=" w-100-p m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column"  *ngIf="guestdisp"> 
+                                        <td class="grey-50 text-bold p-8 border-bottom">
+                                          <span class="w-100-p" class="font-weight-600 w-100-p font-size-18" [ngClass.lt-sm]="{'font-size-16': true}">Guest Details </span>
+                                        </td>
+
+                                        <div fxLayout="column">
+                                          <td *ngFor="let guestsinfo of content.guestinfo;let i=index;" class="p-8 border-bottom font-weight-600 w-100-p">
+                                              <span class="w-100-p" class=" w-100-p">{{i+1}}: {{guestsinfo.guest_name | titlecase}}</span>
+                                          </td>
+                                        </div>
+                                    </tr>    
+                                </ng-container>  
+                           </table>
+                    </div>   
+            <!-- /CENTER -->
+             </div>
+           </div>
+       </div>   
+ </div>
+</div>
+
+
+ 
+

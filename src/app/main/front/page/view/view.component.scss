@@ -1,0 +1,126 @@
+@import "src/@fuse/scss/fuse";
+//headersettings
+$fullwidth: var(--fullwidth);
+$bgcolor: var(--bgcolor);
+$bgimage: var(--bgimage);
+$fullbgimage: var(--fullbgimage);
+$bgrepeat: var(--bgrepeat);
+
+//titlebarsettings
+$titlebarbgcolor: var(--titlebarbgcolor);
+$titlebarbordercolor: var(--titlebarbordercolor);
+$titlebarheight: var(--titlebarheight);
+//text params
+$textcolor: var(--textcolor);
+$textalign: var(--textalign);
+$textsize: var(--textsize);
+$lineheight: var(--lineheight);
+$subtextcolor: var(--subtextcolor);
+//subtetxt
+$subtextsize: var(--subtextsize);
+$sublineheight: var(--sublineheight);
+//pagesettings
+$pagebgcolor: var(--pagebgcolor);
+$pagepadding: var(--pagepadding);
+$contentpadding: var(--contentpadding);
+$contentbgcolor: var(--contentbgcolor);
+
+
+
+#front-page-builder {
+    .main-header{
+        width:$fullwidth;
+        background-color: $bgcolor;
+        background-size: $fullbgimage;
+        background-repeat: $bgrepeat;
+        height: $titlebarheight;
+        min-height: $titlebarheight;
+        max-height: $titlebarheight;
+    }
+    .title-bar-header {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        //Dynamic
+        height: $titlebarheight;
+        min-height: $titlebarheight;
+        max-height: $titlebarheight;
+        border-color: $titlebarbordercolor;
+        background-color: $titlebarbgcolor;
+        
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .title-bar-header-content {
+            
+            .titlebar-text{
+                text-align: $textalign;
+                .main-text{
+                    font-size: $textsize;
+                    line-height: $lineheight;
+                    color: $textcolor;
+                }
+                .sub-text{
+                    font-size: $subtextsize;
+                    line-height: $sublineheight;
+                    color: $subtextcolor;
+
+                }
+            }
+            .title-bar-header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: $pagepadding;
+        background-color: $pagebgcolor;
+            
+        .content-wrap{
+            background-color: $contentbgcolor;
+            padding: $contentpadding;
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;         
+        }
+        .page-container{
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    }
+
+
+    // Responsive 
+    @include media-breakpoint('xs') {
+        .content-wrap.fuse-white-bg.p-28 {
+            padding: 20px !important;
+        }
+
+        .content-box {
+            max-width: 100% !important;
+        }
+    }
+}

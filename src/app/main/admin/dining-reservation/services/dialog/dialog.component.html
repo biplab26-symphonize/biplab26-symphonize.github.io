@@ -1,0 +1,19 @@
+<div *ngIf="data.type == 'recurringUpdateBooking'">
+    <div mat-dialog-content>
+        <form class="p-24 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="serviceDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>Are you sure you want to update service it will delete existing all bookings?</mat-label>
+                <br>
+                <mat-checkbox formControlName="sendmail" value="1" class="example-margin">Send mail to resident</mat-checkbox>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button type="submit" (click)="onSubmitRecBooking()" mat-raised-button color="primary">Set</button>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick()">Close</button>
+    </div>
+</div>

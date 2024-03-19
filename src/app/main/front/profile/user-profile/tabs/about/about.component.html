@@ -1,0 +1,71 @@
+<div id="about" class="general-info-wrapper" fxLayout="row wrap">
+
+    <div class="about-content" fxLayout="column" fxFlex="100" fxFlex.gt-md="100">
+
+        <div class="mt-20 border profile-box info-box general" fxLayout="column">
+
+            <header class="accent">
+                <h2 class="m-0">General Information</h2>
+            </header>
+
+            <div class="content pb-0" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="10px">
+                <div class="info-line" fxFlex="47" fxFlex.lt-sm="100" *ngIf="aboutInfo.preffix!=='' && fieldOptions.profilecorefields.includes('preffix')">
+                    <div class="h3 text-bold">Nickname</div>
+                    <div class="info line-height-24">{{aboutInfo.preffix}}</div>
+                </div>
+                <div class="info-line" fxFlex="47" fxFlex.lt-sm="100" *ngIf="fieldOptions.profilecorefields.includes('first_name')">
+                    <div class="h3 text-bold">First Name</div>
+                    <div class="info line-height-24">{{aboutInfo.first_name}}</div>
+                </div>
+                <div class="info-line" fxFlex="47" fxFlex.lt-sm="100" *ngIf="fieldOptions.profilecorefields.includes('middle_name') && aboutInfo.middle_name">
+                    <div class="h3 text-bold">Middle Name</div>
+                    <div class="info line-height-24">{{aboutInfo.middle_name}}</div>
+                </div>
+                <div class="info-line" fxFlex="47" fxFlex.lt-sm="100" *ngIf="fieldOptions.profilecorefields.includes('last_name')">
+                    <div class="h3 text-bold">Last Name</div>
+                    <div class="info line-height-24">{{aboutInfo.last_name}}</div>
+                </div> 
+                <div class="info-line" fxFlex="47" fxFlex.lt-sm="100" *ngIf="fieldOptions.profilecorefields.includes('email')  && aboutInfo.email!==''">
+                    <div class="h3 text-bold">Email</div>
+                    <div class="info line-height-24">{{aboutInfo.email}}</div>
+                </div> 
+                <div class="info-line" fxFlex="47" fxFlex.lt-sm="100" *ngIf="fieldOptions.profilecorefields.includes('phone')">
+                    <div class="h3 text-bold">Phone</div>
+                    <!-- <div class="info line-height-24">{{aboutInfo.phone | mask:CustomFormats.phone}}</div> -->
+                    <div class="info line-height-24">{{aboutInfo.phone}}</div>
+                </div>                
+                <div *ngIf="aboutInfo.biography" class="info-line" fxFlex="100" fxFlex.lt-sm="100">
+                    <div class="h3 text-bold">Biography</div>
+                    <div class="info line-height-24" [innerHTML]="aboutInfo.biography | sanitizeHtml"></div>
+                </div> 
+            </div> 
+
+        </div>
+
+        <div class="mt-16 border profile-box info-box contact" fxLayout="column" >
+            <header class="accent">
+                <h2 class="m-0">Other Information</h2>
+            </header>
+            <div class="content pb-0">
+                <div fxLayout="row wrap" fxLayoutGap="10px" fxLayout.lt-sm="column">
+                    <div class="info-line" fxFlex="0 1 calc(50%-10px)" fxFlex.lt-sm="100" *ngIf="fieldOptions.profilecorefields.includes('birthdate') && showBirthdate && aboutInfo.birthdate!='0000-00-00' && aboutInfo.birthdate!=''">
+                        <div class="h3 text-bold">Date Of Birth</div>
+                        <div class="info">{{aboutInfo.birthdate | date: 'MMM d'}}</div>
+                    </div>
+                    <!-- Dynamic UserMeta Display -->
+                    <ng-container *ngFor="let meta of userMeta;trackBy:metaFields">
+                        <div *ngIf="fieldOptions.profilemetafields.includes(meta.field_id) && meta.dynamicfields!==''" class="info-line word-break" fxFlex="0 1 calc(50%-10px)"  fxFlex.lt-sm="100">
+                            <div class="h3 text-bold">{{meta.field_label | titlecase }}</div>
+                            <div class="info" *ngIf="meta.field_type =='number' && meta.field_content.extra_field_content && meta.field_content.extra_field_content.ismasking=='Y' && meta.field_content.extra_field_content.maskingpattern!=''">{{meta.dynamicfields  | mask:meta.field_content.extra_field_content.maskingpattern}}</div>
+                            <div class="info" *ngIf="meta.field_type =='number' && meta.field_content.extra_field_content && meta.field_content.extra_field_content.ismasking=='N'">{{meta.dynamicfields}}</div>
+                            <div class="info" *ngIf="meta.field_type !=='number'  && meta.field_type !=='date'">{{meta.dynamicfields}}</div>
+                            <div class="info" *ngIf="meta.field_type =='date' ">{{meta.field_value | date: defaultDateTimeFormat.date_format}}</div>
+                        </div>
+                    </ng-container>
+                </div>
+              
+            </div>
+        </div>
+    </div>    
+
+</div>

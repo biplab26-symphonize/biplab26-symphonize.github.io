@@ -1,0 +1,73 @@
+<div *ngIf="element" id="element-quicklinks" class="content-box-section" [style.color]="element.bodycolor" fxLayout="row wrap">
+    <ng-container *ngFor="let quicklink of element.quicklinks;let quickindex=index">
+        <!-- boxlayout - icon-on-side -->
+        <div 
+        fxLayoutAlign="start center" 
+        fxFlex="0 1 calc({{(100/element.columns) + '%'}}  - 8px )" 
+        class="{{element.cssclass}} content-box border box-shadow border-radius-4 px-16 py-12 m-8 pointer-cursor"
+        id="{{element.cssid}}"
+        [style.background-color]="element.boxbgcolor"
+        [style.margin-top]="element.margintop"
+        [style.margin-bottom]="element.marginbottom"
+        (click)="OpenElementLink({link_url:quicklink.link_url,link_url:quicklink.link_url,link_target:element.link_target})"
+        >
+            <!-- left position icon -->
+            <span
+            *ngIf="element.iconposition=='L'"
+            [style.border-width]="element.iconouterborder"
+            [style.border-color]="element.iconouterbordercolor"
+            >
+                <i
+                *ngIf="quicklink.icon!='' || element.icon!=''" 
+                [style.font-size]="element.iconsize"
+                [style.color]="quicklink.iconcolor || element.iconcolor"
+                [style.background-color]="element.iconbg=='Y' ? quicklink.iconbgcolor || element.iconbgcolor : 'none'"
+                [style.border-width]="element.iconinnerborder"
+                [style.border-color]="element.iconinnerbordercolor"
+                class="icon-hover-{{element.iconhover}} rotate-{{quicklink.rotateicon || element.rotateicon}} spin-{{quicklink.spinicon || element.spinicon}} s-56 mr-12 {{quicklink.icon || element.icon}}"
+                ></i>
+                <!-- custom image -->
+                <img 
+                *ngIf="(quicklink.icon=='' && element.icon=='') && (element.iconcustomimg!='' || quicklink.iconcustomimg!='')" 
+                [src]="quicklink.iconcustomimg || element.iconcustomimg"
+                [style.width]="element.iconcustomimgwidth"
+                [style.height]="element.iconcustomimgheight"
+                [style.border-width]="element.iconinnerborder"
+                [style.border-color]="element.iconinnerbordercolor"
+                class="rotate-{{quicklink.rotateicon || element.rotateicon}} spin-{{quicklink.spinicon || element.spinicon}} s-56 mr-12 {{quicklink.icon || element.icon}}"
+                />
+            </span>
+            
+            <div class="title-section">
+                <h1 class="{{element.headingsize}}" [style.color]="element.titlecolor" [style.font-size]="element.titlesize">{{quicklink.title}}</h1>
+                <div [innerHTML] = "quicklink.content | sanitizeHtml"></div>
+            </div>
+            <!-- right position icon -->
+            <span
+            *ngIf="element.iconposition=='R'"
+            [style.border-width]="element.iconouterborder"
+            [style.border-color]="element.iconouterbordercolor"
+            >
+                <i
+                *ngIf="quicklink.icon!='' || element.icon!=''" 
+                [style.font-size]="element.iconsize"
+                [style.color]="quicklink.iconcolor || element.iconcolor"
+                [style.background-color]="element.iconbg=='Y' ? quicklink.iconbgcolor || element.iconbgcolor : 'none'"
+                [style.border-width]="element.iconinnerborder"
+                [style.border-color]="element.iconinnerbordercolor"
+                class="rotate-{{quicklink.rotateicon || element.rotateicon}} spin-{{quicklink.spinicon || element.spinicon}} s-56 mr-12 {{quicklink.icon || element.icon}}"
+                ></i>
+                <!-- custom image -->
+                <img 
+                *ngIf="(quicklink.icon=='' && element.icon=='') && (element.iconcustomimg!='' || quicklink.iconcustomimg!='')" 
+                [src]="quicklink.iconcustomimg || element.iconcustomimg"
+                [style.width]="element.iconcustomimgwidth"
+                [style.height]="element.iconcustomimgheight"
+                [style.border-width]="element.iconinnerborder"
+                [style.border-color]="element.iconinnerbordercolor"
+                class="rotate-{{quicklink.rotateicon || element.rotateicon}} spin-{{quicklink.spinicon || element.spinicon}} s-56 mr-12 {{quicklink.icon || element.icon}}"
+                />
+            </span>
+        </div>
+    </ng-container>
+</div>

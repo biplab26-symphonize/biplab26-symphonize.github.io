@@ -1,0 +1,186 @@
+<div id="front-meeting-room" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off" [formGroup]="addExtras"
+                novalidate autocomplete="off">
+                <div fxLayout="column">
+                    <div class="w-100-p border pt-24" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="center center"
+                        [ngStyle]="{'background': '#f5f5f5','padding-left': '10px'}">
+                        <div fxFlex="10">
+                            <button mat-stroked-button color="accent"
+                                [ngStyle]="{'margin-bottom':'22px','height':'58px'}" (click)="gotoHome()">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+                            </button>
+                        </div>
+                        <div fxFlex="90" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                            <mat-form-field appearance="outline" fxFlex.lt-sm="100" fxFlex.lt-sm="100" fxFlex="100" class="pr-8">
+                                <mat-label>Step</mat-label>
+                                <mat-select matNativeControl formControlName="step" required
+                                    (selectionChange)="goBack($event)">
+                                    <mat-option value="step1">Step 1- When and Who</mat-option>
+                                    <mat-option value="step2">Step 2- Rooms</mat-option>
+                                    <mat-option value="step3">Step 3- Extras</mat-option>
+                                    <mat-option value="step4" disabled>Step 4- Check Out</mat-option>
+                                    <mat-option value="step5" disabled>Step 5- Preview</mat-option>
+                                    <mat-option value="step6" disabled>Step 6- Finish</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="w-100-p border pt-24 pb-20" fxLayout="column wrap"
+                        [ngStyle]="{'margin-bottom': '10px','padding-left': '10px'}">
+                        <div fxLayout="row">
+                            <span>
+                                <h2>Your Booking</h2>
+                            </span>
+                        </div>
+                        <div fxLayout="row">
+                            <div fxLayout="column" fxFlex="50">
+                                <br>
+                                <span>Check-In Date:</span>
+                                <span>Check-Out Date:</span>
+                                <span>For:</span>
+                                <span>Check-In Time:</span>
+                                <span>Check-Out Time:</span>
+                               
+                            </div>
+                            <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                <span><a [routerLink]="['/guest-room']">Change dates</a></span>
+                                <span *ngIf="bookingArr.length > 0">{{bookingArr[0].date_from | date: defaultDateTimeFormat.date_format}}</span>
+                                <!-- CHECKINTIME MAS* -->
+                                <span *ngIf="bookingArr.length > 0">{{bookingArr[0].date_to | date: defaultDateTimeFormat.date_format}}</span>
+                                <span>{{count}} Rooms, {{nights}} Nights</span>
+                                <span *ngIf="bookingArr.length > 0">3:00 PM EST</span>
+                                <!-- CHECKOUTTIME MAS* -->
+                                <span *ngIf="bookingArr.length > 0">11:00 AM EST</span>
+                                
+                                
+                            </div>
+                        </div>
+                        <div fxLayout="column" class="w-100-p mt-20" *ngFor="let data of roomBookArr">
+                            <hr>
+                            <div fxLayout="row">
+                                <div fxLayout="column" fxFlex="50" [ngStyle]="{'font-weight': 'lighter'}">
+                                    <span><b>Building Name: </b> {{this.CurrentSelectdData[0].building_name}}</span>
+                                   {{data[0].rooms.type}}
+                                </div>
+                                <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                    <span><a [routerLink]="['/guest-room/rooms']">Change Rooms</a></span>
+                                </div>
+                            </div>
+                            <div fxLayout="row" *ngFor="let rooms of data" [ngStyle]="{'font-weight': 'bold'}">
+                                <div fxLayout="column" fxFlex="50">
+                                    <span>{{rooms.adults}} Adults, {{rooms.children}} Children</span>
+                                </div>
+                                <div fxLayout="column" fxFlex="50" class="pr-20" [ngStyle]="{'text-align':'end'}">
+                                    <span>${{rooms.price}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div fxLayout="column" class="mt-40">
+                    <div class="mb-10">
+                        <span>
+                            <h2>Extras</h2>
+                        </span>
+                    </div>
+                    <div fxLayout="column" class="mt-10">
+                        <table border="1" width="100%" class="reservation-check-table" formArrayName="extrasArray">
+                            <tbody>
+                                <tr [formGroupName]="i"
+                                    *ngFor="let data of addExtras.get('extrasArray')['controls']; let i=index">
+                                    <td class="p-16">
+                                        <span *ngIf="extras[i].per_price == 'day_person'">{{extras[i].name}} (Per day /
+                                            Per
+                                            person)</span>
+                                        <span *ngIf="extras[i].per_price != 'day_person'" >{{extras[i].name}} (Per
+                                            {{extras[i].per_price}})</span>
+                                    </td>
+                                    <td class="text-center pl-12" >
+                                        <mat-checkbox class="example-margin" formControlName="extras_check"
+                                            (change)="getExtras($event,extras[i].id,extras[i].price,extras[i].name,extras[i].per_price)">
+                                        </mat-checkbox>
+                                    </td>
+                                    <td class="text-center" [ngStyle]="{'font-weight': 'bold'}">
+                                        ${{extras[i].price}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table width="100%" class="reservation-check-table">
+                            <tbody>
+                                <tr [ngStyle]="{'font-weight': 'bold'}">
+                                    <td class="pl-16 pt-5 pb-5">
+                                        Room(s) Price
+                                    </td>
+                                    <td class="text-center">
+
+                                    </td>
+                                    <td [ngStyle]="{'text-align':'end'}">
+                                        <span>${{roomPrice}}</span>
+                                    </td>
+                                </tr>
+                                <tr [ngStyle]="{'font-weight': 'bold'}">
+                                    <td class="pl-16 pt-5 pb-5">
+                                        Extras Price
+                                    </td>
+                                    <td class="text-center">
+
+                                    </td>
+                                    <td [ngStyle]="{'text-align':'end'}">
+                                        <span>${{totalextraprice}}</span>
+                                    </td>
+                                </tr>
+                                <tr fxLayout.lt-sm="column">
+                                    <!-- <td class="pl-16 pt-5 pb-5">
+                                    </td> -->
+                                    <td [ngStyle.lt-sm]="{'text-align':'end'}"  [ngStyle.gt-md]="{'text-align':'end','padding-left': '55%'}">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Promo Code</mat-label>
+                                            <input matInput formControlName="promo_code" (input)="removeValidation()">
+                                        </mat-form-field>
+                                        <mat-error *ngIf="isPromocode">Invalid promo
+                                            code</mat-error>
+                                    </td>
+                                    <td [ngStyle.gt-md]="{'padding-left':'10px','text-align':'end'}"    [ngStyle.lt-sm]="{'text-align': 'center'}">
+                                        <button mat-stroked-button [ngStyle]="{'margin-top':'6px','margin-bottom':'30px'}" color="accent" (click)="applyPromocode()">Apply
+                                            Code</button>
+                                    </td>
+                                </tr>
+                                <tr [ngStyle]="{'font-weight': 'bold'}">
+                                    <td class="pl-16 pt-5 pb-5">
+                                        <span>Total</span>
+                                    </td>
+                                    <td class="text-center"></td>
+                                    <td [ngStyle]="{'text-align':'end'}">
+                                        <span>${{totalprice}}</span>
+                                    </td>
+                                </tr>
+                                <tr [ngStyle]="{'font-weight': 'bold'}">
+                                    <td class="pl-16 pt-5 pb-5">
+                                        <span>Deposit Required</span>
+                                    </td>
+                                    <td class="text-center"></td>
+                                    <td [ngStyle]="{'text-align':'end'}">
+                                        <span>$0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div fxLayout="row" [ngClass.lt-sm]="{'pt-12': 'true'}" class="px-16 pb-16" fxLayoutAlign="center center">
+                            <button mat-stroked-button color="accent" class="mr-8" (click)="gotoBack()">Back</button>
+                            <button mat-stroked-button color="accent" (click)="gotoNextStep()">Checkout</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

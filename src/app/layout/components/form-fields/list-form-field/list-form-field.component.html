@@ -1,0 +1,292 @@
+<form name="listForm" [formGroup]="listForm">
+    <h3 class="font-weight-600 mb-8">{{listName.description}}</h3>
+    <div class="mb-8" *ngIf="Fields[0].allow_multiple=='Y' && Fields[0].action_field=='S'" fxLayout="row" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" class="mr-4" fxFlex="50">
+            <mat-label>Add Residents</mat-label>
+            <mat-select name="entryLimit" [formControlName]="'entryLimit'" (selectionChange)="selectMoreFields($event)">
+                <mat-option *ngFor="let limit of listcount;" [value]="limit">{{limit}}</mat-option>
+            </mat-select>
+         </mat-form-field>
+    </div>
+    <div formArrayName="listFields" *ngFor="let item of listForm.get('listFields')['controls']; let i = index;">
+        <!--DYNAMIC FIELDS-->
+        <div fxLayout="row wrap" fxLayout.xs="column" [formGroupName]="i">
+            <!--loop on Fields Array To Show Fields By Type-->
+            <div fxFlex="50" *ngFor="let field of Fields; let j = index;"> 
+                <!--Text-->
+                <mat-form-field *ngIf="field.field_type=='text'" appearance="outline" floatLabel="always"
+                    class="w-100-p pr-4 pl-4" (change)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                    <mat-label>{{field.field_label}}</mat-label>
+                    <input matInput [matAutocomplete]="autoPopulate=='Y' ? auto : false" [required]="listName.required=='Y'" [maxlength]="field.field_content.extra_field_content.maximum_size" name="{{field.field_name}}" formControlName="{{field.field_name}}">
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setlistFormfields($event,i)">
+                        <ng-container *ngFor="let option of filteredUsers[i]">
+                            <mat-option *ngIf="!ignoreIds.includes(option.id)" [value]="option" >
+                                {{option.first_name+' '+option.last_name}}
+                            </mat-option>
+                        </ng-container>
+                        <mat-option *ngIf="filteredUsers[i] && filteredUsers[i].length==0" disabled="true">Users Not Found</mat-option>
+                    </mat-autocomplete>
+                    <mat-error>{{field.error_msg}}</mat-error>
+                </mat-form-field>
+
+                <!--Email-->
+                <mat-form-field *ngIf="field.field_type=='email'" appearance="outline" floatLabel="always"
+                    class="w-100-p pr-4 pl-4" (change)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                    <mat-label>{{field.field_label}}</mat-label>
+                    <input matInput [required]="listName.required=='Y'" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" type="email" name="{{field.field_name}}"
+                        formControlName="{{field.field_name}}">
+                    <mat-error *ngIf="field.field_name.error?.pattern">{{field.error_msg}}</mat-error>
+                </mat-form-field>
+
+                <!--Number-->
+                <mat-form-field *ngIf="field.field_type=='number'" appearance="outline" floatLabel="always"
+                    class="w-100-p pr-4 pl-4" (change)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                    <mat-label>{{field.field_label}}</mat-label>
+                    <input matInput [required]="listName.required=='Y'" name="{{field.field_name}}"
+                        formControlName="{{field.field_name}}"
+                        [mask]="field.field_content.extra_field_content.ismasking=='Y' ? field.field_content.extra_field_content.maskingpattern  : ''">
+                    <mat-error>{{field.error_msg}}</mat-error>
+                </mat-form-field>
+
+                <!--Date-->
+                <mat-form-field *ngIf="field.field_type == 'date'" class="w-100-p pr-4 pl-4 datepicker-height" appearance="outline"
+                    floatLabel="always" (dateInput)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                    <mat-label>{{field.field_label}}</mat-label>
+                    <div *ngIf="field.field_content.extra_field_content.pickerType == 'calendar'" fxLayout="row" >
+                        <input matInput [required]="listName.required =='Y'" [min]="field.field_content.extra_field_content.pastdate=='N'?currentDate:''" [matDatepicker]="picker" formControlName="{{field.field_name}}" (dateInput)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                        <mat-datepicker-toggle matSuffix [for]="picker" (dateInput)="updateCheckboxValues(i, field.field_name, field.field_type)"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error>{{field.error_msg}}</mat-error> 
+                    </div>
+                    <div *ngIf="field.field_content.extra_field_content.pickerType != 'calendar'" fxLayout="row">
+                        <input matInput [required]="listName.required =='Y'" [owlDateTimeTrigger]="datetimepicker"
+                            [owlDateTime]="datetimepicker" formControlName="{{field.field_name}}"
+                            (ngModelChange)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                        <owl-date-time [pickerType]="field.field_content.extra_field_content.pickerType"
+                            [hour12Timer]="true" #datetimepicker></owl-date-time>
+                        <mat-icon *ngIf="field.field_content.extra_field_content.pickerType !='timer'" matSuffix>
+                            date_range</mat-icon>
+                        <mat-error>{{field.error_msg}}</mat-error>
+                    </div>
+                </mat-form-field>
+
+
+                <!--Select-->
+                <mat-form-field *ngIf="field.field_type=='select'" appearance="outline" floatLabel="always"
+                    class="w-100-p pr-4 pl-4">
+                    <mat-label class="text-capitalize">{{field.field_label}}</mat-label>
+                    <div *ngIf="field.multiselect =='N'" fxLayout="row" class="w-100-p">
+                        <mat-select *ngIf="field.field_content && field.field_content.options"
+                            [required]="listName.required =='Y'" formControlName="{{field.field_name}}"
+                            (ngModelChange)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                            <mat-option *ngIf="field.multiselect =='N'" value="">Select</mat-option>
+                            <mat-option *ngFor="let options of field.field_content.options" [value]="options.key">
+                                {{options.value}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                    <div *ngIf="field.multiselect =='Y'" fxLayout="row" class="w-100-p">
+                        <mat-select *ngIf="field.field_content && field.field_content.options"
+                            [multiple]="field.multiselect =='Y'" [required]="field.field_required=='Y'"
+                            formControlName="{{field.field_name}}"
+                            (selectionChange)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                            <mat-option *ngFor="let options of field.field_content.options" [value]="options.key">
+                                {{options.value}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                    <mat-error>{{field.error_msg}}</mat-error>
+                </mat-form-field>
+
+                <!--checkbox-->
+                <ng-container *ngIf="field.field_type=='checkbox' && field.field_content.options.length>0">
+                    <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="calc(48%-15px)"
+                        class=" mat-form-field--no-underline">
+                        <mat-label class="fuse-black-fg font-size-22">{{field.field_label}}</mat-label>
+                        <input matInput placeholder="Input" style="display: none">
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" class="mt-12">
+                            <ng-container *ngFor="let checks of field.field_content.options; let j = index"
+                                [formArrayName]="field.field_name">
+                                <mat-checkbox class="mx-4" [formControlName]="j" fxFlex="calc(50%-8px)"
+                                    fxFlex.lt-sm="100" (change)="updateCheckboxValues(i, field.field_name, field.field_type)"
+                                    [value]="checks.value">{{checks.key}}</mat-checkbox>
+                            </ng-container>
+                        </div>
+                        <!-- checkbox array field error -->
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid">
+                            <div fxFlex="calc(100%-8px)" class="mat-error custom-error my-4"
+                                *ngIf="!listItems.controls[i].get(field.field_name).valid">
+                                {{field.error_msg || 'Field Required'}}</div>
+                        </div>
+                    </mat-form-field>
+                </ng-container>
+
+                <!-- time field  -->
+
+                <div *ngIf="field.field_type=='time'">
+
+                    <ng-container *ngIf=" field.text_format=='text' && customTime==true" >
+                        <!-- if time format is 24 Hours -->
+                        <div *ngIf="field.time_format == 'twenty-four' && field.text_format=='text'"
+                            appearance="outline" floatLabel="always">
+                            <div *ngFor="let name of twenty_four_Name">
+                                <div *ngIf="name.id == field.field_name">
+                                    <div *ngIf="name.type == 'twenty_four_hours'">
+                                        <label>{{field.field_label}}: </label>
+                                        <mat-form-field class="pr-4 pl-4" appearance="outline" floatLabel="always">
+                                            <mat-label>HH</mat-label>
+                                            <input matInput [required]="listName.required=='Y'" minlength="1"
+                                                maxlength="2" pattern="^(2[0-4]|1[0-9]|[1-9])$"
+                                                formControlName="{{name.label}}" (keyup)="isValid($event.target.value)"
+                                                type="text" (change)="twentyfourhoursValue($event,name.label)"
+                                                (change)="updateCheckboxValues(i, field.field_name, field.field_type)" />
+                                            <mat-error
+                                                *ngIf="field.field_name.error?.pattern && field.field_name.invalid">
+                                                {{field.error_msg}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="name.type == 'twenty_four_minutes'">
+                                        <label>{{field.field_label}}: </label>
+                                        <mat-form-field class="pr-4 pl-4" appearance="outline" floatLabel="always">
+                                            <mat-label>MM</mat-label>
+                                            <input matInput [required]="listName.required=='Y'" minlength="1"
+                                                maxlength="2" pattern="[1-5]?[0-9]" formControlName="{{name.label}}"
+                                                (change)="updateCheckboxValues(i, field.field_name, field.field_type)"
+                                                (keyup)="isValid($event.target.value)" type="text"
+                                                (change)="twentyfourminutesValue($event,name.label)" />
+                                            <mat-error
+                                                *ngIf="field.field_name.error?.pattern && field.field_name.invalid">
+                                                {{field.error_msg}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- if time is 12 hours  code -->
+
+                        <div *ngIf="field.time_format=='twelve' && field.text_format=='text'" class="w-50-pr-4"
+                            fxFlex="50">
+                            <div *ngFor="let name of twelvehoursName">
+                                <div *ngIf="name.id == field.field_name">
+                                    <div *ngIf="name.type == 'hours'">
+                                        <label>{{field.field_label}}: </label>
+                                        <mat-form-field class="pr-4 w-100-p pl-4" flex appearance="outline"
+                                            floatLabel="always">
+                                            <mat-label>HH</mat-label>
+                                            <input matInput [required]="listName.required=='Y'" minlength="1"
+                                                maxlength="2" pattern="^([1-9]|1[012])$"
+                                                formControlName="{{name.label}}" (keyup)="isValid($event)" type="text"
+                                                (change)="updateCheckboxValues(i, field.field_name, field.field_type)" />
+ 
+                                            <mat-error
+                                                *ngIf="field.field_name.error?.pattern && field.field_name.invalid">
+                                                {{field.error_msg}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div *ngIf="name.type == 'minutes'">
+                                        <label>{{field.field_label}}: </label>
+                                        <mat-form-field class="pr-4 w-100-p pl-4" appearance="outline" floatLabel="always">
+                                            <mat-label>MM</mat-label>
+                                            <input matInput [required]="listName.required=='Y'" minlength="1"
+                                                maxlength="2" pattern="[1-5]?[0-9]" formControlName="{{name.label}}"
+                                                (keyup)="isValid($event.target.value)" type="text"
+                                                (change)="updateCheckboxValues(i, field.field_name, field.field_type)" />
+                                            <!-- <span style="color:red;" *ngIf="element.form_element_id.error?.pattern && element.dirty">Invalid</span> -->
+                                            <mat-error
+                                                *ngIf="field.field_name.error?.pattern && field.field_name.invalid">
+                                                {{field.error_msg}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="name.type == 'time_zone'">
+                                        <div *ngIf="field.time_zone=='select' && field.time_format=='twelve'"
+                                            class="w-50-pr-4">
+                                            <label>AM/PM </label>
+                                            <mat-form-field class="pr-4 pl-4" appearance="outline" fxLayout="column"
+                                                floatLabel="always">
+                                                <mat-select [required]="listName.required=='Y'"
+                                                    formControlName="{{name.label}}"
+                                                    (selectionChange)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                                                    <mat-option value="am">AM</mat-option>
+                                                    <mat-option value="pm">PM</mat-option>
+                                                </mat-select>
+                                                <mat-error>{{field.error_msg}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div *ngIf="field.time_zone=='radio' && field.time_format=='twelve'">
+                                            <mat-form-field class="w-100-p pr-4 pl-4 radioformfield" floatLabel="always">
+                                                <input matInput style="display: none">
+                                                <mat-radio-group [required]="listName.required=='Y'"
+                                                    (change)="updateCheckboxValues(i, field.field_name, field.field_type)"
+                                                    formControlName="{{name.label}}"
+                                                    aria-labelledby="common-radio-group-label">
+                                                    <mat-radio-button class="common-radio-button" name='timezone'
+                                                        value="am">AM</mat-radio-button>
+                                                    <mat-radio-button class="common-radio-button" name='timezone'
+                                                        value="pm">PM</mat-radio-button>
+                                                </mat-radio-group>
+                                                <mat-error>{{field.error_msg}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+
+                    <!-- this is for type select and 12 hours time  -->
+                    <div *ngIf="field.time_format =='twelve' && field.text_format=='dropdown'" class="w-100-p">
+                        <mat-form-field class="w-100-p pr-4 pl-4" appearance="outline" floatLabel="always">
+                            <mat-label>{{field.field_label}}</mat-label>
+                            <input matInput [required]="listName.required =='Y'" [owlDateTimeTrigger]="datetimepicker"
+                                [owlDateTime]="datetimepicker" formControlName="{{field.field_name}}"
+                                (ngModelChange)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                            <owl-date-time [pickerType]="'timer'" [hour12Timer]="true" #datetimepicker></owl-date-time>
+                            <mat-error>{{field.error_msg}}</mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <!-- time select for the 24 hours in select fields  -->
+                    <div *ngIf="field.time_format == 'twenty-four' && field.text_format=='dropdown'">
+                        <mat-form-field class="w-100-p pl-4 pr-4" appearance="outline" floatLabel="always">
+                            <mat-label>{{field.field_label}}</mat-label>
+                            <input matInput [required]="listName.required =='Y'" [owlDateTimeTrigger]="datetimepicker"
+                                [owlDateTime]="datetimepicker" formControlName="{{field.field_name}}"
+                                (ngModelChange)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                            <owl-date-time [pickerType]="'timer'" [hour12Timer]="false" #datetimepicker
+                                (ngModelChange)="updateCheckboxValues(i, field.field_name, field.field_type)"></owl-date-time>
+                            <mat-error>{{field.error_msg}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <!-- if the text format is  text -->
+
+                </div>
+
+                <!--Textarea-->
+                <mat-form-field *ngIf="field.field_type=='textarea'" appearance="outline" floatLabel="always"
+                    class="w-100-p pr-4 pl-4" (change)="updateCheckboxValues(i, field.field_name, field.field_type)">
+                    <mat-label>{{field.field_label}}</mat-label>
+                    <textarea [required]="listName.required =='Y'"
+                        [maxlength]="field.field_content.extra_field_content.maximum_size" name="{{field.field_name}}"
+                        formControlName="{{field.field_name}}" matInput> </textarea>
+                    <mat-error>{{field.error_msg}}</mat-error>
+                </mat-form-field>
+
+            </div>
+        </div>
+
+        <div class="mb-8" *ngIf="Fields[0].allow_multiple=='Y' && Fields[0].action_field=='B'" fxLayout="row" fxLayoutAlign="end center">
+            <mat-icon matSuffix class="material-icons icon-size" fxLayout="row" fxLayoutAlign="center center" *ngIf="enableMultiple==true" (click)="addMoreFields()" class="add-icon">add_circle_outline</mat-icon>
+            <mat-icon matSuffix class="material-icons icon-size delete-icon" *ngIf="i > 0" (click)="onRemoveField(i)" fxLayout="row" fxLayoutAlign="center center">delete</mat-icon>
+        </div>
+
+    </div>
+    <div class="mat-error mt-8" *ngIf="showErrors==true" style="display: none;">Fields Marked * Are Required !</div>
+</form>

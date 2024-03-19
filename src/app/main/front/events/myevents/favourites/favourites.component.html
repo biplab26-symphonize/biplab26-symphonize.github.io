@@ -1,0 +1,106 @@
+<div id="Fav-Events" class="page-layout simple fullwidth layout-box">
+
+    <!-- CONTENT -->
+    <div  class="content" >
+
+        <!--  CONTENT WRAP -->
+        <section class="content-wrap fuse-white-bg">     
+
+            <div class="table-wrap px-28" [ngStyle.lt-md]="{'overflow-x':'auto'}">
+
+                <table class="simple" mat-table  #table [dataSource]="favdataSource" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear >
+                    <caption class="text-center h1 font-weight-900"><h1 class="title text-size" style='font-size:28px'>Favorite Events</h1><hr/> </caption>
+                    <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                        <span *ngIf="column.columnDef!=='select'">
+                            <tr>
+                                <th class="text-capitalized fuse-white-fg" mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}" disabled="{{!column.sortable}}"> {{column.header}} </th>
+                            </tr>                            
+                            <tr>
+                                <td mat-cell *matCellDef="let element"> 
+                                <!--event-title-->
+                                <span *ngIf="column.columnDef=='event_title'">
+                                    {{element[column.columnDef]}} 
+                                </span>
+                                <!--start-date with recurring-->
+                                <span *ngIf="column.columnDef=='event_start_date'">
+                                    {{element[column.columnDef] | date :defaultDateTimeFormat.date_format}} <mat-icon *ngIf="element.is_recurring == 'Y'" class="material-icons">replay</mat-icon>
+                                </span>
+                                <!--Time-->
+                                <span *ngIf="column.columnDef=='event_start_time'">
+                                    <ng-container *ngIf="element.event.is_all_day=='N'">
+                                        {{element[column.columnDef] | date :defaultDateTimeFormat.time_format}}
+                                    </ng-container>
+                                    <ng-container *ngIf="element.event.is_all_day=='Y'">
+                                        All Day
+                                    </ng-container>
+                                </span>
+                                <span *ngIf="column.columnDef=='action'">
+                                    <button type="button" class="mr-8" mat-stroked-button color="accent" (click)="removeAllFavourite(element.event_id)">Remove</button>
+                                </span> 
+                                </td>
+                            </tr>
+                        </span>
+                        <span *ngIf="column.columnDef=='select'">
+                            <tr>
+                                <th mat-header-cell *matHeaderCellDef> 
+                                    <mat-checkbox
+                                        (change)="$event ? masterToggle() : null"
+                                        [checked]="selection.hasValue() && isAllSelected()"
+                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                    </mat-checkbox>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td mat-cell *matCellDef="let element" class="text-capitalize fuse-white-fg"> 
+                                    <mat-checkbox                       
+                                        (click)="$event.stopPropagation()"
+                                        (change)="$event ? selection.toggle(element.event_id) : null"
+                                        [checked]="selection.isSelected(element.event_id)">
+                                    </mat-checkbox>   
+                                </td>
+                            </tr >
+                           
+                        </span>   
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="accent"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+            </div>
+            <!-- / TABLE WRAP -->
+
+            <div *ngIf="this.favdataSource.filteredData.total === 0" class="px-28 table-no-record">
+                <div class="no-record border py-20">No Records Found</div>
+            </div>
+            <div class="my-20 px-28">
+                <mat-paginator 
+                    class="blue-grey-50"
+                    #paginator 
+                    [length]="this.favdataSource.filteredData.total"           
+                    [pageSize]="PaginationOpt.pageSize"
+                    [pageSizeOptions]="PaginationOpt.pageSizeOptions"
+                    showFirstLastButtons>
+                </mat-paginator>
+            </div>
+            <div class="filters mb-12 px-28" fxLayout="row" fxLayoutAlign="start center" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
+                <div fxFlex="12"  fxLayoutAlign="start center" [ngStyle.lt-md]="{'margin-bottom':'8px'}">                                
+                    <mat-checkbox class="mr-28 fuse-black-fg"   
+                        (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        Check All    
+                    </mat-checkbox>
+                </div>             
+                <div fxFlex="80"  fxLayoutAlign="start center" class="check-delete-cancel-btn">
+                    <button type="button" class="mr-8" mat-stroked-button color="accent" [disabled]="(!selection.selected.length) ? true : false" (click)="removeAllFavourite(0)">Remove All</button>
+                    <!-- <button type="button" class="mr-8" mat-stroked-button color="accent" (click)="getPrint()"><mat-icon class="s-20">print</mat-icon> Print</button> -->
+                </div>           
+            </div>
+        </section>
+        <!--  / CONTENT WRAP -->
+        
+    </div>
+    <!-- / CONTENT -->
+
+
+</div>

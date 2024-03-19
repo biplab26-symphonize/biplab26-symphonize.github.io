@@ -1,0 +1,117 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll"
+    id="back-meaeting-room-equipment-add">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Export Form Entries
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                    [routerLink]="'/admin/forms/entries'">
+                    <mat-icon class="mr-8">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+
+                <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+                    [formGroup]="addExport" novalidate>
+
+                    <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16">Export Form Entries
+                    </div>
+
+                    <div class="d-block p-28">
+                        <div fxLayout="row wrap">
+                            <mat-form-field appearance="outline" fxFlex="100" class="pr-8">
+                                <mat-label>Select a form</mat-label>
+                                <mat-select matNativeControl required formControlName="forms"
+                                    (selectionChange)="getFormField($event)" required>
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option *ngFor="let form of formList" [value]="form.form_id">{{form.form_title}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>Status Required</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row wrap" *ngFor="let check of allCheck">
+                            <mat-checkbox class="font-weight-600" [checked]="check.isSelected"  (change)="allSelect($event)">
+                                 Select All
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="row wrap" *ngFor="let formField of formsinfo">
+                            <mat-checkbox class="font-weight-600" [value]="formField.form_element_id" [checked]="formField.isSelected" (change)="getFormFieldId($event,formField.form_element_id)">
+                                {{formField.description}}
+                            </mat-checkbox>
+                        </div>
+                        <mat-error *ngIf="formFieldSelected">Select Field!</mat-error>
+                        <div fxLayout="row wrap">
+                            <mat-form-field appearance="outline" fxFlex="100" class="pr-8">
+                                <mat-label>Select Excel Extension</mat-label>
+                                <mat-select matNativeControl required formControlName="type" required>
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option value=".csv">CSV
+                                    </mat-option>
+                                    <mat-option value=".xlsx">Excel
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>Status Required</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap>
+                            <!-- SERVICE START AND END DATE -->
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>Start Date</mat-label>
+                              <input matInput #input_start_date [max]="dateTo" [matDatepicker]="picker" (focus)="picker.open()" (dateInput)="fromDate($event)" formControlName="start_date">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>End Date</mat-label>
+                              <input matInput #input_end_date [min]="date" [matDatepicker]="picker2" (focus)="picker2.open()" (dateInput)="toDate($event)"
+                                formControlName="end_date">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
+                            <button mat-raised-button
+                                [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none"
+                                (click)="onSaveFieldClick()">Export</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT -->
+</div>
+

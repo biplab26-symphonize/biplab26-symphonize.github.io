@@ -1,0 +1,310 @@
+<div id="settings" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+    
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Settings
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+    
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button"  (click)="onSaveFieldClick($event)" cdkFocusInitial>
+                    <mat-icon class="mr-4">settings_backup_restore</mat-icon>
+                    <span>Update Settings</span>
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+    
+    </div>
+    <!-- / HEADER -->
+<!-- CONTENT -->
+<div class="content" fusePerfectScrollbar>
+
+    <!-- CENTER -->
+    <div class="center p-24 pb-56">
+
+            <!-- SETTINGS -->
+            <form autocomplete="off" #f="ngForm" [formGroup]="SmtpSettingForm" novalidate autocomplete="off">
+
+              <div id="settings">
+                  <div class="mat-title"><mat-icon>settings</mat-icon> TRANSPORT</div>
+                       <div class="mat-card mat-elevation-z2 p-24" fxLayout="column">
+                        <!--DEFAULT LAYOUT-->
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Type</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                    <mat-select formControlName="driver">
+                                            <mat-option value="">Default </mat-option>
+                                            <mat-option value="SMTP">SMTP </mat-option>  
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                      </div>
+                        <!-- <div class="sep"></div> -->
+                     <div class="mat-title"><mat-icon>settings</mat-icon> TRANSPORT SETTINGS</div>
+                       <div  class="mat-card mat-elevation-z2 p-24">
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Outgoing Mail Server Hostname</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="host" required>
+                                    <mat-error class="pt-4">Hostname Required!</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Outgoing Mail Server Port</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                <input type="number" min="1" matInput formControlName="port" required>
+                                <mat-error class="pt-4">Port Number Required!</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">From Name</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                <input  min="1" matInput formControlName="from_name" required>
+                                <mat-error class="pt-4">From Name Required!</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Envelope-From Email Address</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                	<input matInput  placeholder="Enter email address" type="email"  name="from_address" 	
+										   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  formControlName="from_address" >
+										 
+									<ng-container *ngIf="SmtpSettingForm.get('from_address').invalid && (SmtpSettingForm.get('from_address').dirty || SmtpSettingForm.get('from_address').touched)" ngProjectAs="mat-error">
+										<mat-error *ngIf="SmtpSettingForm.get('from_address').errors.required"> email is required</mat-error>
+										<mat-error *ngIf="SmtpSettingForm.get('from_address').errors.pattern">Email pattern is wrong</mat-error>
+									</ng-container> 
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Security</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                    <mat-select formControlName="Security">
+                                            <mat-option value="">None </mat-option>
+                                            <mat-option value="SMTPS">SMTPS</mat-option>  
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Authentication</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                    <mat-select formControlName="Authentication">
+                                            <mat-option value="">None </mat-option>
+                                            <mat-option value="Plain">Plain </mat-option> 
+                                            <mat-option value="Login">Login </mat-option>  
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                         <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Encryption</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                    <mat-select formControlName="encryption">
+                                            <mat-option value="">None </mat-option>
+                                            <mat-option value="tls">TLS </mat-option> 
+                                            <mat-option value="ssl">SSL </mat-option>  
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="mat-title"><mat-icon>settings</mat-icon> AUTHENTICATION</div>
+                       <div  class="mat-card mat-elevation-z2 p-24">
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Username</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="username" required>
+                                    <mat-error class="pt-4">Hostname Required!</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Password</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                <input type="password" matInput formControlName="password" required>
+                                <mat-error class="pt-4">Port Number Required!</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                     </div>
+                     <div class="mat-title"><mat-icon>settings</mat-icon> ADDITIONAL EMAIL ADDRESSES</div>
+                     <div  class="mat-card mat-elevation-z2 p-24">
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                                <div class="mat-subheading-1 mb-4">Reply-To</div>
+                            </div>	
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline">
+                                	<input matInput  placeholder="Enter email address" type="email"  name="replyto" 	
+										   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  formControlName="replyto" >
+										 
+									<ng-container *ngIf="SmtpSettingForm.get('replyto').invalid && (SmtpSettingForm.get('replyto').dirty || SmtpSettingForm.get('replyto').touched)" ngProjectAs="mat-error">
+										<mat-error *ngIf="SmtpSettingForm.get('replyto').errors.required"> email is required</mat-error>
+										<mat-error *ngIf="SmtpSettingForm.get('replyto').errors.pattern">Email pattern is wrong</mat-error>
+									</ng-container> 
+                                </mat-form-field>
+                            </div>
+                        </div>
+                      <div class="sep"></div>
+                      <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">To Recipient(s)</div>
+                        </div>	
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-form-field appearance="outline">
+                                <input matInput  placeholder="Enter email address" type="email"  name="to" 	
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  formControlName="to" >   
+                                <ng-container *ngIf="SmtpSettingForm.get('to').invalid && (SmtpSettingForm.get('to').dirty || SmtpSettingForm.get('to').touched)" ngProjectAs="mat-error">
+                                    <mat-error *ngIf="SmtpSettingForm.get('to').errors.required"> email is required</mat-error>
+                                    <mat-error *ngIf="SmtpSettingForm.get('to').errors.pattern">Email pattern is wrong</mat-error>
+                                </ng-container> 
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Carbon Copy Recipient(s)	</div>
+                        </div>	
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-form-field appearance="outline">
+                                <input matInput  placeholder="Enter email address" type="email"  name="cc" 	
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  formControlName="cc" >
+                                     
+                                <ng-container *ngIf="SmtpSettingForm.get('cc').invalid && (SmtpSettingForm.get('cc').dirty || SmtpSettingForm.get('cc').touched)" ngProjectAs="mat-error">
+                                    <mat-error *ngIf="SmtpSettingForm.get('cc').errors.required"> email is required</mat-error>
+                                    <mat-error *ngIf="SmtpSettingForm.get('cc').errors.pattern">Email pattern is wrong</mat-error>
+                                </ng-container> 
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Blind Carbon Copy Recipient(s)</div>
+                        </div>	
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-form-field appearance="outline">
+                                <input matInput  placeholder="Enter email address" type="email"  name="bcc" 	
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  formControlName="bcc">     
+                                <ng-container *ngIf="SmtpSettingForm.get('bcc').invalid && (SmtpSettingForm.get('bcc').dirty || SmtpSettingForm.get('bcc').touched)" ngProjectAs="mat-error">
+                                    <mat-error *ngIf="SmtpSettingForm.get('bcc').errors.required"> email is required</mat-error>
+                                    <mat-error *ngIf="SmtpSettingForm.get('bcc').errors.pattern">Email pattern is wrong</mat-error>
+                                </ng-container> 
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Custom Headers</div>
+                        </div>	
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-form-field appearance="outline">
+                                <textarea  matInput name="custom_headers"  formControlName="custom_headers"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                   </div>
+
+                   <div class="mat-title"><mat-icon>settings</mat-icon> EMAIL LOG SETTINGS</div>
+                   <div  class="mat-card mat-elevation-z2 p-24">
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Enable Logging</div>
+                        </div>	
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-form-field appearance="outline">
+                                <mat-select formControlName="enable_logging">
+                                        <mat-option value="Y">Yes </mat-option>
+                                        <mat-option value="N">No </mat-option>  
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="sep"></div>
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Maximum Log Entries</div>
+                        </div>	
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-form-field appearance="outline">
+                            <input type="number" min="1" matInput formControlName="max_log_entries" required>
+                            <mat-error class="pt-4">Maximum Log Entries  Required!</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="sep"></div>
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="40">
+                            <div class="mat-subheading-1 mb-4">Maximum Transcript Size</div>
+                        </div>	
+                        <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                            <mat-form-field appearance="outline">
+                            <input type="number" min="1" matInput formControlName="maximum_transcript_size" required>
+                            <mat-error class="pt-4">Maximum Transcript Required!</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                 </div>
+                </div>
+            </form>
+            <!-- / SETTINGS -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+<!-- / CONTENT -->
+</div>    

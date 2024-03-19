@@ -1,0 +1,23 @@
+<div class="h-400-p" fxLayout="column" fxLayoutAlign="space-evenly none">
+    <!-- <div class="h1 mat-title" fxFlex="100">
+        Page Editor
+    </div> -->
+    <div fxFlex="100">
+        <!-- EmptyContainer -->
+        <div class="sp_builder_blank_page my-16" *ngIf="!containerData">
+            <div fxLayout="column" fxLayoutAlign="center center" class="py-16">
+                <div class="h1 mat-title mb-8 text-accent text-uppercase">To get started, add a Container, or add a pre-built page.</div>
+                <div class="h3 mb-8 text-accent text-capitalize">The building process always starts with a container, then columns, then elements.</div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="mt-28">
+                    <button type="button" mat-raised-button color="accent" class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="OpenTemplatesDialog()">
+                        <mat-icon class="s-24 icon fuse-white-fg">add</mat-icon>
+                        Container
+                    </button>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="containerData">
+            <page-container [editEntry]="editEntry" [containerData]="containerData" (onEmptyContainer)="showEmptyMessage($event)" (onUpdateContainer)="submitContainerInfo($event)"></page-container>
+        </ng-container>
+    </div>
+</div>

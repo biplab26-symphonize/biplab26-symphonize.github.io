@@ -1,0 +1,503 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="dining-service-add">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <!-- <button mat-raised-button class="reference-button">
+                      <mat-icon class="mr-4">add</mat-icon>
+                      <span>Add Fields</span>
+                  </button> -->
+                <!-- <button mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                    [routerLink]="'/admin/food-reservation/menu/extras/list'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button> -->
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+                <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+                    [formGroup]="addPrices" novalidate autocomplete="off">
+
+                    <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title}}</div>
+
+                    <div class="d-block p-28">
+                        <input type="hidden" formControlName="id">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="100" class="pr-8">
+                                <mat-label>Select a Room</mat-label>
+                                <mat-select matNativeControl required formControlName="room_id" required
+                                    (selectionChange)="getPricesList($event.value);getAdultsChildren($event.value)">
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option *ngFor="let room of roomList" [value]="room.id">{{room.type}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>Status required</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="isPrice">
+                            <mat-tab-group (selectedTabChange)="onSequenceChangeEvent($event)">
+                                <mat-tab label="Default price">
+                                    <table border="1" width="100%" class="reservation-check-table"
+                                        formArrayName="default_price">
+                                        <thead class="green-bg-color fuse-white-fg">
+                                            <tr>
+                                                <th class="w-5-p">Monday</th>
+                                                <th class="w-5-p">Tuesday</th>
+                                                <th class="w-5-p">Wednesday</th>
+                                                <th class="w-5-p">Thursday</th>
+                                                <th class="w-5-p">Friday</th>
+                                                <th class="w-5-p">Saturday</th>
+                                                <th class="w-5-p">Sunday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr [formGroupName]="i" *ngFor="let item of  getControls(); let i=index">
+                                                <td>
+                                                    <mat-form-field appearance="outline" class="w-100-px mat-input">
+                                                        <input matInput formControlName="price_one"
+                                                            class="example-right-align">
+                                                        <div matPrefix>$&nbsp;</div>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline" class="w-100-px mat-input">
+                                                        <input matInput formControlName="price_two"
+                                                            class="example-right-align">
+                                                        <div matPrefix>$&nbsp;</div>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline" class="w-100-px mat-input">
+                                                        <input matInput formControlName="price_three"
+                                                            class="example-right-align">
+                                                        <div matPrefix>$&nbsp;</div>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline" class="w-100-px mat-input">
+                                                        <input matInput formControlName="price_four"
+                                                            class="example-right-align">
+                                                        <div matPrefix>$&nbsp;</div>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline" class="w-100-px mat-input">
+                                                        <input matInput formControlName="price_five"
+                                                            class="example-right-align">
+                                                        <div matPrefix>$&nbsp;</div>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline" class="w-100-px mat-input">
+                                                        <input matInput formControlName="price_six"
+                                                            class="example-right-align">
+                                                        <div matPrefix>$&nbsp;</div>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline" class="w-100-px mat-input">
+                                                        <input matInput formControlName="price_seven"
+                                                            class="example-right-align">
+                                                        <div matPrefix>$&nbsp;</div>
+                                                    </mat-form-field>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div fxLayout="column" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                                        formArrayName="default_special_price">
+                                        <div [formGroupName]="i" *ngFor="let item of  getSpecialControls(); let i=index"
+                                            fxLayout="column">
+                                            <div fxLayout="row" fxFlex="1 0 auto" class="p-16 border pb-0">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                    <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                                        <mat-label>Adults</mat-label>
+                                                        <mat-select matNativeControl required formControlName="adults"
+                                                            required>
+                                                            <mat-option value="">-Choose-</mat-option>
+                                                            <mat-option *ngFor="let adult of adults" [value]="adult">
+                                                                {{adult}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error>Status required</mat-error>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                                        <mat-label>Children</mat-label>
+                                                        <mat-select matNativeControl required formControlName="children"
+                                                            required>
+                                                            <mat-option value="">-Choose-</mat-option>
+                                                            <mat-option *ngFor="let child of children" [value]="child">
+                                                                {{child}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error>Status required</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row">
+                                                <table border="1" width="100%" class="reservation-check-table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <mat-form-field appearance="outline"
+                                                                    class="w-100-px mat-input">
+                                                                    <input matInput formControlName="guest_one"
+                                                                        class="example-right-align">
+                                                                    <div matPrefix>$&nbsp;</div>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field appearance="outline"
+                                                                    class="w-100-px mat-input">
+                                                                    <input matInput formControlName="guest_two"
+                                                                        class="example-right-align">
+                                                                    <div matPrefix>$&nbsp;</div>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field appearance="outline"
+                                                                    class="w-100-px mat-input">
+                                                                    <input matInput formControlName="guest_three"
+                                                                        class="example-right-align">
+                                                                    <div matPrefix>$&nbsp;</div>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field appearance="outline"
+                                                                    class="w-100-px mat-input">
+                                                                    <input matInput formControlName="guest_four"
+                                                                        class="example-right-align">
+                                                                    <div matPrefix>$&nbsp;</div>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field appearance="outline"
+                                                                    class="w-100-px mat-input">
+                                                                    <input matInput formControlName="guest_five"
+                                                                        class="example-right-align">
+                                                                    <div matPrefix>$&nbsp;</div>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field appearance="outline"
+                                                                    class="w-100-px mat-input">
+                                                                    <input matInput formControlName="guest_six"
+                                                                        class="example-right-align">
+                                                                    <div matPrefix>$&nbsp;</div>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field appearance="outline"
+                                                                    class="w-100-px mat-input mt-20">
+                                                                    <input matInput formControlName="guest_seven"
+                                                                        class="example-right-align">
+                                                                    <div matPrefix>$&nbsp;</div>
+                                                                </mat-form-field>
+                                                                <mat-icon
+                                                                    class="table-img-delete-btn material-icons icon-size fuse-white-fg purple-btn-bg font-size-18"
+                                                                    fxLayout="row" fxLayoutAlign="center center"
+                                                                    (click)="onRemoveRowSpecialPrice(i)"
+                                                                    matTooltip="Delete ">
+                                                                    delete</mat-icon>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxFlex="1 0 auto" class="mt-8">
+                                        <button mat-raised-button
+                                            class="purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                                            type="button" cdkFocusInitial (click)="onAddSelectRowSpecialPrice()">Add
+                                            Number of Guest Special Price</button>
+                                    </div>
+                                </mat-tab>
+                                <div formArrayName="seasonalFormArray">
+                                    <mat-tab
+                                        *ngFor="let price of addPrices.get('seasonalFormArray')['controls']; let m=index">
+                                        <ng-template mat-tab-label>
+                                            <div class="col" style="margin-left: 20px;">{{specialPrices[m].tab_name}}
+                                            </div>
+                                            <button style="color:black" mat-icon-button
+                                                (click)="closeTab(specialPrices[m].tab_id,specialPrices[m].room_id,m,roomIdTab)">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </ng-template>
+                                        <ng-container [formGroupName]="m">
+                                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Name</mat-label>
+                                                    <input matInput formControlName="season_title"
+                                                        [value]="specialPrices[m].tab_name" required>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                <!-- SERVICE START AND END DATE -->
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>From</mat-label>
+                                                    <input matInput #input_date_from required [matDatepicker]="picker"
+                                                        (focus)="picker.open()" formControlName="date_from">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker">
+                                                    </mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                    <mat-error>From date required</mat-error>
+                                                </mat-form-field>
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>To</mat-label>
+                                                    <input matInput #input_date_to [matDatepicker]="picker2"
+                                                        (focus)="picker2.open()" formControlName="date_to">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker2">
+                                                    </mat-datepicker-toggle>
+                                                    <mat-datepicker #picker2></mat-datepicker>
+                                                    <mat-error>To date required</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <table border="1" width="100%" class="reservation-check-table"
+                                                formArrayName="seasonal_price">
+                                                <thead class="green-bg-color fuse-white-fg">
+                                                    <tr>
+                                                        <th class="w-5-p">Monday</th>
+                                                        <th class="w-5-p">Tuesday</th>
+                                                        <th class="w-5-p">Wednesday</th>
+                                                        <th class="w-5-p">Thursday</th>
+                                                        <th class="w-5-p">Friday</th>
+                                                        <th class="w-5-p">Saturday</th>
+                                                        <th class="w-5-p">Sunday</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr [formGroupName]="i"
+                                                        *ngFor="let itemsdp of price.get('seasonal_price')['controls']; let i=index">
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100-px mat-input">
+                                                                <input matInput
+                                                                    formControlName="season_default_price_one"
+                                                                    class="example-right-align">
+                                                                <div matPrefix>$&nbsp;</div>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100-px mat-input">
+                                                                <input matInput
+                                                                    formControlName="season_default_price_two"
+                                                                    class="example-right-align">
+                                                                <div matPrefix>$&nbsp;</div>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100-px mat-input">
+                                                                <input matInput
+                                                                    formControlName="season_default_price_three"
+                                                                    class="example-right-align">
+                                                                <div matPrefix>$&nbsp;</div>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100-px mat-input">
+                                                                <input matInput
+                                                                    formControlName="season_default_price_four"
+                                                                    class="example-right-align">
+                                                                <div matPrefix>$&nbsp;</div>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100-px mat-input">
+                                                                <input matInput
+                                                                    formControlName="season_default_price_five"
+                                                                    class="example-right-align">
+                                                                <div matPrefix>$&nbsp;</div>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100-px mat-input">
+                                                                <input matInput
+                                                                    formControlName="season_default_price_six"
+                                                                    class="example-right-align">
+                                                                <div matPrefix>$&nbsp;</div>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100-px mat-input">
+                                                                <input matInput
+                                                                    formControlName="season_default_price_seven"
+                                                                    class="example-right-align">
+                                                                <div matPrefix>$&nbsp;</div>
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                            <div fxLayout="column" fxLayoutAlign="start center" fxFlex="1 0 auto"  formArrayName="seasonal_special_price">
+                                                <div fxLayout="column" fxFlex="1 0 auto" class="p-16 border pb-0" [formGroupName]="j"
+                                                *ngFor="let itemsp of price.get('seasonal_special_price')['controls']; let j=index">
+                                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                                            <mat-label>Adults</mat-label>
+                                                            <mat-select matNativeControl required
+                                                                formControlName="adults_season" required>
+                                                                <mat-option value="">-Choose-</mat-option>
+                                                                <mat-option *ngFor="let adult of adults"
+                                                                    [value]="adult">
+                                                                    {{adult}}</mat-option>
+                                                            </mat-select>
+                                                            <mat-error>Status required</mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                                            <mat-label>Children</mat-label>
+                                                            <mat-select matNativeControl required
+                                                                formControlName="children_season" required>
+                                                                <mat-option value="">-Choose-</mat-option>
+                                                                <mat-option *ngFor="let child of children"
+                                                                    [value]="child">
+                                                                    {{child}}</mat-option>
+                                                            </mat-select>
+                                                            <mat-error>Status required</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div fxLayout="row">
+                                                        <table border="1" width="100%" class="reservation-check-table"
+                                                           >
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="w-100-px mat-input">
+                                                                            <input matInput
+                                                                                formControlName="season_special_price_one"
+                                                                                class="example-right-align">
+                                                                            <div matPrefix>$&nbsp;</div>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="w-100-px mat-input">
+                                                                            <input matInput
+                                                                                formControlName="season_special_price_two"
+                                                                                class="example-right-align">
+                                                                            <div matPrefix>$&nbsp;</div>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="w-100-px mat-input">
+                                                                            <input matInput
+                                                                                formControlName="season_special_price_three"
+                                                                                class="example-right-align">
+                                                                            <div matPrefix>$&nbsp;</div>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="w-100-px mat-input">
+                                                                            <input matInput
+                                                                                formControlName="season_special_price_four"
+                                                                                class="example-right-align">
+                                                                            <div matPrefix>$&nbsp;</div>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="w-100-px mat-input">
+                                                                            <input matInput
+                                                                                formControlName="season_special_price_five"
+                                                                                class="example-right-align">
+                                                                            <div matPrefix>$&nbsp;</div>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="w-100-px mat-input">
+                                                                            <input matInput
+                                                                                formControlName="season_special_price_six"
+                                                                                class="example-right-align">
+                                                                            <div matPrefix>$&nbsp;</div>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline"
+                                                                            class="w-100-px mat-input mt-20">
+                                                                            <input matInput
+                                                                                formControlName="season_special_price_seven"
+                                                                                class="example-right-align">
+                                                                            <div matPrefix>$&nbsp;</div>
+                                                                        </mat-form-field>
+                                                                        <mat-icon
+                                                                            class="table-img-delete-btn material-icons icon-size fuse-white-fg purple-btn-bg font-size-18"
+                                                                            fxLayout="row" fxLayoutAlign="center center"
+                                                                            (click)="onRemoveRowSeasonSpecialPrice(m,j)"
+                                                                            matTooltip="Delete ">
+                                                                            delete</mat-icon>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </ng-container>
+                                        <div fxLayout="row" fxFlex="1 0 auto" class="mt-8">
+                                            <button mat-raised-button
+                                                class="purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                                                type="button" cdkFocusInitial
+                                                (click)="onAddSelectRowSeasonSpecialPrice(m)">Add
+                                                Number of Guest Special Price</button>
+                                        </div>
+                                    </mat-tab>
+                                </div>
+                            </mat-tab-group>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto" class="mt-8" *ngIf="isPrice">
+                            <button mat-raised-button
+                                class="purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8"
+                                cdkFocusInitial (click)="onSubmit()">Save</button>
+                            <button mat-raised-button
+                                class="purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"
+                                type="button" cdkFocusInitial (click)="addSeasonal()">Add Seasonal Prices</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

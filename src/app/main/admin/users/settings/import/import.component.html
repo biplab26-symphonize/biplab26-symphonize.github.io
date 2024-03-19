@@ -1,0 +1,59 @@
+<div id="settings" class="page-layout simple tabbed" fxLayout="column">
+
+    <!-- CONTENT -->
+    <div class="content">
+        <form class="" name="importform" novalidate autocomplete="off">
+
+            <!-- SETTINGS -->
+            <div id="settings" class="p-24">
+                <!--  Portal Settings -->
+                <div class="mat-title"><mat-icon>import_export</mat-icon> Import Users Settings</div>
+                <!-- DEFAULT PROFILE PICTURE -->
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <!--DOWNLOAD FORMAT OF XLX/CSV-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="mb-4 font-weight-600">Download Sample Format : </div>
+                            <div class="font-size-14 secondary-text">Download Import Document Format with default fields/columns.</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <mat-label>Format</mat-label>
+                                <mat-select name="format" [(ngModel)]="format">
+                                    <ng-container *ngFor="let formats of FormatsList | keyvalue">
+                                        <mat-option *ngIf="formats.key!==''" [value]="formats.key">
+                                        {{formats.value}}
+                                        </mat-option>
+                                    </ng-container>    
+                                </mat-select>
+                            </mat-form-field>   
+                        </div>
+                        <div class="preview mb-24 ml-24" fxLayout="row" fxLayoutAlign="start center" fxFlex="33">
+                            <button *ngIf="format" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" (click)="DownloadFormat()">
+                                <mat-icon class="mr-4">cloud_download</mat-icon>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="mb-4 font-weight-600">Import Users  </div>
+                            <div class="font-size-14 secondary-text">Download Import Document Format with default fields/columns.</div>
+                        </div>
+                        
+                        <app-file-upload fxLayout="column" fxLayoutAlign="top" fxFlex="33" [uploadlabel]="''" [cropper]="false" [docUpload]="true" (imageUploaded)="setImportModelValue($event)" [uploadInfo]="uploadInfo?.importusers" ></app-file-upload>   
+                        
+                        <div class="preview p-16" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <button *ngIf="import" mat-button class="primary" >
+                                <mat-icon class="mr-4">cloud_download</mat-icon>
+                                <span>Download</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <!-- / CONTENT -->

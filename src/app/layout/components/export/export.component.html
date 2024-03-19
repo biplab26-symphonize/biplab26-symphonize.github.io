@@ -1,0 +1,14 @@
+<h1 matDialogTitle class="mb-0">Select Export Type</h1>
+<div mat-dialog-content class="mat-dialog-export">
+    <mat-radio-group
+    class="export-radio-group"
+    [(ngModel)]="exportOption">
+    <mat-radio-button class="export-radio-button" *ngFor="let export of exportList | keyvalue" [value]="export.key">
+        {{export.value}}
+    </mat-radio-button>
+    </mat-radio-group>
+</div>
+<div mat-dialog-actions class="py-24">
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8" [disabled]="!exportOption" (click)="dialogRef.close(exportOption)">Select</button>
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none ml-0" (click)="dialogRef.close('')">Cancel</button>
+</div>

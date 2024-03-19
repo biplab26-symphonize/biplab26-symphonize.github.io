@@ -1,0 +1,104 @@
+<div id="front-meeting-room-confirmation" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>Meeting Room</strong>
+                    </span>
+                </div>
+            </div>
+        </div> 
+    </div> 
+
+    <!-- content -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <form class="br-radius-8"  [formGroup]="confirmation"  autocomplete="off" (ngSubmit)="onsubmit()" >
+            <div class="content-wrap fuse-white-bg p-28">
+                <div class="w-100-p border pt-24" fxLayout="row" fxLayoutAlign="start center"
+                [ngStyle]="{'background': '#f5f5f5','margin-bottom': '10px','padding-left': '10px'}">
+                    <mat-form-field appearance="outline" fxFlex.lt-sm="100" class="pr-8" fxFlex="25">
+                        <mat-label>Step</mat-label>
+                        <mat-select matNativeControl  formControlName="step"  (selectionChange)="OnselectStep($event)">
+                            <mat-option [routerLink]="['/meeting-room']" value="step1">Step 1- Rooms</mat-option>
+                            <mat-option value="step2">Step 2- Book Room</mat-option>
+                            <mat-option value="step3" >Step 3- Room Setup</mat-option>
+                            <mat-option value="step4" >Step 4- Amenities</mat-option>
+                            <mat-option value="step5" >Step 5- Checkout</mat-option>
+                            <mat-option value="step6" >Step 6- Confirmation</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <h1 class="font-weight-600 font-size-18 accent fuse-white-fg p-16 w-100-p d-block m-0">YOUR BOOKING :</h1>
+                <div class="p-16 border" *ngIf="RoomData" fxLayout="row wrap" fxLayoutAlign="start baseline" class="mb-20 border p-16">
+                    <div>
+                        <p *ngIf="RoomData.image == ''">
+                            <img [src]="default_img" height="450" width="350" />
+                        </p>
+                        <p *ngIf="RoomData.image != ''">
+                            <img [src]="RoomData.image" alt=" no image" height="450" width="350">
+                        </p>
+                    </div>
+                    <div class="line-height-32 ml-28 booking-details">
+                        <h1 class="text-bold font-size-24 text-capitalize">{{RoomData.title}}</h1>
+                        <p class="font-weight-600">Capacity :{{RoomData.capacity}}</p>
+                        <p class="font-weight-600">Date : {{this.CurrentSelectdData[0].date | date: defaultDateTimeFormat.date_format}}</p>
+                        <p class="font-weight-600" *ngIf="ShowHourly == false ">Duration : {{this.CurrentSelectdData[0].duration.value}} </p>
+                        <p class="font-weight-600" *ngIf="ShowHourly == true ">Duration :{{this.HourFirstValue[0]}} - {{this.HourLastValue[0]}} </p>
+                        <p class="font-weight-600">Attendees : {{this.CurrentSelectdData[0].attendees}}</p>
+                        <p class="font-weight-600" *ngIf="AllLayout">Layout : {{AllLayout.title}}</p>
+                        <p class="font-weight-600" *ngIf="AllEquipment">  Equipments :<span *ngFor="let equipment of AllEquipment"> {{equipment.data.title}} X {{equipment.unit}}</span></p>
+                        <p class="font-weight-600" *ngIf="CurrentSelectdData[0].Food_drink.length>0">  Food & Drink :<span *ngFor="let food of CurrentSelectdData[0].Food_drink"> {{food.title}} X {{food.quantity}}</span></p>
+                    </div>
+                </div>
+
+                <div>    
+                    <h1 class="font-weight-600 font-size-20 text-capitalize mb-8 mt-28">Personal Details :</h1>
+                    <div class="p-16 border line-height-32" *ngIf="CurrentSelectdData">
+                        <div>
+                            <div class="font-weight-600 text-capitalize" fxLayout="row wrap" fxLayoutAlign="start center">
+                               <div fxFlex="15" fxFlex.lt-sm="100"> First Name : </div>
+                                <div fxFlex="85" fxFlex.lt-sm="100"> {{this.CurrentSelectdData[0].first_name}} </div>
+                            </div>
+
+                            <div class="font-weight-600 text-capitalize" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="15" fxFlex.lt-sm="100"> Last Name : </div>
+                                <div fxFlex="85" fxFlex.lt-sm="100"> {{CurrentSelectdData[0].last_name}}</div>
+                            </div>
+
+                            <div class="font-weight-600" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="15" fxFlex.lt-sm="100"> Email : </div> 
+                                <div fxFlex="85" fxFlex.lt-sm="100"> {{this.CurrentSelectdData[0].email}} </div>
+                            </div>
+
+                            <div class="font-weight-600" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="15" fxFlex.lt-sm="100"> Phone : </div> 
+                                <div fxFlex="85" fxFlex.lt-sm="100"> {{CurrentSelectdData[0].phone | mask:CustomFormats.phone}}</div>
+                            </div>
+
+                            <div class="font-weight-600" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="15" fxFlex.lt-sm="100"> Note : </div>
+                                <div fxFlex="85" fxFlex.lt-sm="100"> {{CurrentSelectdData[0].note}} </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+ 
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-sm="row" class="w-100-p mt-28">
+                    <div class="pr-8 submit-btn  text-center">
+                        <button [ngStyle.lt-md]="{'width': '176px'}" type="button" color="accent" (click)="onClickBack()"  class="px-32" mat-stroked-button >Back</button>
+                    </div> 
+                    <div class="pr-8 submit-btn  text-center">
+                        <button  color="accent" class="px-32" mat-stroked-button>Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,83 @@
+<div class="page-layout carded" id="event-register-attendess">
+        <!-- HEADER -->  
+        <div class="header px-16">
+
+            <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+    
+                <div class="header-top">
+    
+                    <div class="logo text-center">
+                        <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"  [ngStyle.lt-sm]="{'font-size.px': 30}">
+                            <strong> Events Attendee </strong>
+                        </span>
+                    </div>
+                    <!-- HEADER TEXT -->
+    
+                </div>
+                <!-- / TOOLBAR -->
+            </div>
+            
+        </div>
+        <!-- / HEADER -->
+
+    <!-- CENTER -->
+    <div class=" content">
+        <!-- CONTENT -->
+        <div class="content-wrap fuse-white-bg p-28">
+            <form fxLayout="row" name="attendeelist" novalidate autocomplete="off" fxLayoutAlign="center">
+                <div class="border fuse-common-card w-75-p br-ds-0" fxFlex="100" fxFlexAlign="center">
+                    <div>
+                        <div class="h1 p-16 tex-center dt-paginations" [ngStyle.lt-sm]="{'font-size.px': 20 }">
+                            {{length + ' people have registered for this event'}}
+                        </div>
+                    </div>
+                    <!-- EventName -->
+                    <div class="p-16" fxLayout="row" fxLayoutAlign="start center" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start">
+                        <div class="h2 text-bold" fxFlex ="40" fxFlex.lt-sm="100" [ngStyle.lt-sm]="{'font-size.px': 15, 'margin-bottom.px':15}">
+                            <mat-icon class="icon s-20 mr-4">people_outline</mat-icon> People Attending : {{eventInfo.event_title}}
+                        </div>
+                        <div fxFlex="60"  fxLayoutAlign="end end" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start">
+                            <div fxLayout="row" class="mr-8">
+                                <button [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" mat-stroked-button type="button" color="accent" (click)="getPrint()" class="mr-8"> <mat-icon class="icon s-16 mr-4">print</mat-icon> Print </button>
+                                <button [disabled]="eventInfo.registered==true && EventSettings && EventSettings.event_registration_settings.restrict_registration_only_once=='Y'" [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" mat-stroked-button type="button" color="accent" [routerLink]="['/events/register',event_id]" *ngIf="joinRegister==true" class="mr-8">  <mat-icon class="icon s-16 mr-4">event_seat</mat-icon> Register </button>
+                                <button [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" mat-stroked-button type="button" color="accent" [routerLink]="['/events/register',event_id]" *ngIf="joinWaitList==true">  <mat-icon class="icon s-16 mr-4">event_seat</mat-icon> Join Waitlist </button>
+                            </div>   
+                            <button *ngIf="calendarSlug==''" [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" mat-stroked-button type="button" color="accent" [routerLink]="['/events']" class="mr-8">  <mat-icon class="icon s-16 mr-4">arrow_back</mat-icon> Return to Events </button>
+                            <button *ngIf="calendarSlug!==''" [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" mat-stroked-button type="button" color="accent" [routerLink]="['/event/',calendarSlug]" class="mr-8">  <mat-icon class="icon s-16 mr-4">arrow_back</mat-icon> Return to Events </button>
+                        </div>                        
+                    </div>
+                    <!-- Note -->
+                    <div class="px-16" fxLayout="row" fxLayoutAlign="start end">
+                        <div class="h4 warn-fg" >
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon class="red-fg icon icon s-16 mr-4">info</mat-icon>
+                                <div>Note: The list below indicates the attendees registered for this event.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ATTENDEE LIST -->
+                    <div class="table-wrap p-16" fxLayout="row" fxLayoutAlign="start end" [ngStyle.lt-md]="{'overflow-x':'auto', 'padding': '0'}">
+                        <table width="100" class="border w-100-p attendee-list-table" mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" >
+                            <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                                <th class="fuse-black-fg blue-grey-100-bg force-h4-size force-font-weight-900 px-8" mat-header-cell *matHeaderCellDef> {{column.header}} </th>
+                                <td mat-cell *matCellDef="let element"> 
+                                    <!-- avatar -->
+                                    <span *ngIf="column.columnDef=='avatar'">
+                                        <img class="avatar" [alt]="element.name" [src]="element.avatar" (error)="element.avatar=_defaultAvatar" />
+                                    </span>
+
+                                    <span *ngIf="column.columnDef!=='guestcount' && column.columnDef!=='avatar'">{{element[column.columnDef] | titlecase}}</span>
+                                    <span *ngIf="column.columnDef=='guestcount'">{{element[column.columnDef]}}</span>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div>
+                </div>
+            </form>    
+        </div>
+        
+    </div>
+</div>
+

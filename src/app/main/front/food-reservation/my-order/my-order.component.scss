@@ -1,0 +1,86 @@
+@import "src/@fuse/scss/fuse";
+
+#front-dining-myOrder {
+    .content-wrap{ 
+        padding-bottom: 3px !important;
+    }
+    .header { 
+        height: 400px;
+        min-height: 400px;
+        max-height: 400px;
+        position: relative;
+        background-size: cover;
+        background-position: center;  
+        background-repeat: no-repeat;
+        background-color: #FAFAFA;
+
+        background-image: url('/assets/images/backgrounds/maintenance-request.jpg');
+
+        @include media-breakpoint(xs) {
+            height: 300px;
+            min-height: 300px;
+            max-height: 300px;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            // background: rgba(0, 0, 0, 0.45);
+        }
+
+        .header-content {
+
+            .header-top {
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+    }
+
+    .content{
+        padding: 0 !important;
+        .content-wrap{
+            max-width: 1080px; 
+            margin: 0 auto; 
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }              
+    }
+
+}
+
+@include media-breakpoint('lt-sm') {
+    .mb-40.px-28.pt-28 {
+        padding: 20px 20px 0 20px !important;
+        margin-bottom: 10px !important;
+    }
+
+    table {
+        overflow-x: auto;
+        display: block;
+        padding-right: 0 !important;
+        padding-left: 0 !important;  
+
+        th {
+            white-space: nowrap !important;
+        }
+    }
+
+    .px-28.delete-btn {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    .table-wrap.px-28,
+    .pagination.px-28 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+ }

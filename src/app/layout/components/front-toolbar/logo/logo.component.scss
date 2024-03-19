@@ -1,0 +1,24 @@
+@import "src/@fuse/scss/fuse";
+.logo{
+
+	@include media-breakpoint('gt-md') {
+        margin-left: 16px;
+	}
+
+	img{
+		max-width: 200px;
+    	object-fit: contain;
+    	object-position: left center;
+    	height: 52px;
+    	min-height: 52px;
+    	max-height: 52px;
+
+    	@include media-breakpoint('lt-lg') {
+        	max-width: 190px;
+		}
+
+    	@include media-breakpoint('xs') {
+        	max-width: 160px;
+		}
+	}
+}

@@ -1,0 +1,377 @@
+<div id="food-Reservation-pickup-delivery" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                        [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>To Go Order</strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+
+            </div>
+            <!-- / TOOLBAR -->`
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <div class="content-wrap fuse-white-bg p-28" fxLayout="column">
+            <!-- <div class="font-weight-600 blue-grey-50 p-12 mb-20 line-height-28">
+                <p>It can take up to one hour to complete the delivery.</p>
+                <p>Food orders must be submitted by the following times:</p>
+                <p>- Building 'A' and 'B' by 3:00PM</p>
+                <p>- Building 'C', 'D', E and Cottages by 3:30PM.</p>
+                <p>All orders placed after 3:30PM should be made by calling To-Go Orders at 843-689-7005.</p>
+                <p>Orders placed after 3:30PM will be delivered after 6:30PM.</p>
+            </div> -->
+
+            <div fxLayout="row" fxLayout.lt-sm="column">
+                <div fxFlex="60" class="mr-20" fxFlex.lt-sm="100" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                    <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" class="w-60-p" autocomplete="off"
+                        [formGroup]="addOrder" novalidate autocomplete="off">
+                        <div class=" min-h-200 p-16 border border-radius-4">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutAlign.lt-sm="center center"
+                                class="mb-40">
+                                <div>
+                                    <button mat-stroked-button color="accent" class="mr-20" cdkFocusInitial
+                                        (click)="removeAddress();patchValue()"
+                                        [ngClass]="optionType == 'pickup' ? 'active' : 'none'">
+                                        PICKUP
+                                    </button>
+
+                                    <button mat-stroked-button color="accent" cdkFocusInitial
+                                        (click)="getAddress();patchValue()"
+                                        [ngClass]="optionType == 'delivery' ? 'active' : 'none'">
+                                        DELIVERY
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div fxLayout="column">
+                                <div fxLayout="row wrap" fxLayoutAlign="start start">
+                                    <div *ngIf="optionType == 'pickup'" fxFlex="50" fxFlex.lt-sm="100" class="pr-8 media-pr-0">
+                                        <mat-form-field appearance="outline" fxFlex="100">
+                                            <mat-label>Location</mat-label>
+                                            <mat-select formControlName="location"
+                                                (selectionChange)="getDateTime($event)" required>
+                                                <mat-option *ngFor="let location of locations" [value]="location.id">
+                                                    {{location.location_name}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+
+                                    <div *ngIf="locationTime && optionType == 'pickup'"
+                                        class="border border-radius-4 word-brk-all text-capitalize address-feild"
+                                        fxFlex="50">
+                                        <span class="font-weight-600"> Address : </span>
+                                        <span class="font-size-14"> {{pickupaddress}} </span>
+                                    </div>
+
+                                    <div *ngIf="locationDate || optionType == 'delivery'" fxFlex="50" fxFlex.lt-sm="100">
+                                        <mat-form-field appearance="outline" fxFlex="100" class="mr-8">
+                                            <mat-label *ngIf="optionType == 'delivery'">Delivery Date</mat-label>
+                                            <mat-label *ngIf="optionType == 'pickup'">Pick-Up Date</mat-label>
+                                            <input matInput #input_delivery_date [matDatepicker]="picker"
+                                                [min]="todayDate" readonly (focus)="picker.open()"
+                                                formControlName="delivery_date" (dateInput)="getDate($event)" required>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                            <mat-error>Date Required !</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+
+                                    <div *ngIf="locationTime && optionType == 'pickup'" fxFlex="50" fxFlex.lt-sm="100">
+
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                                            <mat-label>Time</mat-label>
+                                            <mat-select placeholder="-Select-" formControlName="time"
+                                                (selectionChange)="getTime($event)">
+                                                <mat-option value="ASAP">ASAP</mat-option>
+                                                <mat-option value="08:00 AM">08:00 am</mat-option>
+                                                <mat-option value="08:15 AM">08:15 am</mat-option>
+                                                <mat-option value="08:30 AM">08:30 am</mat-option>
+                                                <mat-option value="08:45 AM">08:45 am</mat-option>
+                                                <mat-option value="09:00 AM">09:00 am</mat-option>
+                                                <mat-option value="09:15 AM">08:15 am</mat-option>
+                                                <mat-option value="09:30 AM">08:30 am</mat-option>
+                                                <mat-option value="09:45 AM">08:45 am</mat-option>
+                                                <mat-option value="10:00 AM">10:00 am</mat-option>
+                                                <mat-option value="10:15 AM">10:15 am</mat-option>
+                                                <mat-option value="10:30 AM">10:30 am</mat-option>
+                                                <mat-option value="10:45 AM">10:45 am</mat-option>
+                                                <mat-option value="11:00 AM">11:00 am</mat-option>
+                                                <mat-option value="11:15 AM">11:15 am</mat-option>
+                                                <mat-option value="11:30 AM">11:30 am</mat-option>
+                                                <mat-option value="11:45 AM">11:45 am</mat-option>
+                                                <mat-option value="12:00 PM">12:00 pm</mat-option>
+                                                <mat-option value="12:15 PM">12:15 pm</mat-option>
+                                                <mat-option value="12:30 PM">12:30 pm</mat-option>
+                                                <mat-option value="12:45 PM">12:45 pm</mat-option>
+                                                <mat-option value="01:00 PM">01:00 pm</mat-option>
+                                                <mat-option value="01:15 PM">01:15 pm</mat-option>
+                                                <mat-option value="01:30 PM">01:30 pm</mat-option>
+                                                <mat-option value="01:45 PM">01:45 pm</mat-option>
+                                                <mat-option value="02:00 PM">02:00 pm</mat-option>
+                                                <mat-option value="02:15 PM">02:15 pm</mat-option>
+                                                <mat-option value="02:30 PM">02:30 pm</mat-option>
+                                                <mat-option value="02:45 PM">02:45 pm</mat-option>
+                                                <mat-option value="03:00 PM">03:00 pm</mat-option>
+                                                <mat-option value="03:15 PM">03:15 pm</mat-option>
+                                                <mat-option value="03:30 PM">03:30 pm</mat-option>
+                                                <mat-option value="03:45 PM">03:45 pm</mat-option>
+                                                <mat-option value="04:00 PM">04:00 pm</mat-option>
+                                                <mat-option value="04:15 PM">04:15 pm</mat-option>
+                                                <mat-option value="04:30 PM">04:30 pm</mat-option>
+                                                <mat-option value="04:45 PM">04:45 pm</mat-option>
+                                                <mat-option value="05:00 PM">05:00 pm</mat-option>
+                                                <mat-option value="05:15 PM">05:15 pm</mat-option>
+                                                <mat-option value="05:30 PM">05:30 pm</mat-option>
+                                                <mat-option value="05:45 PM">05:45 pm</mat-option>
+                                                <mat-option value="06:00 PM">06:00 pm</mat-option>
+                                                <mat-option value="06:15 PM">06:15 pm</mat-option>
+                                                <mat-option value="06:30 PM">06:30 pm</mat-option>
+                                                <mat-option value="06:45 PM">06:45 pm</mat-option>
+                                                <mat-option value="07:00 PM">07:00 pm</mat-option>
+                                                <mat-option value="07:15 PM">07:15 pm</mat-option>
+                                                <mat-option value="07:30 PM">07:30 pm</mat-option>
+                                                <mat-option value="07:45 PM">07:45 pm</mat-option>
+                                                <mat-option value="08:00 PM">08:00 pm</mat-option>
+                                                <mat-option value="08:15 PM">08:15 pm</mat-option>
+                                                <mat-option value="08:30 PM">08:30 pm</mat-option>
+                                                <mat-option value="08:45 PM">08:45 pm</mat-option>
+                                                <mat-option value="09:00 PM">09:00 pm</mat-option>
+                                                <mat-option value="09:15 PM">09:15 pm</mat-option>
+                                                <mat-option value="09:30 PM">09:30 pm</mat-option>
+                                                <mat-option value="09:45 PM">09:45 pm</mat-option>
+                                                <mat-option value="10:00 PM">10:00 pm</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <!-- <div *ngIf="locationDate" fxFlex="50" class="ml-8">
+                                        <mat-form-field appearance="outline" fxFlex="100">
+                                            <mat-label *ngIf="optionType == 'delivery'">Delivery date</mat-label>
+                                            <mat-label *ngIf="optionType == 'pickup'">Pick-up date</mat-label>
+                                            <input matInput #input_delivery_date required [matDatepicker]="picker"
+                                                (focus)="picker.open()" formControlName="delivery_date">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                            <mat-error>Date required</mat-error>
+                                        </mat-form-field>
+                                    </div> -->
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="start baseline">
+                                    <!-- <div *ngIf="locationDate" fxFlex="50">
+                                        <mat-form-field appearance="outline" fxFlex="100" class="mr-8">
+                                            <mat-label *ngIf="optionType == 'delivery'">Delivery date</mat-label>
+                                            <mat-label *ngIf="optionType == 'pickup'">Pick-up date</mat-label>
+                                            <input matInput #input_delivery_date required [matDatepicker]="picker"
+                                                (focus)="picker.open()" formControlName="delivery_date">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                            <mat-error>Date required</mat-error>
+                                        </mat-form-field>
+                                    </div> -->
+
+                                    <!-- <div *ngIf="address" fxFlex="50" class="pr-8">
+                                        <mat-form-field appearance="outline" fxFlex="100" class="mat-wrapper-p-0">
+                                            <mat-label>Building</mat-label>
+                                            <input matInput formControlName="building" name="building" required>
+                                            <mat-error>Building Name required</mat-error>
+                                        </mat-form-field>
+                                    </div> -->
+
+                                    <!-- <div *ngIf="locationTime" fxFlex="50">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="mat-wrapper-p-0">
+                                            <mat-label>Time</mat-label>
+                                            <mat-select placeholder="-Select-"
+                                            formControlName="time">
+                                            <mat-option value="">ASAP</mat-option>
+                                            <mat-option value="08:00 am">08:00 am</mat-option>
+                                            <mat-option value="08:15 am">08:15 am</mat-option>
+                                            <mat-option value="08:30 am">08:30 am</mat-option>
+                                            <mat-option value="08:45 am">08:45 am</mat-option>
+                                            <mat-option value="09:00 am">09:00 am</mat-option>
+                                            <mat-option value="09:15 am">08:15 am</mat-option>
+                                            <mat-option value="09:30 am">08:30 am</mat-option>
+                                            <mat-option value="09:45 am">08:45 am</mat-option>
+                                            <mat-option value="10:00 am">10:00 am</mat-option>
+                                            <mat-option value="10:15 am">10:15 am</mat-option>
+                                            <mat-option value="10:30 am">10:30 am</mat-option>
+                                            <mat-option value="10:45 am">10:45 am</mat-option>
+                                            <mat-option value="11:00 am">11:00 am</mat-option>
+                                            <mat-option value="11:15 am">11:15 am</mat-option>
+                                            <mat-option value="11:30 am">11:30 am</mat-option>
+                                            <mat-option value="11:45 am">11:45 am</mat-option>
+                                            <mat-option value="12:00 pm">12:00 pm</mat-option>
+                                            <mat-option value="12:15 pm">12:15 pm</mat-option>
+                                            <mat-option value="12:30 pm">12:30 pm</mat-option>
+                                            <mat-option value="12:45 pm">12:45 pm</mat-option>
+                                            <mat-option value="01:00 pm">01:00 pm</mat-option>
+                                            <mat-option value="01:15 pm">01:15 pm</mat-option>
+                                            <mat-option value="01:30 pm">01:30 pm</mat-option>
+                                            <mat-option value="01:45 pm">01:45 pm</mat-option>
+                                            <mat-option value="02:00 pm">02:00 pm</mat-option>
+                                            <mat-option value="02:15 pm">02:15 pm</mat-option>
+                                            <mat-option value="02:30 pm">02:30 pm</mat-option>
+                                            <mat-option value="02:45 pm">02:45 pm</mat-option>
+                                            <mat-option value="03:00 pm">03:00 pm</mat-option>
+                                            <mat-option value="03:15 pm">03:15 pm</mat-option>
+                                            <mat-option value="03:30 pm">03:30 pm</mat-option>
+                                            <mat-option value="03:45 pm">03:45 pm</mat-option>
+                                            <mat-option value="04:00 pm">04:00 pm</mat-option>
+                                            <mat-option value="04:15 pm">04:15 pm</mat-option>
+                                            <mat-option value="04:30 pm">04:30 pm</mat-option>
+                                            <mat-option value="04:45 pm">04:45 pm</mat-option>
+                                            <mat-option value="05:00 pm">05:00 pm</mat-option>
+                                            <mat-option value="05:15 pm">05:15 pm</mat-option>
+                                            <mat-option value="05:30 pm">05:30 pm</mat-option>
+                                            <mat-option value="05:45 pm">05:45 pm</mat-option>
+                                            <mat-option value="06:00 pm">06:00 pm</mat-option>
+                                            <mat-option value="06:15 pm">06:15 pm</mat-option>
+                                            <mat-option value="06:30 pm">06:30 pm</mat-option>
+                                            <mat-option value="06:45 pm">06:45 pm</mat-option>
+                                            <mat-option value="07:00 pm">07:00 pm</mat-option>
+                                            <mat-option value="07:15 pm">07:15 pm</mat-option>
+                                            <mat-option value="07:30 pm">07:30 pm</mat-option>
+                                            <mat-option value="07:45 pm">07:45 pm</mat-option>
+                                            <mat-option value="08:00 pm">08:00 pm</mat-option>
+                                            <mat-option value="08:15 pm">08:15 pm</mat-option>
+                                            <mat-option value="08:30 pm">08:30 pm</mat-option>
+                                            <mat-option value="08:45 pm">08:45 pm</mat-option>
+                                            <mat-option value="09:00 pm">09:00 pm</mat-option>
+                                            <mat-option value="09:15 pm">09:15 pm</mat-option>
+                                            <mat-option value="09:30 pm">09:30 pm</mat-option>
+                                            <mat-option value="09:45 pm">09:45 pm</mat-option>
+                                            <mat-option value="10:00 pm">10:00 pm</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div> -->
+                                </div>
+
+                                <div fxLayout="row">
+                                    <div *ngIf="optionType == 'delivery'" fxFlex="50" class="pr-8" fxFlex.lt-sm="100">
+                                        <mat-form-field appearance="outline" fxFlex="100" class="mat-wrapper-p-0">
+                                            <mat-label>Address</mat-label>
+                                            <input matInput formControlName="building" name="building"
+                                                (change)="getUserAddress($event)" required>
+                                            <mat-error>Building Name Required !</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- <div *ngIf="address" fxFlex="50">
+                                        <mat-form-field appearance="outline" fxFlex="100" class="mat-wrapper-p-0">  
+                                            <mat-label>Street</mat-label>
+                                            <input matInput formControlName="street" name="street" required>
+                                            <mat-error>Street Name required</mat-error>
+                                        </mat-form-field>
+                                    </div> -->
+                                </div>
+
+                                <div *ngIf="optionType" class="mb-20" [ngClass.lt-sm]="{'text-center': 'true'}">
+                                    <!-- <div *ngIf="address" class="my-16 text-capitalize font-size-14"> See delivery area
+                                        for each of our locations and click on the area you live in.</div>
+                                    <div *ngIf="optionType == 'delivery'" class="text-capitalize mb-16 font-size-14">
+                                        Your order will be delivered from {{locationAddress2}}.</div> -->
+                                    <mat-checkbox class="example-margin mr-8" formControlName="lunch"
+                                        [checked]="isChecked['lunch']" (change)="getMeal($event,'lunch')" value="lunch">Lunch
+                                    </mat-checkbox>
+                                    <mat-checkbox class="example-margin" formControlName="dinner" [checked]="isChecked['dinner']"
+                                        (change)="getMeal($event,'dinner')" value="dinner">Dinner
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="end center" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start center">
+                                <div fxLayout="row" fxLayoutAlign="end center" [ngClass.lt-sm]="{'mb-12': 'true'}">
+                                    <button mat-stroked-button color="accent" cdkFocusInitial
+                                   (click)="restAll()" class="mr-20 reset-btn" >
+                                   RESET
+                                    </button>
+                                    <button mat-stroked-button color="accent" cdkFocusInitial
+                                        [routerLink]="'/to-go-order'" class="mr-20 back-btn">
+                                        BACK
+                                    </button>
+                                </div>
+
+                                <button mat-stroked-button color="accent" cdkFocusInitial (click)="onSubmit()">
+                                    CONTINUE
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div fxFlex="40" class="border" fxFlex.lt-sm="100"
+                    [ngClass.lt-sm]="{'w-100-p': 'true' , 'mt-20':'true'}">
+                    <h4 class="font-weight-600 font-size-18 accent fuse-white-fg p-12 text-center"> Your Order </h4>
+                    <div *ngFor="let data of orderDataArr; let k = index;" class="p-16">
+                        <!-- <button mat-raised-button color="accent" cdkFocusInitial
+                            (click)="removeOrder(k)">Cancel
+                        </button><br> -->
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-8">
+                            <div class="font-weight-600 text-capitalize"> {{data.product_name}} </div>
+                            <mat-icon (click)="removeOrder(k)" class="border p-12 font-size-20" fxLayout="row"
+                                fxLayoutAlign="center center">clear</mat-icon>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-16">
+                            <div class="font-weight-600 text-capitalize">Quantity: {{data.quantity}} </div>
+                        </div>
+
+                        <div *ngFor="let item of data.numberOfSideAndExtras; let i = index;" class="mb-16">
+                            <div class="font-weight-600 mb-8 font-size-16"
+                                *ngIf="data.sideDishFrontArr[i] || data.extrasFrontArr[i] || data.notes[i]"> Entree {{item}} </div>
+
+                            <div class="border px-8 py-12 border-color border-radius-4 line-height-24"
+                                *ngIf="data.sideDishFrontArr[i] || data.extrasFrontArr[i] || data.notes[i]">
+                                <div class="font-weight-600">
+                                    {{notesData[item-1]}}
+                                </div>
+
+                                <div fxLayout="row" class="mb-12">
+                                    <div class="mr-8 text-capitalize font-weight-600" fxFlex="40"
+                                        *ngIf="data.sideDishFrontArr[i] && data.sideDishFrontArr[i] != ''"> Side Dish :</div>
+
+                                    <div fxFlex="60">
+                                        <div *ngFor="let items of data.sideDishFrontArr[i]">
+                                            {{items}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div fxLayout="row" class="mb-12">
+                                    <div class="mr-8 text-capitalize font-weight-600" fxFlex="40"
+                                        *ngIf="data.extrasFrontArr[i] && data.extrasFrontArr[i] != ''"> Extras :</div>
+
+                                    <div fxFlex="60">
+                                        <div *ngFor="let items of data.extrasFrontArr[i]">
+                                            {{items}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" class="mb-12">
+                                    <div class="mr-8 text-capitalize font-weight-600" fxFlex="40"
+                                        *ngIf="data.notes[item-1]"> Notes : </div>
+                                    <div fxFlex="60">
+                                        <div>{{data.notes[item-1]}} </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

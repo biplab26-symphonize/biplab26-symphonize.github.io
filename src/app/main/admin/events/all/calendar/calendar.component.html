@@ -1,0 +1,164 @@
+<div class="page-layout carded" id="calendar">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">dashboard
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                     {{displaySlug | titlecase}} Events 
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+    </div>
+    <!-- / HEADER -->
+    <!-- CENTER -->
+    <div class="center p-4 pb-4 content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <!-- CONTENT -->
+        <div class="content-card br-ds-0 content-wrap fuse-white-bg p-28">
+            <form fxLayout="column" name="filterForm" #filter name="filterForm" [formGroup]="filterForm" novalidate autocomplete="off" fxLayoutAlign="center">
+                <div class="fuse-common-card w-100-p br-ds-0" fxFlex="100" fxFlexAlign="center">
+                    <div class="filters" fxLayout="row wrap" fxLayoutAlign="start end">
+                        <div fxFlex="32.5%" fxFlex.lt-sm="100" class="mr-8">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Search</mat-label>
+                                <input matInput formControlName="searchKey" placeholder="Search By Event Title">
+                            </mat-form-field>
+                        </div>
+                        <div  fxFlex="32.5%" fxFlex.lt-sm="100" class="mr-8" *ngIf="calendarSlug=='' && Category_Calendar_list.length>0">
+                            <mat-form-field fxFlex appearance="outline">
+                                <mat-label>Calendar</mat-label>
+                                <mat-select formControlName="calendar_id">
+                                    <mat-option value="">All</mat-option>
+                                    <mat-option *ngFor="let category of Category_Calendar_list"  value="{{category.id}}">
+                                        {{category.category_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div  fxFlex="32.5%" fxFlex.lt-sm="100" class="mr-8" *ngIf="categories.length>0"> 
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Categories</mat-label>
+                                <mat-select formControlName="categories" multiple>
+                                    <mat-option *ngFor="let category of categories"  value="{{category.id}}">
+                                        {{category.category_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div  fxFlex="32.5%" fxFlex.lt-sm="100" class="mr-8" *ngIf="subcategories.length>0"> 
+                            <!-- subcategories-common -->
+                            <mat-form-field appearance="outline" floatLabel="always"  class="w-100-p mr-8">
+                                <mat-label>Common Categories</mat-label>
+                                <mat-select formControlName="subcategories" multiple>
+                                    <mat-option *ngFor="let category of subcategories"  value="{{category.id}}">
+                                        {{category.category_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div  fxFlex="32.5%" fxFlex.lt-sm="100" class="mr-8">
+                            <!-- STATUS -->
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Status</mat-label>
+                                <mat-select formControlName="status">
+                                    <mat-option value="">Status</mat-option>
+                                    <mat-option *ngFor="let status of StatusList | keyvalue" [value]="status.key">
+                                    {{status.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div  fxFlex="32.5%" fxFlex.lt-sm="100" class="mr-8">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-select formControlName="month" (selectionChange)="gotoMonth()">
+                                    <mat-option value="">Month</mat-option>
+                                    <mat-option *ngFor="let month of months | keyvalue:returnZero" [value]="month.key">
+                                        {{month.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div  fxFlex="32.5%" fxFlex.lt-sm="100" class="mr-8">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                               <mat-label>Select Year</mat-label>
+                                <mat-select formControlName="year" (selectionChange)="gotoMonth()">
+                                    <mat-option value="">Year</mat-option>
+                                    <mat-option *ngFor="let year of YearsList" [value]="year">
+                                        {{year}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="filters special-event-wrapper" fxLayout="row"  fxFlex="65.5%" fxLayoutAlign="center" fxLayout.lt-sm="column">
+                        
+                            <div  class="special-event mr-4" fxFlex="50%">
+                                <mat-form-field fxFlex appearance="outline"  class="filter-select w-100-p">
+                                    <mat-label>Special Event</mat-label>
+                                    <mat-select formControlName="special_event">
+                                        <mat-option value="">Special</mat-option>
+                                        <mat-option value="Y">Yes</mat-option>
+                                        <mat-option value="N">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50%" class="pt-20">
+                                <span  [style.background-color]="RegbackgroundColor" [style.border-color]="RegborderColor" class="Indicates-btn"></span> - Indicates Registration Required
+                            </div>    
+                            <!-- <event-meta-filters fxFlex="67%" [EventSettings]="EventSettings" (eventmetaArray)="setEventMetaFilter($event)"></event-meta-filters> -->
+                        </div>
+                        <div class="keyindi" fxFlex="50%" fxFlex.lt-sm="100">
+                            <ng-container *ngIf="ShowMetaFilters=='Y'">
+                                <ng-container *ngFor="let metafield of EventMetaFields">
+                                    <ng-container [ngSwitch]="metafield.field_type">
+                                        <ng-container *ngSwitchCase="'select'">
+                                            <mat-form-field fxFlex="0 0 auto" appearance="outline" floatLabel="always" *ngIf="MetaArray.includes(metafield.id)" class="filter-select ml-4">
+                                                <mat-label>{{metafield.field_label}}</mat-label>
+                                                <mat-select [formControlName]="metafield.id">
+                                                    <mat-option value="">{{metafield.field_label}}</mat-option>
+                                                    <ng-container *ngIf="metafield.field_content && metafield.field_content.options">
+                                                        <mat-option *ngFor="let fieldoption of metafield.field_content.options" [value]="fieldoption.key">
+                                                        {{fieldoption.value}}
+                                                        </mat-option>
+                                                    </ng-container>                                    
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </ng-container>
+                                    </ng-container>  
+                                </ng-container>
+                            </ng-container>      
+                        </div>
+                    </div>
+                    <!-- EVENT META FILTERS -->
+                    
+            
+                    <div class="filters" fxLayout="row" fxLayoutGap="grid">
+                        <div fxFlex="100" class="reset-print-btn" fxLayoutAlign="center" [ngClass.lt-sm]="{'mb-32': 'true'}">
+                            <div>
+                                <button mat-stroked-button type="button" (click)="printCalendar()" class="mr-10 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"><mat-icon class="icon s-20 mr-4 fuse-white-fg">print</mat-icon> Print</button>
+                                <button mat-stroked-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" type="button" (click)="resetform()" ><mat-icon color="accent" class="icon s-20 mr-4 fuse-white-fg">replay</mat-icon> Reset</button>
+                            </div>                            
+                        </div>
+                    </div>
+
+                   
+                    <!-- CALENDAR -->
+                    <div fxLayout="column">
+                        <full-calendar
+                        #fullcalendar
+                        [options]="options"
+                        ></full-calendar>
+                    </div>   
+                    
+                  
+                </div>
+            </form>    
+        </div>        
+    </div>
+</div>

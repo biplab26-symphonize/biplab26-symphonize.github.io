@@ -1,0 +1,106 @@
+<div id="settings" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxLayout="column">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+    
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">perm_data_setting
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Settings
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+    
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <button mat-raised-button class="reference-button" [disabled]="this.PermissionsSettingForm.invalid || isSubmit==true" (click)="onSubmit($event)" cdkFocusInitial>
+                    <mat-icon class="mr-4">settings_backup_restore</mat-icon>
+                    <span>Update Settings</span>
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+    
+    </div>
+    <!-- / HEADER -->
+    
+    <!-- TABS -->
+    <div class="tabs-wrap">
+    
+        <!-- TABS -->
+        <nav mat-tab-nav-bar class="px-24">
+            <a mat-tab-link routerLink="/admin/settings/general">General</a>
+            <a mat-tab-link routerLink="/admin/settings/home">Home</a>
+            <a mat-tab-link routerLink="/admin/settings/theme">Theme</a>
+            <a mat-tab-link routerLink="/admin/settings/permissions" active="true">Permissions</a>
+        </nav>
+        <!-- / TABS -->
+    
+    </div>
+    <!-- / TABS -->
+    
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+    
+        <!-- CENTER -->
+        <div class="center p-24 pb-56">
+    
+                <!-- SETTINGS -->
+                <div class="mat-title"><mat-icon>settings</mat-icon> Permissions Settings</div>
+                <form autocomplete="off" #f="ngForm" [formGroup]="PermissionsSettingForm" novalidate autocomplete="off">
+    
+                    <div id="settings">
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <!-- SELECT ROLES -->
+                            <div  fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-label>Roles</mat-label>
+                                    <mat-select formControlName="role_id" (selectionChange)="onRoleChange($event)">
+                                        <ng-container *ngFor="let role of Roles">
+                                            <mat-option [value]="role.id">
+                                            {{role.role_name}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- SELECT ROLES -->
+                            <div fxLayout="column" fxLayoutAlign="center" fxFlex="40">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                    <mat-select formControlName="permissionaction" multiple (selectionChange)="onPermissionActionChange($event)">
+                                        <ng-container *ngFor="let permission of permissionactionList | keyvalue">
+                                            <mat-option [value]="permission.key" selected>
+                                            {{permission.value}}
+                                            </mat-option>
+                                        </ng-container>    
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- SELECT Permissions -->
+                        <div  fxLayout="column" fxLayout.gt-md="row">
+                            <mat-selection-list #permissions formControlName="permission">
+                                <ng-container *ngFor="let permission of PermissionsList | keyvalue">
+                                    <mat-label *ngIf="permission.key!=='auth'" class="h1 mat-title font-size-24 font-weight-700">{{permission.key | titlecase}}</mat-label>
+                                    <mat-list-option  checkboxPosition="before" *ngFor="let permission of permission.value" [value]="permission.uri+','+permission.name">
+                                        {{permission.name}}
+                                    </mat-list-option>
+                                </ng-container>
+                            </mat-selection-list>
+                        </div>
+                    </div>
+                </form>
+                <!-- / SETTINGS -->
+        </div>
+        <!-- / CENTER -->
+    
+    </div>
+    <!-- / CONTENT -->
+    </div>    

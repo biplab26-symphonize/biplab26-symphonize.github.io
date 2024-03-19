@@ -1,0 +1,22 @@
+<div class="navbar-header" [ngClass]="fuseConfig && fuseConfig.layout.navbar.secondaryBackground" style="background-color: #fff !important;color: #1e1d1d !important;">
+
+    <div class="logo">
+        <img class="logo-icon" *ngIf="_appInfo.fevicon_logo" [src]="_defaultSettings.url.mediaUrl + _appInfo.fevicon_logo" alt="{{ _appInfo.site_name || _defaultSettings.defaultsiteTitle }}">
+    </div>
+
+    <button mat-icon-button class="toggle-sidebar-folded"
+            (click)="toggleSidebarFolded()" fxHide.lt-lg>
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <button mat-icon-button class="toggle-sidebar-opened"
+            (click)="toggleSidebarOpened()" fxHide.gt-md>
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+
+</div>
+
+<div style="background-color: #2d323e !important;" class="navbar-content" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}"
+     >
+    <fuse-navigation layout="vertical"></fuse-navigation>
+</div>

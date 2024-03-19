@@ -1,0 +1,34 @@
+<form class="p-4 pb-12" autocomplete="off"  [formGroup]="mailForm" novalidate (ngSubmit)="sendattendeeMail()">
+<h1 matDialogTitle>Send mail to attendees</h1>
+<div mat-dialog-content class="mat-dialog-export">
+    <div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" >
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Email subject</mat-label>
+                    <input matInput formControlName="emailsubject" name="emailsubject" required>
+                    <mat-error>Email subject is required!</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100">
+                <input matInput hidden />
+                <editor [init]="tinyMceSettings" name="message" formControlName="message" ></editor>    
+            </mat-form-field>
+            
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+            <label class="pr-12">Show Event Information in Email</label>
+            <mat-radio-group name="sendeventinfo" formControlName="sendeventinfo">
+                <mat-radio-button value="Y"> Yes </mat-radio-button>
+                <mat-radio-button value="N" class="pl-12"> No </mat-radio-button>
+            </mat-radio-group>  
+            
+        </div>
+    </div>    
+</div>
+<div mat-dialog-actions class="pt-5">
+    <button mat-raised-button class="mat-warn mr-16" [disabled]="!mailForm.valid || isSubmit" >Send</button>
+    <button mat-button (click)="dialogRef.close('')">Cancel</button>
+</div>
+</form>

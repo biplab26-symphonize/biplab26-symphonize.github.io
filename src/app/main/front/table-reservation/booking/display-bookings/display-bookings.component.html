@@ -1,0 +1,91 @@
+<div  class="border display-booking" id="front-table-reservation-display-booking">
+        <p class="font-weight-600 font-size-18 dt-paginations fuse-white-fg p-16 w-100-p d-block" [ngStyle.lt-sm]="{'font-size.px': 18}">Selected Date : {{selected_date | date: defaultDateTimeFormat.date_format}}</p>
+ 
+        <div class="border-bottom p-16" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start center">
+            <div class="mr-28 booking-img" fxFlex="25"> 
+                <!-- <img src="/assets/images/backgrounds/diningReservation.jpg" alt=""> -->
+                 <img [src]="service_image!=''?service_image:defaultImage" alt="">
+            </div>
+
+            
+            <div fxFlex="75" fxLayout="column">
+                <h2  class="font-weight-600 font-size-30 mb-12 booking-title" [ngStyle.lt-sm]="{'font-size.px': '18' , 'margin-top.px': '12' , 'text-align': 'center'}">{{service_title}}</h2>
+                <h2 class="text-capitalize font-weight-600 font-size-16 mr-20 mb-8 service-description">{{service_description}}</h2>
+            </div>
+        </div>
+        <div class="px-16 pt-28 time-slots-button">
+            <h2 class="text-capitalize font-weight-600 font-size-16 mr-20 mb-8">Select your dining time to view the available tables:</h2>
+        </div>
+        <div class="px-16 pb-8 time-slots-button">
+            <mat-label class="font-weight-600 font-size-16 mr-20 text-right">Time Slots:</mat-label>
+            <div fxLayout="row wrap" class="mt-4">
+                <ng-container  *ngFor="let timeSlot of getTimeSlots;let i=index">
+                    <!-- <button [disabled]="timeSlot.class == 'available'?false:true" class="{{timeSlot.class}} {{selectedBooking}} timeslots-btn p-12 cursor-pointer border" [class.selectedbooking]="currentTimeSlot === timeSlot.time" (click)="getPartySizes(timeSlot.time)" [ngStyle.lt-sm]="{'font-size.px': 14}"> -->
+                        <button [disabled]="timeSlot.class == 'available'?false:true" class="{{timeSlot.class}} {{selectedBooking}} timeslots-btn p-12 cursor-pointer border" [class.selectedbooking]="currentTimeSlot === timeSlot.time" (click)="getTableSizes(timeSlot.time)" [ngStyle.lt-sm]="{'font-size.px': 14}">
+                        {{timeSlot.time}}
+                    </button> 
+                </ng-container> 
+            </div>
+        </div>
+ 
+        <div fxLayout="row wrap" class="px-16">
+            <h2 class="text-capitalize font-weight-600 font-size-16 mr-20 mb-20 mt-16 time-slot-warning" style="color: #ff0000d6;">When the box appears as 'red' that timeslot is no longer available to book a reservation.</h2>
+            <div appearance="outline" fxFlex="100"   class="pr-8" fxFlex.lt-sm="100" *ngIf="tableSizes.length!=0">
+                <mat-label class="text-capitalize font-weight-600">Select your table size :</mat-label>
+                <div fxLayout="row fwrap" fxLayout.lt-sm="column" fxLayoutAlign="space-evenly center" class="mt-8">
+                    <ng-container  *ngFor="let tableSize of tableSizes;let i=index" >
+                        <div>
+                            <p class="px-8">{{tableSize.max_table_count}}  Available</p>
+
+                            <div *ngIf="tableSize.min_table_size!=tableSize.max_table_size" class="px-8 mb-4">
+                                <p>{{tableSize.min_table_size}}-{{tableSize.max_table_size}}  Person Table</p>
+                            </div>
+                            <div *ngIf="tableSize.min_table_size==tableSize.max_table_size" class="mb-16 px-8">
+                                <p>{{tableSize.min_table_size}}   Person Table</p>
+                            </div>
+                            <!-- <ng-template #displayOneTableSize>{{tableSize.min_table_size}}   person table</ng-template> -->
+                            <div class="time-slot-image-wrpper">
+                                <div *ngIf="tableImages.length>i;else displayDefaultImage1">
+                                  <mat-radio-button class="time-slot-image" (change)="getPartySizes(tableSize.min_table_size,tableSize.max_table_size)"></mat-radio-button>
+                                    <div *ngIf="tableImages[i].Min_table_size == tableSizes[i].min_table_size && tableImages[i].Max_table_size == tableSizes[i].max_table_size;else displayDefaultImage">
+                                        <div *ngIf="tableImages[i].image!='';else displayDefaultImage">
+                                            <p class="select-img"><img style="height: 100%;"  src="{{tableImages[i].image}}"></p>
+                                        </div>
+                                        <!-- <p class="select-img"><img style="height: 100%;"  src="{{tableImages[i].image}}"></p> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-template #displayDefaultImage1>
+                                <mat-radio-button class="time-slot-image" (change)="getPartySizes(tableSize.min_table_size,tableSize.max_table_size)"></mat-radio-button>
+                                <img src="{{defaultSettingImage}}">
+                            </ng-template>
+                            <ng-template #displayDefaultImage><img src="{{defaultSettingImage}}"></ng-template>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>  
+        </div>
+        
+
+        
+
+        <!-- <mat-form-field class="p-16 pb-0" appearance="outline" fxFlex="100" *ngIf="partySize.length!=0">
+            <mat-label>Party Size:</mat-label>
+            <mat-select name="guestcount"   formControlName="guestcount" >
+                <mat-option *ngFor="let partySizes of partySize; let i = index;" [value]="partySizes">{{partySizes}}</mat-option>
+            </mat-select>
+        </mat-form-field> -->
+
+        
+
+       <!-- <div  appearance="outline" fxFlex="100" class="px-16">
+        <app-dining-guests  [user_id]="addBookingForm.get('id').value" [guestcount]="addBookingForm.get('guestcount').value" [groupLimit]="groupLimit"   [guestInfoArray]="addBookingForm.get('guestinfo').value"  (resetCount)="resetGroupLimit($event)"  (validateForm)="validateParentForm($event)" (updateguestInfo)="setguestInfoFieldValue($event)"></app-dining-guests>
+        </div>  -->
+    
+        <div fxLayout="row" class="px-16 pb-16 mt-20" fxLayoutAlign="center center">
+            <button (click)="displayMainBooking()" mat-stroked-button color="accent" class="mr-8">Back</button>  
+            <button (click)="getNextPreview()" mat-stroked-button color="accent" [disabled]="currentTimeSlot==undefined || (tableMinSize==undefined && tableMaxSize==undefined) || disableSubmit==true" >Next</button>
+              
+        </div>
+   
+</div>

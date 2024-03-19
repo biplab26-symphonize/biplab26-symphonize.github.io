@@ -1,0 +1,116 @@
+<div id="confirm-register" class="page-layout simple fullwidth layout-box">
+    <div class="page-layout carded">
+        <!-- HEADER -->
+        <div class="header  px-16">
+            <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+                <div class="header-top">
+                    <div class="logo text-center">
+                        <span class="logo-text font-size-48 fuse-white-fg"
+                            [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                            [ngStyle.lt-sm]="{'font-size.px': 30}">
+                            <strong> Registration Confirmation </strong>
+                        </span>
+                    </div>
+                    <!-- HEADER TEXT -->
+                </div>
+                <!-- / TOOLBAR -->
+            </div>
+        </div>
+        <!-- / HEADER -->
+        <!-- CENTER -->
+        <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+            <!-- CONTENT -->
+            <div class="content-card br-ds-0 content-wrap fuse-white-bg p-28">
+                <div class="fuse-common-card w-100-p br-ds-0" fxFlex="100" fxFlexAlign="end center">
+                    <div fxLayout="row" fxLayoutAlign="end center" class="mb-20">
+                        <button *ngIf="calendarSlug==''" mat-stroked-button class="mb-4 ml-4" [routerLink]="'/events'">
+                            <mat-icon class="mr-4">arrow_back</mat-icon>Back To Events
+                        </button>
+                        <button *ngIf="calendarSlug!==''" mat-stroked-button class="mb-4 ml-4"
+                            [routerLink]="['/event/',calendarSlug]">
+                            <mat-icon class="mr-4">arrow_back</mat-icon>Back To Events
+                        </button>
+                    </div>
+                    <!-- FORUMS FILTER -->
+                    <mat-divider></mat-divider>
+
+                    <!-- CONTENT -->
+                    <div class="border" *ngIf="attendeeInfo && attendeeInfo.event">
+
+                        <h1 class="accent p-16 m-0" [ngStyle.lt-sm]="{'font-size.px': 20}"> Registration Confirmation
+                        </h1>
+                        <div class="p-8">
+                            <h2 class="font-weight-600 mb-12 font-size-24">Event Name :
+                                {{attendeeInfo.event.event_title}} <span
+                                    *ngIf="attendeeInfo.status=='waitlist' && attendeeInfo.is_waiting=='Y'"> -
+                                    waitlist</span> </h2>
+                            <div class="font-weight-600 grey-50 p-16 h2 mb-12" fxLayout="row"
+                                fxLayoutAlign="start center" fxLayoutAlign.lt-sm="start start">
+                                <img src="assets/images/logos/green-checkmark-icon.png" alt="" width="50px"
+                                    height="50px" class="mr-8">
+                                <p>
+                                    Thank you {{attendeeInfo.first_name+' '+attendeeInfo.last_name}}! Your registration
+                                    for {{attendeeInfo.event.event_title}} is confirmed.
+                                </p>
+                                <!-- <span *ngIf="attendeeInfo.status=='waitlist' && attendeeInfo.is_waiting=='Y'">waitlist</span> -->
+                            </div>
+
+
+                            <ng-container *ngIf="attendeeInfo && attendeeInfo.event">
+                                <div class="line-height-48">
+                                    <p class="font-size-18">
+                                        <span class="font-weight-600"> Attendee Name :</span>
+                                        {{attendeeInfo.first_name+' '+attendeeInfo.last_name}}
+                                    </p>
+                                    <p class="font-size-18">
+                                        <span class="font-weight-600">Start Date :
+                                        </span>{{attendeeInfo.event.event_start_date |
+                                        date:defaultDateTimeFormat.date_format }}
+                                    </p>
+
+                                    <p class="font-size-18">
+                                        <span class="font-weight-600">End Date :</span>
+                                        {{attendeeInfo.event.event_end_date | date:defaultDateTimeFormat.date_format }}
+                                    </p>
+
+                                    <ng-container *ngIf="attendeeInfo.event.is_all_day=='Y'">
+                                        All Day
+                                    </ng-container>
+                                    <ng-container *ngIf="attendeeInfo.event.is_all_day=='N'">
+                                        <p class="font-size-18">
+                                            <span class="font-weight-600"> Check In Time :</span>
+                                            {{attendeeInfo.event.event_start_date+'
+                                            '+attendeeInfo.event.event_start_time |
+                                            date:defaultDateTimeFormat.time_format }}
+                                        </p>
+                                    </ng-container>
+                                </div>
+
+
+                                <div *ngIf="attendeeInfo && attendeeInfo.event.eventmeta">
+                                    <ng-container *ngFor="let meta of attendeeInfo.event.eventmeta">
+                                        <p *ngIf="meta.fields && meta.field_value!==''" class="font-size-18">
+                                            {{meta.fields.field_label}} : {{meta.field_value}}</p>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <p class="font-weight-600 font-size-18 mt-8">A confirmation message with additional details
+                                has been sent to your email address.</p>
+
+                            <div fxLayout="row" fxLayout.lt-sm="column" class="mt-20">
+                                <button mat-stroked-button class="accent mr-8 my-4" (click)="exportToGoogle()">
+                                    Add To Google Calendar
+                                </button>
+                                <button mat-stroked-button class="accent mr-8 my-4" (click)="exportToOutlook()">
+                                    Add To Outlook / iCal Calendar
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

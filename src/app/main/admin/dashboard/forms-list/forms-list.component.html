@@ -1,0 +1,46 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content" id="home-topics-pagination">
+    <div class="p-16 title pl-0">
+        <div class="h1 font-weight-800">Forms</div>
+    </div>
+    <table class="simple border text-capitalize">
+        <thead class="text-center">
+            <tr [ngStyle]="green_bg_header">
+                <th class="text-center fuse-white-fg font-size-16">Type</th>
+                <th class="text-center fuse-white-fg font-size-16">Title</th>
+                <th class="text-center fuse-white-fg font-size-16">Submission Date</th>
+                <th class="text-center fuse-white-fg font-size-16">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let form of formsList.data">
+                <td class="text-center first">
+                    {{form.form_type}}
+                </td>
+                <td class="text-center third">
+                    {{form.form_title}}
+                </td>
+                <td class="text-center third">
+                    {{form.created_at |  date: defaultDateTimeFormat.date_format}} 
+                </td>
+                <td class="text-center third">
+                    <div *ngIf="form.formentriescount != null">
+                        {{form.formentriescount.count}}
+                    </div>
+                    <div *ngIf="form.formentriescount == null">
+                        --
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="p-0 my-20 d-block">
+        <a [routerLink]="['/admin/forms/all/']">See All Forms</a>
+        <mat-paginator #paginator class="blue-grey-50 mt-20" [length]="formsList.total"
+            [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions">
+        </mat-paginator>
+    </div>
+
+</div>
+<!-- / CARD CONTENT -->

@@ -1,0 +1,65 @@
+<div class="page-layout page-layout-list simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">dashboard
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Click “Add” To Update Your PDF.
+                </span>
+               
+            </div>
+        </div>
+        
+        <!-- / APP TITLE -->
+    </div>
+        <!-- / HEADER -->
+            <!-- / SELECTED BAR --> 
+    
+<!-- CONTENT -->
+<div class="content" fusePerfectScrollbar>
+
+    <!-- CENTER -->
+<div class="center p-24 pb-56" >
+    <!-- FILTER -->
+    <!-- / FILTER -->
+    <!-- CONTENT -->
+    <div class="content">
+        <table mat-table class="form-table all-rotating-menu-table" [@animateStagger]="{value:'50'}"  #table [dataSource]="dataSource" matSort matSortActive="menu_title" matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+                <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of Columns">
+                <span *ngIf="column.columnDef!=='select'">
+                    <th class="p-12 fuse-black-fg" [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef mat-sort-header="{{column.sortable==true ? column.columnDef : null}}" 
+                        disabled="{{!column.sortable}}"> {{column.header}} 
+                    </th>
+                    <td class="p-12" mat-cell *matCellDef="let element"> 
+                        <span >{{element[column.columnDef]}}</span> 
+                        <span  *ngIf="column.columnDef=='action'">
+                            <a [routerLink]="['/admin/rotating-menu/add/',element.menu_id]">Add</a>
+                        </span>
+                        <span  *ngIf="column.columnDef=='Pdf_as_per_date'">
+                            <a  (click)="viewalldata(element.menu_id)">Click_Here</a>
+                        </span>
+                    </td>
+                </span>
+                
+                <span *ngIf="column.columnDef=='select'">
+                    <th [ngStyle]="green_bg_header" mat-header-cell *matHeaderCellDef > 
+                    </th>
+                    <td mat-cell *matCellDef="let element"> 
+                    </td>
+                </span>   
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <!-- / CONTENT -->
+    </div>
+    <!-- / CENTER -->
+</div>
+<!-- / CONTENT -->
+</div>

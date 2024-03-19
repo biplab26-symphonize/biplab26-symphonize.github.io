@@ -1,0 +1,116 @@
+<!-- CHAT -->
+<div class="chat" fxFlex fxLayout="column">
+
+    <!-- CHAT TOOLBAR -->
+    <mat-toolbar class="chat-toolbar border-bottom">
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <!-- RESPONSIVE CHATS BUTTON-->
+                <button mat-icon-button fxHide.gt-md class="responsive-chats-button mr-16"
+                        fuseMatSidenavToggler="chat-left-sidenav"
+                        aria-label="chats button">
+                    <mat-icon>chat</mat-icon>
+                </button>
+                <!-- / RESPONSIVE CHATS BUTTON-->
+
+                <!-- CHAT CONTACT-->
+                <div class="chat-contact" fxLayout="row" fxLayoutAlign="start center" fuseMatSidenavToggler="chat-right-sidenav"  (click)="selectGroup()">
+                    <div class="group-wrapper">
+                        <mat-icon class="s-42">group</mat-icon>
+                    </div>
+                    <div class="chat-contact-name">
+                        {{group.group_name}} <br/>
+                        <em class="secondary-text font-size-12 text-capitalized">{{groupMembers}}</em>
+                    </div>
+                </div>
+                <!-- / CHAT CONTACT-->
+            </div>
+
+        </div>
+    </mat-toolbar>
+    <!-- / CHAT TOOLBAR -->
+
+    <!-- CHAT CONTENT -->
+    <div id="chat-content" fxFlex="1 1 auto"  fusePerfectScrollbar>
+
+        <!-- CHAT MESSAGES -->
+        <div class="chat-messages">
+
+            <!-- MESSAGE -->
+            <ng-container *ngIf="dialog.length>0">
+                <div *ngFor="let message of dialog; let i = index" class="message-row"
+                    [ngClass]="{
+                                'me': message.sender_id === user.id,
+                                'contact': message.sender_id !== user.id,
+                                'first-of-group': isFirstMessageOfGroup(message, i),
+                                'last-of-group': isLastMessageOfGroup(message, i)
+                                }" (contextmenu)="onContextMenu($event, message)">
+                    <img *ngIf="shouldShowContactAvatar(message, i)" src="{{mediaUrl+message.sendermeta.avatar}}" class="avatar" alt="{{message.sendermeta.first_name+' '+message.sendermeta.last_name}}">
+
+
+                    <div class="bubble">
+                        <div class="message">{{message.message}}</div>
+                        <div class="time secondary-text">{{message.created_at | date:'short'}} <em class="warn-fg px-16">{{message.sendermeta.first_name+' '+message.sendermeta.last_name}}</em></div>
+                    </div>
+
+                </div>
+            </ng-container>
+            
+            <!-- / MESSAGE -->
+            <span class="h3 warn-fg" *ngIf="dialog.length==0">
+                Send Invite To Start Conversation...
+            </span>
+
+        </div>
+        <!-- CHAT MESSAGES -->
+        <!-- CONTEXT MENU OPTIONS STARTS -->
+        <div style="visibility: hidden; position: fixed"
+            [style.left]="contextMenuPosition.x"
+            [style.top]="contextMenuPosition.y"
+            [matMenuTriggerFor]="contextMenu">
+        </div>
+        <mat-menu #contextMenu="matMenu">
+            <ng-template matMenuContent let-item="item">
+                <button mat-menu-item (click)="deleteChat(item)">Delete</button>
+            </ng-template>
+        </mat-menu>
+        <!-- CONTEXT MENU OPTIONS ENDS -->
+
+    </div>
+    <!-- / CHAT CONTENT -->
+
+    <!-- CHAT FOOTER -->
+    <div class="chat-footer border-top" fxFlex="0 0 auto" fxLayout="column">
+
+        <!-- REPLY FORM -->
+        <div class="reply-form" fxFlex="0 0 auto" fxLayout="row" fxLayoutAlign="center center">
+
+            <form #replyForm="ngForm"
+                  (ngSubmit)="reply($event)"
+                  (keydown.enter)="reply($event)"
+                  fxFlex fxLayout="row" fxLayoutAlign="start center">
+
+                <mat-form-field class="message-text" fxFlex floatLabel="never" appearance="standard">
+                    <textarea matInput #replyInput placeholder="Type your message"
+                              ngModel name="message" [rows]="1" [matTextareaAutosize]="true"></textarea>
+                </mat-form-field>
+
+                <button class="send-message-button" mat-icon-button type="submit" aria-label="Send message">
+                    <mat-icon class="secondary-text">send</mat-icon>
+                </button>
+                
+            </form>
+            
+
+        </div>
+        <span fxFlex fxLayout="row" fxLayoutAlign="start center" class="px-8 secondary-text"><em>Right click on your chat to delete</em></span>
+        <!-- / REPLY FORM -->
+
+    </div>
+    <!-- / CHAT FOOTER-->
+
+</div>
+<!-- / CHAT -->

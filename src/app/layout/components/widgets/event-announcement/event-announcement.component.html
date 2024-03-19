@@ -1,0 +1,19 @@
+<!-- CARD CONTENT -->
+<div class="fuse-content forms">
+    
+    <div class="py-16 px-32 title">
+        <div class="h1 font-weight-800">EVENTS ANNOUNCEMENTS</div>
+    </div>
+    <div  *ngIf="announcments.length != 0">
+        <div class="p-32 pt-0 line-height-1.75" *ngFor="let announce of announcments">     
+            <div class="h2 font-weight-800">{{announce.content_title}}</div>
+            <div [innerHTML]=" announce.content_desc | sanitizeHtml   "></div>
+        </div>
+    </div>
+   
+    <div  *ngIf="announcments.length == 0" class="py-16 px-32 text-left font-size-18 font-weight-800">
+        No Announcement Found
+    </div>
+
+</div>
+<!-- / CARD CONTENT -->

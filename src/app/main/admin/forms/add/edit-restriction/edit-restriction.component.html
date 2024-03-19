@@ -1,0 +1,514 @@
+
+<!-- froms -->
+<div *ngIf="data.type == 'form'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- Announcement -->
+<div *ngIf="data.type == 'UpdateAnnouncement'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- pages -->
+<div *ngIf="data.type == 'UpdatePage'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- event -->
+<div *ngIf="data.type == 'UpdateEvent'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- forum -->
+<div *ngIf="data.type == 'UpdateForum'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- dining reservation booking -->
+<div *ngIf="data.type == 'UpdateDiningBookings'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- table reservation booking -->
+<div *ngIf="data.type == 'UpdateTableBookings'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- table reservation service -->
+<div *ngIf="data.type == 'UpdateTableServie'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.</mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- dining reservation service -->
+<div *ngIf="data.type == 'UpdateDiningServie'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- event attendee -->
+<div *ngIf="data.type == 'UpdateEventAttendee'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+
+<!-- appointment service -->
+<div *ngIf="data.type == 'UpdateAppointmentService'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- appointment booking -->
+<div *ngIf="data.type == 'UpdateAppointmentBooking'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- staff -->
+<div *ngIf="data.type == 'staff'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- to go order product -->
+<div *ngIf="data.type == 'updateProduct'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- to go order  -->
+<div *ngIf="data.type == 'updateOrder'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- forum topic  -->
+<div *ngIf="data.type == 'forumtopic'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- meeting room food drinks  -->
+<div *ngIf="data.type == 'updateFoodDrinks'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- meeting room room layout  -->
+<div *ngIf="data.type == 'updateRoomLayout'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- meeting room equipment  -->
+<div *ngIf="data.type == 'updateEquipment'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- meeting room Rooms  -->
+<div *ngIf="data.type == 'updateRooms'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- meeting room food drinks  -->
+<div *ngIf="data.type == 'updateBooking'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- food reservation side dish  -->
+<div *ngIf="data.type == 'updateSideDish'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- food reservation location  -->
+<div *ngIf="data.type == 'updateLocation'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- food reservation extras  -->
+<div *ngIf="data.type == 'updateExtras'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- field  -->
+<div *ngIf="data.type == 'updateFields'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- guest room booking  -->
+<div *ngIf="data.type == 'guestbooking'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- rooms  -->
+<div *ngIf="data.type == 'guestroom'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>
+<!-- guest room extras  -->
+<div *ngIf="data.type == 'guestextra'">
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+        [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div class="form-group ">
+                <mat-label>{{userName}} has taken over and is currently editing.
+                    </mat-label>
+                
+                <!-- <div class="warn-fg" *ngIf="optionsForm.get('recType').value == 'A'">Past Event and their attendees will be deleted and new events will be added from this instance!</div> -->
+            </div>
+            <br>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary"  [mat-dialog-close]="this.serviceDialog" (click)="onNoClick('goback')">Go back</button>
+    </div>
+</div>

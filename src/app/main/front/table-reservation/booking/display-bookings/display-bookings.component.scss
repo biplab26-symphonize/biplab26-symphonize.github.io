@@ -1,0 +1,96 @@
+@import "src/@fuse/scss/fuse";
+
+#front-table-reservation-display-booking {
+    .cursor-pointer {cursor: pointer;}
+
+    button.timeslots-btn {
+        width: 91px; 
+        margin: 1px;
+    }
+
+    button.available {
+        background-color: #0ab67a;
+        color: white;
+    } 
+
+    button.available:hover {
+        background: #d6d6d6;
+        color: #000;
+    }
+
+    button.timeslots-btn.selectedbooking {
+        background: #d6d6d6;
+        color: #000;
+    }
+
+    button.unavailable {
+        background-color: #b9b7b8;
+        cursor: not-allowed;
+        color: #4147487d;
+    } 
+
+    button.booked {
+        background: #d07364; 
+        color: #fff;
+        cursor: text;   
+    }
+
+    button.booked:hover {
+        background-color:#b95d50 ;
+        color: black; 
+    }
+
+
+    .Indicates-btn {
+        width: 20px;
+        height: 12px;
+    }
+
+    .booking-img img{ 
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    .time-slot-image-wrpper {
+        position: relative;
+ 
+        .time-slot-image {
+            position: absolute;
+        }
+    }
+
+
+    // Responsive 
+    @include media-breakpoint('lt-sm')  {
+        .mr-28.booking-img {
+            margin-right: 0 !important;
+        }
+
+        .time-slot-warning,
+        .service-description {
+            margin-right: 0 !important;
+        }
+
+        .booking-title {
+            margin-bottom: 8px !important;
+        }
+
+        .px-16.py-28.time-slots-button {
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+
+        mat-form-field.pr-8 {
+            padding-right: 0 !important;
+        }
+    }
+
+    @media (max-width:320px) {
+        .timeslots-btn.p-12 {
+            padding: 12px 0px !important;
+        }
+        button.timeslots-btn {
+            width: 80px; 
+        }
+    }
+}    

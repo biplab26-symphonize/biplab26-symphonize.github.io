@@ -1,0 +1,8 @@
+<h1 matDialogTitle>Confirm</h1>
+<div mat-dialog-content>{{confirmMessage}}</div> 
+<div mat-dialog-actions class="pt-24 mb-4">
+    <button *ngIf="confirmType==''" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mat-raised-button mr-8" (click)="dialogRef.close(true)">Confirm</button>
+    <button *ngIf="confirmType=='changes'" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mat-raised-button" (click)="discardChanges()">Confirm</button>
+    <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mat-raised-button" (click)="dialogRef.close(false)">Cancel</button>
+</div>
+  

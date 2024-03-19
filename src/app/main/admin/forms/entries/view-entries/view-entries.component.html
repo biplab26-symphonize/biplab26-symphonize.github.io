@@ -1,0 +1,446 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar id="Forms-Entries-Edit">
+  <!-- HEADER -->
+  <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+       fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" >
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+          <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            </mat-icon>
+            <div class="logo-text h3" [ngStyle.lt-sm]="{'font-size.px': 20}" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+              <!-- {{form_title | titlecase}} : #{{entry_id}} -->
+            </div>
+          </div>
+      </div>
+      <!-- / APP TITLE --> 
+      <!-- BTN's -->
+      <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+          <div class="mt-16 mt-sm-0">
+              <button mat-raised-button [routerLink]="['/admin/forms/entries/edit/',url_id]" class="reference-button mr-8">
+                  <mat-icon class="mr-4">edit</mat-icon>Edit
+              </button>
+              <button mat-raised-button [routerLink]="['/admin/forms/entries/',Form_id]"  [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}">
+                  <mat-icon class="mr-4">arrow_back</mat-icon>
+                  Back To List
+              </button>
+          </div>
+      </div>
+      <!-- / BTN's -->
+  </div>
+
+
+  <div class="content" fusePerfectScrollbar>
+    <div class="center p-24 pb-56" fxLayoutAlign="center">
+      <div class="content w-90-p my-auto br-ds-0">
+        <div fxLayout="row" fxLayoutAlign="end" class="m-16">
+          <div [ngStyle]="button" class="include-notes-div font-weight-600 border mr-16 px-12 text-uppercase line-height-44 br-ds-0 box-shadow-none " fxLayout="row" fxLayoutAlign="center center">
+            <div>Include Notes</div>
+            <mat-checkbox fxLayout="row" class="ml-8" (change)="includenotes($event)"> </mat-checkbox>
+          </div>
+          <button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" type="button"  mat-stroked-button (click)="getPrint()"> <mat-icon class="mr-4">local_printshop</mat-icon>Print</button>
+        </div>
+
+        <div [ngStyle]="green_bg_header" class="fuse-white-fg p-16 mb-0" fxLayout="row" fxLayoutAlign="space-between center">
+          <p class="font-weight-600 font-size-18" [ngStyle.lt-sm]="{'font-size.px': 20}">{{form_title}} : #{{entry_id}}</p>  
+          <p class="font-weight-600 font-size-18" [ngStyle.lt-sm]="{'font-size.px': 16}"> Submitted Date : {{SubmittedDate | date: defaultDateTimeFormat.date_format}} </p>
+        </div>
+        
+
+        <div class="w-100-p" fxLayout="column" fxLayoutAlign="start" style="border: 1px solid #00000059;" >
+          <ng-container  *ngFor="let element of tmpentriesmeta; let index =index; ">
+          <ng-container *ngIf="element.entryinfo != null && element.entryinfo.form_element_value != null " class="w-100-p">
+                <div  *ngIf="  element.entryinfo.form_element_value !=''">
+                  <div  *ngIf="element.fields.field_type !=='button' && element.fields.field_type !== 'radio'  && element.fields.field_type !='html' && element.fields.field_type !== 'checkbox' "  class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800">
+                      {{element.description | titlecase}} :
+                  </div>
+                </div>    
+                
+                <div class=" border-bottom font-weight-600" *ngIf="element.entryinfo.form_element_value !=''">
+                    <!-- date field  -->
+                    <ng-container *ngIf="element.fields.field_type =='date' && element.entryinfo.form_element_value !=''">
+                      <div class="p-8" *ngIf="element.content.extra_field_content.pickerType =='calendar'">
+                        <p>{{element.entryinfo.form_element_value | date: defaultDateTimeFormat.date_format}}</p>
+                      </div>
+                      <div class="p-8" *ngIf="element.content.extra_field_content.pickerType ==  'timer'">
+                        <div >{{element.entryinfo.form_element_value | date: defaultDateTimeFormat.time_format}}</div>
+                      </div>
+                      <div class="p-8" *ngIf="element.content.extra_field_content.pickerType =='both'">
+                        <div >{{element.entryinfo.form_element_value | date: defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</div>
+                      </div>
+                    </ng-container>
+
+                    <!-- time field  twelve-->
+                    <div  *ngIf="element.fields.field_type =='time' &&  element.content.extra_field_content.time_format == 'twelve' && element.entryinfo.form_element_value !='' ">
+                          <div class="p-8" *ngIf=" element.content.extra_field_content.text_format =='dropdown' ">
+                            <p>{{element.entryinfo.form_element_value  | date: defaultDateTimeFormat.time_format }}</p>
+                          </div>
+                  
+                            <div class="p-8" *ngIf="element.content.extra_field_content.text_format  =='text' ">
+                            <p> {{element.entryinfo.form_element_value}}</p>
+                          </div>
+                    </div>
+                    <!-- time field twenty-four -->
+                  
+                    <div  *ngIf="element.fields.field_type =='time' && element.content.extra_field_content.time_format == 'twenty-four' && element.entryinfo.form_element_value !=''">
+                      <div *ngIf=" element.content.extra_field_content.text_format =='dropdown'">
+                        <p>{{element.entryinfo.form_element_value  |  date:'H:mm'}}</p>
+                      </div>
+                      <div class="p-8" *ngIf="element.content.extra_field_content.text_format  =='text'"> 
+                        <p> {{element.entryinfo.form_element_value}} </p>
+                      </div>
+                    </div>
+                
+                    <!-- list field  -->
+                    <ng-container *ngIf="element.fields.field_type == 'list'">
+                        <ng-container>
+                          <div class="mx-8 mb-8 mt-24 all-list-fields">
+
+                            <table border="1" class="w-100-p my-12 text-capitalize border-color">
+                              <thead class="text-center">
+                                  <tr [ngStyle]="green_bg_header">
+                                      <th class="text-center p-12 w-20-p font-weight-600" *ngFor="let item of listFieldDate[0]">
+                                        <div>
+                                          <div *ngIf="item.field_type=='date'">
+                                            <div *ngIf="item.pickertype=='calendar'">
+                                              <div >  {{item.field_name | titlecase}}  </div> 
+                                            </div>
+                                      
+                                            <div *ngIf="item.pickertype=='timer'">
+                                              <div >  {{item.field_name | titlecase}}  </div> 
+                                            </div>
+                                      
+                                            <div *ngIf="item.pickertype=='both'">
+                                              <div >  {{item.field_name | titlecase}}  </div>  
+                                            </div>
+                                          </div>
+                                      
+                                          <div *ngIf="item.field_type=='time'">
+                                            <div >  {{item.field_name | titlecase}} </div> 
+                                            
+                                          </div>
+                                      
+                                          <div *ngIf="item.field_type=='number'">
+                                            <div *ngIf="item.ismasking && item.ismasking=='Y' && item.maskingpattern!='' ">
+                                              <div >  {{item.field_name | titlecase}} </div> 
+                                            </div>
+                                      
+                                            <div *ngIf="!item.ismasking || item.ismasking=='N' || item.ismasking==''">
+                                              <div >  {{item.field_name | titlecase}}  </div> 
+                                            </div>
+                                          </div>
+                                      
+                                          
+                                          <div *ngIf="item.field_type=='email'">
+                                            <div >  {{item.field_name | titlecase}} </div> 
+                                          </div>
+                                      
+                                      
+                                      
+                                          <div *ngIf="item.field_type!=='number' && item.field_type!=='date' && item.field_type!=='time' && item.field_type !=='email'">
+                                            <div >  {{item.field_name | titlecase}}  </div> 
+                                          </div>
+                                        </div>
+                                      </th>
+                                    
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                <tr  *ngFor="let listitem of listFieldDate">
+                                  <td *ngFor="let item of listitem">
+                                    <div>
+                                      <div *ngIf="item.field_type=='date'">
+                                        <div *ngIf="item.pickertype=='calendar'">
+                                          <div class="p-8  font-weight-600 "> {{item.field_value | date:defaultDateTimeFormat.date_format}} </div>
+                                        </div>
+                                  
+                                        <div *ngIf="item.pickertype=='timer'">
+                                          <div class="p-8  font-weight-600"> {{item.field_value | date:defaultDateTimeFormat.time_format}} </div>
+                                        </div>
+                                  
+                                        <div *ngIf="item.pickertype=='both'">
+                                          <div class="p-8  font-weight-600"> {{item.field_value | date:defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}} </div>  
+                                        </div>
+                                      </div>
+                                  
+                                      <div *ngIf="item.field_type=='time'">
+                                        <div class="p-8  font-weight-600"> {{item.field_value | date:defaultDateTimeFormat.time_format}} </div>
+                                        
+                                      </div>
+                                  
+                                      <div *ngIf="item.field_type=='number'">
+                                        <div *ngIf="item.ismasking && item.ismasking=='Y' && item.maskingpattern!='' ">
+                                          <div class="p-8  font-weight-600"> {{item.field_value | mask:item.maskingpattern }} </div>
+                                        </div>
+                                  
+                                        <div *ngIf="!item.ismasking || item.ismasking=='N' || item.ismasking==''"> 
+                                          <div class="p-8  font-weight-600"> {{item.field_value | mask:item.maskingpattern }} </div>
+                                        </div>
+                                      </div>
+                                  
+                                      
+                                      <div *ngIf="item.field_type=='email'">
+                                        <div class="p-8  font-weight-600 text text-lowercase "> {{item.field_value | lowercase}} </div>
+                                      </div>
+                                  
+                                  
+                                  
+                                      <div *ngIf="item.field_type!=='number' && item.field_type!=='date' && item.field_type!=='time' && item.field_type !=='email'">
+                                        <div class="p-8 font-weight-600"> {{item.field_value}} </div>
+                                      </div>
+                                    </div>
+                                </td>
+                              </tr>
+                              </tbody>
+                          </table>
+                            <!-- <div *ngFor="let item of listitem">
+                              <div>
+                                <ng-container *ngIf="item.field_type=='date'">
+                                  <ng-container *ngIf="item.pickertype=='calendar'">
+                                    <div class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800 text-capitalize">{{item.field_name | titlecase}} : </div>
+                                    <div class="p-8 border-bottom font-weight-600"> {{item.field_value | date:defaultDateTimeFormat.date_format}} </div>
+                                  </ng-container>
+                                  <ng-container *ngIf="item.pickertype=='timer'">
+                                    <div class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800 text-capitalize">{{item.field_name | titlecase}} : </div>
+                                    <div class="p-8 border-bottom font-weight-600"> {{item.field_value | date:defaultDateTimeFormat.time_format}} </div>
+                                  </ng-container>
+                                  <ng-container *ngIf="item.pickertype=='both'">
+                                    <div  class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800 text-capitalize">{{item.field_name | titlecase}} : </div>
+                                    <div class="p-8 border-bottom font-weight-600"> {{item.field_value | date:defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}} </div>
+                                  </ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="item.field_type=='time'">
+                                  <div  class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800 text-capitalize">{{item.field_name | titlecase}} : </div> 
+                                  <div class="p-8 border-bottom font-weight-600"> {{item.field_value | date:defaultDateTimeFormat.time_format}} </div>
+                                </ng-container>
+                                <ng-container *ngIf="item.field_type=='number'">
+                                  <ng-container *ngIf="item.ismasking && item.ismasking=='Y' && item.maskingpattern!='' ">
+                                    <div class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800 text-capitalize">{{item.field_name | titlecase}} : </div> 
+                                    <div class="p-8 border-bottom font-weight-600"> {{item.field_value | mask:item.maskingpattern }} </div>
+                                  </ng-container>
+                                  <ng-container *ngIf="!item.ismasking || item.ismasking=='N' || item.ismasking==''">
+                                    <div  class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800 text-capitalize">{{item.field_name | titlecase}} : </div>
+                                    <div class="p-8 border-bottom font-weight-600"> {{item.field_value | mask:item.maskingpattern }} </div>
+                                  </ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="item.field_type!=='date' && item.field_type!=='time' && item.field_type!=='number'">
+                                  <div  class="blue-grey-50 fuse-black-fg p-8 border-bottom font-weight-800 text-capitalize">{{item.field_name | titlecase}} : </div> 
+                                  <div class="p-8 border-bottom font-weight-600"> {{item.field_value}} </div>
+                                </ng-container>
+                              </div>
+                            </div> -->
+                          </div>  
+                        </ng-container>
+                    </ng-container>
+                    <!-- list field end here  -->
+
+                    <!-- signature field  -->                      
+                    <div class="p-8" *ngIf="element.fields.field_type == 'signature' && element.entryinfo.form_element_value !=''">
+                          <p>
+                            <img [src]="element.entryinfo.form_element_value" class="client-img" alt="{{img}}"/>   
+                          </p>
+                    </div>
+                      
+                    <!-- rating field  -->
+                    <div *ngIf="element.fields.field_type == 'rating' && element.entryinfo.form_element_value !=''"> 
+                        <div>
+                          <star-rating  [value]="element.entryinfo.form_element_value" [totalstars]="5" [checkedcolor]="element.content.extra_field_content.checkedcolor" [uncheckedcolor]="element.content.extra_field_content.uncheckedcolor" size="24px" readonly="true" ></star-rating>
+                        </div>
+
+                    </div>
+
+                      <!-- text area field  -->
+                      <span>
+                        <div class="p-8" *ngIf="element.fields.field_type =='textarea' && element.entryinfo.form_element_value !=''">
+                          <p style="white-space: pre-wrap;">{{element.entryinfo.form_element_value}}</p>
+                        </div>
+                      </span>
+
+                    <!-- number field  -->
+                    <div class="p-8" *ngIf="element.fields.field_type =='number' && element.entryinfo.form_element_value !='' && element.content.extra_field_content.ismasking=='Y' " [mask]="element.content.extra_field_content.ismasking=='Y' ? element.content.extra_field_content.maskingpattern  : ''">
+                          {{element.entryinfo.form_element_value | mask:element.content.extra_field_content.maskingpattern}}
+                    </div>
+                      <div class="p-8" *ngIf="element.fields.field_type =='number' && element.entryinfo.form_element_value !='' && element.content.extra_field_content.ismasking=='N' " [mask]="element.content.extra_field_content.ismasking=='Y' ? element.content.extra_field_content.maskingpattern  : ''">
+                          {{element.entryinfo.form_element_value }}
+                    </div>
+
+                    <!-- upload field -->
+                    <div class="p-8"  *ngIf="element.fields.field_type =='upload' && element.entryinfo.form_element_value !=''">
+                          <button color="accent" type="button"  mat-stroked-button (click)="ViewUpload(element.entryinfo.form_element_value)">View Upload Data</button>
+                    </div>
+                    
+                    <!-- web site field -->
+                    <div class="p-8" *ngIf="element.fields.field_type == 'website' && element.entryinfo.form_element_value !=''">
+                          <a (click)="showUrlData(element.entryinfo.form_element_value)" class="cursor-pointer" >{{element.entryinfo.form_element_value}}</a>
+                    </div>
+                      
+                    <!-- check box field  -->   
+                    <div>
+                      <div  *ngIf="element.fields.field_type == 'checkbox' && element.content.extra_field_content.viewentry_show_label =='Y' "  class="blue-grey-50 p-8 fuse-black-fg  border-bottom font-weight-800" >
+                        {{element.description | titlecase}} :
+                      </div> 
+                    </div>
+                         
+                             
+                    <div class="p-8"  *ngIf="element.fields.field_type =='checkbox' && element.content.extra_field_content.viewentry_show_content == 'Y' && element.entryinfo.form_element_value !=''">
+                        {{element.entryinfo.form_element_value}}
+                    </div>
+                      
+                    <!-- radio -->
+                    <div>
+                      <div  *ngIf="element.fields.field_type == 'radio' && element.content.extra_field_content.viewentry_show_label =='Y' "  class="blue-grey-50 p-8 fuse-black-fg  border-bottom font-weight-800" >
+                        {{element.description | titlecase}} :
+                      </div> 
+                    </div>
+                    <div class="p-8"  *ngIf="element.fields.field_type =='radio' && element.content.extra_field_content.viewentry_show_content == 'Y' && element.entryinfo.form_element_value !=''">
+                      {{element.entryinfo.form_element_value}}
+                    </div>
+                    <!-- Email field  -->
+                    <span>
+                      <div *ngIf="element.fields.field_type =='email' && element.entryinfo.form_element_value !=''" class="text-lowercase p-8">
+                          {{element.entryinfo.form_element_value | lowercase}}
+                      </div>
+                    </span>
+
+
+                    <!-- other field  -->
+                    <div *ngIf="element.fields.field_type !='time' && element.fields.field_type !='html'"  class="text-capitalize">
+                    <div *ngIf="element.fields.field_type !='dynamic' && element.fields.field_type !='website'">
+                      <div  *ngIf=" element.fields.field_type !='signature' && element.fields.field_type != 'rating'">
+                        <div *ngIf=" element.fields.field_type !='date' && element.fields.field_type !='number'">
+                          <div *ngIf=" element.fields.field_type !='list' && element.fields.field_type !='upload'">
+                            <div *ngIf=" element.fields.field_type !='checkbox' && element.fields.field_type !=='email'" >
+                              <div *ngIf=" element.fields.field_type !='radio'" >
+                                <div *ngIf="element.fields.field_type !='textarea' && element.entryinfo.form_element_value !=''">
+                                  <div class="p-8">{{element.entryinfo.form_element_value}}</div>
+                                </div>
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>      
+                </div>
+              </ng-container> 
+          </ng-container>
+        </div>
+
+        <div class="my-12">
+          <div class="content">
+              <div class="content-wrap fuse-white-bg w-100-p br-ds-0" >
+                  <div *ngIf="ApprovalSetting.length != 0">
+                    <h1 [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16 m-0" *ngIf="Current_status == 'pending'" [ngStyle.lt-sm]="{'font-size.px': 20}">{{statusName[Current_status] | titlecase}} Approval</h1>
+                     <h1 *ngIf="Current_status != 'pending'" [ngStyle.lt-sm]="{'font-size.px': 20}" [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16 m-0">{{statusName[Current_status] | titlecase}}</h1>
+                    <div  *ngFor="let user of ApprovalSetting" class="text-capitalize border p-24">
+                      <div *ngIf="user.user != null">
+                        <div *ngIf="user.user_id != edited_by " >{{user.user.first_name}} {{user.user.last_name}} : {{statusName.pending}}</div>
+                        <div *ngIf="user.user_id == edited_by " >{{user.user.first_name}} {{user.user.last_name}} : {{statusName[Current_status]}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="ApprovalSetting.length == 0">
+                     <div class="p-16"> : {{statusName[Current_status]}}</div>
+                  </div>
+
+                  <div *ngIf="Current_status == 'pending' && ApprovalSetting.length != 0 && showApproval == true " class="mt-20" fxLayout="row" fxLayoutAlign="center center">
+                      <button type="button" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none mr-8" mat-raised-button (click)="statusChange('approved')" >Approve</button>
+                      <button type="button" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none mr-8" mat-raised-button (click)="statusChange('denied')">Denied</button>
+                      <button type="button" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none mr-8" mat-raised-button (click)="statusChange('cancelled')" >Cancel</button>
+                      <button type="button" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" mat-raised-button (click)="statusChange('completed')">Completed</button>
+                  </div>
+              </div>
+        </div>
+        </div>
+
+        <!-- Notes Code here -->
+        <div>
+          <div class="content">
+                <div class="content-wrap fuse-white-bg w-100-p br-ds-0" fxLayout="column">
+                <h1 [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16 m-0" [ngStyle.lt-sm]="{'font-size.px': 10}">Notes :</h1>
+                <form  class="w-100-p p-24"  autocomplete="off" #f="ngForm" [formGroup]="newform" novalidate autocomplete="off">                              
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                      <button type="button" [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" [ngStyle.lt-md]="{'margin-bottom':'6px', 'padding':'0 8px'}" mat-stroked-button [disabled]="Checkeditems.length ==0 ? true : false" (click)="deleteAll()"><mat-icon class="s-20">delete</mat-icon> Delete</button>
+                    </div> 
+
+                    <table class="simple w-100-p topics-list-table mb-20">
+                          <thead>
+                              <tr>
+                                  <th>
+                                      <div class="font-size-18"></div>
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let data of NoteEntries;let index= index" class="vertical-align-baseline line-height-30 border">
+                                <td>
+                                  <div>
+                                    <mat-checkbox  (change)="onChangecheckbox(data.id,$event)">
+                                    </mat-checkbox>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <img [src]="defaultImg[index]"  class="client-img" alt="{{img}}"  /> 
+                                  </div>
+                                </td>
+                                  <td *ngIf="NoteEntries && NoteEntries.length !=0">
+                                      <div>
+                                            {{data.usermeta.first_name + ' ' +data.usermeta.last_name}}
+                                      </div>
+                                      <div>
+                                        {{data.usermeta.email}}
+                                      </div>
+                                      <div>
+                                        Added On {{data.created_at | date:defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}
+                                      </div>
+                                      
+                                  </td>
+                                  <td>
+                                      <div >
+                                        {{data.note}}
+                                      </div>
+                                  </td> 
+                              </tr>
+                          </tbody>
+                    </table>
+            
+                    <div>
+                        <mat-form-field appearance="outline" fxFlex="100" class="mt-8">
+                            <textarea class="w-100-p" matInput  name="notes" formControlName="notes" required>
+                            </textarea>
+                        </mat-form-field>
+                    </div>
+                    
+                      <div *ngIf="EmailFieldValue !=0">
+                          <mat-form-field appearance="outline" fxFlex="50" class="p-4">
+                            <mat-select formControlName="email"  name="email" >
+                              <mat-option value ="">Also Email This Note To </mat-option>
+                              <mat-option  [value]="emails"  *ngFor="let emails of EmailFieldValue"  >
+                                  {{emails}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field  *ngIf="newform.get('email').value !=''" appearance="outline" fxFlex="50" class="p-4" >
+                            <mat-label>Subject</mat-label>
+                              <input matInput name="subject"   formControlName="subject">
+                          </mat-form-field>
+                    </div>
+
+                    <div class="text-center mt-20" >
+                        <button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-non" type="button"  mat-stroked-button (click)="AddTheNote()" [disabled]="newform.invalid || ShowAddButton == false" >Add Note</button>
+                    </div>
+                  </form>
+              </div>
+            </div>
+        </div>
+        
+
+      </div>
+    </div>
+  </div>
+
+
+ 
+
+

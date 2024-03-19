@@ -1,0 +1,39 @@
+<div id="front-CartWatch-click-image" class="page-layout simple fullwidth layout-box">
+
+    <!-- HEADER -->
+    <div class="header py-32 px-16">
+  
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+  
+            <div class="header-top">
+  
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong> View Menu Item </strong>
+                    </span>
+                </div>
+                <!-- HEADER TEXT -->
+            </div>
+            <!-- / TOOLBAR -->
+        </div> 
+    </div>
+     <!--  / CONTENT WRAP -->
+     <section class="content fuse-white-bg p-28">
+        <div class="content-wrap p-24" fusePerfectScrollbar>
+            <mat-card  fusePerfectScrollbar class="w-100-p p-0 p-28">
+                <div [ngClass.lt-sm]="{'text-center': 'true'}">
+                    <button color="accent" type="button" mat-stroked-button [routerLink]="['/cycled-menus-for-seven-days']" >
+                        Back To List
+                    </button>
+
+                    <h3 class="font-weight-600 my-20 font-size-24" > <strong> {{name}} </strong> </h3>
+
+                    <div>
+                        <img [src]="ImgUrl" height="100" width="100" />
+                    </div>
+                </div>
+          </mat-card>
+        </div>
+     </section>
+</div>
+    

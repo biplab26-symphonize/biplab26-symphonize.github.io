@@ -1,0 +1,103 @@
+<div id="front-meeting-food-drink" class="page-layout simple fullwidth layout-box">
+    <!-- HEADER -->
+    <div class="header px-16">
+
+        <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-sm="row">
+
+            <div class="header-top">
+
+                <div class="logo text-center">
+                    <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                        <strong>Meeting Room</strong>
+                    </span>
+                </div>
+            </div>
+        </div> 
+    </div> 
+
+    <!-- content -->
+  <!-- CONTENT -->
+  <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+    <form class="br-radius-8"  [formGroup]="Food_Drink"  autocomplete="off" (ngSubmit)="OnNext()" >
+        <div class="content-wrap fuse-white-bg p-28">
+            <div class="w-100-p border pt-24" fxLayout="row" fxLayoutAlign="start center"
+            [ngStyle]="{'background': '#f5f5f5','margin-bottom': '10px','padding-left': '10px'}">
+                    <mat-form-field appearance="outline" fxFlex.lt-sm="100" fxFlex="25">
+                        <mat-label>Step</mat-label>
+                        <mat-select matNativeControl  formControlName="step" (selectionChange)="OnselectStep($event)">
+                            <mat-option [routerLink]="['/meeting-room']" value="step1">Step 1- Rooms</mat-option>
+                            <mat-option value="step2">Step 2- Book Room</mat-option>
+                            <mat-option value="step3" >Step 3- Room Setup</mat-option>
+                            <mat-option value="step4" >Step 4- Amenities</mat-option>
+                            <mat-option value="step5" disabled>Step 5- Checkout</mat-option>
+                            <mat-option value="step6" disabled>Step 6- Confirmation</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            <div fxLayout="row" fxLayoutGap = "20px" fxLayoutAlign="start start" fxLayout.lt-sm="column">
+                <div fxFlex = "35" class="border mb-20" fxFlex.lt-sm = "100" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                  
+                    <p class="font-weight-600 font-size-18 accent fuse-white-fg p-16 w-100-p d-block" [ngStyle.lt-sm]="{'font-size.px': 20}">YOUR BOOKING :</p> 
+                    <div class="m-16" *ngIf="RoomData">
+                        <div >
+                            <p  *ngIf="RoomData.image == ''">
+                                <img [src]="default_img" height="450" width="350" />
+                            </p>
+                            <p  *ngIf="RoomData.image != ''">
+                                <img [src]="RoomData.image" alt=" no image" height="450" width="350">
+                            </p>
+                        </div>
+
+                        <div class="line-height-32" >
+                            <h1 class="text-bold font-size-24 text-capitalize">{{RoomData.title}}</h1>
+                            <p class="font-weight-600">Capacity :{{RoomData.capacity}}</p>
+                            <p class="font-weight-600">Date : {{this.CurrentSelectdData[0].date | date: defaultDateTimeFormat.date_format}}</p>
+                            <p class="font-weight-600" *ngIf="ShowHourly == false ">Duration : <span class="text-lowercase"> {{this.CurrentSelectdData[0].duration.value}} </span></p>
+                            <p class="font-weight-600" *ngIf="ShowHourly == true ">Duration : <span class="text-lowercase"> {{this.HourFirstValue[0]}} - {{this.HourLastValue[0]}} </span></p>
+                            <p class="font-weight-600">Attendees : {{this.CurrentSelectdData[0].attendees}}</p>
+                            <p class="font-weight-600" *ngIf="AllLayout">Layout : {{AllLayout.title}}</p>
+                            <p class="font-weight-600 text-capitalize" *ngIf="AllEquipment">  Equipments :<span *ngFor="let equipment of AllEquipment"> {{equipment.data.title}} X {{equipment.unit}}</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div fxFlex = "65" class="border"  fxFlex.lt-sm = "100">
+                    <p class="font-weight-600 font-size-18 accent fuse-white-fg p-16 w-100-p d-block" [ngStyle.lt-sm]="{'font-size.px': 18}">Amenities :</p>
+                      
+                    <div  class="p-16 service-details"  fxLayout.lt-sm="row" fxLayoutAlign.lt-sm="start center">
+                        <div class="booking-img" fxFlex="100" fxLayout="row wrap">
+                            <ng-container  *ngFor="let drink of FoodDrink;let index = index" >
+                            <div *ngIf="FoodDrink" fxLayout="row wrap" fxFlex="100" class="mb-20">
+                                <mat-checkbox  class="mx-4 text-capitalize" fxFlex="33" 
+                                    fxFlex.lt-sm="100" [ngClass.lt-sm]="{'mb-12': 'true'}" 
+                                    [checked]="isChecked(drink.id)" 
+                                    (change)="onSelctedEquipment($event.checked,drink.id,drink.title)"  
+                                    [value]='drink.id'>
+                                    {{drink.title}}
+                                </mat-checkbox>
+                                <mat-form-field fxFlex="50" fxFlex.lt-sm="100" class="w-100-p mat-wrapper-p-0" appearance="outline"  floatLabel="always">
+                                    <mat-label class="font-size-14 fnt-weight-600">Quantity</mat-label>
+                                    <input type="number"  matInput min="1" value="1" (blur)="Limit($event,drink.id,drink.title)" />
+                                    <mat-error></mat-error>
+                                </mat-form-field>
+                            </div> 
+                           </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-sm="row" class="w-100-p mt-28">
+                 <div class="pr-8 submit-btn text-center">
+                    <button  (click)="onClickBack()"  type="button" color="accent" class="px-32" mat-stroked-button >Back</button>
+                </div> 
+                <div class="pr-8 submit-btn text-center">
+                    <button  (click)="OnNext()"  type="button" color="accent" class="px-32" mat-stroked-button>Next</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+   </div>
+</div>

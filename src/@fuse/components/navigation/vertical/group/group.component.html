@@ -1,0 +1,38 @@
+<ng-container *ngIf="!item.hidden">
+
+    <div class="group-title" [ngClass]="item.classes">
+        <span *ngIf="!item.url" class="fuse-white-fg" [translate]="item.translate">{{ item.title }}</span>
+
+        <a [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
+            *ngIf="item.url && item.menu_source !='RDM' && item.menu_source !='D'"
+            [attr.menutitle]="item.menu_title" 
+            [attr.showpagetitle]="item.show_page_title || 'N'"
+            [attr.pagetitle]="item.page_title || ''" 
+            [attr.pagetitleimg]="item.media ? item.media.image : ''"
+            (click)="sendMenuItemInfo(item)">
+            <span class="fuse-white-fg" [translate]="item.translate">
+                {{ item.title  | titlecase}}
+            </span>
+        </a>
+        <a *ngIf=" item.url && item.menu_source =='RDM' || item.menu_source=='D'" [target]="item.target ? '_blank' : '_self'"
+            [href]="item.url" [target]="item.target ? '_blank' : '_self'"
+            [attr.menutitle]="item.menu_title" 
+            [attr.showpagetitle]="item.show_page_title || 'N'"
+            [attr.pagetitle]="item.page_title || ''" 
+            [attr.pagetitleimg]="item.media ? item.media.image : ''"
+            (click)="sendMenuItemInfo(item)">
+            <span class="fuse-white-fg" [translate]="item.translate">
+                {{ item.title  | titlecase}}
+            </span>
+        </a>
+    </div>
+
+    <div class="group-items">
+        <ng-container *ngFor="let item of item.children">
+            <fuse-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></fuse-nav-vertical-group>
+            <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'" [item]="item">
+            </fuse-nav-vertical-collapsable>
+            <fuse-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-vertical-item>
+        </ng-container>
+    </div>
+</ng-container>

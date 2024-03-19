@@ -1,0 +1,30 @@
+<section class="quick-links pb-28" fxLayout="row" fxLayoutAlign="center center">
+    <div class="ipad-view" fxLayout="row wrap" dir="ltr"  fxFlex="1024px" fxLayout.lt-sm="column">
+        <ng-container *ngIf="Menus.length>0">
+            <ng-container *ngFor="let menu of Menus">
+                <div class="mb-16 main-ipad" fxLayout="row" fxLayoutAlign="start center" fxFlex="32" fxLayout.lt-sm="column">
+                    <a  class=" fuse-card py-12" *ngIf="menu.menu_source=='D' && menu.menu_source_type=='url'" href="{{menu.menu_url}}" fxLayout="row" fxLayoutAlign="start center">
+                        <ng-container> 
+                            <div  [target]="menu.menu_target || '_self'" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="icon w-80 h-80 mr-20 text-center" fxLayout="row" fxLayoutAlign="center center">
+                                    <mat-icon class="s-50">{{menu.menu_icon}}</mat-icon>
+                                </div>
+                                <div class="h2 font-weight-800">{{menu.menu_title | titlecase}}</div>
+                            </div>
+                        </ng-container> 
+                    </a>
+                    <a class=" fuse-card py-12" fxLayout="row" fxLayoutAlign="start center" *ngIf="menu.menu_source!=='D'" [routerLink]="[menu.menu_url]">
+                        <ng-container >
+                            <div  (click)="sendMenuItemInfo(menu)" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="icon w-80 h-80 mr-20 text-center" fxLayout="row" fxLayoutAlign="center center">
+                                    <mat-icon class="s-50">{{menu.menu_icon}}</mat-icon>
+                                </div>
+                                <div class="h2 font-weight-800">{{menu.menu_title | titlecase}}</div>
+                            </div>
+                        </ng-container>
+                    </a>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+ </section>

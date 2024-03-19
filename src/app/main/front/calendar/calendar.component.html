@@ -1,0 +1,97 @@
+<div class="page-layout carded" id="calendar">
+    <!-- HEADER -->
+     <breadcumb [directoryTitle]="displaySlug" [captialize]="true"></breadcumb>
+    <!-- / HEADER --> 
+
+    <!-- CENTER -->
+    <div class="center p-4 pb-4 content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+        <!-- CONTENT -->
+        <div class="content-card br-ds-0 content-wrap fuse-white-bg p-28">
+            <form fxLayout="column" name="filterForm" #filter name="filterForm" [formGroup]="filterForm" novalidate autocomplete="off" fxLayoutAlign="center">
+                <div class="fuse-common-card w-100-p br-ds-0" fxFlex="100" fxFlexAlign="center">
+                    <div class="filters" fxLayout="row" fxLayoutGap="10px grid" fxLayoutAlign="start end">
+                        <div fxFlex="100">
+                            <filter-categories [showinput]="'checkbox'" [showtype]="'calendar'" [categorytype]="'C'" [outerclass]="'category-toolbar'" [EventSettings]="EventSettings" [heading]="'To filter, click on one of the below categories.'" (selectedCategory)="setFormCategoryValues($event)"  (selectedSubCategory)="setFormSubCategoryValues($event)"></filter-categories>
+                        </div>
+                    </div>
+                    
+                    <div class="filters" fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start end">
+                        <div  fxFlex="33%" fxFlex.lt-sm="100">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Select Location</mat-label>
+                                <mat-select placeholder="Event Location" formControlName="event_location">
+                                    <mat-option>Select Location</mat-option>
+                                    <mat-option *ngFor="let location of locations; let i = index;" [value]="location.id">{{location.category_name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div  fxFlex="33%" fxFlex.lt-sm="100">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Search</mat-label>
+                                <input matInput formControlName="searchKey" placeholder="Search By Event Title">
+                            </mat-form-field>
+                        </div>
+                        <div  fxFlex="33%" fxFlex.lt-sm="100">
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Event Start Date</mat-label>
+                                <input matInput formControlName="event_start_date" readonly
+                                    [matDatepicker]="event_start_date" 
+                                    placeholder="Event Start Date"
+                                    (dateInput)="changeCalendarView()">
+                                <mat-datepicker-toggle matSuffix [for]="event_start_date"></mat-datepicker-toggle>
+                                <mat-datepicker #event_start_date></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- EVENT META FILTERS -->
+                    <div class="filters special-event-wrapper mb-20" fxLayout="row" fxLayoutGap="grid" fxLayoutAlign="center" fxLayout.lt-sm="column">
+                        <div class="keyindi" fxFlex="50%" fxFlex.lt-sm="100">
+                            <span 
+                            [style.background-color]="RegbackgroundColor"
+                            [style.border-color]="RegborderColor"
+                            
+                            class="Indicates-btn"></span> - Indicates Registration Required
+                        </div>
+
+                        <div  *ngIf="EventSettings.calender_settings.special_event == 'Y'" class="special-event" fxFlex="33%">
+                            <div appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-checkbox 
+                                id="special_event"  
+                                name="special_event" 
+                                formControlName="special_event"
+                                value="Y">
+                                Special Event
+                                </mat-checkbox>
+                            </div>  
+                        </div>
+                        <event-meta-filters fxFlex="67%" [EventSettings]="EventSettings" (eventmetaArray)="setEventMetaFilter($event)"></event-meta-filters>
+                    </div>
+                   
+
+                    <div class="filters" fxLayout="row" fxLayoutGap="grid">
+                        <div fxFlex="100" class="reset-print-btn" fxLayoutAlign="center" [ngClass.lt-sm]="{'mb-32': 'true'}">
+                            <div>
+                                <button mat-stroked-button color="accent" type="button" (click)="printCalendar()" class="mr-10 my-4"><mat-icon class="icon s-20 mr-4">print</mat-icon> Print</button>
+                                <button color="accent" mat-stroked-button type="button" (click)="resetform()" class="mr-10 my-4" id="resetcalendar"><mat-icon class="icon s-20 mr-4">replay</mat-icon> Reset</button>
+                                <button color="accent" mat-stroked-button type="button" *ngIf="myeventCalendar==true && calendarSlug==''" [routerLink]="['/my-events']" class="my-4"><mat-icon class="icon s-20 mr-4">list_alt</mat-icon> Back to My Events </button>
+                                <button color="accent" mat-stroked-button type="button" *ngIf="myeventCalendar==true && calendarSlug!==''" [routerLink]="['/my-event/',calendarSlug]" class="my-4"><mat-icon class="icon s-20 mr-4">list_alt</mat-icon> Back to My Events </button>
+                            </div>                            
+                        </div>
+                    </div>
+
+                   
+                    <!-- CALENDAR -->
+                    <div fxLayout="column " [ngStyle.lt-md]="{'overflow-x': 'scroll'}" >
+                        <div [ngStyle.lt-md]="{'width.px': 1000}"  ngClass.lt-sm="event-details-dialog"> 
+                            <full-calendar
+                            #fullcalendar
+                            [options]="options"
+                            ></full-calendar>
+                        </div>
+                        
+                    </div>  
+                </div>
+            </form>    
+        </div>        
+    </div>
+</div>

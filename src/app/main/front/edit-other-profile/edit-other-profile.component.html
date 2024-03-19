@@ -1,0 +1,239 @@
+<div id="profile" class="page-layout simple">
+    <!-- HEADER -->
+    <div class="static-header h-400 px-16">
+       <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+           <div class="header-top">
+               <div class="logo text-center">
+                   <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                           <strong> Edit Profile </strong>
+                   </span>
+               </div>
+               <!-- HEADER TEXT -->
+           </div>
+           <!-- / TOOLBAR -->`
+       </div>
+   </div>
+<!-- / HEADER -->
+
+   <!-- CONTENT -->
+   <div class="content">
+       <div class="content-wrap fuse-white-bg p-28">
+        <!-- HEADER -->
+       <div class="dynamic-header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"  [ngStyle]="{'background-image': 'url('+tmp_cover_img+')','background-size': 'auto','background-position':'center center' ,'background-repeat':'no-repeat'}" fxLayoutAlign.gt-sm="space-between end">
+           <div class="user-info">
+               <div class="user-profile" fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-md="column"
+               fxLayoutAlign.gt-sm="start center">
+                   <img class="profile-image avatar huge" [src]="tmp_avatar_img" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                   <div class="name" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                       {{otherUserInfo.first_name | titlecase}}
+                   </div>
+               </div>
+                 <!--Update Profile Photo -->
+                 <div [@animate]="{value:'*',params:{delay:'50ms',x:'-25px'}}" class="cloud-delete-btn"  [ngClass.lt-md]="{'text-center' : 'true' , 'mb-12' : 'true'}" >
+                   <input #profileInput hidden id="avatar_file" type="file" (change)="setPreviewImage($event,'avatar')">
+                   <button class="ml-4 mr-8 accent" mat-mini-fab matTooltipPosition="above" matTooltip="Upload Profile Picture" (click)="profileInput.click()"><mat-icon class="fuse-white-fg" fxLayout="row" fxLayoutAlign="center center">cloud_upload</mat-icon></button>
+                   <button class="aceent" mat-mini-fab matTooltipPosition="above" matTooltip="Remove Profile Picture" (click)="removePicture('avatar');"><mat-icon class="fuse-white-fg" fxLayout="row" fxLayoutAlign="center center">delete</mat-icon></button>
+               </div>
+           </div>
+              
+     
+       <div fxLayout="row" fxLayoutAlign="space-between" class="z-1"> 
+           
+           <!--Update Cover Photo  -->
+           <div [@animate]="{value:'*',params:{delay:'50ms',x:'25px'}}">
+               <input #coverInput id="cover_file" hidden type="file" (change)="setPreviewImage($event, 'cover')" [accept]="inputAccpets">
+               <button class="ml-4 mr-8 accent" mat-mini-fab matTooltipPosition="above" matTooltip="Upload Cover Picture" (click)="coverInput.click()"><mat-icon class="fuse-white-fg" fxLayout="row" fxLayoutAlign="center center">cloud_upload</mat-icon></button>
+               <button class="accent" mat-mini-fab matTooltipPosition="above" matTooltip="Remove Cover Picture" (click)="removePicture('cover');"><mat-icon class="fuse-white-fg" fxLayout="row" fxLayoutAlign="center center">delete</mat-icon></button>
+           </div>
+       </div>
+
+
+ </div>
+       <!-- / HEADER -->
+       <form name="EditUserProfileForm" [formGroup]="EditUserProfileForm"  novalidate autocomplete="off">
+           <div fxLayout="row wrap" class="general-info-wrapper">
+               <div fxLayout="column" fxFlex="100" fxFlex.gt-md="100">
+                   <div class="border profile-box info-box general" fxLayout="column">
+                       <header class="accent">
+                           <div class="title">General Information</div>
+                       </header>
+           
+                       <div class="content" fxLayout="column">
+                           <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                               <!-- username -->
+                               <mat-form-field appearance="outline" fxFlex="50" class="form-p" fxFlex.lt-sm="100">
+                                   <mat-label>Username</mat-label>
+                                   <input matInput formControlName="username" readonly>
+                                   <mat-icon matSuffix class="secondary-text">perm_identity</mat-icon>
+                               </mat-form-field>
+                               <!--nickname -->
+                               <mat-form-field appearance="outline" fxFlex="50" class="form-p" fxFlex.lt-sm="100">
+                                <mat-label>Nickname</mat-label>
+                                <input matInput  formControlName="preffix">
+                                <mat-error>Invalid nickname</mat-error>
+                               </mat-form-field>
+                               <!-- firstname -->
+                               <mat-form-field appearance="outline" fxFlex="50" class="form-p" fxFlex.lt-sm="100">
+                                   <mat-label>First name</mat-label>
+                                   <input matInput formControlName="first_name" maxlength="30"  required>
+                                   <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                   <mat-error>
+                                       <div *ngIf="EditUserProfileForm.get('first_name').errors">
+                                           <div *ngIf="EditUserProfileForm.get('first_name').errors.required">First Name is required!</div>
+                                           <div *ngIf="EditUserProfileForm.get('first_name').errors.pattern">First Name accept only alphabets</div>
+                                       </div>
+                                   </mat-error>                                
+                               </mat-form-field>
+                           </div>
+                           <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                               <mat-form-field appearance="outline" fxFlex="50" class="form-p" fxFlex.lt-sm="100">
+                                   <mat-label>Middle name</mat-label>
+                                   <input matInput formControlName="middle_name" maxlength="30">
+                                   <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                   <mat-error *ngIf="EditUserProfileForm.get('middle_name').errors?.pattern">
+                                       Middle Name accept only letters and dot
+                                   </mat-error>                                    
+                               </mat-form-field>
+                               <!-- last_anme -->
+                               <mat-form-field appearance="outline" fxFlex="50" class="form-p" fxFlex.lt-sm="100">
+                                   <mat-label>Last name</mat-label>
+                                   <input matInput formControlName="last_name" maxlength="30"  required>
+                                   <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                   <mat-error>
+                                       <div *ngIf="EditUserProfileForm.get('last_name').errors">
+                                           <div *ngIf="EditUserProfileForm.get('last_name').errors.required">Last Name is required!</div>
+                                           <div *ngIf="EditUserProfileForm.get('last_name').errors.pattern">Last Name accept only alphabets</div>
+                                       </div>
+                                   </mat-error>
+                               </mat-form-field>
+                           </div>
+                           <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="px-4 mb-8">
+                               <mat-form-field appearance="outline" floatLabel="always" class="hiddenInput editor" hidden fxFlex="100">
+                                   <mat-label class="mat-title fuse-black-fg">Biography</mat-label>
+                                   <input matInput hidden value="">
+                                   <div class="add-event-back-editor">
+                                        <editor [init]="tinyMceSettings" name="biography" formControlName="biography" ></editor>
+                                    </div>
+                                    <mat-hint *ngIf="this._localUserSettings.users_settings.biography_char_limit" class="secondary-text warn-fg"><em>Maximum {{this._localUserSettings.users_settings.biography_char_limit}} characters are allowed</em></mat-hint>
+                                </mat-form-field>
+                           </div>
+                           <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">                                
+                               <!-- email -->
+                               <mat-form-field appearance="outline" fxFlex="50" class="form-p" fxFlex.lt-sm="100">
+                                   <mat-label>Email Address</mat-label>
+                                   <input matInput type="email" formControlName="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                                   <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                   <mat-error *ngIf="EditUserProfileForm.controls['email'].errors?.pattern">Please Enter Valid Email</mat-error> 
+                               </mat-form-field>
+                               <!-- phone -->
+                               <mat-form-field appearance="outline" fxFlex="50" class="form-p" fxFlex.lt-sm="100">
+                                   <mat-label>Phone</mat-label>
+                                   <input matInput formControlName="phone" name="phone">
+                                   <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                                   <mat-error *ngIf="EditUserProfileForm.get('phone').invalid || EditUserProfileForm.get('phone').untouched">Enter Valid Phone</mat-error>
+                               </mat-form-field>
+                           </div>
+                           <div fxLayout="column" fxFlex="1 0 auto" class="px-4">
+                               <!-- birthdate -->
+                               <h3 class="mb-8 font-weight-600 w-100-p"> Birth Date  : </h3>
+                               <select-birthdate fxFlex="100" fxFlex.lt-sm="100" *ngIf="UserInfo" [UserInformation]="UserInfo" (setBirthdate)="setBirthdate($event)"></select-birthdate>
+                           </div>  
+                           <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto"  class="px-4 ">
+                                <mat-form-field  floatPlaceholder="always" floatLabel="always" fxFlex="50%" fxFlex.lt-sm="100%" class="pb-20 mat-form-field--no-underline">
+                                    <mat-label class="h2">Hide Email From Directory</mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group class="mt-4" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="hide_email_res_dir" formControlName="hide_email_res_dir">
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)"  value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+
+                                <mat-form-field  floatPlaceholder="always" floatLabel="always" fxFlex="50%" fxFlex.lt-sm="100%" class="pb-20 mat-form-field--no-underline">
+                                    <mat-label class="h2">Hide Phone From Directory</mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group class="mt-4" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="hide_phone_res_dir" formControlName="hide_phone_res_dir">
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                    </mat-radio-group> 
+                                </mat-form-field>
+
+                                <mat-form-field  floatPlaceholder="always" floatLabel="always" fxFlex="50%" fxFlex.lt-sm="100%" class="pb-4mat-form-field--no-underline">
+                                    <mat-label class="h2">Show My Profile In Directory</mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group class="mt-4" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="show_profile_res_dir" formControlName="show_profile_res_dir">
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+
+                                <mat-form-field  floatPlaceholder="always" floatLabel="always" fxFlex="50%" fxFlex.lt-sm="100%" class="pb-4 mat-form-field--no-underline">
+                                    <mat-label class="h2">Receive All-Resident Email Notifications</mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group class="mt-4" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="recive_all_resident_email_notify" formControlName="recive_all_resident_email_notify">
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div>
+        
+                            <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="px-4">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="100%" class="pb-20 mat-form-field--no-underline">
+                                    <mat-label class="h2">Hide phone from directory</mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="hide_phone_res_dir" formControlName="hide_phone_res_dir">
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div> -->
+        
+                            <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="px-4">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="100%" class="pb-20 mat-form-field--no-underline">
+                                    <mat-label class="h2">Show my profile in directory</mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="show_profile_res_dir" formControlName="show_profile_res_dir">
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div> -->
+        
+                            <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="px-4">
+                                <mat-form-field floatPlaceholder="always" floatLabel="always" fxFlex="100%" class="pb-20 mat-form-field--no-underline">
+                                    <mat-label class="h2">Receive All-Resident Email Notifications</mat-label>
+                                    <input matInput placeholder="Input" style="display: none" >
+                                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="recive_all_resident_email_notify" formControlName="recive_all_resident_email_notify">
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="Y">Yes</mat-radio-button>
+                                        <mat-radio-button class="mx-4"  fxFlex="calc(50%-8px)" value="N">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-form-field>
+                            </div> -->
+        
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50" class="px-4">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="31" fxFlex.lt-sm="100%">
+                                    <mat-label class="h2">Who Can Send Me Private Messages ?</mat-label>
+                                    <mat-select name="message_notification_privacy" formControlName="message_notification_privacy">
+                                        <mat-option value="everyone">Everyone</mat-option>
+                                        <mat-option value="nobody">Nobody</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                           
+                           <!-- ##USERMETA FIELDS## -->
+                           <app-usermeta [usercontrol]="EditUserProfileForm.get('usermeta')" formControlName="usermeta"></app-usermeta>
+                           <!-- ##USERMETA FIELDS## -->
+                           
+                           <footer fxLayout="row" fxLayoutAlign="center center" fxLayout.sm="row" >
+                               <button mat-stroked-button type="button" class="m-4 mr-8 px-32" color="accent" (click)="onClickUpdateProfile($event)">Update Profile</button>
+                               <button mat-stroked-button type="button" class="m-4 mr-8" color="accent" [routerLink]="'/profile'">Cancel</button>
+                           </footer>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </form>
+       </div>
+   </div>
+   <!-- / CONTENT -->
+
+</div>

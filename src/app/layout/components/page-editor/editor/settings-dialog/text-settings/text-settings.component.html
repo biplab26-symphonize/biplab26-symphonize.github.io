@@ -1,0 +1,143 @@
+<form id="text-setting-popup" name="textSettingsForm" [formGroup]="textSettingsForm" (ngSubmit)="sendTextSettingsInfo($event)"  novalidate autocomplete="off" class="w-100-p">
+    <div mat-dialog-content class="pb-dialog-settings">
+        <!-- no-of-columns -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Number Of Inline Columns</div>
+                <div class="font-size-14 secondary-text text-capitalize">Set the number of columns the text should be broken into</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput (keypress)="validateNumber($event)" name="columns" formControlName="columns">
+                    <mat-icon matSuffix class="secondary-text">text_fields</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- columnminwidth -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Column Min Width</div>
+                <div class="font-size-14 secondary-text text-capitalize">Set the minimum width for each column.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="columnminwidth" formControlName="columnminwidth">
+                    <mat-icon matSuffix class="secondary-text">linear_scale</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- columnspacing -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Column Spacing</div>
+                <div class="font-size-14 secondary-text text-capitalize">Controls the column spacing between one column to the next.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="columnspacing" formControlName="columnspacing">
+                    <mat-icon matSuffix class="secondary-text">linear_scale</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- borderstyle -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Rule Style</div>
+                <div class="font-size-14 secondary-text text-capitalize">Enter the style of the vertical line between columns.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Rule Style</mat-label>
+                    <mat-select name="borderstyle" formControlName="borderstyle">
+                        <mat-option value="">None</mat-option>
+                        <mat-option *ngFor="let rule of rulestyles | keyvalue" [value]="rule.key">
+                        {{rule.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- borderwidth -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Rule Size</div>
+                <div class="font-size-14 secondary-text text-capitalize">Sets the size of the vertical line between columns.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="borderwidth" formControlName="borderwidth">
+                    <mat-icon matSuffix class="secondary-text">border_right</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- bordercolor -->
+        <div fxLayout="column" fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Rule Color</div>
+            </div>    
+            <div fxLayout="row" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label>Rule Color</mat-label>
+                    <input matInput formControlName="bordercolor" type="color" name="bordercolor">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- content -->
+        <div fxLayout="row" fxLayout.gt-md="row">
+            <div class="preview" fxLayoutAlign="start top" fxFlex="100">
+                <div class="font-weight-600 mb-0 ">Content</div>
+            </div>    
+            <div fxLayoutAlign="start center" fxFlex="100">
+                <editor [init]="tinyMceSettings" name="content" formControlName="content"></editor>
+            </div>
+        </div>
+        <!-- visiblity -->
+        <div fxLayout="column"  fxLayout.gt-md="row" class="mt-24">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">Element Visibility</div>
+                <div class="font-size-14 secondary-text text-capitalize">Choose to show or hide the element on small, medium or large screens.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" class="border pb-16 mb-20">
+                <mat-form-field floatPlaceholder="always" floatLabel="always" class="mat-wrapper-p-0 underline-0 mat-form-field--no-underline pl-8">
+                    <mat-label> </mat-label>
+                    <input matInput placeholder="Input" style="display: none" >
+                    <mat-radio-group fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px grid" name="visiblity" formControlName="visiblity">
+                        <ng-container *ngFor="let visiblity of visibilityOptions | keyvalue">
+                            <mat-radio-button class="mx-4" fxFlex="calc(33%-8px)" fxFlex.lt-sm="100" value="{{visiblity.key}}">{{visiblity.value}}</mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- cssclass -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">CSS Class</div>
+                <div class="font-size-14 secondary-text text-capitalize">Add a class to the wrapping HTML element.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="cssclass" formControlName="cssclass">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- cssid -->
+        <div fxLayout="column"  fxLayout.gt-md="row">
+            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+                <div class="font-weight-600 mb-0 ">CSS ID</div>
+                <div class="font-size-14 secondary-text text-capitalize">Add an ID to the wrapping HTML element.</div>
+            </div>    
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="50">
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <input matInput name="cssid" formControlName="cssid">
+                    <mat-icon matSuffix class="secondary-text">style</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="border-top py-20">
+        <button type="submit" mat-stroked-button class="mr-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">SAVE</button>
+        <button type="button" mat-stroked-button class="ml-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" mat-dialog-close>CANCEL</button>
+    </div>
+</form>

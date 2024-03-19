@@ -1,0 +1,59 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar" id="back-appointment-booking-add">
+    <!-- HEADER -->
+    <div class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center" [ngStyle]="{'background-color':'#3e5c59 '}">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon> -->
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Edit Item
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+
+        <!-- / BTN's --> 
+
+    </div>
+    <div mat-dialog-content>
+        <form class="p-0 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+            [formGroup]="entriesDialog" novalidate autocomplete="off">
+            <div fxLayout="row wrap" [ngStyle]="{'margin-top':'10px'}">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name" name="name" required>
+                        <mat-error class="mt-28 text-capitalize"></mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                        <mat-label>Unit price</mat-label>
+                        <input matInput type="number" min='1' formControlName="unit_price" name="unit_price" required>
+                        <mat-error class="mt-28 text-capitalize"></mat-error>
+                    </mat-form-field>                   
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                        <mat-label>Qty</mat-label>
+                        <input matInput type="number" min='1' formControlName="quantity" name="quantity" required>
+                        <mat-error class="mt-28 text-capitalize"></mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                        <mat-label>Amount</mat-label>
+                        <input matInput type="number" min='1' formControlName="amount" name="amount" required>
+                        <mat-error class="mt-28 text-capitalize"></mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description" name="description"></textarea>
+                    </mat-form-field>
+                    <div fxFlex="50">
+                        <br>
+                        <button type="button" (click)="onSubmitRecBooking()" mat-raised-button color="primary">Submit</button>
+                        <button mat-raised-button color="primary" (click)="onNoClick()">Close</button>
+                    </div>
+            </div>
+        </form>
+    </div>
+   
+</div>

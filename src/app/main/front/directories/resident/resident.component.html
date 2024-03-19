@@ -1,0 +1,300 @@
+<div id="resident" class="page-layout simple fullwidth">
+    <!-- HEADER -->
+    <breadcumb [directoryTitle]="title"></breadcumb>
+    <!-- / HEADER -->
+  
+    <!-- CONTENT -->
+    <div class="content" [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}" name="top" id="top">
+      
+      <!--  CONTENT WRAP -->
+      <section class="content-wrap fuse-white-bg p-28" id="matTable">
+        <form class="mb-24" fxLayout="column" fxLayoutAlign="start" #filter name="filterForm" [formGroup]="filterForm" novalidate autocomplete="off">
+          <!-- newest neighbors  -->
+          <section   class="forms-events-section" fxLayout="row" fxLayoutAlign="center center" *ngIf="ShowNeighbors == true">
+            <div  class="w-100-p">
+              <widget-newest-neighbors   [homesettings]="homeSettings"></widget-newest-neighbors>
+            </div>
+          </section>
+          <!-- / newest neighbors-->
+          <!-- LETTER SORTING -->
+          <div class="filters" fxLayout="row" fxLayoutAlign="start start">
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+              <div fxFlex="30" class="mb-12" *ngIf="newResidents==false"  class="w-100-p">
+                  <mat-form-field appearance="outline"  class="w-100-p pr-4" ngClass.lt-sm="w-100-p">
+                    <mat-label>Directory View</mat-label>
+                    <mat-select placeholder="Directory View" name="directory_view" formControlName="directory_view" (selectionChange)="SwitchView()">
+                      <mat-option value="tile_view">Tile</mat-option>
+                      <mat-option value="traditional_view">Traditional</mat-option>
+                      <!-- <mat-option value="list_view">List</mat-option> -->
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+  
+              <div class="mb-12" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex="100" fxLayoutAlign="end center" fxLayoutAlign.lt-md="center center">
+                  <div>
+                    <button class="mr-8" type="button" mat-stroked-button color="accent" (click)="resetform()"><mat-icon class="icon s-20 mr-4">replay</mat-icon> Reset</button>
+                    <button type="button" mat-stroked-button color="accent" (click)="getPrint()"><mat-icon class="icon s-20 mr-4">print</mat-icon> Print</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="filters" fxLayout="row wrap" fxLayoutGap="10px grid" fxLayoutAlign="start end">
+            <ng-container *ngIf="fieldOptions.alpha_sorting == 'Y' && lettersList.length>0">
+              <div fxFlex="100">
+                <mat-button-toggle-group class="no-br top-alphabet my-16" formControlName="letters" fxLayout="row wrap" fxLayoutAlign="center center">
+                  <mat-button-toggle class="mx-4 my-4 alpha-green fuse-white-fg" *ngFor="let letter of lettersList" fxFlex="3" fxFlex.lt-sm="12" [style.border]="'1px solid rgba(0, 0, 0, 0.12)'" value="{{letter}}">{{letter}}</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </ng-container>
+            <!-- searchkey -->
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Search</mat-label>
+                <input matInput formControlName="searchKey" placeholder="Search..." />
+              </mat-form-field>
+            </div>
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%" *ngIf="filterOptions.filtercorefields.includes('username')">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" placeholder="Username" />
+              </mat-form-field>
+            </div>
+            
+            <!-- FirstName -->
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%" *ngIf="filterOptions.filtercorefields.includes('first_name')">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>First Name</mat-label>
+                <input matInput placeholder="First Name" formControlName="first_name" maxlength="30" />
+                <!-- <mat-icon matSuffix class="secondary-text">account_circle</mat-icon> -->
+              </mat-form-field>
+            </div>
+            <!-- middlename -->
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%" *ngIf="filterOptions.filtercorefields.includes('middle_name')">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Middle Name</mat-label>
+                <input matInput placeholder="Middle Name" formControlName="middle_name" maxlength="30" />
+                <!-- <mat-icon matSuffix class="secondary-text">account_circle</mat-icon> -->
+              </mat-form-field>
+            </div>
+            <!-- lastname -->
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%" *ngIf="filterOptions.filtercorefields.includes('last_name')">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Last Name" formControlName="last_name" maxlength="30" />
+                <!-- <mat-icon matSuffix class="secondary-text">account_circle</mat-icon> -->
+              </mat-form-field>
+            </div>
+            <!-- email -->
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%" *ngIf="filterOptions.filtercorefields.includes('email')">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" placeholder="Email" />
+              </mat-form-field>
+            </div>
+            <!-- nickname -->
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%" *ngIf="filterOptions.filtercorefields.includes('preffix')">
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Nickname</mat-label>
+                <input matInput formControlName="preffix" placeholder="Nickname" />
+              </mat-form-field>
+            </div>
+            <!-- Phone -->
+            <div fxFlex="0 1 33.3%" fxFlex.lt-sm="100%" *ngIf="filterOptions.filtercorefields.includes('phone')">
+              <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone" placeholder="Phone" />
+              </mat-form-field>
+            </div>
+            <!-- birthdate -->
+            <div fxLayout="column" class="w-65-p" [ngClass.lt-sm]="{'w-100-p': true}" *ngIf="filterOptions.filtercorefields.includes('birthdate')">
+              <p class="mat-label font-weight-600 mb-8 d-block">Birthdate :</p>
+              <div fxFlex="65.66%" fxFlex.lt-sm="97%"  class="border border-radius-4 py-16 px-20 mb-32">
+                <select-birthdate [type]="'directory'" [UserInformation]="''" (setBirthdate)="setBirthdate($event)"></select-birthdate>
+              </div>
+            </div>
+          </div>
+          <!-- USER META FILTERS -->
+          <div class="filters">
+            <user-meta-filter [filtermetafields]="filterOptions.filtermetafields" (usermetaArray)="setUserMetaFilter($event)"></user-meta-filter>
+          </div>
+          <mat-divider></mat-divider>
+        </form>
+        
+        <div class="resident-cards" fxLayout="column" fxLayoutAlign="start">
+          <div class="fuse-card-wrap" fxLayout="row wrap" fxLayoutAlign="start">
+            <ng-container *ngIf="residentList && residentList.data;else emptyBlock">
+              <!-- switch to the resident Directory view  start-->
+              <div *ngIf="directory_view == 'traditional_view' " fxLayout="row wrap" class="traditional-view">
+                <div class="fuse-card mb-32" *ngFor="let resident of residentList.data">
+                  <div class="cover">
+                    <img class="cover-img" [src]="resident.cover_file" (error)="resident.cover_file = defaultCover" [alt]="resident.first_name" />
+                  </div>
+    
+                  <div class="profile-info mb-24">
+                    <a [routerLink]="['/view-other-profile/',resident.id]">
+                      <img class="profile-img mb-12" [src]="resident.thumb_file" (error)="resident.thumb_file = defaultAvatar" [alt]="resident.first_name" />
+                    </a>
+                    <div class="h3 mb-12">
+                      <a class="font-weight-900"  [routerLink]="['/view-other-profile/',resident.id]">{{resident.first_name}}</a>
+                    </div>
+                    <a mat-stroked-button color="accent" *ngIf="_enableChat=='Y' && resident.message_notification_privacy=='everyone' && !localUserInfo.user_contacts.includes(resident.id)" (click)="addContact(resident.id)">
+                      <mat-icon class="s-18">person_add</mat-icon> Add to Contact
+                    </a>
+                    <a mat-stroked-button color="accent" *ngIf="_enableChat=='Y' && resident.message_notification_privacy=='everyone' && localUserInfo.user_contacts.includes(resident.id)" (click)="openChatWindow(resident.id)">
+                      <mat-icon class="s-18">email</mat-icon> Message
+                    </a>
+                  </div>
+    
+                  <div class="profile-sep"></div>
+    
+                  <div class="profile-desc px-16 py-8 text-center">
+                    <!-- <div class="mb-8" *ngIf="resident.username"><label class="font-weight-800 mr-4">Username:</label> <span>{{resident.username}}</span></div> -->
+    
+                    <div class="mb-8" *ngIf="fieldOptions.corefields.includes('email') && resident.hide_email_res_dir!='Y' && resident.email!=''"><label class="font-weight-800 mr-4">Email:</label> <a href="mailto:{{resident.email}}">{{resident.email}}</a></div>
+    
+                    <div class="mb-8" *ngIf="fieldOptions.corefields.includes('birthdate') && resident.birthdate!='0000-00-00' && resident.birthdate!=''"><label class="font-weight-800 mr-4">Birthdate:</label> <span>{{resident.birthdate | dateSuffix }}</span></div>
+    
+                    <div class="mb-8" *ngIf="fieldOptions.corefields.includes('phone') && resident.hide_phone_res_dir!='Y' && resident.phone!=='' && resident.phone!==null">
+                      <label class="font-weight-800 mr-4">Phone:</label> 
+                        <a href="tel:{{resident.phone}}">
+                          <span *ngIf="!phonelengthArr.includes(resident.phone.length)">{{resident.phone}}</span>
+                          <span *ngIf="phonelengthArr.includes(resident.phone.length)">
+                            <span *ngIf="resident.phone.length==7">{{resident.phone | mask:CustomFormats.sevenhyphone}}</span>
+                            <span *ngIf="resident.phone.length==10">{{resident.phone | mask:CustomFormats.tenhyphone}}</span>
+                          </span>
+                        </a>
+                    </div>
+    
+                    <div class="mb-8" *ngIf="resident.usermeta">
+                      <ng-container *ngFor="let meta of resident.usermeta">
+                        <div *ngIf="fieldOptions.metafields.includes(meta.field_id)">
+                          <div class="mb-8">
+                            <label class="mr-4 text-bold">{{meta.userfields.field_label}}:</label>
+                            <!-- phone with masking -->
+                            <a  *ngIf="meta.userfields.field_type =='number' && meta.userfields.field_content.extra_field_content && meta.userfields.field_content.extra_field_content.ismasking=='Y' && meta.userfields.field_content.extra_field_content.maskingpattern!=''" href="tel:{{meta.field_value}}"><span>{{meta.field_value  | mask:meta.userfields.field_content.extra_field_content.maskingpattern}}</span></a>
+                            <!-- phone without masking -->
+                            <a *ngIf="meta.userfields.field_type =='number' && meta.userfields.field_content.extra_field_content && meta.userfields.field_content.extra_field_content.ismasking=='N'" href="tel:{{meta.field_value}}"><span>{{meta.field_value }}</span></a>
+
+                            <span *ngIf="meta.userfields.field_type!=='date' && meta.userfields.field_type!=='number'">{{meta.dynamicfields || '-'}}</span>
+                            <span *ngIf="meta.userfields.field_type=='date'">{{meta.field_value | date:dateFormat || '-'}}</span>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- switch to the resident Directory view  end-->
+    
+              <!-- switch to the tile view  start-->
+              <div *ngIf="directory_view == 'tile_view'" fxLayout="row wrap">
+                <div class="fuse-card mb-32" *ngFor="let resident of residentList.data">
+                  <div fxLayout="row" fxLayoutAlign="start" class="p-4" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center center">
+                    <div class="profile-info w-30-p">
+                      <img class="profile-img mb-12 tile-profile" [src]="resident.thumb_file" (error)="resident.thumb_file = defaultAvatar" [alt]="resident.first_name" />
+                    </div>
+                    <div class="pl-8 w-70-p" [ngClass.lt-sm]="{'w-100-p': true}" [ngStyle.lt-sm]="{'text-align': 'center'}">
+                      <div class="h3">
+                        <div class="mb-8" *ngIf="resident.first_name || resident.last_name "><a class="font-weight-900" [routerLink]="['/view-other-profile/',resident.id]">{{resident.first_name}}</a></div>
+                      </div>
+                      <div class="h3">
+                        <div class="mb-8" *ngIf="fieldOptions.corefields.includes('email') && resident.hide_email_res_dir!='Y' && resident.email!=''"><label class="font-weight-800 mr-4">Email:</label> <a href="mailto:{{resident.email}}">{{resident.email}}</a></div>
+                      </div>
+                      <div class="h3">
+                        <div class="mb-8" *ngIf="fieldOptions.corefields.includes('phone') && resident.hide_phone_res_dir!='Y' && resident.phone!=='' && resident.phone!==null">
+                          <label class="font-weight-800 mr-4">Phone:</label>
+                          <a href="tel:{{resident.phone}}">
+                            <span *ngIf="!phonelengthArr.includes(resident.phone.length)">{{resident.phone}}</span>
+                            <span *ngIf="phonelengthArr.includes(resident.phone.length)">
+                              <span *ngIf="resident.phone.length==7">{{resident.phone | mask:CustomFormats.sevenhyphone}}</span>
+                              <span *ngIf="resident.phone.length==10">{{resident.phone | mask:CustomFormats.tenhyphone}}</span>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="h3" *ngIf="resident.usermeta">
+                        <ng-container *ngFor="let meta of resident.usermeta">
+                          <div *ngIf="PaginationOpt.tileviewmeta.includes(meta.userfields.field_name)">
+                            <div class="mb-8">
+                              <label class="mr-4 text-bold">{{meta.userfields.field_label}}:</label>
+                              <!-- phone with masking -->
+                              <a  *ngIf="meta.userfields.field_type =='number' && meta.userfields.field_content.extra_field_content && meta.userfields.field_content.extra_field_content.ismasking=='Y' && meta.userfields.field_content.extra_field_content.maskingpattern!=''" href="tel:{{meta.field_value}}"><span>{{meta.field_value  | mask:meta.userfields.field_content.extra_field_content.maskingpattern}}</span></a>
+                              <!-- phone without masking -->
+                              <a *ngIf="meta.userfields.field_type =='number' && meta.userfields.field_content.extra_field_content && meta.userfields.field_content.extra_field_content.ismasking=='N'" href="tel:{{meta.field_value}}"><span>{{meta.field_value }}</span></a>
+  
+                              <span *ngIf="meta.userfields.field_type!=='date' && meta.userfields.field_type!=='number'">{{meta.dynamicfields || '-'}}</span>
+                              <span *ngIf="meta.userfields.field_type=='date'">{{meta.field_value | date:dateFormat || '-'}}</span>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- switch to the tile view  end-->
+              <!-- switch to list view -->
+              <div class="list-view" *ngIf="directory_view == 'list_view'">
+                <table class="mat-table mb-24"  [@animateStagger]="{value:'50'}" width="100%" cellspacing="5" fusePerfectScrollbar>
+                  <thead>
+                    <tr class="mat-header-row">
+                      <ng-container *ngFor="let column of Columns">
+                        <th class="mat-header-cell text-capitalize">{{column.header}}</th>
+                      </ng-container>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="mat-row" *ngFor="let resident of residentList.data">
+                      <td class="mat-header-cell"><a class="font-weight-900"  [routerLink]="['/view-otder-profile/',resident.id]">{{resident.first_name}}</a></td>
+                      <td class="mat-header-cell"><a *ngIf="fieldOptions.corefields.includes('email') && resident.hide_email_res_dir!='Y' && resident.email!=''" href="mailto:{{resident.email}}"><span>{{resident.email || '-'}}</span></a></td>
+                      <td class="mat-header-cell">
+                        <a *ngIf="fieldOptions.corefields.includes('phone') && resident.hide_phone_res_dir!='Y' && resident.phone!=='' && resident.phone!==null" href="tel:{{resident.phone}}">
+                          <span *ngIf="!phonelengthArr.includes(resident.phone.length)">{{resident.phone}}</span>
+                          <span *ngIf="phonelengthArr.includes(resident.phone.length)">
+                              <span *ngIf="resident.phone.length==7">{{resident.phone | mask:CustomFormats.sevenhyphone}}</span>
+                              <span *ngIf="resident.phone.length==10">{{resident.phone | mask:CustomFormats.tenhyphone}}</span>
+                            </span>
+                        </a></td>
+                      <td class="mat-header-cell">
+                        <div *ngIf="resident.usermeta">
+                          <ng-container *ngFor="let meta of resident.usermeta">
+                            <div *ngIf="fieldOptions.metafields.includes(meta.field_id) && displayedColumns.includes(meta.userfields.field_name)">
+                              {{meta.field_value}}
+                            </div>
+                          </ng-container>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>  
+              </div>  
+              <!-- switch to list view ends -->
+            </ng-container>            
+            
+            <div class="my-28" fxLayout="column" fxLayoutAlign="start" fxFlex="100" *ngIf="noRecordsFound">
+              <div class="h2 text-center font-weight-600">We are sorry, we cannot find any users who match your search criteria.</div>
+            </div>
+            <!-- EmptyBlock -->
+            <ng-template #emptyBlock>
+              <div fxFlex="100" fxLayoutAlign="center center">
+                  <mat-spinner></mat-spinner>
+              </div>
+            </ng-template>
+            <!-- PAGINATION -->
+            <div fxLayout="column" fxLayoutAlign="center" fxFlex="100" [ngClass.lt-sm]="{'mt-20': true}">
+              <mat-paginator (click)="handlePage($event)" class="blue-grey-50 mb-20" #paginator [length]="residentList.total" [pageSize]="PaginationOpt?.pageSize" [pageSizeOptions]="PaginationOpt?.pageSizeOptions"></mat-paginator>
+            </div>
+            <!-- / PAGINATION -->
+          </div>
+          <!-- / CARD WRAP -->
+        </div>
+      </section>
+      <!--  / CONTENT WRAP -->
+    </div>
+    <!-- / CONTENT -->
+  </div>
+  <!-- / RESIDENT -->
+  

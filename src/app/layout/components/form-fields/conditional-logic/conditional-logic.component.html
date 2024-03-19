@@ -1,0 +1,98 @@
+
+<div>
+    <form autocomplete="off" [formGroup]="ConditionalLogic" fxLayout="column" novalidate autocomplete="off">
+        <div class="input-column" fxLayout="row">
+            <!--Enable The Conditional Logic-->
+            <!-- [disabled]="Fields.length == 1" -->
+            <mat-checkbox class="mx-4" formControlName="enable_conditional_logic" [disabled]="Fields.length == 1"  (change)="submitListFieldForm()"
+            fxFlex.lt-sm="100" >Enable The Conditional Logic</mat-checkbox>
+        </div>
+        
+        <div class="mt-20" *ngIf="ConditionalLogic.get('enable_conditional_logic').value == true">
+             
+            <div class="input-column mb-20" fxLayout="row">
+                <!-- show or hide option -->
+                <mat-form-field appearance="outline" class="w-100-p px-4">
+                    <mat-label>Show or Hide</mat-label>
+                    <mat-select placeholder="Masking Pattern"  formControlName="show_hide" (selectionChange)="submitListFieldForm($event)">
+                    <mat-option value="show">Show</mat-option>
+                    <mat-option value="hide">Hide</mat-option>
+                    </mat-select>
+                    <mat-error></mat-error>
+                </mat-form-field>
+                <!-- any or all option field -->
+                <mat-form-field appearance="outline" class="w-100-p px-4">
+                    <mat-label>All or Any</mat-label>
+                    <mat-select placeholder="Masking Pattern"  formControlName="all_any" (selectionChange)="submitListFieldForm($event)">
+                    <mat-option value="all">All</mat-option>
+                    <mat-option value="any">Any</mat-option>
+                    </mat-select>
+                    <mat-error></mat-error>
+                </mat-form-field>
+           </div>
+
+
+            <div class="controlListWrap">
+                <div class="controlListItem mb-20"  formArrayName="AllField" *ngFor="let item of  getControls(); let i=index">
+                    <div [formGroupName]="i" class="w-100-p">
+                        <!-- display the all field label of the forms -->
+                    <div fxLayout="row">
+                        <mat-form-field  appearance="outline" class="w-100-p px-4">
+                            <mat-label>Field Name</mat-label>
+                            <mat-select   formControlName="field_label" (selectionChange)="OnselectLable($event,i)">
+                                <mat-option [value]="data.Field.field_label" *ngFor='let data of DefaultData'>{{data.Field.field_label}}
+                                </mat-option>                    
+                            </mat-select>                    
+                            <mat-error></mat-error>
+                        </mat-form-field>
+                        <!-- conditions  -->
+                        <mat-form-field  appearance="outline" class="w-100-p px-4">
+                            <mat-label>Condition</mat-label>
+                            <mat-select  formControlName="condition" (selectionChange)="submitListFieldForm($event)">
+                                <mat-option value="is">Is</mat-option>
+                                <mat-option value="not_is">Is Not</mat-option>
+                                <mat-option value="grater">Greater Than</mat-option>
+                                <mat-option value="less">Less Than</mat-option>
+                                <mat-option value="contains">Contains</mat-option>
+                                <mat-option value="start_with">Start With</mat-option>
+                                <mat-option value="end_with">End With</mat-option>
+                            </mat-select>
+                            <mat-error></mat-error>
+                            <!-- show the field value of if checkbox,radio,select -->
+                        </mat-form-field>
+                        <mat-form-field  appearance="outline" class="w-100-p px-4" *ngIf="conditionLogic[i] == 1" >
+                            <mat-label>Field Value</mat-label>
+                            <mat-select  formControlName="field_value" (selectionChange)="submitListFieldForm($event)">
+                            <mat-option [value]="option.key" *ngFor='let option of OptionList2[i]'>{{option.value}}
+                            </mat-option>
+                            </mat-select>
+                            <mat-error></mat-error>
+                        </mat-form-field>
+                        <!-- show the text field -->
+                        <mat-form-field  appearance="outline" class="w-100-p px-4" *ngIf="conditionLogic[i] == 0">
+                            <mat-label>Field Value </mat-label>
+                            <input  matInput  formControlName = 'field_value' (change)="submitListFieldForm($event)">
+                        </mat-form-field>  
+
+                        <div>
+                            <div class="px-4 px-4 pt-8">
+                                <button mat-mini-fab color="warn" aria-label="Delete" matTooltip="Delete" *ngIf='i>0' (click)="onRemoveRow(i)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div> 
+                    <!-- icons fo   -->
+                    <div fxLayout="row" class="add-btns mt-16">
+                        <div fxFlex="100" class="px-4"> 
+                            <button mat-stroked-button color="purple" (click)="onAddSelectRow()">
+                                <mat-icon class="s-16">add</mat-icon> Add More
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

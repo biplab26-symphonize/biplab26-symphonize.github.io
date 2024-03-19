@@ -1,0 +1,16 @@
+.mat-dialog-export {
+    overflow: hidden;
+}
+.export-radio-group {
+display: flex;
+flex-direction: column;
+margin: 15px 0;
+}
+
+.export-radio-button {
+margin: 5px;
+}
+
+.mat-raised-button[disabled] {
+    background-color: #ac0877b3;
+}

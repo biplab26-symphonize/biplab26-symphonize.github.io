@@ -1,0 +1,377 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="dining-service-add">
+  <!-- HEADER -->
+  <div [ngStyle]="accent" class="header p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+
+    <!-- APP TITLE -->
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+        </mat-icon>
+        <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          New Service
+        </span>
+      </div>
+    </div>
+    <!-- / APP TITLE -->
+
+    <!-- BTN's -->
+    <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+      <div class="mt-16 mt-sm-0">
+        <!-- <button mat-raised-button class="reference-button">
+                    <mat-icon class="mr-4">add</mat-icon>
+                    <span>Add Fields</span>
+                </button> -->
+        <button mat-raised-button
+          [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+          [routerLink]="'/admin/dining-reservation/services/list'">
+          <mat-icon class="mr-4">arrow_back</mat-icon>
+          Back To List
+        </button>
+      </div>
+    </div>
+    <!-- / BTN's -->
+
+  </div>
+  <!-- / HEADER -->
+
+
+
+  <!-- CONTENT -->
+  <div class="content" fusePerfectScrollbar>
+
+    <!-- CENTER -->
+    <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+      <!-- CONTENT -->
+      <div class="content w-90-p my-auto d-block">
+        <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> New Service </div>
+        <form class="p-24 w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"
+          [formGroup]="addServiceForm" novalidate autocomplete="off">
+ 
+          <input type="hidden" formControlName="id">
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100">
+              <mat-label>Service name</mat-label>
+              <input matInput formControlName="service_title" name="service_title" required>
+              <mat-error>Service Name required</mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="8px" fxLayoutWrap>
+            <!-- SERVICE START AND END DATE -->
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>Start Date</mat-label>
+              <input matInput #input_service_start_date required [min]="todayDate"
+              [matDatepicker]="picker" (focus)="picker.open()" formControlName="service_start_date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error>Start date required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>End Date</mat-label>
+              <input matInput #input_service_end_date  [min]="todayDate" [matDatepicker]="picker2" (focus)="picker2.open()"
+                formControlName="service_end_date">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="error.isError">{{ error.errorMessage }}</mat-error>
+            <mat-error *ngIf="start_date.isError">{{ start_date.errorMessage }}</mat-error>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <form formGroupName="working_times" novalidate autocomplete="off" class="w-100-p">
+              <table border="1" width="100%" class="reservation-check-table">
+                <thead [ngStyle]="green_bg_header">
+                  <tr>
+                    <th class="w-5-p"> Day </th>
+                    <th class="w-5-p">Start Time</th>
+                    <th class="w-5-p">End Time</th>
+                    <th class="w-5-p">Lunch Start Time</th>
+                    <th class="w-5-p">Lunch End Time</th>
+                    <th class="w-5-p">Don't Allow Reservations</th>
+                  </tr>
+                </thead> 
+                <tbody>
+                  <tr *ngFor="let days of day; let index=i">
+                    <td class="text-capitalize">
+                      <span> {{days}} </span>
+                    </td>
+                    <td>
+                      <div *ngIf="days_status[days]">
+                        <mat-form-field class="w-100-px">
+                          <input matInput formControlName="{{days}}_from"
+                            [min]="min_start_time" [owlDateTimeTrigger]="start_time"
+                            [owlDateTime]="start_time">
+                          <owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'"
+                            [hour12Timer]="true" #start_time></owl-date-time>
+                          <mat-icon [owlDateTimeTrigger]="start_time" matSuffix class="font-size-18">access_time</mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                       <div *ngIf="days_status[days]">
+                        <mat-form-field class="w-100-px">
+                          <input matInput formControlName="{{days}}_to" [min]="min_end_time"
+                           [owlDateTimeTrigger]="end_time" [owlDateTime]="end_time">
+                          <owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'"
+                            [hour12Timer]="true" #end_time></owl-date-time>
+                          <mat-icon [owlDateTimeTrigger]="end_time" matSuffix class="font-size-18">access_time</mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </td>
+                    <td>
+                       <div *ngIf="days_status[days]">
+                        <mat-form-field class="w-100-px">
+                          <input matInput formControlName="{{days}}_break_from"
+                            [min]="min_lunch_start_time"
+                            [owlDateTimeTrigger]="lunch_start_time" [owlDateTime]="lunch_start_time">
+                          <owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'"
+                            [hour12Timer]="true" #lunch_start_time></owl-date-time>
+                          <mat-icon [owlDateTimeTrigger]="lunch_start_time" matSuffix class="font-size-18">access_time</mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                       <div *ngIf="days_status[days]">
+                        <mat-form-field class="w-100-px">
+                          <input matInput formControlName="{{days}}_break_to"
+                            [min]="min_lunch_end_time"
+                            [owlDateTimeTrigger]="lunch_end_time" [owlDateTime]="lunch_end_time">
+                          <owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'"
+                            [hour12Timer]="true" #lunch_end_time></owl-date-time>
+                          <mat-icon [owlDateTimeTrigger]="lunch_end_time" matSuffix class="font-size-18">access_time</mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <mat-checkbox [checked]="isTimeCheck[days]" (change)="onCheckboxChange($event,days)">
+                      </mat-checkbox>
+                    </td>
+                  </tr>    
+                </tbody>
+              </table>
+            </form>
+          </div>
+          <div fxLayout="row" class="mt-28 h3 mb-12">
+            <mat-label class="font-weight-600 h2">Do not allow reservations on these dates:</mat-label>
+          </div>
+          <div formArrayName="dates" class="add-date-btn">
+            <button mat-raised-button color="accent" (click)="addNewDate()" [ngStyle]="button" class="mb-12 text-uppercase line-height-44 br-ds-0 box-shadow-none"> 
+              <mat-icon class="mr-4" >add</mat-icon>
+              Add Date
+            </button>
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+              <div *ngFor="let date of dates.controls;let i=index" class="pr-28" fxFlex ="25" fxLayout="row" fxLayoutAlign="start baseline">
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex class="w-80-p mr-8">
+                  <input matInput [matDatepicker]="picker3" (focus)="picker3.open()" [formControlName]="i">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+                <!-- <span  class="btn btn-danger" style="cursor:pointer">Remove</span> -->
+                <mat-icon (click)="removeDate(i)" fxLayout="row" fxLayoutAlign="center center" class="date-close-btn font-size-16 purple-btn-bg fuse-white-fg"> close </mat-icon>
+              </div>
+            </div>
+          </div>
+          <div fxLayout="column" fxFlex="100">
+            <p class="font-weight-600 mb-4">Current Day Reservation Cutoff:</p>
+            <mat-form-field appearance="outline" fxFlex>
+            <input matInput formControlName="current_day_reg_cutoff"
+            [min]="min_lunch_end_time"
+            [owlDateTimeTrigger]="lunch_end_time" [owlDateTime]="lunch_end_time">
+            <owl-date-time [pickerType]="'timer'" [panelClass]="'timepicker'" [pickerMode]="'dialog'"
+            [hour12Timer]="true" #lunch_end_time></owl-date-time>
+            <mat-icon [owlDateTimeTrigger]="lunch_end_time" matSuffix class="font-size-18">access_time</mat-icon>
+            </mat-form-field>
+            </div>
+
+          <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> Description and Image:</div>
+          <div fxLayout="column" fxFlex="1 0 auto" class="border p-16 mb-20 pb-0">
+            <div class="font-weight-600 mb-4"> Service Description:</div>
+            <mat-form-field appearance="outline" fxFlex="100">
+              <mat-label>Service Description</mat-label>
+              <textarea matInput formControlName="service_description" name="service_description"></textarea>
+              <mat-error> Description is required!</mat-error>
+            </mat-form-field>
+
+            <div fxLayout="column" fxFlex="100" class="select-background-img mb-20">
+              <mat-label class="font-weight-600 mb-8">Select Image:</mat-label>
+              <input hidden  type='file' [accept]="inputAccpets" 
+                (change)="onSelectLogoFile($event)" #logofile />
+              <div class="btn border p-16 border-radius-4" fxLayout="row" fxLayoutAlign="start center">
+                <button mat-stroked-button color="accent" class="mr-12 choose-from-gallery" (click)="logofile.click()">Choose From
+                  Gallery
+                </button>
+                  <div *ngIf="filetype==true" class="select-img">
+                    <img [src]="logourl" height="80" width="100"/>
+                  </div>
+                  <input hidden type="text" formControlName="image" />
+              </div>
+            </div>           
+          </div>
+
+
+          <!-- <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+            <input type="file" name="image" (change)="onFileSelect($event)">
+          </div> -->
+
+         
+
+
+          <div [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> Seating Interval Details:</div>
+          <div class="p-16 border pb-0 mb-20" fxLayout="column" fxFlex="1 0 auto">
+            <mat-label class="font-weight-600 mb-8"> Length In Minutes:</mat-label>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Length ( minutes )</mat-label>
+                <input type="number" matInput min="1" formControlName="length" required>
+                <mat-error>Length required</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        
+          <mat-label [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16">Service Details:</mat-label>
+          <div class="mb-20 border p-16 pb-0" fxLayout="column" fxFlex="1 0 auto">          
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Restricted by</mat-label>
+                <mat-select required (selectionChange)="onRestrictedBy($event)" formControlName="restricted_by">
+                  <mat-option value="">-Select-</mat-option>
+                  <mat-option value="resident">Number of Residents</mat-option>
+                  <mat-option value="parties">Number of Parties</mat-option>
+                  <mat-option value="service">Service</mat-option>
+                </mat-select>
+                <mat-error>Restricted by required</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="party_status['resident']">
+              <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                <mat-label *ngIf="party_status['resident']">Max Number of Residents</mat-label>
+                <input type="number" matInput  min="1" formControlName="max_residents_per_interval" (input)="avilableSpots();setValueMaxResident($event);">
+              </mat-form-field>
+  
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50"
+              *ngIf="party_status['resident']">
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Max Party Size</mat-label>
+                <input type="number" matInput min="1" formControlName="max_party_size" (input)="setValueMaxResidentMaxPartySize($event)">
+              </mat-form-field>
+              </div>
+  
+            </div>
+  
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="party_status['parties']">
+              <mat-form-field appearance="outline"  fxFlex="50" class="pr-8">
+                <mat-label *ngIf="party_status['parties']">Max Number of Parties</mat-label>
+                <input type="number" matInput min="1" formControlName="max_number_parties" (input)="avilableSpots()" (keyup)="setValueMaxParties($event)">
+              </mat-form-field>
+  
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50"
+              *ngIf="party_status['parties']">
+              <mat-form-field appearance="outline"  fxFlex>
+                <mat-label>Max Party Size</mat-label>
+                <input type="number" matInput min="1" formControlName="max_party_size" (input)="setValueMaxPartiesMaxPartySize($event)">
+              </mat-form-field>
+              </div>
+            </div>
+  
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="party_status['service']">
+              <mat-form-field appearance="outline" floatLabel="always" fxFlex>
+                <mat-label>Restricted on day</mat-label>
+                <mat-select placeholder="-Select-" (selectionChange)="restrictedOnDay($event)"
+                  formControlName="restricted_on_day">
+                  <mat-option value="Y">Daily</mat-option>
+                  <mat-option value="N">Never</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+  
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="res_on_day_status['Day'] || res_on_day_status['Service']">
+                <mat-form-field appearance="outline" fxFlex="33.3" class="pr-8">
+                  <mat-label *ngIf="res_on_day_status['Day']">Max number of resident per day</mat-label>
+                  <mat-label *ngIf="res_on_day_status['Service']">Max Number of Residents</mat-label>
+                  <input type="number" matInput  min="1" formControlName="per_day_booking" (input)="avilableSpots()" (keyup)="setValueResidentPerDayAndMaxResident($event)">
+                </mat-form-field>
+  
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="33.3" class="pr-8"
+                *ngIf="res_on_day_status['Day'] || res_on_day_status['Service']">
+                <mat-form-field appearance="outline"  fxFlex>
+                  <mat-label>Max Party Size</mat-label>
+                  <input type="number" matInput min="1" formControlName="max_party_size" (input)="setValueRestrictedOnDayMaxPartySize($event)">
+                </mat-form-field>
+                </div>
+  
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="33.3" 
+                *ngIf="res_on_day_status['Day'] || res_on_day_status['Service']">
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Max number of parties per interval</mat-label>
+                  <input type="number"  matInput min="1" formControlName="per_slot_booking" (keyup)="setValuePartiesInterval($event)">
+                </mat-form-field>
+              </div>
+              <mat-error *ngIf="resident_error.isError">{{ resident_error.errorMessage }}</mat-error>
+            </div>
+            
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">         
+              <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                <mat-label>Allow admin override</mat-label>
+                <mat-select (selectionChange)="allAdminOverride($event);avilableSpots()" formControlName="allow_admin_override">
+                  <mat-option value="N">No</mat-option>
+                  <mat-option value="Y">Yes</mat-option>
+                </mat-select>
+              </mat-form-field>
+  
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50" *ngIf="admin_override">
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Max Admin Spots</mat-label>
+                  <input type="number" matInput min="1" formControlName="max_admin_reservations" (input)="avilableSpots()">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <mat-label [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> Total Available Spots:</mat-label>
+          <div class="font-weight-600 mb-20 border p-16">Total Available Spots Per Time Slot: {{totalSpots}}</div>
+
+                   
+          <mat-label [ngStyle]="green_bg_header" class="font-weight-600 font-size-18 p-16"> Status And Email:</mat-label>
+          <div fxLayout="column"  fxFlex="1 0 auto" class="p-16 border pb-0">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+              <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                <mat-label>Status</mat-label>
+                <mat-select matNativeControl required formControlName="status" required>
+                  <mat-option value="">-Choose-</mat-option>
+                  <mat-option value="A">Active</mat-option>
+                  <mat-option value="I">Inactive</mat-option>
+                </mat-select>
+                <mat-error>Status required</mat-error>
+              </mat-form-field>
+  
+              <!-- <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Admin Email</mat-label>
+                <input type="email" matInput formControlName="admin_email">
+              </mat-form-field> -->
+
+              <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Admin Email</mat-label>
+                <input type="email" matInput formControlName="admin_email"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                <ng-container *ngIf="addServiceForm.get('admin_email').invalid" ngProjectAs="mat-error">
+                  <mat-error *ngIf="addServiceForm.get('admin_email').errors.pattern">Email pattern is wrong</mat-error>
+                </ng-container> 
+              </mat-form-field>
+            </div>
+          </div>
+      
+          <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto" class="mt-28">
+            <button mat-raised-button [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none" cdkFocusInitial (click)="onSubmit()">Save</button>
+          </div>
+
+        </form>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+  </div>
+  <!-- / CONTENT -->
+</div>

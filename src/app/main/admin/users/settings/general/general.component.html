@@ -1,0 +1,370 @@
+<div id="settings" class="page-layout simple tabbed" fxLayout="column">
+
+    <!-- CONTENT -->
+    <div class="content">
+        <form class="" name="settingsform" [formGroup]="settingsform" (ngSubmit)="onSubmit(settingsform.value)"
+            novalidate autocomplete="off">
+
+            <!-- SETTINGS -->
+            <div id="settings" class="p-24">
+                <!--  Portal Settings -->
+                <div class="mat-title">
+                    <mat-icon>settings</mat-icon> Users Settings
+                </div>
+                <!-- DEFAULT PROFILE PICTURE -->
+                <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="mb-4 font-weight-600">Default Profile Picture :</div>
+                            <div class="font-size-14 secondary-text">Set default profile picture if user not uploaded
+                                own.</div>
+                        </div>
+                        <app-file-upload fxLayout="column" fxLayoutAlign="top" fxFlex="33" [uploadlabel]="''"
+                            [cropper]="false" (imageUploaded)="setMediaFieldValue($event)"
+                            [uploadInfo]="uploadInfo?.avatar"></app-file-upload>
+
+                    </div><br><br>
+                    <!--DEFAULT COVER PICTURE-->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="font-weight-600 mb-4">Default Cover Picture :</div>
+                            <div class="font-size-14 secondary-text">Set default cover picture if user not uploaded own.
+                            </div>
+                        </div>
+                        <app-file-upload fxLayout="column" fxLayoutAlign="top" fxFlex="33" [uploadlabel]="''"
+                            [cropper]="false" (imageUploaded)="setMediaFieldValue($event)"
+                            [uploadInfo]="uploadInfo?.cover"></app-file-upload>
+
+                    </div><br><br>
+                    <!-- BIRTHDATE AGE LIMIT -->
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="font-weight-600 mb-4">Resident Minimum Age Limit </div>
+                            <div class="font-size-14 secondary-text">Set minimum age limit on birthdate selection.</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <input matInput type="number" min="0" formControlName="dob_limit" required>
+                                <mat-error>Age limit Required!</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-md="row">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="font-weight-600 mb-4">Resident Biography Character Limit</div>
+                            <div class="font-size-14 secondary-text">Set character limit for biography.</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <input matInput type="number" min="0" formControlName="biography_char_limit" required>
+                                <mat-error>Character limit Required!</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!--ALLOW EDIT EMAIL-->
+                    <div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="font-weight-600 mb-4">Change email </div>
+                            <div class="font-size-14 secondary-text">Allow user to change email address.</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <mat-radio-group formControlName="allow_change_email" aria-label="Select an option">
+                                <mat-radio-button value="Y">Yes</mat-radio-button>
+                                <mat-radio-button class="ml-8" value="N">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <!-- hide domain emails -->
+                    <div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="font-weight-600 mb-4">Hide Domain emails </div>
+                            <div class="font-size-14 secondary-text">hide testing emails with domain name,multiple with
+                                comma separated</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                <input matInput type="text" min="0" formControlName="domain_emails">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- restrictForms Roles -->
+                    <div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="font-weight-600 mb-4">Restrict Edit Forms </div>
+                            <div class="font-size-14 secondary-text">user roles dont have access to edit frontend forms
+                            </div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33"
+                            *ngIf="RoleList.length>0">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Restrict Forms Edit</mat-label>
+                                <mat-select formControlName="restrict_form_roles" multiple="true">
+                                    <mat-option-select-all></mat-option-select-all>
+                                    <mat-option *ngFor="let role of RoleList" [value]="role.id">
+                                        {{role.role_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- CHAT ENABLE/DISABLE -->
+                    <div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                        <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <div class="font-weight-600 mb-4">Enable Chat</div>
+                            <div class="font-size-14 secondary-text">Allow users to communicate between them.</div>
+                        </div>
+                        <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                            <mat-radio-group formControlName="allow_chat" aria-label="Select an option">
+                                <mat-radio-button value="Y">Yes</mat-radio-button>
+                                <mat-radio-button class="ml-8" value="N">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <!-- card watch settins -->
+                </div>
+                <div class="mat-title mt-20 mb-8">
+                    <mat-icon>settings</mat-icon> Card Watch Settings
+                </div>
+                <div formGroupName="cardwatch_settings">
+                    <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">
+
+                        <div fxLayout="column" fxLayout.gt-md="row" class="mb-24">
+                            <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                <div class="font-weight-600 mb-4">Card Watch Enable </div>
+                                <div class="font-size-14 secondary-text">Allow Card watch enable or disabled</div>
+                            </div>
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                <mat-radio-group formControlName="allow_card_watch" aria-label="Select an option">
+                                    <mat-radio-button value="Y">Yes</mat-radio-button>
+                                    <mat-radio-button class="ml-8" value="N">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <ng-container
+                            *ngIf=" this.settingsform['controls'].cardwatch_settings['controls'].allow_card_watch.value == 'Y'">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Consumer Key </div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="consumer_key" required>
+                                        <mat-error>Consumer Key Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Consumer Secret</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="consumer_secret" required>
+                                        <mat-error>Consumer Secret Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Client Id</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput type="number" min="0" formControlName="client_id" required>
+                                        <mat-error>Client Id Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Api Url</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="api_url" required>
+                                        <mat-error>Api Url Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Auth Token Param</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="auth_token_param" required>
+                                        <mat-error>Auth Token Param Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Account Balance Param</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="account_balance_param" required>
+                                        <mat-error>Account Balance Param Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Customer Id</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput type="number" min="0" formControlName="customer_id" required>
+                                        <mat-error>Customer Id Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Transaction Param</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="transaction_param" required>
+                                        <mat-error>Customer Id Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Menu Item Param</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="menu_item_param" required>
+                                        <mat-error>Menu Item Param Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Menu Item Picture Param</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="menu_item_picture_param" required>
+                                        <mat-error>Menu Item Picture Param Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Location List Param</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="location_list_param" required>
+                                        <mat-error>Location List Param Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </ng-container>
+
+
+                        <!-- <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="10">
+                                <button mat-raised-button type="submit" color="accent" cdkFocusInitial
+                                    [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none">
+                                    Save
+                                </button>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+
+                <div class="mat-title mt-20 mb-8">
+                    <mat-icon>settings</mat-icon> Full Count Settings
+                </div>
+                <div formGroupName="fullcount_settings">
+                    <div class="mat-card mat-elevation-z2 p-24 mb-4" fxLayout="column">                       
+                        <ng-container
+                            *ngIf=" this.settingsform['controls'].fullcount_settings['controls']">
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Community ID </div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="community_id" required>
+                                        <mat-error>Community id Key Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Client ID</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="client_id">
+                                        <mat-error>Client ID Secret Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Client Secret</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="client_secret">
+                                        <mat-error>Client secret Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Api Url</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="api_url">
+                                        <mat-error>Api Url Required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>     
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Plan Account Details Page</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="plan_charge">
+                                    </mat-form-field>
+                                </div>
+                            </div>     
+                            <div fxLayout="column" fxLayout.gt-md="row">
+                                <div class="preview mr-12" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <div class="font-weight-600 mb-4">Charge Account Details Page</div>
+                                </div>
+                                <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="33">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                                        <input matInput formControlName="charge_details">
+                                    </mat-form-field>
+                                </div>
+                            </div>                          
+                           
+                        </ng-container>
+
+
+                        <div fxLayout="column" fxLayout.gt-md="row">
+                            <div class="preview" fxLayout="column" fxLayoutAlign="top" fxFlex="10">
+                                <button mat-raised-button type="submit" color="accent" cdkFocusInitial
+                                    [ngStyle]="button" class="text-uppercase line-height-44 br-ds-0 box-shadow-none">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- / CONTENT -->

@@ -1,0 +1,61 @@
+<div class="page-layout carded">
+    <breadcumb></breadcumb>
+    <!-- / HEADER -->
+
+    <section class="content quick-links" fxLayout="row" fxLayoutAlign="center center">
+        <div class="content-wrap fuse-white-bg p-28 min-w-100"  fxLayout="row wrap"  fxLayoutAlign.lt-sm="center center" fxLayout.lt-sm="column" *ngIf="menuInfo && menuInfo.children && menuInfo.children.length>0; else emptyBlock">
+            <ng-container>
+                <ng-container *ngFor="let menu of menuInfo.children">
+                    <div class="mb-16 m-8">
+                        <a  *ngIf="menu.menu_source_type=='url' && (menu.menu_source=='D' || menu.menu_source=='RDM')" [href]="menu.url" [target]="menu.target" >
+                                <div class="fuse-card  py-24" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="icon w-80 h-80 mr-8 text-center" fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon class="s-56">{{menu.menu_icon}}</mat-icon>
+                                    </div>
+                                    <div class=" h2 font-weight-800">{{menu.menu_title}}</div>
+                                </div>   
+                         </a>                 
+
+                        <!-- normal links -->
+                            <a  [attr.menuparent]="menu.menu_parent_id" 
+                            [attr.menutitle]="menu.menu_title"
+                            [attr.showpagetitle]="menu.show_page_title || 'N'" 
+                            [attr.pagetitle]="menu.page_title || ''"
+                            [attr.pagetitleimg]="menu.media ? menu.media.image : ''"
+                            [routerLink]="['/'+menu.url]" 
+                            (click)="sendMenuItemInfo(menu)" *ngIf="menu.menu_source_type!=='url' && menu.url.startsWith('http') == false">
+                                <div class="fuse-card  py-24" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="icon w-80 h-80 mr-8 text-center" fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon class="s-56">{{menu.menu_icon}}</mat-icon>
+                                    </div>
+                                    <div class="h2 font-weight-800" >{{menu.menu_title}}</div>
+                                </div>
+                            </a>
+                            <a [href]="menu.url" target="{{menu.target}}"  *ngIf=" menu.menu_source_type!=='url' && (menu.url.startsWith('https') == true || menu.url.startsWith('http') == true)">
+                                    <div class="fuse-card  py-24" fxLayout="row" fxLayoutAlign="start center">
+                                        <div class="icon w-80 h-80 mr-8 text-center" fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-icon class="s-56">{{menu.menu_icon}}</mat-icon>
+                                        </div>
+                                        <div class="h2 font-weight-800" >{{menu.menu_title}}</div>
+                                    </div>
+                            </a>
+                         
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="content-wrap fuse-white-bg p-28  min-w-100 text-center"  fxLayout="row wrap" *ngIf="isSubMenu==true && isLoading==false" fxLayoutAlign="center">
+            <div class="py-12" fxLayout="row" fxLayoutAlign="start center">
+                <div class="no-record mt-20">No Quicklinks Found</div>
+            </div>
+        </div>
+        <ng-template #emptyBlock>
+            <div  *ngIf="isSubMenu==false" class="content-wrap fuse-white-bg p-28  min-w-100 text-center"  fxLayout="row wrap" fxLayoutAlign="center">
+                <div class="py-12" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </div>
+        </ng-template>
+    </section>
+</div>
+ 

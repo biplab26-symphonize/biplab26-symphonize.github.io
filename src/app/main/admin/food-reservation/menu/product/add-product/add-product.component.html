@@ -1,0 +1,217 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="dining-service-add">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <!-- <button mat-raised-button class="reference-button">
+                      <mat-icon class="mr-4">add</mat-icon>
+                      <span>Add Fields</span>
+                  </button> -->
+                <button mat-raised-button [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                    [routerLink]="'/admin/food-reservation/menu/product/list'">
+                    <mat-icon class="mr-4">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+                <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" class="w-100-p"
+                    autocomplete="off" [formGroup]="addProduct" novalidate autocomplete="off">
+
+                    <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title}}</div>
+                    
+                    <div class="p-28 d-block">
+                        <input type="hidden" formControlName="id">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Name</mat-label>
+                                <input matInput formControlName="product_name" required>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput formControlName="product_description">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Category</mat-label>
+                                <mat-select formControlName="categories" multiple (selectionChange)="selectedCategoryData()">
+                                    <mat-checkbox class="d-block p-16" [(ngModel)]="selectall" (ngModelChange)="selectalllCategory()" [ngModelOptions]="{standalone: true}" >Select All</mat-checkbox>
+                                    <mat-option *ngFor="let category of categoryData" [value]="category.id">
+                                        {{category.category_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Number Of Sides</mat-label>
+                                <mat-select matNativeControl required formControlName="side_number" [(ngModel)]="number"
+                                    (selectionChange)="getCategory($event)">
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option *ngFor="let number of sideNumbers" [value]="number">{{number}}</mat-option>
+                                </mat-select>
+                                </mat-form-field>
+                        </div>
+
+                        <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Number Of Sides</mat-label>
+                                <mat-select matNativeControl required formControlName="side_number" [(ngModel)]="number"
+                                    (selectionChange)="getCategory($event)">
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option *ngFor="let number of sideNumbers" value="{{number}}">{{number}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div> -->
+
+                        <div fxLayout="row wrap">
+                            <div formArrayName="extras" fxFlex="50" class="pr-8"
+                            *ngFor="let item of addProduct.get('extras')['controls']; let i = index;"
+                            fxLayout.lt-sm="column">
+                            <mat-form-field appearance="outline" fxFlex class="w-100-p">
+                                <mat-label>Extras{{i+1}}</mat-label>
+                                <mat-select [formControlName]="i" multiple>
+                                    <!-- <mat-checkbox [(ngModel)]="selectallExtra" (ngModelChange)="selectalllExtra(i)" [ngModelOptions]="{standalone: true}" >Select All</mat-checkbox> -->
+                                    <mat-option *ngFor="let extra of extrasData" [value]="extra.id">
+                                        {{extra.extra_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-20">
+                            <label class="mr-20 font-weight-600" fxFlex="20">Set Different Sizes :</label>
+                            <mat-radio-group formControlName="set_diff_size">
+                                <mat-radio-button value="Y" id="yes" class="mr-8" (change)="getSize($event)">Yes</mat-radio-button>
+                                <mat-radio-button value="N" id="no" (change)="getSize($event)">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    
+                        <div class="add-date-btn" *ngIf="sizePrice">
+                            <button mat-raised-button type="button"  color="accent" (click)="addItem()"
+                                class="mb-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none">
+                                <mat-icon class="mr-4 font-size-22">add</mat-icon>
+                                Add
+                            </button>
+
+                            <div class="border border-radius-4 p-16 mb-20 pb-0">
+                                <div class="mb-20" formArrayName="size" *ngFor="let item of addProduct.get('size').controls; let i = index;">
+                                        <div [formGroupName]="i">
+                                            <mat-form-field appearance="outline" fxFlex="50" class="mat-wrapper-p-0 pr-8">
+                                                <mat-label>Size </mat-label>
+                                            <input matInput formControlName="name" type="number" min="0" placeholder="size">
+                                            </mat-form-field>
+        
+                                            <mat-form-field appearance="outline" fxFlex="45" class="mat-wrapper-p-0"> 
+                                                <mat-label>Price</mat-label>
+                                                <input matInput type="number" min="0" formControlName="price" placeholder="Price">
+                                            </mat-form-field>
+        
+                                            <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center">
+                                                <mat-icon fxLayout="row" fxLayoutAlign="center center" (click)="removeSize(i)" class="date-close-btn font-size-16 purple-btn-bg fuse-white-fg border-radius-24"> close </mat-icon>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>    
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50" *ngIf="setPrice">
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                    <span matPrefix>$&nbsp; </span>
+                                    <mat-label> Price</mat-label>
+                                    <input matInput type="number" min="0" class="example-right-align" formControlName="price">     
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-20">
+                            <label class="mr-20 font-weight-600" fxFlex="20">Featured Product :</label>
+                            <mat-checkbox formControlName="featured_product"></mat-checkbox>
+                        </div>
+
+                        <div fxLayout="row wrap">
+                            <div formArrayName="side_dish" fxFlex="50" class="pr-8"
+                            *ngFor="let item of addProduct.get('side_dish')['controls']; let i = index;"
+                            fxLayout.lt-sm="column">
+                            <mat-form-field appearance="outline" fxFlex class="w-100-p">
+                                <mat-label>Side {{i+1}} Selection</mat-label>
+                                <mat-select [formControlName]="i" multiple>
+                                    <mat-option *ngFor="let sideDish of sideDishData" [value]="sideDish.id">
+                                        {{sideDish.side_dish_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Status</mat-label>
+                                <mat-select matNativeControl required formControlName="status" required>
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option value="A">Active</mat-option>
+                                    <mat-option value="I">Inactive</mat-option>
+                                </mat-select>
+                                <mat-error>Status required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="column" fxFlex="100" class="select-background-img mb-20">
+                            <mat-label class="font-weight-600 mb-8">Select Image :</mat-label>
+                            <input hidden type='file' [accept]="inputAccpets" (change)="onSelectLogoFile($event)"
+                                #logofile />
+                            <div class="btn border p-16 border-radius-4" fxLayout="row" fxLayoutAlign="start center">
+                                <button mat-stroked-button color="accent" class="mr-12 choose-from-gallery"
+                                    (click)="logofile.click()">Choose From
+                                    Gallery
+                                </button>
+                                <div *ngIf="filetype==true" class="select-img">
+                                    <img [src]="logourl" height="80" width="100" />
+                                </div>
+                                <input hidden type="text" formControlName="image" />
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
+                            <button  [disabled]="isSubmit == true " mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-8" cdkFocusInitial (click)="onSubmit()">Save</button>
+                            <button mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" type="button" cdkFocusInitial (click)="Cancel()">Cancel</button>
+                        </div>
+                    </div>        
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

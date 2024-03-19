@@ -1,0 +1,162 @@
+<div class="page-layout blank" fusePerfectScrollbar id="front-my-meetings-view">
+    <div class="page-layout blank" fusePerfectScrollbar >
+  
+          <!-- HEADER -->  
+          <div class="header px-16">
+  
+            <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+      
+                <div class="header-top">  
+      
+                    <div class="logo text-center">
+                        <span class="logo-text font-size-48 fuse-white-fg" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" [ngStyle.lt-sm]="{'font-size.px': 30}">
+                            <strong> View Form </strong>
+                        </span>
+                    </div>
+                    <!-- HEADER TEXT -->
+      
+                </div>
+                  <!-- / TOOLBAR -->  
+              </div>
+        
+          </div>
+          <!-- / HEADER -->
+   
+  
+       <div>
+      <!-- CENTER -->
+            <div class="content p-4 pb-4">
+              <!-- CONTENT -->
+               <div class="content-wrap fuse-white-bg p-28 w-100-p br-ds-0">
+                   <div>
+                     <!-- <span class="mat-display-1">VIEW FORM</span> -->
+                       <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-20 print-btn text-capitalize">
+                        <button color="accent" type="button"  mat-stroked-button  [routerLink]="['/my-meeting-room/']"> <mat-icon class="mr-4">arrow_back</mat-icon>Back</button>
+                        <button color="accent" type="button"  mat-stroked-button (click)="getPrint()"> <mat-icon class="mr-4">local_printshop</mat-icon>Print</button>
+  
+                       </div>
+  
+                       <div fxLayout="row" fxLayoutAlign="space-between center" class="accent fuse-white-200-fg p-16 " *ngIf="content">
+                            <h1 class="m-0 font-size-20 text-capitalize" [ngStyle.lt-sm]="{'font-size.px': 16}">{{content.rooms.title}} : Entry#{{url_id}}</h1>  
+                            <h1 class="m-0 font-size-20 text-capitalize" [ngStyle.lt-sm]="{'font-size.px': 16}">Submitted Date : {{content.created_at | date: defaultDateTimeFormat.date_format}}</h1>
+                       </div>
+                          
+                            <table class="w-100-p border text-capitalize" fxLayout="column" fxLayoutAlign="start">
+                                 <ng-container  *ngIf="content">
+                                      <tr  class=" w-100-p  m-0 " fxLayout="column" fxLayout.lt-sm="column" fxLAyoutAlign="start center"  >
+                                          <td class="grey-50 text-bold p-8 border-bottom"> <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Resident Name </span> </td>
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p"><span class="w-100-p">{{content.client_name}}</span></td>
+                                      </tr>   
+                            
+                                      <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column"> 
+                                          <td class="grey-50 text-bold p-8 border-bottom"> <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Email </span> </td>
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <span class="w-100-p text-lowercase" >{{content.client_email}}</span>
+                                          </td>
+                                      </tr>
+                                   
+                                      <!-- <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p" [ngClass.lt-sm]="{'font-size-16': true}">Phone</span>
+                                          </td>
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <span class="w-100-p" class=" w-100-p">{{content.phone | mask:CustomFormats.phone}}</span>
+                                          </td>
+                                      </tr> -->
+                                     
+                                      
+                                      <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Room</span>
+                                          </td>
+  
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <span class="w-100-p" >{{ content.rooms.title}}</span>
+                                          </td>
+                                      </tr>
+                                     
+                                      <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Book By</span>
+                                          </td>
+  
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <span class="w-100-p" >{{content.book_by}}</span>
+                                          </td>
+                                      </tr>
+                                      
+                                      <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Duration </span>
+                                          </td>
+  
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <!-- <span class="w-100-p" *ngIf="content.book_by == 'hour'">{{ content.start_date+' '+HourFirstValue | date: defaultDateTimeFormat.time_format }} - {{ content.start_date+' '+HourLastValue | date: defaultDateTimeFormat.time_format }}</span>
+                                            <span class="w-100-p" *ngIf="content.book_by == '9to2'">09:00 am to 02:00 pm</span>
+                                            <span class="w-100-p" *ngIf="content.book_by == 'afternoon'">09:00 am to 02:00 pm</span>
+                                            <span class="w-100-p" *ngIf="content.book_by == 'morning'">09:00 am to 02:00 pm</span> -->
+                                            <span class="w-100-p">{{content.duration}}</span>
+                                          </td>
+                                      </tr>    
+                                       
+                                      <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Status </span>
+                                          </td>
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <span class="w-100-p" >{{content.status}}</span>
+                                          </td>
+                                      </tr>    
+                                                                            <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" > 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Attendees
+                                            </span>
+                                          </td>
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <span class="w-100-p" >{{content.attendees}}</span>
+                                          </td>
+                                      </tr>    
+
+                                   
+                                      <tr  class=" w-100-p   m-0 "  fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.notes != ''"> 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Notes </span>
+                                          </td>
+  
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p">
+                                            <span class="w-100-p" >{{content.notes}}</span>
+                                          </td>
+                                      </tr>    
+                                      
+                                      <tr  class=" w-100-p m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.equipments.length != 0" > 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Equipment
+                                            </span>
+                                          </td>
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p" *ngFor="let data of content.equipments">
+                                            <span class="w-100-p" >{{data.equipments.title}} X {{data.unit}}</span>
+                                          </td>
+                                      </tr>  
+                                      <tr  class=" w-100-p   m-0 " fxLayout="column" fxLAyoutAlign="start center" fxLayout.lt-sm="column" *ngIf="content.fooddrinks.length != 0"> 
+                                          <td class="grey-50 text-bold p-8 border-bottom">
+                                            <span class="w-100-p"  [ngClass.lt-sm]="{'font-size-16': true}">Food & Drinks</span>
+                                          </td>
+                                          <td class="p-8 border-bottom font-weight-600 w-100-p" *ngFor="let data of content.fooddrinks">
+                                            <span class="w-100-p" >{{data.fooddrinks.title}} X {{data.quantity}} </span>
+                                          </td>
+                                      </tr>    
+        
+                                  </ng-container>  
+                             </table>
+                      </div>   
+              <!-- /CENTER -->
+               </div>
+             </div>
+         </div>   
+   </div>
+  </div>
+  
+  
+   
+  
+  

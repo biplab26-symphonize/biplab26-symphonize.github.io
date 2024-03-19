@@ -1,0 +1,27 @@
+<h3 class="mb-8 font-weight-600">{{uploadlabel}} </h3>
+<mat-form-field hidden *ngIf="hiddencroppedImage">
+    <input matInput hidden value="">
+</mat-form-field>
+<input  hidden 
+        #inputfile
+        type="file"
+        (change)="fileChangeEvent($event)"
+        [accept]="inputAccpets"
+        />
+
+        <div class="logo-preview border" *ngIf="croppedImage || uploadInfo.url">
+            <img [src]="croppedImage || uploadInfo.url + dateTemp" *ngIf="croppedImage || uploadInfo.url" class="img-responsive" />
+        </div>
+        
+        
+<div class="btn my-12">
+    <button type="button" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-12" (click)="inputfile.click();">Upload</button>
+    <button type="button" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none mr-12" *ngIf="uploadInfo.media_id>0 || 
+            uploadedResponse.media_id>0 || uploadInfo.url" (click)="RemovePicture()">Remove</button>
+           
+    <button type="button" mat-raised-button class="text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" *ngIf="showEditbutton == true " (click)="EditPicture(uploadedResponse.media_id,uploadInfo.url)">Edit</button>
+</div>
+
+<!-- <div class="logo-preview border" *ngIf="croppedImage || uploadInfo.url">
+    <img [src]="croppedImage || uploadInfo.url + dateTemp" *ngIf="croppedImage || uploadInfo.url" class="img-responsive" />
+</div> -->

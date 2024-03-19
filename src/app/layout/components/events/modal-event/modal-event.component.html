@@ -1,0 +1,76 @@
+<div class="fuse-card no-br">
+    <div class="p-16">
+        <div class="h1">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <!-- <span fxFlex="90" fxFlexAlign="start" class="title">{{eventInfo.event.title | titlecase}}</span> -->
+                <span fxFlex="90" fxFlexAlign="start" class="title">{{eventInfo.event.title}}</span>
+                <mat-icon fxFlex="10" fxFlexAlign="start" (click)="dialogRef.close()" class="icon s-20 text-right close-btn">close</mat-icon>
+            </div>
+        </div> 
+        <div class="h5 secondary-text" *ngIf="eventInfo.event.extendedProps.eventlocation && eventInfo.event.extendedProps.eventlocation.category_name">
+            <div fxLayout="row" fxLayoutAlign="start center" class="h3" [style.backgroundColor]="getLocationColors(eventInfo.event.extendedProps.eventlocation,'bg_color')" [style.borderColor]="getLocationColors(eventInfo.event.extendedProps.eventlocation,'font_color')"  [style.color]="getLocationColors(eventInfo.event.extendedProps.eventlocation,'font_color')">
+                <mat-icon class="length-icon s-16">add_location</mat-icon>
+                {{eventInfo.event.extendedProps.eventlocation.category_name}}
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="eventInfo.event.extendedProps.display_description=='Y'">
+        <div class="info-section px-16 line-height-24" [innerHTML]="eventInfo.event.extendedProps.event_description | sanitizeHtml"></div>
+    </ng-container>
+    
+    <div class="card-divider"></div>
+
+    <div class="p-16 pt-0 line-height-1.75">
+        <!-- StartDate -->
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">event</mat-icon> Start Date</div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right">{{eventInfo.event.extendedProps.event_start_date | date :defaultDateTimeFormat.date_format}}</div>
+            </div>
+        </div>
+        <!-- endDate -->
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">date_range</mat-icon> End Date</div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right">{{eventInfo.event.extendedProps.event_end_date | date :defaultDateTimeFormat.date_format}}</div>
+            </div>
+        </div>
+        <!-- Check IN -->
+        <div *ngIf="eventInfo.event.extendedProps.event_start_date!==''" class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">access_time</mat-icon> Event Start Time </div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div *ngIf="eventInfo.event.extendedProps.is_all_day=='N'" class="text-right">{{eventInfo.event.extendedProps.event_start_date | date :defaultDateTimeFormat.time_format}}</div>
+                <div *ngIf="eventInfo.event.extendedProps.is_all_day=='Y'" class="text-right">All Day</div>
+            </div>
+        </div>
+        <div *ngIf="eventInfo.event.extendedProps.event_end_date!=='' && eventInfo.event.extendedProps.disable_end_time=='N' && eventInfo.event.extendedProps.is_all_day=='N'" class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><mat-icon class="length-icon s-16 mr-4">timelapse</mat-icon> Event End Time </div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div class="text-right"  *ngIf="eventInfo.event.extendedProps.custom_event_end=='N'">{{eventInfo.event.extendedProps.event_end_date | date :defaultDateTimeFormat.time_format}}</div>
+                <div class="text-right" *ngIf="eventInfo.event.extendedProps.custom_event_end=='Y' && eventInfo.event.extendedProps.custom_end_time!==null && eventInfo.event.extendedProps.custom_end_time!==''">{{eventInfo.event.extendedProps.custom_end_time}}</div>
+            </div>
+        </div>
+        <!-- registration times -->
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="eventInfo.event.extendedProps.register_type=='C' || eventInfo.event.extendedProps.register_type=='D'">
+            <div><mat-icon class="length-icon s-16 mr-4">access_time</mat-icon> Registration Start</div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div *ngIf="eventInfo.event.extendedProps.register_type=='D'" class="text-right">{{eventInfo.event.extendedProps.registration_start | date :defaultDateTimeFormat.date_format}}</div>
+                <!-- <div *ngIf="eventInfo.event.extendedProps.register_type=='C'" class="text-right">{{eventInfo.event.extendedProps.registration_start | date :defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</div> -->
+                <div *ngIf="eventInfo.event.extendedProps.register_type=='C'" class="text-right">{{eventInfo.event.extendedProps.registration_start | date :defaultDateTimeFormat.date_format}}</div>
+            </div>
+        </div>
+        <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="eventInfo.event.extendedProps.register_type=='C' || eventInfo.event.extendedProps.register_type=='D'">
+            <div><mat-icon class="length-icon s-16 mr-4">access_time</mat-icon> Registration End</div>
+            <div fxLayout="row" fxLayoutAlign="start center">                                            
+                <div *ngIf="eventInfo.event.extendedProps.register_type=='D'" class="text-right">{{eventInfo.event.extendedProps.registration_end | date :defaultDateTimeFormat.date_format}}</div>
+                <!-- <div *ngIf="eventInfo.event.extendedProps.register_type=='C'" class="text-right">{{eventInfo.event.extendedProps.registration_end | date :defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</div> -->
+                <div *ngIf="eventInfo.event.extendedProps.register_type=='C'" class="text-right">{{eventInfo.event.extendedProps.registration_end | date :defaultDateTimeFormat.date_format}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-16 calendar-popup-bottom-btn" fxLayout >
+        <event-register-buttons [listType]="'front'" [event]="eventInfo.event.extendedProps" [page]="'eventcalendar'" ></event-register-buttons>
+    </div>
+</div>

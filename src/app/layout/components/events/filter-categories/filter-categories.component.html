@@ -1,0 +1,24 @@
+<div  [ngClass]="outerclass" *ngIf="EventSettings.calender_settings && EventSettings.calender_settings.category_filter=='Y'">
+    <ng-container *ngIf="categorytype=='C' && showinput=='checkbox'">
+        <span class="text-bold h1" [ngStyle.lt-sm]="{'font-size.px': 18}">
+            {{heading}}
+        </span>
+        <!-- common categories -->
+        <div  fxLayout="row row-reverse btn-wrpper" class="cat-btn-list mt-28 mb-32" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap  [@animate]="{value:'*',params:{y:'100%'}}">
+            <ng-container *ngFor="let category of commoncategories">
+                <mat-checkbox  *ngIf="(category.disp_on_registration=='Y' && showtype=='registration') || (category.disp_on_calendar=='Y' && showtype=='calendar')" class="mb-24" [(ngModel)]="category.checked" id="subcheck-{{category.id}}" [value]="category.id" (change)="onSubValChange($event)">
+                    <mat-button [style.border]="'2px solid' + category.bg_color " class="px-16 py-8"  [attr.data-bgcolor]="category.bg_color" id="{{category.id}}" [style.color]="category.font_color">{{category.category_name}}</mat-button>
+                </mat-checkbox>
+            </ng-container>
+        </div>
+
+        <!-- calendarwise categories -->
+        <div  fxLayout="row row-reverse btn-wrpper" class="cat-btn-list mt-28 mb-32" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap  [@animate]="{value:'*',params:{y:'100%'}}">
+            <ng-container *ngFor="let category of categories">
+                <mat-checkbox *ngIf="(category.disp_on_registration=='Y' && showtype=='registration') || (category.disp_on_calendar=='Y' && showtype=='calendar')" class="mb-24" [(ngModel)]="category.checked" id="check-{{category.id}}" [value]="category.id" (change)="onValChange($event)">
+                    <mat-button  [style.border]="'2px solid' + category.bg_color " class="px-16 py-8"  [attr.data-bgcolor]="category.bg_color" id="{{category.id}}" [style.color]="category.font_color">{{category.category_name}}</mat-button>
+                </mat-checkbox>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>

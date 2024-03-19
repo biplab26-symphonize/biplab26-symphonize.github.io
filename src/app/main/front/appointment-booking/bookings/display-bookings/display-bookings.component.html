@@ -1,0 +1,93 @@
+<div  class="border display-booking" id="back-appointment-booking-select-btn">
+    <form class="br-radius-8"  [formGroup]="addBookingForm"  autocomplete="off" fxLayout="column">
+        <p class="font-weight-600 font-size-18 accent fuse-white-fg p-16 w-100-p d-block" [ngStyle.lt-sm]="{'font-size.px': 18}">Selected Date : {{selected_date | date: defaultDateTimeFormat.date_format}}</p>
+
+        <div class="border-bottom p-16" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start center">
+            <div class="mr-28 booking-img" fxFlex="25"> 
+                <!-- <img src="/assets/images/backgrounds/diningReservation.jpg" alt=""> -->
+                 <img [src]="service_image!=''?service_image:defaultImage" alt="">
+            </div>
+            <h2 fxFlex="75" class="font-weight-600 font-size-30 mb-12 booking-title" [ngStyle.lt-sm]="{'font-size.px': '18' , 'margin-top.px': '12'}">{{service_title}}
+                <p fxLayout="column"  class="mb-16 font-weight-200 font-size-20 ">{{service_desc}}</p>
+            </h2> 
+          
+        </div>
+       
+         
+        <div class="px-16 py-28 time-slots-button">
+            <mat-label class="font-weight-600 font-size-18 mr-20 text-right">Time Slots:</mat-label>
+            <div fxLayout="row wrap" class="mt-12">
+                <ng-container  *ngFor="let timeSlot of getTimeSlots;let i=index">
+                    <button [disabled]="timeSlot.class == 'available'?false:true" class="{{timeSlot.class}} {{selectedBooking}} timeslots-btn p-12 cursor-pointer border" [class.selectedbooking]="currentTimeSlot === timeSlot.time" (click)="getPartySizes(timeSlot.time)" [ngStyle.lt-sm]="{'font-size.px': 14}">
+                        {{timeSlot.time}}
+                    </button>
+                </ng-container> 
+            </div>
+        </div>
+        
+
+        <mat-form-field class="p-16 pb-0" appearance="outline" fxFlex="100" *ngIf="partySize.length!=0">
+            <mat-label>Party Size:</mat-label>
+            <mat-select name="guestcount"   formControlName="guestcount" >
+                <mat-option *ngFor="let partySizes of partySize; let i = index;" [value]="partySizes">{{partySizes}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div fxLayout="row wrap" class="px-16">
+            <mat-form-field appearance="outline" fxFlex="50" class="pr-8" fxFlex.lt-sm="100">
+                <mat-label>Name:</mat-label>
+                <input matInput    name="first_name" [matAutocomplete]="auto" formControlName="first_name" required>
+                <mat-autocomplete   #auto="matAutocomplete"  (optionSelected)="setFormfields($event)">
+                    <mat-option  *ngFor="let option of filteredUsers"  [value]="option" >
+                        {{option.username}}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error>Firstname required</mat-error>
+            </mat-form-field>
+            <input hidden name="id" formControlName="id">
+         
+           
+            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-sm="100">
+                <mat-label>Email:</mat-label>
+                <input matInput type="email"  formControlName="email"  name="email" required>
+                <mat-error *ngIf="addBookingForm.controls['email']?.errors?.required">
+                    Email is required.
+                </mat-error>
+
+                <mat-error *ngIf="addBookingForm.controls['email']?.errors?.email">
+                    Email is not valid.
+                </mat-error>
+                
+            </mat-form-field> 
+    
+            <mat-form-field appearance="outline" fxFlex="50" class="pr-8" fxFlex.lt-sm="100"> 
+                <mat-label>Phone Number:</mat-label>
+                <input matInput formControlName="phone" pattern="(?=.*\d).{7,}" (blur)="PhoneNumberValidations($event)"  name="phone" required>
+            </mat-form-field>    
+    
+            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-sm="100">
+                <mat-label>Location:</mat-label>
+                <input matInput  formControlName="address"  name="address">
+            </mat-form-field>
+
+            
+            <mat-form-field appearance="outline" fxFlex="100">
+                <mat-label>Notes</mat-label>
+                <textarea matInput type="text" name="notes" formControlName="notes" ></textarea>
+            </mat-form-field>
+        </div>
+
+        <div  appearance="outline" fxFlex="100" class="px-16">
+            <!-- <app-dining-guests [guestcount]="addBookingForm.get('guestcount').value"    (resetCount)="resetGroupLimit($event)" (validateForm)="validateParentForm($event)" (updateguestInfo)="setguestInfoFieldValue($event)"></app-dining-guests> -->
+            <app-dining-guests  [user_id]="addBookingForm.get('id').value" [guestcount]="addBookingForm.get('guestcount').value" [groupLimit]="groupLimit"   [guestInfoArray]="addBookingForm.get('guestsinfo').value"  (resetCount)="resetGroupLimit($event)"  (validateForm)="validateParentForm($event)" (updateguestInfo)="setguestInfoFieldValue($event)" [guest_required]="guestRequired"></app-dining-guests>
+        </div>
+
+        <div fxLayout="row" class="px-16 pb-16">
+            <button (click)="displayMainBooking()" mat-stroked-button color="accent" class="mr-8">Back</button>  
+            <button (click)="getNextPreview()" mat-stroked-button color="accent" [disabled]="currentTimeSlot==undefined || disableSubmit==true" >Next</button>
+              
+        </div>
+            
+    </form>
+
+</div>

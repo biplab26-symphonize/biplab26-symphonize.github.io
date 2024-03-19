@@ -1,0 +1,321 @@
+<div class="page-layout carded" id="events-popup-register-btn">
+    <!-- CENTER -->
+    <div class="center pb-4" *ngIf="EventInfo!==undefined" (mouseover)="checkRegistrationTime($event)">
+        <!-- HEADER -->
+        <div class="header px-16">
+
+            <div class="header-content h-100-p" fxLayout="column" fxLayoutAlign="center center">
+
+                <div class="header-top">
+                    <div class="logo text-center">
+                        <span class="logo-text font-size-48 fuse-white-fg"
+                            [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                            [ngStyle.lt-sm]="{'font-size.px': 30}">
+                            <strong> Register </strong>
+                        </span>
+                    </div> 
+                    <!-- HEADER TEXT -->
+
+                </div>
+                <!-- / TOOLBAR -->
+            </div>
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content br-ds-0 ">
+            <div class="content-wrap  p-28">
+                <div class="mt-20 mb-20" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1em" fxLayoutWrap>
+                    <ng-container *ngIf="calendarSlug!==''">
+                        <button  [routerLink]="['/event/',calendarSlug]"  type="button" mat-stroked-button color="accent">
+                            <mat-icon class="mr-4">arrow_back</mat-icon> Back to Events
+                        </button>
+                    </ng-container>
+                    <ng-container  *ngIf="calendarSlug==''">
+                        <button [routerLink]="'/events'" type="button" mat-stroked-button color="accent">
+                            <mat-icon class="mr-4">arrow_back</mat-icon> Back to Events
+                        </button>
+                    </ng-container>
+                </div>
+                <form class="p-24" fxLayout="row" name="attendeeform" [formGroup]="attendeeform"
+                    (ngSubmit)="onSubmit(attendeeform.value)" novalidate autocomplete="off" fxLayoutAlign="center">
+                    <div class="border event-card br-radius-8" fxFlex="68" fxFlexAlign="center" fxFlex.lt-sm="100">
+                        <div>
+                            <div class="h1 p-8 dt-paginations mb-8" [ngStyle.lt-sm]="{'font-size.px': 20}">
+                                {{EventInfo.event_title}}
+                                <span *ngIf="EventInfo.availablespace.attendeespace==0 && EventInfo.is_waitlist=='Y'"> -
+                                    Waitlist</span> </div>
+                            <div class="p-16 pt-4">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <ng-container *ngIf="EventInfo.display_description=='Y'">
+                                        <div class="m-0 fuse-black-fg"
+                                            [innerHTML]="EventInfo.event_description | sanitizeHtml"></div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-divider"></div>
+
+                        <div class="p-16 pt-4">
+                            <!-- location -->
+                            <div class="mb-12" fxLayout="row" *ngIf="EventInfo.eventlocation && EventInfo.eventlocation.category_name">
+                                <div class="mr-8 text-bold" fxFlex="33">
+                                    <mat-icon class=" s-16 mr-4">location_on</mat-icon> Location :
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="">{{EventInfo.eventlocation.category_name}}</div>
+                                </div>
+                            </div>
+                            <!-- StartDate -->
+                            <div class="mb-12" fxLayout="row">
+                                <div class="mr-8 text-bold" fxFlex="33">
+                                    <mat-icon class=" s-16 mr-4">event</mat-icon> Start Date :
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="">
+                                        {{EventInfo.event_start_date | date: defaultDateTimeFormat.date_format}}</div>
+                                </div>
+                            </div>
+                            <!-- endDate -->
+                            <div class="mb-12" fxLayout="row">
+                                <div class="mr-8 text-bold" fxFlex="33">
+                                    <mat-icon class=" s-16 mr-4">date_range</mat-icon> End Date :
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="">
+                                        {{EventInfo.event_end_date |  date: defaultDateTimeFormat.date_format}}</div>
+                                </div>
+                            </div>
+
+                            <ng-container *ngIf="EventInfo.is_all_day=='N'">
+                                <!-- starttime -->
+                                <div class="mb-12" fxLayout="row">
+                                    <div class="mr-8 text-bold" fxFlex="33">
+                                        <mat-icon class=" s-16 mr-4">access_time</mat-icon> Event Start Time :
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                        <div class="">
+                                            {{EventInfo.event_start_date | date : defaultDateTimeFormat.time_format}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- endtime -->
+                                <div class="mb-12" *ngIf="EventInfo.event_end_time && EventInfo.disable_end_time=='N'" fxLayout="row">
+                                    <div class="mr-8 text-bold" fxFlex="33">
+                                        <mat-icon class=" s-16 mr-4">timelapse</mat-icon> Event End Time :
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                        <div class="" *ngIf="EventInfo.custom_event_end=='N'">
+                                            {{EventInfo.event_end_date | date : defaultDateTimeFormat.time_format}}
+                                        </div>
+                                        <div class="" *ngIf="EventInfo.custom_event_end=='Y'">
+                                            {{EventInfo.custom_end_time}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="EventInfo.is_all_day=='Y'">
+                                <div class="mb-12" fxLayout="row">
+                                    <div class="mr-8 text-bold" fxFlex="33">
+                                        <mat-icon class=" s-16 mr-4">timelapse</mat-icon> All Day
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!-- registration_start -->
+                            <div class="mb-12" *ngIf="EventInfo.register_type=='D' || EventInfo.register_type=='C'" fxLayout="row">
+                                <div class="mr-8 text-bold" fxFlex="33">
+                                    <mat-icon class=" s-16 mr-4">timelapse</mat-icon> Registration Start :
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="" *ngIf="EventInfo.register_type=='D'">{{EventInfo.registration_start | date : defaultDateTimeFormat.date_format}}</div>
+                                    <!-- <div class="" *ngIf="EventInfo.register_type=='C'">{{EventInfo.registration_start | date : defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</div> -->
+                                    <div class="" *ngIf="EventInfo.register_type=='C'">{{EventInfo.registration_start | date : defaultDateTimeFormat.date_format}}</div>
+                                </div>
+                            </div>
+                            <!-- registration_end -->
+                            <div class="mb-12" *ngIf="EventInfo.register_type=='D' || EventInfo.register_type=='C'" fxLayout="row">
+                                <div class="mr-8 text-bold" fxFlex="33">
+                                    <mat-icon class=" s-16 mr-4">timelapse</mat-icon> Registration End :
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="" *ngIf="EventInfo.register_type=='D'">{{EventInfo.registration_end | date : defaultDateTimeFormat.date_format}}</div>
+                                    <!-- <div class="" *ngIf="EventInfo.register_type=='C'">{{EventInfo.registration_end | date : defaultDateTimeFormat.date_format+' '+defaultDateTimeFormat.time_format}}</div> -->
+                                    <div class="" *ngIf="EventInfo.register_type=='C'">{{EventInfo.registration_end | date : defaultDateTimeFormat.date_format}}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- availablespace -->
+                            <div class="mb-12" fxLayout="row">
+                                <div class="mr-8 text-bold"  fxFlex="33">
+                                    <mat-icon class=" s-16 mr-4">check_circle</mat-icon> Registered Attendees :
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="">
+                                        {{EventInfo.availablespace.attendeespace==9999 ? 'Unlimited' : EventInfo.availablespace.attendeebookedcount + '/' + EventInfo.attendee_limit}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-divider"></div>
+
+                        <div class="pt-4"
+                            *ngIf="EventInfo.req_register=='Y' && ( EventInfo.availablespace.attendeespace>0 || EventInfo.availablespace.waitlist>0 && EventInfo.is_waitlist=='Y') ">
+                            <div class="h1 p-8 dt-paginations mb-8 text-capitalize" [ngStyle.lt-sm]="{'font-size.px': 20}">Registration Details
+                            </div>
+                            <div class="h4 secondary-text">
+                                <div class="py-16 px-16" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon class="icon s-16 mr-4 fuse-black-fg">how_to_reg</mat-icon>
+                                    <div class="fuse-black-fg text-capitalize">Please fill the below form for event registration.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- registrationForm  -->
+                        <div class="p-16 pt-4"
+                            *ngIf="EventInfo.req_register=='Y' && (EventInfo.availablespace.attendeespace>0 || EventInfo.availablespace.waitlistspace>0 && EventInfo.is_waitlist=='Y') ">
+                            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayoutWrap>
+                                <mat-form-field appearance="outline" fxFlex="49.2%" fxFlex.sm="49%" fxFlex.lt-sm="100">
+                                    <mat-label>User Name</mat-label>
+                                    <input matInput  #autoCompleteInput [matAutocomplete]="auto" name="username" formControlName="username" [readonly]="restrictFormInfo">
+                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setFormfields($event)">
+                                        <mat-option *ngFor="let option of filteredUsers" [value]="option">
+                                            {{option.username}}
+                                        </mat-option>
+                                        <mat-option *ngIf="filteredUsers && filteredUsers.length==0" disabled="true">Users Not Found</mat-option>
+                                    </mat-autocomplete>
+                                    <!-- <mat-icon matSuffix class="secondary-text">fingerprint</mat-icon> -->
+                                    <mat-error>Username Required </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="49.2%" fxFlex.sm="49%" fxFlex.lt-sm="100" >
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput name="first_name" formControlName="first_name" required [readonly]="restrictFormInfo">
+                                    <mat-error>First Name Is Required !</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="49.2%" fxFlex.sm="49%" fxFlex.lt-sm="100">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput name="last_name" formControlName="last_name" required [readonly]="restrictFormInfo">
+                                    <mat-error>Last Name Is Required !</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="49.2%" fxFlex.lt-sm="100" fxFlex.sm="49%">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput type="email" name="email" formControlName="email" required [readonly]="restrictFormInfo">
+                                    <mat-error>Email Is Required !</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="49.2%" fxFlex.lt-sm="100" fxFlex.sm="49%">
+                                    <mat-label>Phone</mat-label>
+                                    <input matInput name="phone" pattern="(?=.*\d).{7,}" (blur)="PhoneNumberValidations($event)" formControlName="phone" required [readonly]="restrictFormInfo">
+                                    <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                                </mat-form-field>
+                                <!-- tickets dropdown -->
+                                <mat-form-field fxFlex fxFlex.lt-sm="100" [ngClass.lt-sm]="{'mr-4' : 'true'}"
+                                fxFlex.lt-sm="100" *ngIf="EventSettings.event_registration_settings.show_ticket_dropdown=='Y'"
+                                    appearance="outline">
+                                    <mat-label>Attendees</mat-label>
+                                    <mat-select formControlName="guestcount">
+                                        <mat-option>Select Attendees</mat-option>
+                                        <ng-container *ngFor="let attend of groupLimit">
+                                            <mat-option [value]="attend">{{attend}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                    <mat-error>Select Attendees</mat-error>
+                                </mat-form-field>
+                                <!-- SPECIAL FIELDS -->
+                                <div fxFlex="100" fxLayout="column" fxLayoutAlign="start start" fxFlex.lt-sm="100" formArrayName="eventattendeespecialfields"  *ngFor="let special of specialfieldsArray; let i = index;">
+                                    <div [formGroupName]="i" class="w-100-p">
+                                        <ng-container *ngIf="special.field_type=='T'">
+                                            <label class=" font-size-16 fuse-black-fg">{{special.question_text}}</label>
+                                            <mat-form-field appearance="outline" class="w-100-p"> 
+                                                <input matInput
+                                                [formControlName]="special.id">
+                                            </mat-form-field>
+                                        </ng-container>
+                                        <!-- radio -->
+                                        <ng-container *ngIf="special.field_type=='R' && special.options_text && special.options_text.length>0">
+                                            <mat-form-field floatPlaceholder="always" floatLabel="always" class="w-100-p mat-form-field--no-underline">
+                                                <mat-label class="fuse-black-fg font-size-20">{{special.question_text}}</mat-label>
+                                                <input matInput placeholder="Input" style="display: none" >
+                                                <mat-radio-group class="mt-12" [name]="special.id" [formControlName]="special.id">
+                                                    <ng-container *ngFor="let checks of special.options_text; let j = index">
+                                                        <mat-radio-button class="mx-4" [value]="j"> {{checks[j]}} </mat-radio-button>
+                                                    </ng-container>
+                                                </mat-radio-group>
+                                            </mat-form-field>
+                                        </ng-container>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <!--######### GUEST Compoenent Dynamic Fields ###########-->
+                            <div *ngIf="EventSettings.event_registration_settings.show_guest_details_on_tickets=='Y'"
+                                fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="1em" fxLayoutWrap>
+                                <app-guests fxFlex.lt-sm="100" [showtype]="frontend"
+                                    [guestcount]="attendeeform.get('guestcount').value" [groupLimit]="groupLimit"
+                                    [user_id]="attendeeform.get('user_id').value" [event_id]="event_id"
+                                    [specialfieldsArray]="specialfieldsArray"
+                                    (resetCount)="resetGroupLimit($event)" (validateForm)="validateParentForm($event)"
+                                    (updateguestInfo)="setguestInfoFieldValue($event)"></app-guests>
+                            </div>
+                            <!--######### GUEST Compoenent Dynamic Fields ###########-->
+
+                            <div fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutWrap>
+                                <mat-form-field appearance="outline" fxFlex="100" [ngClass.lt-sm]="{'mr-4' : 'true'}">
+                                    <mat-label>Notes</mat-label>
+                                    <textarea matInput type="text" name="notes" formControlName="notes"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <!-- Event Full / No Registration reuired msgs -->
+                            <div>
+                                <ng-container
+                                    *ngIf="EventInfo.availablespace.attendeespace==0 && EventInfo.availablespace.waitlistspace==0 ">
+                                    <ng-container *ngTemplateOutlet="eventisfull"></ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="EventInfo.req_register=='N' ">
+                                    <ng-container *ngTemplateOutlet="noregistration"></ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="px-16 mb-20" fxLayout="row row-reverse px-16" fxLayoutAlign="center center"
+                            fxLayoutGap="1em" fxLayoutWrap
+                            *ngIf="EventInfo.req_register=='Y' && (EventInfo.availablespace.attendeespace>0 || EventInfo.availablespace.waitlistspace>0 && EventInfo.is_waitlist=='Y') ">
+                            <button type="submit" mat-stroked-button color="accent" class="px-32"
+                                [disabled]="!attendeeform.valid || isSubmit==true || disableSubmit==true || regEnable==false">Submit</button>
+                            <button type="button" [routerLink]="'/events'" mat-stroked-button color="accent"
+                                class="mr-4">Cancel</button>
+                        </div>
+                        <div *ngIf="regEnable==false" class="px-16 mb-20" fxLayout="row row-reverse px-16" fxLayoutAlign="center center" fxLayoutGap="1em" fxLayoutWrap>
+                            <p class="warn-fg">Event Registration Is Closed</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- SHOW MSG IF EVENT IS FULL -->
+        <ng-template #eventisfull>
+            <div class="content-card br-ds-0 "
+                *ngIf="EventInfo.req_register=='Y' && EventInfo.availablespace.attendeespace==0 || (EventInfo.availablespace.waitlist==0 && EventInfo.is_waitlist=='Y') ">
+                <div class="message-box m-4">
+                    Event Is Full.
+                </div>
+            </div>
+        </ng-template>
+
+        <!-- No REGISTER REQUIRED MSG -->
+        <ng-template #noregistration>
+            <div class="content-card br-ds-0 " *ngIf="EventInfo.req_register=='N'">
+                <div class="message-box m-4">
+                    No Registration Required For This Event.
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

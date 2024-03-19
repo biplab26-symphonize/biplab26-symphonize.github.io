@@ -1,0 +1,13 @@
+@import "src/@fuse/scss/fuse";
+.content {
+    .column-radio-group {
+        display: flex;
+        flex-direction: row;
+        margin: 15px 0;
+    }
+}
+
+
+.min-100-p {
+    min-width: 100%;
+}

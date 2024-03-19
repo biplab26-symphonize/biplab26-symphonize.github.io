@@ -1,0 +1,129 @@
+<div class="center p-24 pb-56 w-100-p">
+    <div class="content w-90-p mx-auto fuse-white-bg p-28">
+        <div class="mb-20">
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="border py-32">
+                <div class="border-right" fxLayout="row" fxFlex="33.33" fxLayoutAlign="center center">
+                    <div>
+                        <i class="material-icons font-size-40 mr-8">assignment</i>
+                    </div>
+                    
+                    <div class="text-capitalize font-weight-600">
+                        <span>{{todaydeliveryordercount}}</span><br> <span>delivery orders today</span>
+                    </div>
+                </div>
+            
+                <div class="border-right" fxFlex="33.33" fxLayoutAlign="center center">
+                    <div>
+                        <i class="material-icons font-size-40 mr-8">assignment</i>
+                    </div>
+                    <div class="text-capitalize font-weight-600">
+                        <span>{{todaypickupordercount}}</span><br> <span>pick-up orders today</span>
+                    </div>
+                </div>
+            
+                <div fxFlex="33.33" fxLayoutAlign="center center"> 
+                    <div>
+                        <i class="material-icons font-size-40 mr-8">assignment</i>
+                    </div>
+
+                    <div class="text-capitalize font-weight-600">
+                        <span>{{totalordercount}}</span> <br><span>Total Orders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div fxLayout="row">
+            <div class="border mr-16" fxFlex="33.33">
+                <div class="font-weight-600 font-size-16 green-bg-color fuse-white-fg p-16"> Latest Delivary Orders ( <a class="fuse-white-fg" [routerLink]="['/admin/food-reservation/orders/orders-list/','pickup']">View All</a> )</div>
+
+                <div class="p-16">
+                    <div *ngFor="let data of latestdeliverybookings; let index=i" class="line-height-28">        
+                        <div fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600"> Order ID : </div>
+                            <div> {{data.id}}</div>
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">
+                           <div fxFlex="40" class="font-weight-600"> Client : </div> 
+                            <div>{{data.name}} </div> 
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600"> Location : </div>
+                            <div>{{data.location[0].location_name}} </div>
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600"> Status : </div>
+                            <div> {{data.status}} </div>
+                        </div>
+
+                        <div fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600"> Date & time : </div> 
+                            <div> {{data.booking_start_date  | date: defaultDateTimeFormat.date_format}} {{(data.booking_start_date+' '+data.booking_start_time )| date :'shortTime'}}</div>
+                            <div></div>
+                            
+                        </div>
+
+                        <hr class="my-16">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border mr-16" fxFlex="33.33">
+                <div class="font-weight-600 font-size-16 green-bg-color fuse-white-fg p-16">Latest Pick-Up Orders ( <a class="fuse-white-fg" [routerLink]="['/admin/food-reservation/orders/orders-list/','delivery']">View All</a> )</div>
+                
+                <div class="p-16">
+                    <div *ngFor="let data of latestpickupbookings; let index=i" class="line-height-28">        
+                        <div fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600"> Order ID : </div> 
+                            <div> {{data.id}} </div>
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600">Client : </div>
+                            <div> {{data.name}} </div>
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600"> Location : </div> 
+                            <div> {{data.location[0].location_name}} </div>
+                        </div>
+
+                        <div class="text-capitalize" fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600">  Status : </div>
+                            <div> {{data.status}} </div>
+                        </div>
+
+                        <div fxLayout="row">
+                            <div fxFlex="40" class="font-weight-600"> Date & time : </div> 
+                            <div> {{data.booking_start_date  | date: defaultDateTimeFormat.date_format}} {{(data.booking_start_date+' '+data.booking_start_time )| date :'shortTime'}}</div>
+                        </div>
+                        
+                        <hr class="my-16">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border" fxFlex="33.33">
+                <div class="font-weight-600 font-size-16 green-bg-color fuse-white-fg p-16">Location Working Status</div>
+
+                <div class="p-16">
+                    <div *ngFor="let data of locationworkingstatus; let index=i" class="line-height-28">
+                        <div class="text-capitalize">{{data.location_address}}</div>
+                        <div class="text-capitalize" fxLayout="row">
+                           <div class="font-weight-600" fxFlex="40"> Delivery : </div> 
+                            <div> {{data.deliverystatus}} </div>
+                        </div>
+                        <div class="text-capitalize" fxLayout="row">
+                            <div class="font-weight-600" fxFlex="40"> Pickup : </div>
+                            <div> {{data.pickupstatus}}</div>
+                        </div> 
+                        <hr class="my-16"> 
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<!-- Announcments -->
+<div class="announcements pb-100 home-top-announcements" > 
+    <div  >
+        <div class="py-16 px-28 title">
+            <div class="h1 font-weight-800">ANNOUNCEMENTS</div>
+        </div>
+        <div *ngIf="announcments.length != 0">
+            <div class="py-16 px-28 pt-0 line-height-1.75" *ngFor="let announce of announcments">     
+                <div class="h2 font-weight-800">{{announce.content_title}}</div>
+                <div  [innerHTML]=" announce.content_desc | sanitizeHtml   "></div>
+                <div class="sep"></div>
+                 <!-- <div>{{announce.content_desc}}</div> -->
+            </div>
+        </div>
+        <div *ngIf="announcments.length == 0" class="py-16 px-32 text-left font-size-18 font-weight-800">
+           No Announcement Found
+        </div>
+        
+    </div>
+</div>
+ 

@@ -1,0 +1,337 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="back-appointment-booking-add">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start"
+         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                   {{title}}
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+ 
+        <!-- BTN's -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="end center">
+            <div class="mt-16 mt-sm-0">
+                <!-- <button mat-raised-button class="reference-button">
+                    <mat-icon class="mr-4">add</mat-icon>
+                    <span>Add Fields</span>
+                </button> -->
+                <button mat-raised-button
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'25px'}}"
+                        [routerLink]="'/admin/guest-room/booking/list'">
+                    <mat-icon class="mr-8">arrow_back</mat-icon>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <!-- / BTN's -->
+
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="content" fusePerfectScrollbar>
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" fxLayoutAlign="center">
+
+            <!-- CONTENT -->
+            <div class="content w-90-p my-auto">
+
+                <form class="w-100-p" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto" autocomplete="off"  [formGroup]="addBookingForm" novalidate>
+
+                    <!-- <div class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">{{title}}</div> -->
+                    
+                    <div class="p-24 d-block">
+
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="pr-8">
+                                <mat-form-field appearance="outline" class="w-100-p">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput   [matAutocomplete]="auto" name="first_name" formControlName="first_name" required>
+                                    <mat-autocomplete   #auto="matAutocomplete" (optionSelected)="setFormfields($event)">
+                                        <mat-option  *ngFor="let option of filteredUsers"  [value]="option" >
+                                            {{option.first_name+' '+option.last_name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-error>Firstname Required</mat-error>
+                                </mat-form-field>
+                                <!-- <input hidden name="id" formControlName="id"> -->
+                            </div>
+                            <!-- number -->
+                            <mat-form-field appearance="outline" fxFlex="50">
+                                <mat-label>Contact Number</mat-label>
+                                <input matInput formControlName="phone" pattern="(?=.*\d).{7,}" (blur)="PhoneNumberValidations($event)"  name="phone" required>
+                                <mat-error>Contact Number Required</mat-error>
+                            </mat-form-field>   
+                                 <!-- email -->
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Email Address</mat-label>
+                                <input matInput  formControlName="email"  name="email" required>
+                                <mat-error *ngIf="addBookingForm.controls['email']?.errors?.required">
+                                    Email is required.
+                                </mat-error>
+
+                                <mat-error *ngIf="addBookingForm.controls['email']?.errors?.email">
+                                    Email is not valid.
+                                </mat-error>
+                            </mat-form-field> 
+                            <!-- building list -->
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Building</mat-label>
+                                <mat-select matNativeControl required formControlName="building_id" required>
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option *ngFor="let data of buildingList" [value]="data.id">{{data.name}}</mat-option>
+                                </mat-select>
+                                <mat-error>Building required</mat-error>
+                            </mat-form-field>
+                            <!-- gust count -->
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Guest Count</mat-label>
+                                <input matInput type="number" formControlName="guest_count" min="1" (blur)="Guest_count()" name="guest_count" required>
+                                <mat-error>Contact Number Required</mat-error>
+                            </mat-form-field>  
+                            <!-- start date  -->
+                                 <mat-form-field appearance="outline" fxFlex="50" class="pr-8" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                                    <mat-label>Check-in Date</mat-label> <!--  [max]="startDateValidation" remove as per client requirment date 151121  *mas-->
+                                    <input matInput #input_start_date [min]='currentdate' required [matDatepicker]="picker" (focus)="picker.open()" (dateInput)="fromDate($event);updateTotalPrice()" formControlName="start_date" readonly>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
+                              <!-- end date  -->
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8" [ngClass.lt-sm]="{'w-100-p': 'true'}">
+                                <mat-label>Check-out Date</mat-label> <!--  [max]="reserveDate" *mas-->
+                                <input matInput #input_end_date [min]="startdate" required [matDatepicker]="picker2" (focus)="picker2.open()" (dateInput)="toDate($event);updateTotalPrice()"
+                                formControlName="end_date" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field  appearance="outline"  fxFlex="50" class="pr-8" *ngIf="showArrival==true">
+								<mat-label>Arrival Time</mat-label>
+								<input matInput   [owlDateTimeTrigger]="datetimepicker"  [owlDateTime]="datetimepicker" formControlName="arrival_time" >
+								<owl-date-time [pickerType]="'timer'"  [hour12Timer]="true" #datetimepicker></owl-date-time>
+								<mat-error></mat-error>
+							</mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Status</mat-label>
+                                <mat-select formControlName="status" name="status" required>
+                                  
+                                   <mat-option *ngFor="let status of StatusList | keyvalue" [value]="status.key">
+                                         {{status.value}}
+                                    </mat-option>
+                                    <mat-option *ngIf="editBookingData == true" value='cancelled'>Cancelled</mat-option>
+                                </mat-select>
+                                <mat-error class="text-capitalize"></mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline"  fxFlex="50" class="pr-8">
+                                <mat-label>Notes</mat-label>
+                                <textarea matInput type="text" name="notes" formControlName="notes" ></textarea>
+                            </mat-form-field>
+                            <!-- all the rooms list  -->
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                <mat-label>Select Room</mat-label>
+                                <mat-select formControlName="all_rooms" name="all_rooms"  (selectionChange)="selecteddata()">
+                                    <mat-option value="">-Choose-</mat-option>
+                                    <mat-option *ngFor="let rooms of allrooms" [value]="rooms.type" >
+                                        {{rooms.type |titlecase}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error class="text-capitalize"></mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-8" *ngIf="this.addBookingForm.get('all_rooms').value != '' && this.showmsg == false ">
+                                <mat-label>Select No Of Rooms</mat-label>
+                                <mat-select formControlName="number_of_rooms" name="number_of_rooms" (selectionChange)="onAddSelectRow()">
+                                    <mat-option *ngFor="let count of roomcount" [value]="count">
+                                        {{count}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error class="text-capitalize"></mat-error>
+                            </mat-form-field>
+                            <h1 *ngIf="showmsg == true "> {{message}}</h1>
+                            <div fxLayout="row" class="w-100-p"  fxLayoutAlign="start center" >
+                                <div formArrayName="guestcount" class="add-date-btn w-100-p">
+                                    <div fxLayout="row" fxLayoutAlign="start baseline"  *ngFor="let item of  getControls();let i=index" >
+                                        <div [formGroupName]="i" class="w-100-p" >
+
+                                            <h2  class="mr-12">Rooms {{i+1}}</h2>
+                                            <mat-form-field appearance="outline" fxFlex class="mr-12" fxFlex="40">
+                                                <mat-label>Adults</mat-label>
+                                                <mat-select   formControlName="adults" name="adults" (selectionChange)="onAdultSelect($event,i)">
+                                                    <mat-option *ngFor="let adult of ChildAdultArray[i].adult" [value]='adult'>
+                                                        {{adult}} 
+                                                    </mat-option>
+                                                </mat-select>
+                                                <mat-error class="text-capitalize"></mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex class="mr-8" fxFlex="36">
+                                                <mat-label>children</mat-label>
+                                                <mat-select formControlName="children" name="children" (selectionChange)="onChildSelect($event,i)">
+                                                    <mat-option *ngFor="let child of ChildAdultArray[i].child" [value]='child'  > 
+                                                        {{child}}   
+                                                    </mat-option>
+                                                </mat-select>
+                                                <mat-error class="text-capitalize"></mat-error>
+                                            </mat-form-field>
+                                            
+                                            <h2  class="mr-12" *ngIf="Currentdisplayprice != '' ">Price ${{Currentdisplayprice}}</h2>
+                                            <h2  class="mr-12" *ngIf="Currentdisplayprice == '' ">Price $0</h2>
+                                       </div>
+                                    </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="w-100-p">
+                            <button mat-raised-button color="accent"  type="button" [disabled]="bookbutton" (click)="Bookroom()" [disabled]="this.addBookingForm.get('number_of_rooms').value == ''" class="mb-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"> 
+                                Book
+                              </button>
+                         </div> 
+                        
+                        <br>
+                        <h1 class="h2 mt-8 mb-8" fxLayoutAlign="center center" *ngIf="priceinfo.length > 0 ">Booking Details</h1>
+                          <!-- <mat-card class="example-card" *ngIf="priceinfo.length > 0" fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto"> -->
+                            <div fxLayout="row" class="mt-24 w-100-p" fxLayoutAlign="center center" fxFlex="1 0 auto" *ngIf="priceinfo.length > 0 ">
+                                <hr />
+                                <!-- <mat-nav-list>
+                                    <mat-list-item *ngFor="let price of priceinfo; let i = index">
+                                            <h2>Room: {{price.type}}, Adults {{price.adults}}, children {{price.children}} X ${{price.price}} </h2>
+                                        <button mat-icon-button (click)="removeImage(i)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </mat-list-item>
+                                </mat-nav-list> -->
+                                <table class="table w-100-p " border="1">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: center;"> Room  </th>
+                                            <th style="text-align: center;"> Adults </th>
+                                            <th style="text-align: center;"> children </th>
+                                            <th style="text-align: center;">  Price </th>
+                                            <th style="text-align: center;"> Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let price of priceinfo; let i = index">
+                                            <td style="text-align: center;"> {{price.rooms.type}} </td>
+                                            <td style="text-align: center;"> {{price.adults}} </td>
+                                            <td style="text-align: center;"> {{price.children}}</td>
+                                            <td style="text-align: center;"> ${{price.price}} </td>
+                                            <td style="text-align: center;"> <button mat-icon-button (click)="removeImage(i)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button></td>
+                                        </tr>
+                                    </tbody>
+                                    
+                                </table>
+                                
+                            </div>
+                            <br>
+                            <button mat-raised-button *ngIf="priceinfo.length > 0 && editBookingData == false " [disabled]="All_Extres.length != 0" color="accent" type="button"  (click)="ContinueData()"   class="mb-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"> 
+                                Continue
+                            </button>
+                          <!-- </mat-card> -->
+                          <br>
+                         
+                          
+                          <!-- <div formArrayName="Extras" class="add-date-btn w-100-p" *ngIf='All_Extres.length > 0 '>
+                           <h2>Extras</h2> 
+                            <div fxLayout="row" fxLayoutAlign="start baseline"  *ngFor="let extra of All_Extres;let i=index" >
+                                <div [formGroupName]="i" class="w-100-p" >
+                                    <mat-checkbox class="mx-4 text-capitalize"  formControlName="extras" fxFlex.lt-sm="100" (change)="updateCheckboxValues($event.checked,extra.id,extra)"  [value]="extra.id">{{extra.name}} &nbsp;/ ${{extra.price}} &nbsp;-{{extra_prices[extra.per_price]}}</mat-checkbox>
+                                </div>
+                            </div>
+                          </div> -->
+                          <div class="add-date-btn w-100-p" *ngIf='All_Extres.length > 0 '>
+                            <table border="1" width="100%"  formArrayName="Extras">
+                                <tbody>
+                                    <tr [formGroupName]="i"
+                                    *ngFor="let extra of All_Extres;let i=index">
+                                        <td class="p-16">
+                                            <span *ngIf="extra.per_price == 'day_person'">{{extra.name}} (Per day /
+                                                per
+                                                person)</span>
+                                            <span *ngIf="extra.per_price != 'day_person'">{{extra.name}} (Per
+                                                {{extra.per_price}})</span>
+                                                
+                                        </td> 
+                                        <td class="text-center" [ngClass.lt-sm]="{'pl-12': 'true'}">
+                                            <mat-checkbox class="example-margin mr-8" formControlName="extras" (change)="updateCheckboxValues($event.checked,extra.id,extra)"  [value]="extra.id">
+                                            </mat-checkbox>
+                                        </td>
+                                        <td class="text-center" [ngStyle]="{'font-weight': 'bold'}">
+                                            ${{extra.price}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <h2>Extras</h2> 
+                            <div fxLayout="row" fxLayoutAlign="start baseline"   >
+                                <div [formGroupName]="i" class="w-100-p" >
+                                    <mat-checkbox class="mx-4 text-capitalize" [disabled]="extra.message != ''"  formControlName="extras" fxFlex.lt-sm="100" (change)="updateCheckboxValues($event.checked,extra.id,extra)"  [value]="extra.id">{{extra.name}} &nbsp;/ ${{extra.price}} &nbsp;-{{extra_prices[extra.per_price]}}&nbsp;&nbsp;&nbsp;&nbsp;{{extra.message}}</mat-checkbox>
+                                </div>
+                            </div> -->
+                          </div>
+                          <br>
+                          <div *ngIf="isSave" >
+                               <!-- gust count -->
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-8">
+                                    <mat-label>Promo Code</mat-label>
+                                    <input matInput formControlName="promocode"   name="promocode">
+                                    <mat-error></mat-error>
+                                </mat-form-field>
+                                <mat-error *ngIf="isPromoCode">Invalid promocode</mat-error>
+                                <button mat-raised-button color="accent" type="button" (click)="applypromocode()" class="mb-12 h-50 mt-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"> 
+                                    Apply Code
+                                </button>
+                            <br>
+                           </div>
+
+                           <div class="table w-100-p " *ngIf='All_Extres.length > 0'>
+                            <table class="table w-100-p " border="1">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;"> Room Price </th>
+                                        <th style="text-align: center;"> Extras Price </th>
+                                        <th style="text-align: center;"> Promo Code Price </th>
+                                        <th style="text-align: center;"> Diposite Price </th>
+                                        <th style="text-align: center;"> Total  Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;"> ${{finalroomprice}} </td>
+                                        <td style="text-align: center;"> ${{finalextraprice}} </td>
+                                        <td style="text-align: center;"> ${{promocodeprice}}</td>
+                                        <td style="text-align: center;"> ${{dipositeprice}} </td>
+                                        <td style="text-align: center;"> ${{Final_price}}</td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                          </div>
+                          <div  class="update-btn-wrapper mb-24 w-100-p">
+                            <mat-form-field appearance="outline"  fxFlex="100" class="pr-8">
+                              <mat-label>Billing Address</mat-label>
+                              <textarea matInput type="text" name="address" formControlName="address" ></textarea>
+                          </mat-form-field>
+                      </div>
+                          <br>
+                            <div  class="update-btn-wrapper mb-24">
+                                <button mat-raised-button color="accent" [disabled]="savebutton"   *ngIf="isSave"  (click)="onSaveFieldClick()" class="mb-12 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none"> 
+                                    Save Booking
+                                 </button>
+                            </div>
+                     </div>
+                     
+                    
+                </form>
+            </div>
+        </div>
+    </div>

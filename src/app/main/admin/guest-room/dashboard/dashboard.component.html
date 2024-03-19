@@ -1,0 +1,219 @@
+<div class="page-layout page-layout-add simple left-sidebar inner-sidebar inner-scroll" id="back-guest-room-extras-add">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-80" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">person_add
+                </mat-icon>
+                <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Reservation
+                </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+    </div>
+    <!-- / HEADER -->
+
+
+
+    <!-- CONTENT -->
+    <div class="center p-24 pb-56 w-100-p">
+        <div class="content w-90-p mx-auto fuse-white-bg p-28">
+            <div fxLayout="row">
+                <div class="border mr-16" fxFlex="25" *ngIf="isBookingCount">
+                    <div class="p-16">
+                        <div class="line-height-28">
+                            <div fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600"> Rooms Booked Today: </div>
+                                <div> <a [routerLink]="['/admin/guest-room/booking/list/','confirmed']">{{bookingCount.roomsbookedtoday}}</a> </div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600"> Pending Rooms Booked: </div>
+                                <div><a [routerLink]="['/admin/guest-room/booking/list/','pending']">{{bookingCount.pendingbookedtoday}} </a></div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600"> Avilable Rooms Today: </div>
+                                <div>{{bookingCount.availableroomstoday}} </div>
+                            </div>
+                            <hr class="my-16">
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="100" class="font-weight-600"> AVAILABLE ROOMS BY TYPE: </div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row"
+                                *ngFor="let data of bookingCount.availableroomsbytype">
+                                <div fxFlex="80" class="font-weight-600">{{data.type}}: </div>
+                                <div> {{data.availabel}}</div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600"> 
+                                    <span><a [routerLink]="['/admin/guest-room/booking/guest-room-calendar/']">View Calender</a></span> 
+                                </div>
+                            </div>
+                            <hr class="my-16">
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600"> GUESTS: </div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Staying tonight </div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Adults: </div>
+                                <div> {{bookingCount.stayingtonight.adults}}</div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Children </div>
+                                <div> {{bookingCount.stayingtonight.children}}</div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Total </div>
+                                <div> {{bookingCount.stayingtonight.total}}</div>
+                            </div>
+                            <hr class="my-16">
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Arriving today </div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Adults: </div>
+                                <div> {{bookingCount.arrivaltoday.adults}}</div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Children </div>
+                                <div> {{bookingCount.arrivaltoday.children}}</div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Total </div>
+                                <div> {{bookingCount.arrivaltoday.total}}</div>
+                            </div>
+                            <hr class="my-16">
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Leaving today </div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Adults: </div>
+                                <div> {{bookingCount.leavingtoday.adults}}</div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Children </div>
+                                <div> {{bookingCount.leavingtoday.children}}</div>
+                            </div>
+                            <div class="text-capitalize" fxLayout="row">
+                                <div fxFlex="80" class="font-weight-600">Total </div>
+                                <div> {{bookingCount.leavingtoday.total}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border mr-16" fxFlex="25" *ngIf="isLatestBooking">
+                    <div class="p-16">
+                        <div class="line-height-28">
+                            <mat-tab-group>
+                                <mat-tab label="Arrivals" [ngStyle]="{'transform': 'translateX(30px)'}">
+                                    <div *ngIf="latestBooking.arrivalbookings.data.length > 0">
+                                        <div class="text-capitalize" fxLayout="column"
+                                            *ngFor="let latest of latestBooking.arrivalbookings.data">
+                                            <div fxFlex="80" class="font-weight-600">ID: {{latest.id}} </div>
+                                            <div fxFlex="80" class="font-weight-600">{{latest.name}} </div>
+                                            <div fxFlex="80" class="font-weight-600">{{latest.phone | mask:CustomFormats.phone}} </div>
+                                            <div fxFlex="80" class="font-weight-600">Stay: from {{latest.date_from | date: defaultDateTimeFormat.date_format}} to
+                                                {{latest.date_to | date: defaultDateTimeFormat.date_format}}, {{latest.nights}} night</div>
+                                            <div fxFlex="80" class="font-weight-600">Rooms:</div>
+                                            <div fxFlex="80" class="font-weight-600"
+                                                *ngFor="let roomsData of latest.bookingrooms"> 
+                                                <span *ngIf="roomsData.rooms != null">
+                                                    {{roomsData.rooms.type}} - {{roomsData.room_number_id}} 
+                                                </span>
+                                            </div>
+                                            <hr class="my-16">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="latestBooking.arrivalbookings.data.length == 0">
+                                        <span>No arrivals today.</span>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Departures">
+                                    <div *ngIf="latestBooking.departurebookings.data.length > 0">
+                                        <div class="text-capitalize" fxLayout="column"
+                                            *ngFor="let latest of latestBooking.departurebookings.data">
+                                            <div fxFlex="80" class="font-weight-600">ID: {{latest.id}} </div>
+                                            <div fxFlex="80" class="font-weight-600">{{latest.name}} </div>
+                                            <div fxFlex="80" class="font-weight-600">{{latest.phone | mask:CustomFormats.phone}} </div>
+                                            <div fxFlex="80" class="font-weight-600">Stay: from {{latest.date_from}} to
+                                                {{latest.date_to}}, {{latest.nights}} night</div>
+                                            <div fxFlex="80" class="font-weight-600">Rooms:</div>
+                                            <div fxFlex="80" class="font-weight-600"
+                                                *ngFor="let roomsData of latest.bookingrooms"> 
+                                                <span *ngIf="roomsData.rooms != null">
+                                                    {{roomsData.rooms.type}} - {{roomsData.room_number_id}} 
+                                                </span>
+                                            </div>
+                                            <hr class="my-16">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="latestBooking.departurebookings.data.length == 0">
+                                        <span>No departures today.</span>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Latest">
+                                    <div *ngIf="latestBooking.latestbooking.data.length > 0">
+                                        <div class="text-capitalize" fxLayout="column"
+                                            *ngFor="let latest of latestBooking.latestbooking.data; let i=index">
+                                            <div fxFlex="80" class="font-weight-600">ID: {{latest.id}} </div>
+                                            <div fxFlex="80" class="font-weight-600">{{latest.name}} </div>
+                                            <div fxFlex="80" class="font-weight-600">{{latest.phone | mask:CustomFormats.phone}} </div>
+                                            <div fxFlex="80" class="font-weight-600">Stay: from {{latest.date_from}} to
+                                                {{latest.date_to}}, {{latest.nights}} night</div>
+                                            <div fxFlex="80" class="font-weight-600">Rooms:</div>
+                                            <div fxFlex="80" class="font-weight-600"
+                                                *ngFor="let roomsData of latest.bookingrooms"> 
+                                                <span *ngIf="roomsData.rooms != null">
+                                                    {{roomsData.rooms.type}} - {{roomsData.room_number_id}} 
+                                                </span>
+                                            </div>
+                                            <hr class="my-16">
+                                        </div>
+                                        <div *ngIf="latestBooking.latestbooking.data.length == 0">
+                                            <span>No latest booking today.</span>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border" fxFlex="50">
+                    <div class="p-16">
+                        <mat-tab-group (selectedTabChange)="onSequenceChangeEvent($event)">
+                            <mat-tab label="Past">
+                                <div style="display: block;">
+                                    <canvas baseChart width="400" height="400" [datasets]="lineChartData"
+                                        [labels]="lineChartLabels" [options]="lineChartOptions"
+                                        [colors]="lineChartColors" [legend]="lineChartLegend"
+                                        [chartType]="lineChartType" [plugins]="lineChartPlugins">
+                                    </canvas>
+                                </div>
+                            </mat-tab> 
+                            <mat-tab label="Upcoming">
+                                <div style="display: block;">
+                                    <canvas baseChart width="400" height="400" [datasets]="lineChartData"
+                                        [labels]="lineChartLabels" [options]="lineChartOptions"
+                                        [colors]="lineChartColors" [legend]="lineChartLegend"
+                                        [chartType]="lineChartType" [plugins]="lineChartPlugins">
+                                    </canvas>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

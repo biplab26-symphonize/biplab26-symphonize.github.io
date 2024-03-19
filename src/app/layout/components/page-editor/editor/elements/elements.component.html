@@ -1,0 +1,17 @@
+<h1 mat-dialog-title class="font-weight-600 font-size-18 green-bg-color fuse-white-fg p-16">Elements</h1>
+<div mat-dialog-content class="pb-dialog-settings">
+    <div class="content sp-builder-modal-element-container" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px grid" fxLayout.xs="column">
+        <ng-container *ngFor="let element of pageOptions.elements">
+            <div fxFlex="25" class="sp-builder-element-layouts">
+                <button class="p-20 w-100-p" mat-stroked-button id="{{element.el_id}}" (click)="chooseElement(element.el_id)">
+                    <mat-icon>{{element.icon || 'add'}}</mat-icon>
+                    {{element.name}}
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" class="mt-28 border-top pt-28">
+    <button type="button" mat-stroked-button class="ml-4 text-uppercase purple-btn-bg font-size-16 fuse-white-fg line-height-44 br-ds-0 box-shadow-none" color="primary" mat-dialog-close>CANCEL</button>
+</div>
